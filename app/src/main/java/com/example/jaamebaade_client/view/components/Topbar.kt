@@ -34,7 +34,7 @@ fun TopBar(innerPadding: PaddingValues) {
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(0.dp, 0.dp, 15.dp, 15.dp))
-            .background(DarkBrown) //TODO color should be changed to somehow use theme
+            .background(MaterialTheme.colorScheme.primary)
             .padding(innerPadding)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.End,
