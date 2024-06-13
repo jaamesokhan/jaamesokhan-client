@@ -2,7 +2,6 @@ package com.example.jaamebaade_client.view.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,17 +14,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jaamebaade_client.R
-import com.example.jaamebaade_client.ui.theme.DarkBrown
 
 @Composable
 fun TopBar(innerPadding: PaddingValues) {
@@ -37,21 +33,22 @@ fun TopBar(innerPadding: PaddingValues) {
             .background(MaterialTheme.colorScheme.primary)
             .padding(innerPadding)
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.End,
+        horizontalArrangement = Arrangement.Start,
     )
     {
-        Text(
-            text = "جام باده",
-            style = MaterialTheme.typography.headlineMedium,
-            color = Color.White
-        ) // TODO constants may need to be in another file
-        Spacer(modifier = Modifier.width(16.dp)) // Add space
         Image(
             myIcon,
             contentDescription = "Logo",
             modifier = Modifier.size(48.dp),
             contentScale = ContentScale.Fit
         )
+        Spacer(modifier = Modifier.width(16.dp)) // Add space
+        Text(
+            text = "جام باده",
+            style = MaterialTheme.typography.headlineMedium,
+            color = Color.White
+        ) // TODO constants may need to be in another file
+
     }
 }
 
