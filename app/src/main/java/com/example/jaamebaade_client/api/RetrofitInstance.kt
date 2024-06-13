@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val BASE_URL = "http://10.0.2.2:5000/" // TODO url from config files
+    private const val BASE_URL = "http://10.0.2.2:8085/" // TODO url from config files
 
     val api: PoetApiService by lazy {
         Retrofit.Builder()

@@ -6,6 +6,8 @@ import retrofit2.http.GET
 
 
 interface PoetApiService {
-    @GET("/api/poets") // TODO change dummy api
-    suspend fun getPoets(): List<Poet>
+    @GET("/api/v1/poet/")
+    suspend fun getPoets(): PoetResponse
 }
+
+data class PoetResponse(val content: List<Poet>)
