@@ -25,7 +25,7 @@ import com.example.jaamebaade_client.model.Poet
 fun PoetItem(poet: Poet, onClick: () -> Unit) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(poet.imageURL)
+            .data("https://ganjoor.net/image/gdap.png") // TODO change hardcoded url!
             .size(coil.size.Size.ORIGINAL) // Set the target size to load the image at.
             .build()
     )
