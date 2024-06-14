@@ -12,12 +12,13 @@ import androidx.compose.runtime.setValue
 import com.example.jaamebaade_client.model.Poet
 import android.util.Log
 import androidx.compose.runtime.mutableStateMapOf
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import java.io.File
+import javax.inject.Inject
 
-class PoetViewModel : ViewModel() {
-    private val poetRepository = PoetRepository()
-
+@HiltViewModel
+class PoetViewModel @Inject constructor(private val poetRepository: PoetRepository) : ViewModel() {
     var poets by mutableStateOf<List<Poet>>(emptyList())
         private set
 
@@ -33,6 +34,7 @@ class PoetViewModel : ViewModel() {
         loadSavedStatuses()
 
     }
+
     private fun loadSavedStatuses() {
         val statuses = poetRepository.getAllDownloadStatuses()
         downloadStatus.putAll(statuses)
@@ -56,6 +58,7 @@ class PoetViewModel : ViewModel() {
 
         }
     }
+
     fun downloadAndExtractPoet(id: String, targetDirectory: File) {
         // Set status to downloading
         downloadStatus[id] = DownloadStatus.Downloading

@@ -13,13 +13,13 @@ import com.example.jaamebaade_client.view.components.LoadingIndicator
 import com.example.jaamebaade_client.view.components.PoetItem
 import com.example.jaamebaade_client.viewmodel.PoetViewModel
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jaamebaade_client.utility.DownloadStatus
 import java.io.File
 
 @Composable
-fun PoetsScreen(poetViewModel: PoetViewModel, modifier: Modifier = Modifier) {
+fun PoetsScreen(poetViewModel: PoetViewModel = hiltViewModel(), modifier: Modifier = Modifier) {
     val poets = poetViewModel.poets
-
     val isLoading = poetViewModel.isLoading
     Box(modifier = modifier) {
         if (isLoading) {
