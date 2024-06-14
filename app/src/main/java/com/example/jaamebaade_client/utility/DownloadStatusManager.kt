@@ -2,8 +2,10 @@ package com.example.jaamebaade_client.utility
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class DownloadStatusManager(context: Context) {
+class DownloadStatusManager @Inject constructor(@ApplicationContext context: Context) {
 
 
     private val sharedPreferences: SharedPreferences =

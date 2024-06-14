@@ -49,7 +49,9 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+
         ) {
             if (painter.state is AsyncImagePainter.State.Loading) {
                 CircularProgressIndicator()
@@ -69,22 +71,21 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                 style = MaterialTheme.typography.headlineMedium
             ) // TODO constant?
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
             when (status) {
                 DownloadStatus.NotDownloaded -> {
                     Icon(imageVector = Icons.Filled.Add, contentDescription = "Download")
                 }
                 DownloadStatus.Downloading -> {
-                    LoadingIndicator()
+                    CircularProgressIndicator()
                 }
                 DownloadStatus.Downloaded -> {
                     Icon(imageVector = Icons.Default.Check, contentDescription = "Downloaded")
                 }
                 DownloadStatus.Failed -> {
-                    Toast.makeText(LocalContext.current, "${poet.name} failed to download", Toast.LENGTH_SHORT).show() // TODO
+                    Toast.makeText(LocalContext.current, "Failed to download ${poet.name} ", Toast.LENGTH_SHORT).show() // TODO
                     Icon(imageVector = Icons.Filled.Add, contentDescription = "Download")
-
                 }
             }
         }

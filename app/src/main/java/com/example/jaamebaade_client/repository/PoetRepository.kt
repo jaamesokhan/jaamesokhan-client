@@ -13,12 +13,13 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import com.example.jaamebaade_client.utility.DownloadStatus
 import com.example.jaamebaade_client.utility.DownloadStatusManager
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.zip.ZipInputStream
 import javax.inject.Inject
 
 class PoetRepository @Inject constructor(
     private val poetApiService: PoetApiService,
-    private val context: Context,
+    @ApplicationContext private val context: Context,
     private val downloadStatusManager: DownloadStatusManager
 ) {
 
@@ -71,6 +72,7 @@ class PoetRepository @Inject constructor(
             }
         }
     }
+
     fun saveDownloadStatus(poetId: String, status: DownloadStatus) {
         downloadStatusManager.saveDownloadStatus(poetId, status)
     }
