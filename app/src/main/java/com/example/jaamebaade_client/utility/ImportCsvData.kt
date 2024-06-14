@@ -1,4 +1,4 @@
-package com.example.jaamebaade_client.utils
+package com.example.jaamebaade_client.utility
 
 import com.example.jaamebaade_client.model.Category
 import com.example.jaamebaade_client.repository.CategoryRepository

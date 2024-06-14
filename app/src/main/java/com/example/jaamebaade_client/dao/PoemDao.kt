@@ -1,5 +1,6 @@
 package com.example.jaamebaade_client.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
@@ -7,6 +8,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.example.jaamebaade_client.model.Poem
 
+@Dao
 interface PoemDao {
 
     @Transaction

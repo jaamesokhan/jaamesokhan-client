@@ -3,6 +3,7 @@ package com.example.jaamebaade_client.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "poems",
     foreignKeys = [ForeignKey(
@@ -12,7 +13,7 @@ import androidx.room.ForeignKey
         onDelete = ForeignKey.CASCADE
     )])
 data class Poem (
-    @ColumnInfo(name = "id") val id: Int,
+    @PrimaryKey val id: Int,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "category_id") val categoryId: Int
 )
