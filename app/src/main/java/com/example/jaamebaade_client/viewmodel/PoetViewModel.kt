@@ -1,6 +1,7 @@
 package com.example.jaamebaade_client.viewmodel
 
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jaamebaade_client.repository.PoetRepository
@@ -11,14 +12,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.jaamebaade_client.model.Poet
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateMapOf
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class PoetViewModel @Inject constructor(private val poetRepository: PoetRepository) : ViewModel() {
+class PoetViewModel @Inject constructor(
+    private val poetRepository: PoetRepository, @ApplicationContext private val context: Context
+) : ViewModel() {
     var poets by mutableStateOf<List<Poet>>(emptyList())
         private set
 
@@ -60,6 +65,10 @@ class PoetViewModel @Inject constructor(private val poetRepository: PoetReposito
     }
 
     fun downloadAndExtractPoet(id: String, targetDirectory: File) {
+        if (downloadStatus[id] == DownloadStatus.Downloaded) {
+            Toast.makeText(context, "Already downloaded!", Toast.LENGTH_SHORT).show()
+            return
+        }
         // Set status to downloading
         downloadStatus[id] = DownloadStatus.Downloading
 
@@ -74,7 +83,7 @@ class PoetViewModel @Inject constructor(private val poetRepository: PoetReposito
                         poetRepository.extractZipFile(zipFile, extractDir)
                         zipFile.delete() // Clean up ZIP file after extraction
                         downloadStatus[id] = DownloadStatus.Downloaded
-
+                        poetRepository.saveDownloadStatus(id, DownloadStatus.Downloaded)
                     }
                 } else {
                     // Handle the error
