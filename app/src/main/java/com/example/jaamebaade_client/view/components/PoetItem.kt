@@ -1,11 +1,16 @@
 package com.example.jaamebaade_client.view.components
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -16,29 +21,30 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.media3.exoplayer.offline.Download
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.jaamebaade_client.model.Poet
+import com.example.jaamebaade_client.utility.DownloadStatus
 
 @Composable
-fun PoetItem(poet: Poet, onClick: () -> Unit) {
+fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data("https://ganjoor.net/image/gdap.png") // TODO change hardcoded url!
             .size(coil.size.Size.ORIGINAL) // Set the target size to load the image at.
             .build()
     )
-    Surface (
+
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp, horizontal = 4.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         color = MaterialTheme.colorScheme.surface
-    ){
-
-
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -58,7 +64,29 @@ fun PoetItem(poet: Poet, onClick: () -> Unit) {
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = poet.name, style = MaterialTheme.typography.headlineMedium) // TODO constant?
+            Text(
+                text = poet.name,
+                style = MaterialTheme.typography.headlineMedium
+            ) // TODO constant?
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            when (status) {
+                DownloadStatus.NotDownloaded -> {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Download")
+                }
+                DownloadStatus.Downloading -> {
+                    LoadingIndicator()
+                }
+                DownloadStatus.Downloaded -> {
+                    Icon(imageVector = Icons.Default.Check, contentDescription = "Downloaded")
+                }
+                DownloadStatus.Failed -> {
+                    Toast.makeText(LocalContext.current, "${poet.name} failed to download", Toast.LENGTH_SHORT).show() // TODO
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Download")
+
+                }
+            }
         }
     }
-    }
+}
