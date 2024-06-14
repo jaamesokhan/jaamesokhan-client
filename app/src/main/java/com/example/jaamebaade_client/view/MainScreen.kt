@@ -17,7 +17,7 @@ import com.example.jaamebaade_client.view.components.TopBar
 import com.example.jaamebaade_client.viewmodel.PoetViewModel
 
 @Composable
-fun MainScreen(poetViewModel: PoetViewModel) {
+fun MainScreen() {
     JaamebaadeclientTheme {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             Scaffold(
@@ -26,7 +26,7 @@ fun MainScreen(poetViewModel: PoetViewModel) {
                 topBar = { TopBar(innerPadding = PaddingValues(16.dp, 16.dp, 16.dp, 16.dp)) }
 
             ) { innerPadding ->
-                PoetsScreen(poetViewModel, modifier = Modifier.padding(innerPadding))
+                PoetsScreen(modifier = Modifier.padding(innerPadding))
             }
         }
     }

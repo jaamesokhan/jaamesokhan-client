@@ -3,31 +3,32 @@ package com.example.jaamebaade_client.repository
 
 import android.content.Context
 import android.util.Log
-import androidx.compose.ui.platform.LocalContext
 import com.example.jaamebaade_client.api.PoetApiService
 import com.example.jaamebaade_client.api.RetrofitInstance
 import com.example.jaamebaade_client.model.Poet
 import okhttp3.ResponseBody
 import retrofit2.Response
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
 import com.example.jaamebaade_client.utility.DownloadStatus
 import com.example.jaamebaade_client.utility.DownloadStatusManager
 import java.util.zip.ZipInputStream
+import javax.inject.Inject
 
-class PoetRepository {
-    private val api: PoetApiService = RetrofitInstance.api
-    private lateinit var downloadStatusManager: DownloadStatusManager
+class PoetRepository @Inject constructor(
+    private val poetApiService: PoetApiService,
+    private val context: Context,
+    private val downloadStatusManager: DownloadStatusManager
+) {
 
     suspend fun getPoets(): List<Poet> {
-        val poets = api.getPoets()
+        val poets = poetApiService.getPoets()
         return poets.content
     }
 
-    suspend fun downloadPoet(id: String): Response<ResponseBody> {
-        return api.downloadPoet(id).execute() // .awaitResponse() for coroutines
+    fun downloadPoet(id: String): Response<ResponseBody> {
+        return poetApiService.downloadPoet(id).execute() // .awaitResponse() for coroutines
     }
 
     fun saveFile(body: ResponseBody, file: File) {
