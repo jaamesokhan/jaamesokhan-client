@@ -62,7 +62,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.media3.exoplayer)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -86,5 +85,12 @@ dependencies {
     implementation ("io.coil-kt:coil-compose:2.1.0")
     implementation( "com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation (libs.coil.compose)
+    implementation( libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.hilt.android.v2511)
+    kapt (libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
 }

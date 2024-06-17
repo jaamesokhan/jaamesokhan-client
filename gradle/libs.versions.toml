@@ -4,6 +4,9 @@ coilCompose = "2.1.0"
 converterGson = "2.9.0"
 googleHiltAndroid = "2.51.1"
 commonsCsv = "1.8"
+coilCompose = "2.1.0"
+converterGson = "2.9.0"
+googleHiltAndroid = "2.51.1"
 hiltAndroid = "2.40.1"
 hiltAndroidCompiler = "2.44"
 hiltAndroidVersion = "2.44"
@@ -32,6 +35,11 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx"
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomPaging" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "commonsCsv" }
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler" }
+androidx-hilt-lifecycle-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel", version.ref = "hiltLifecycleViewmodel" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltCompiler" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler" }
 androidx-hilt-lifecycle-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel", version.ref = "hiltLifecycleViewmodel" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltCompiler" }
