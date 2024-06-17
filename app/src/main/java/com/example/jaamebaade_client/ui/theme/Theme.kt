@@ -16,16 +16,18 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = DarkBrown,
+    primary = darkBrown,
     secondary = lightBrown,
-    tertiary = DarkBrown
+    tertiary = darkBrown,
+    surface = lightOrange
+
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = DarkBrown,
+    primary = darkBrown,
     secondary = lightBrown,
-    tertiary = DarkBrown
-
+    tertiary = darkBrown,
+    surface = lightOrange
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
@@ -36,6 +38,7 @@ private val LightColorScheme = lightColorScheme(
     onSurface = Color(0xFF1C1B1F),
     */
 )
+
 @Composable
 fun JaamebaadeclientTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">jaamebaade-client</string>
+    <string name="SERVER_BASE_URL">http://10.0.2.2:8085/</string>
 </resources>
