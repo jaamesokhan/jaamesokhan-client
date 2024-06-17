@@ -8,13 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import com.example.jaamebaade_client.view.components.Navbar
 import com.example.jaamebaade_client.view.components.TopBar
-import com.example.jaamebaade_client.viewmodel.PoetViewModel
 
 @Composable
 fun MainScreen() {
@@ -26,7 +24,9 @@ fun MainScreen() {
                 topBar = { TopBar(innerPadding = PaddingValues(16.dp, 16.dp, 16.dp, 16.dp)) }
 
             ) { innerPadding ->
-                PoetsScreen(modifier = Modifier.padding(innerPadding))
+                // TODO go to downloadedPoetsScreen
+//                DownloadablePoetsScreen(modifier = Modifier.padding(innerPadding))
+                DownloadedPoetsScreen(modifier = Modifier.padding(innerPadding))
             }
         }
     }

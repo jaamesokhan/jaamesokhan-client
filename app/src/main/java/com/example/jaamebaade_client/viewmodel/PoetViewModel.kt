@@ -56,12 +56,6 @@ class PoetViewModel @Inject constructor(
 
     }
 
-    private suspend fun loadDatabase() {
-        withContext(Dispatchers.IO) {
-            poetRepository.insetPoets(poets)
-        }
-    }
-
     private fun loadSavedStatuses() {
         val statuses = poetDataManager.getAllDownloadStatuses()
         downloadStatus.putAll(statuses)
@@ -76,8 +70,6 @@ class PoetViewModel @Inject constructor(
                 if (response != null) {
                     poets = response
                     isLoading = false
-                    loadDatabase()
-
                 }
 
 
@@ -115,10 +107,12 @@ class PoetViewModel @Inject constructor(
                         zipFile.delete() // Clean up ZIP file after extraction
                         downloadStatus[id] = DownloadStatus.Downloaded
                         poetDataManager.saveDownloadStatus(id, DownloadStatus.Downloaded)
+                        insertDownloadedPoet(poets.find { it.id.toString() == id }!!)
                         onSuccess()
                     }
                 } else {
                     // Handle the error
+                    Log.e(PoetViewModel::class.simpleName, "download poet failed with ${response.body()}", )
                     downloadStatus[id] = DownloadStatus.Failed
                 }
             } catch (e: Exception) {
@@ -147,4 +141,12 @@ class PoetViewModel @Inject constructor(
             }
         }, {})
     }
+
+    private suspend fun insertDownloadedPoet(poet: Poet) {
+        withContext(Dispatchers.IO) {
+            poetRepository.insertPoet(poet)
+        }
+
+    }
+
 }
