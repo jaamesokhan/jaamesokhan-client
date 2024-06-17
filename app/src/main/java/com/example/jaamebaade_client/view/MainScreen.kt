@@ -31,10 +31,3 @@ fun MainScreen() {
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun MainScreenPreview() {
-
-    //MainScreen(poetViewModel = )
-}

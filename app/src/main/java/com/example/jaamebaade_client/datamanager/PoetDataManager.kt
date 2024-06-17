@@ -42,7 +42,7 @@ class PoetDataManager @Inject constructor(
         ZipInputStream(zipFile.inputStream()).use { zipInputStream ->
             var entry = zipInputStream.nextEntry
             while (entry != null) {
-                Log.e("File", entry.name)
+                Log.d("File", entry.name)
                 val file = File(extractDir, entry.name)
                 if (entry.isDirectory) {
                     file.mkdirs()

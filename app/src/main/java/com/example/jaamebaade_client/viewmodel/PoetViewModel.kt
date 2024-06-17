@@ -75,9 +75,6 @@ class PoetViewModel @Inject constructor(
                 val response = poetApiClient.getPoets()
                 if (response != null) {
                     poets = response
-                    for (poet in response) {
-                        Log.d("poets", "${poet.name}, + ${poet.id}") // TODO remove
-                    }
                     isLoading = false
                     loadDatabase()
 

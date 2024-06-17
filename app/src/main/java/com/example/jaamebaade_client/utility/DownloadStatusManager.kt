@@ -25,9 +25,3 @@ class DownloadStatusManager @Inject constructor(@ApplicationContext context: Con
     }
 }
 
-enum class DownloadStatus {
-    NotDownloaded,
-    Downloading,
-    Downloaded,
-    Failed
-}

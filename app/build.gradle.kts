@@ -2,8 +2,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+
 }
 
 android {
@@ -74,24 +75,18 @@ dependencies {
     implementation( libs.retrofit)
     implementation (libs.converter.gson)
     implementation (libs.hilt.android.v2511)
-    kapt (libs.hilt.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
+    ksp (libs.hilt.compiler)
+    ksp(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.room.runtime)
-    kapt(libs.androidx.room.compiler)
-    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.paging)
     implementation (libs.commons.csv)
-    implementation ("io.coil-kt:coil-compose:2.1.0")
-    implementation( "com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    implementation (libs.coil.compose)
-    implementation( libs.retrofit)
-    implementation (libs.converter.gson)
-    implementation (libs.hilt.android.v2511)
-    kapt (libs.hilt.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
+
+
 
 }

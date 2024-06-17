@@ -27,9 +27,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApiService(): PoetApiService {
+    fun provideApiService(@ApplicationContext context: Context): PoetApiService {
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8085/")
+            .baseUrl(context.getString(R.string.SERVER_BASE_URL))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(PoetApiService::class.java)
@@ -59,39 +59,40 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context):AppDatabase{
-        var instance : AppDatabase
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
+        var instance: AppDatabase
         synchronized(AppDatabase::class) {
             instance = Room.databaseBuilder(
-            context.applicationContext,
-            AppDatabase::class.java,
-            "app_database"
+                context.applicationContext,
+                AppDatabase::class.java,
+                "app_database"
             ).build()
         }
 
-    return instance!!
+        return instance!!
     }
+
     @Provides
     @Singleton
-    fun providePoetRepository(appDatabase: AppDatabase):PoetRepository{
+    fun providePoetRepository(appDatabase: AppDatabase): PoetRepository {
         return PoetRepository(appDatabase)
     }
 
     @Provides
     @Singleton
-    fun providePoemRepository(appDatabase: AppDatabase):PoemRepository{
+    fun providePoemRepository(appDatabase: AppDatabase): PoemRepository {
         return PoemRepository(appDatabase)
     }
 
     @Provides
     @Singleton
-    fun provideCategoryRepository(appDatabase: AppDatabase):CategoryRepository{
+    fun provideCategoryRepository(appDatabase: AppDatabase): CategoryRepository {
         return CategoryRepository(appDatabase)
     }
 
     @Provides
     @Singleton
-    fun provideVerseRepository(appDatabase: AppDatabase):VerseRepository{
+    fun provideVerseRepository(appDatabase: AppDatabase): VerseRepository {
         return VerseRepository(appDatabase)
     }
 }

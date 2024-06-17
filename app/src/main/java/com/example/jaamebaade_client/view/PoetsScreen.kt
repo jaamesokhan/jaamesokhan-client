@@ -33,17 +33,20 @@ fun PoetsScreen(poetViewModel: PoetViewModel = hiltViewModel(), modifier: Modifi
 @Composable
 fun PoetsList(poetViewModel: PoetViewModel, poets: List<Poet>, onPoetClick: (Poet) -> Unit) {
     val context = LocalContext.current
-    LazyColumn(userScrollEnabled = true){
+    LazyColumn(userScrollEnabled = true) {
         items(poets) { poet ->
-            PoetItem(poet = poet, poetViewModel.downloadStatus[poet.id.toString()]?:DownloadStatus.NotDownloaded) {
+            PoetItem(
+                poet = poet,
+                poetViewModel.downloadStatus[poet.id.toString()] ?: DownloadStatus.NotDownloaded
+            ) {
                 val targetDir = getInternalStorageDir(context)
                 poetViewModel.importPoetData(poet.id.toString(), targetDir)
-                Toast.makeText(context, "${poet.name} clicked", Toast.LENGTH_SHORT).show()
 
             }
         }
     }
 }
+
 fun getInternalStorageDir(context: Context): File {
     val dir = File(context.filesDir, "poets")
     if (!dir.exists()) {

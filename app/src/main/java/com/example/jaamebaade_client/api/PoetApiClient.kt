@@ -10,10 +10,7 @@ class PoetApiClient @Inject constructor(
 ) {
     suspend fun getPoets(): List<Poet>? {
         val res = poetApiService.getPoets().body()
-        if (res != null) {
-            return res.content
-        }
-        return null
+        return res?.content
     }
 
     fun downloadPoet(id: String): Response<ResponseBody> {

@@ -76,14 +76,21 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                 DownloadStatus.NotDownloaded -> {
                     Icon(imageVector = Icons.Filled.Add, contentDescription = "Download")
                 }
+
                 DownloadStatus.Downloading -> {
                     CircularProgressIndicator()
                 }
+
                 DownloadStatus.Downloaded -> {
                     Icon(imageVector = Icons.Default.Check, contentDescription = "Downloaded")
                 }
+
                 DownloadStatus.Failed -> {
-                    Toast.makeText(LocalContext.current, "Failed to download ${poet.name} ", Toast.LENGTH_SHORT).show() // TODO
+                    Toast.makeText(
+                        LocalContext.current,
+                        "Failed to download ${poet.name} ",
+                        Toast.LENGTH_SHORT
+                    ).show() // TODO
                     Icon(imageVector = Icons.Filled.Add, contentDescription = "Download")
                 }
             }
