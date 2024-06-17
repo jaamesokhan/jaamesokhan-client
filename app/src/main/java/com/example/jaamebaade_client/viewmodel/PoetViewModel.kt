@@ -15,9 +15,17 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateMapOf
 import com.example.jaamebaade_client.api.PoetApiClient
+import com.example.jaamebaade_client.repository.CategoryRepository
+import com.example.jaamebaade_client.repository.PoemRepository
+import com.example.jaamebaade_client.repository.PoetRepository
+import com.example.jaamebaade_client.repository.VerseRepository
+import com.example.jaamebaade_client.utility.importCategoryData
+import com.example.jaamebaade_client.utility.importPoemData
+import com.example.jaamebaade_client.utility.importVerseData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -25,7 +33,12 @@ import javax.inject.Inject
 class PoetViewModel @Inject constructor(
     private val poetDataManager: PoetDataManager,
     private val poetApiClient: PoetApiClient,
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val categoryRepository: CategoryRepository,
+    private val poetRepository: PoetRepository,
+    private val poemRepository: PoemRepository,
+    private val verseRepository: VerseRepository
+
 ) : ViewModel() {
     var poets by mutableStateOf<List<Poet>>(emptyList())
         private set
@@ -43,9 +56,16 @@ class PoetViewModel @Inject constructor(
 
     }
 
+    private suspend fun loadDatabase() {
+        withContext(Dispatchers.IO) {
+            poetRepository.insetPoets(poets)
+        }
+    }
+
     private fun loadSavedStatuses() {
         val statuses = poetDataManager.getAllDownloadStatuses()
         downloadStatus.putAll(statuses)
+
     }
 
     private fun fetchPoets() {
@@ -53,21 +73,32 @@ class PoetViewModel @Inject constructor(
             try {
                 isLoading = true
                 val response = poetApiClient.getPoets()
-                for (poet in response) {
-                    Log.d("poets", "${poet.name}, + ${poet.id}") // TODO remove
-                }
-                isLoading = false
-                if (response.isNotEmpty()) {
+                if (response != null) {
                     poets = response
+                    for (poet in response) {
+                        Log.d("poets", "${poet.name}, + ${poet.id}") // TODO remove
+                    }
+                    isLoading = false
+                    loadDatabase()
+
                 }
+
+
             } catch (e: Exception) {
                 e.printStackTrace()
+                isLoading = false
+
             }
 
         }
     }
 
-    fun downloadAndExtractPoet(id: String, targetDirectory: File) {
+    private fun downloadAndExtractPoet(
+        id: String,
+        targetDirectory: File,
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit
+    ) {
         if (downloadStatus[id] == DownloadStatus.Downloaded) {
             Toast.makeText(context, "Already downloaded!", Toast.LENGTH_SHORT).show()
             return
@@ -87,18 +118,36 @@ class PoetViewModel @Inject constructor(
                         zipFile.delete() // Clean up ZIP file after extraction
                         downloadStatus[id] = DownloadStatus.Downloaded
                         poetDataManager.saveDownloadStatus(id, DownloadStatus.Downloaded)
+                        onSuccess()
                     }
                 } else {
                     // Handle the error
                     downloadStatus[id] = DownloadStatus.Failed
-
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 // Handle exception
                 downloadStatus[id] = DownloadStatus.Failed
-
+                onFailure()
             }
         }
+    }
+
+    fun importPoetData(id: String, targetDir: File) {
+
+        downloadAndExtractPoet(id, targetDir, {
+            try {
+                if (downloadStatus[id] == DownloadStatus.Downloaded) {
+                    var dir = targetDir.path + "/poet_$id" + "/category_$id.csv"
+                    importCategoryData(dir, categoryRepository)
+                    dir = targetDir.path + "/poet_$id" + "/poems_$id.csv"
+                    importPoemData(dir, poemRepository)
+                    dir = targetDir.path + "/poet_$id" + "/verses_$id.csv"
+                    importVerseData(dir, verseRepository)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }, {})
     }
 }

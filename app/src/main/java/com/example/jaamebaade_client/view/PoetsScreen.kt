@@ -35,9 +35,9 @@ fun PoetsList(poetViewModel: PoetViewModel, poets: List<Poet>, onPoetClick: (Poe
     val context = LocalContext.current
     LazyColumn(userScrollEnabled = true){
         items(poets) { poet ->
-            PoetItem(poet = poet, poetViewModel.downloadStatus[poet.id]?:DownloadStatus.NotDownloaded) {
+            PoetItem(poet = poet, poetViewModel.downloadStatus[poet.id.toString()]?:DownloadStatus.NotDownloaded) {
                 val targetDir = getInternalStorageDir(context)
-                poetViewModel.downloadAndExtractPoet(poet.id, targetDir)
+                poetViewModel.importPoetData(poet.id.toString(), targetDir)
                 Toast.makeText(context, "${poet.name} clicked", Toast.LENGTH_SHORT).show()
 
             }

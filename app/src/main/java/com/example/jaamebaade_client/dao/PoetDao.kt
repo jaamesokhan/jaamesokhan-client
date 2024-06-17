@@ -3,6 +3,7 @@ package com.example.jaamebaade_client.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.jaamebaade_client.model.Poet
@@ -20,4 +21,8 @@ interface PoetDao {
 
     @Update
     fun update(poet: Poet)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertPoets(poets: List<Poet>)
+
 }

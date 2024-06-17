@@ -1,9 +1,16 @@
 package com.example.jaamebaade_client
 
 import android.content.Context
+import androidx.room.Room
 import com.example.jaamebaade_client.api.PoetApiClient
 import com.example.jaamebaade_client.api.PoetApiService
+import com.example.jaamebaade_client.database.AppDatabase
 import com.example.jaamebaade_client.datamanager.PoetDataManager
+import com.example.jaamebaade_client.model.Verse
+import com.example.jaamebaade_client.repository.CategoryRepository
+import com.example.jaamebaade_client.repository.PoemRepository
+import com.example.jaamebaade_client.repository.PoetRepository
+import com.example.jaamebaade_client.repository.VerseRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,5 +55,43 @@ object AppModule {
         apiService: PoetApiService,
     ): PoetApiClient {
         return PoetApiClient(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppDatabase(@ApplicationContext context: Context):AppDatabase{
+        var instance : AppDatabase
+        synchronized(AppDatabase::class) {
+            instance = Room.databaseBuilder(
+            context.applicationContext,
+            AppDatabase::class.java,
+            "app_database"
+            ).build()
+        }
+
+    return instance!!
+    }
+    @Provides
+    @Singleton
+    fun providePoetRepository(appDatabase: AppDatabase):PoetRepository{
+        return PoetRepository(appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun providePoemRepository(appDatabase: AppDatabase):PoemRepository{
+        return PoemRepository(appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCategoryRepository(appDatabase: AppDatabase):CategoryRepository{
+        return CategoryRepository(appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideVerseRepository(appDatabase: AppDatabase):VerseRepository{
+        return VerseRepository(appDatabase)
     }
 }
