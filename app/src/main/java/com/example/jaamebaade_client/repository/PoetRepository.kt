@@ -18,6 +18,6 @@ class PoetRepository @Inject constructor(appDatabase: AppDatabase) {
 
     fun updatePoet(poet: Poet) = poetDao.update(poet)
 
-    fun insetPoets(poets: List<Poet>) = poetDao.insertPoets(poets)
+    fun insetPoets(poets: List<Poet>) = poetDao.insertAll(*poets.toTypedArray())
 
 }

@@ -10,7 +10,7 @@ import com.example.jaamebaade_client.model.Poet
 
 @Dao
 interface PoetDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg poet: Poet)
 
     @Query("SELECT * FROM poets")
@@ -21,8 +21,5 @@ interface PoetDao {
 
     @Update
     fun update(poet: Poet)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPoets(poets: List<Poet>)
 
 }
