@@ -3,7 +3,7 @@ package com.example.jaamebaade_client
 import android.content.Context
 import com.example.jaamebaade_client.api.PoetApiClient
 import com.example.jaamebaade_client.api.PoetApiService
-import com.example.jaamebaade_client.repository.PoetDataManager
+import com.example.jaamebaade_client.datamanager.PoetDataManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

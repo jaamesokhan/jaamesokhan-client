@@ -1,4 +1,4 @@
-package com.example.jaamebaade_client.repository
+package com.example.jaamebaade_client.datamanager
 
 
 import android.util.Log
