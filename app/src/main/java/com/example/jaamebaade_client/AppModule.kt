@@ -1,9 +1,9 @@
 package com.example.jaamebaade_client
 
 import android.content.Context
+import com.example.jaamebaade_client.api.PoetApiClient
 import com.example.jaamebaade_client.api.PoetApiService
-import com.example.jaamebaade_client.api.RetrofitInstance
-import com.example.jaamebaade_client.repository.PoetRepository
+import com.example.jaamebaade_client.repository.PoetDataManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,11 +36,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePoetRepository(
-        apiService: PoetApiService,
+    fun providePoetDataManager(
         downloadStatusManager: DownloadStatusManager,
-        @ApplicationContext context: Context
-    ): PoetRepository {
-        return PoetRepository(apiService, context, downloadStatusManager)
+    ): PoetDataManager {
+        return PoetDataManager(downloadStatusManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providePoetApiClient(
+        apiService: PoetApiService,
+    ): PoetApiClient {
+        return PoetApiClient(apiService)
     }
 }

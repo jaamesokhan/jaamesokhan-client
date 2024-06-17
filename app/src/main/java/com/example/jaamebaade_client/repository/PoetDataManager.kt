@@ -1,36 +1,20 @@
 package com.example.jaamebaade_client.repository
 
 
-import android.content.Context
 import android.util.Log
-import com.example.jaamebaade_client.api.PoetApiService
-import com.example.jaamebaade_client.api.RetrofitInstance
-import com.example.jaamebaade_client.model.Poet
 import okhttp3.ResponseBody
-import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import com.example.jaamebaade_client.utility.DownloadStatus
 import com.example.jaamebaade_client.utility.DownloadStatusManager
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.zip.ZipInputStream
 import javax.inject.Inject
 
-class PoetRepository @Inject constructor(
-    private val poetApiService: PoetApiService,
-    @ApplicationContext private val context: Context,
+class PoetDataManager @Inject constructor(
     private val downloadStatusManager: DownloadStatusManager
 ) {
 
-    suspend fun getPoets(): List<Poet> {
-        val poets = poetApiService.getPoets()
-        return poets.content
-    }
-
-    fun downloadPoet(id: String): Response<ResponseBody> {
-        return poetApiService.downloadPoet(id).execute() // .awaitResponse() for coroutines
-    }
 
     fun saveFile(body: ResponseBody, file: File) {
         var inputStream: InputStream? = null
