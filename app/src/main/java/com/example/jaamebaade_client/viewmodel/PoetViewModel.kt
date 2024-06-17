@@ -4,7 +4,7 @@ package com.example.jaamebaade_client.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jaamebaade_client.repository.PoetDataManager
+import com.example.jaamebaade_client.datamanager.PoetDataManager
 import com.example.jaamebaade_client.utility.DownloadStatus
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
