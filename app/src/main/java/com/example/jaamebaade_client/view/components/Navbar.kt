@@ -18,12 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.jaamebaade_client.ui.theme.lightBrown
+import androidx.navigation.NavController
 
 @Composable
-fun Navbar() {
+fun Navbar(navController: NavController) {
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
@@ -33,7 +32,7 @@ fun Navbar() {
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = { /*TODO: Handle Home click*/ }) {
+        IconButton(onClick = { navController.navigate("downloadedPoetsScreen") }) {
             Icon(
                 Icons.Filled.Home,
                 contentDescription = "Home",
@@ -57,10 +56,4 @@ fun Navbar() {
             )
         }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun NavbarPreview() {
-    Navbar()
 }
