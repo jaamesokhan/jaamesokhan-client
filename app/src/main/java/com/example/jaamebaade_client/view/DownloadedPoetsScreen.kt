@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.jaamebaade_client.model.Poet
+import com.example.jaamebaade_client.view.components.DownloadedPoet
 import com.example.jaamebaade_client.viewmodel.DownloadedPoetViewModel
 
 @Composable
@@ -53,8 +54,7 @@ fun DownloadedPoetsScreen(
         LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = modifier.padding(8.dp)) {
             items(poets) { poet ->
                 DownloadedPoet(poet = poet) {
-                    // Navigate to the poet's page
-
+                    // TODO Navigate to the poet's page
                 }
             }
 
@@ -62,23 +62,3 @@ fun DownloadedPoetsScreen(
     }
 }
 
-@Composable
-fun DownloadedPoet(poet: Poet, onClick: () -> Unit) {
-    // FIXME make ripple effect round
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
-        .clickable { onClick() }) {
-        Image(
-            painter = rememberAsyncImagePainter(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://ganjoor.net/image/gdap.png") // TODO change hardcoded url!
-                    .size(coil.size.Size.ORIGINAL) // Set the target size to load the image at.
-                    .build()
-            ),
-            contentDescription = poet.name,
-            modifier = Modifier
-                .size(100.dp) // adjust the size as needed
-                .clip(CircleShape)
-        )
-        Text(text = poet.name, fontSize = 20.sp) // replace with your poet's name
-    }
-}
