@@ -2,36 +2,42 @@ package com.example.jaamebaade_client.view
 
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jaamebaade_client.model.Poet
+import com.example.jaamebaade_client.utility.DownloadStatus
 import com.example.jaamebaade_client.view.components.LoadingIndicator
 import com.example.jaamebaade_client.view.components.PoetItem
 import com.example.jaamebaade_client.viewmodel.PoetViewModel
-import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.jaamebaade_client.utility.DownloadStatus
 import java.io.File
 
 @Composable
-fun PoetsScreen(poetViewModel: PoetViewModel = hiltViewModel(), modifier: Modifier = Modifier) {
+fun DownloadablePoetsScreen(
+    poetViewModel: PoetViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
+) {
     val poets = poetViewModel.poets
     val isLoading = poetViewModel.isLoading
     Box(modifier = modifier) {
         if (isLoading) {
             LoadingIndicator()
         } else {
-            PoetsList(poetViewModel, poets) { }
+            DownloadablePoetsList(poetViewModel, poets) { }
         }
     }
 }
 
 @Composable
-fun PoetsList(poetViewModel: PoetViewModel, poets: List<Poet>, onPoetClick: (Poet) -> Unit) {
+fun DownloadablePoetsList(
+    poetViewModel: PoetViewModel,
+    poets: List<Poet>,
+    onPoetClick: (Poet) -> Unit
+) {
     val context = LocalContext.current
     LazyColumn(userScrollEnabled = true) {
         items(poets) { poet ->
