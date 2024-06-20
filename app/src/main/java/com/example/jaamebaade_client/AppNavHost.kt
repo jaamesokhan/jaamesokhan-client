@@ -68,7 +68,9 @@ fun AppNavHost() {
                     composable("poemsListScreen/{categoryId}"){ backStackEntry ->
                         val categoryId = backStackEntry.arguments?.getString("categoryId")?.toInt()
                         if (categoryId != null) {
-                            PoemListScreen(categoryId = categoryId)
+                            PoemListScreen(categoryId = categoryId,
+                                modifier = Modifier.padding(innerPadding),
+                            )
                         }
                     }
                 }

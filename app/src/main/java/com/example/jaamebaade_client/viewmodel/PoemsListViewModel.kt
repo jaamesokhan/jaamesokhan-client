@@ -41,7 +41,7 @@ class PoemsListViewModel @AssistedInject constructor(
 
     init {
         isLoading = true
-        getAllPoems()
+//        getAllPoems()
     }
 
     private suspend fun getPoemsFromDatabase(){
@@ -57,6 +57,12 @@ class PoemsListViewModel @AssistedInject constructor(
 
         }
     }
+    fun getPoemsByCategoryId(categoryId: Int): Flow<PagingData<Poem>> {
+        return poemRepository.getPoemsByCategoryIdPaged(categoryId)
+            .cachedIn(viewModelScope)
+    }
+
+
 }
 
 

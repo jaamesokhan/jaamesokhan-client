@@ -23,5 +23,12 @@ class PoemRepository @Inject constructor(appDatabase: AppDatabase) {
 
     fun updatePoem(poem: Poem) = poemDao.update(poem)
 
+    fun getPoemsByCategoryIdPaged(categoryId: Int): Flow<PagingData<Poem>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = { poemDao.getPoemsByCategory(categoryId) }
+        ).flow
+    }
+
     fun getPoemsByCategory(categoryId: Int): List<Poem> = poemDao.getAllPoemsByCategory(categoryId)
 }
