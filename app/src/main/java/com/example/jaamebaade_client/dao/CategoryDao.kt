@@ -20,4 +20,21 @@ interface CategoryDao {
 
     @Update
     fun update(category: Category)
+
+    @Query(
+        """
+            SELECT id from categories
+                WHERE poet_id = :poetId
+                    AND parent_id = 0
+        """
+    )
+    fun getPoetCategoryId(poetId: Int): Int
+
+    @Query(
+        """SELECT * FROM categories 
+            WHERE poet_id = :poetId 
+                AND parent_id = :parentId
+        """
+    )
+    fun getCategoriesByPoetIdFilteredByParentId(poetId: Int, parentId: Int): List<Category>
 }

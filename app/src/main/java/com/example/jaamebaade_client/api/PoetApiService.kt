@@ -10,7 +10,7 @@ import retrofit2.http.Path
 
 
 interface PoetApiService {
-    @GET("/api/v1/poet/")
+    @GET("/api/v1/poet?size=100&sort=id")
     suspend fun getPoets(): Response<PoetListResponse>
 
     @GET("/api/v1/poet/download/{id}")
