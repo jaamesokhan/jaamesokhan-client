@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
 import com.example.jaamebaade_client.view.DownloadedPoetsScreen
+import com.example.jaamebaade_client.view.PoetCategoryScreen
 import com.example.jaamebaade_client.view.components.Navbar
 import com.example.jaamebaade_client.view.components.TopBar
 
@@ -41,6 +42,16 @@ fun AppNavHost() {
                     }
                     composable("downloadablePoetsScreen") {
                         DownloadablePoetsScreen(modifier = Modifier.padding(innerPadding))
+                    }
+                    composable("poetCategoryScreen/{poetId}/{parentId}") { backStackEntry ->
+                        val poetId = backStackEntry.arguments?.getString("poetId")?.toInt()
+                        val parentId = backStackEntry.arguments?.getString("parentId")?.toInt()
+                        PoetCategoryScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            poetId = poetId!!,
+                            parentId = parentId ?: 0,
+                            navController = navController
+                        )
                     }
                 }
             }

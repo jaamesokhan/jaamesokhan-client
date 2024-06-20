@@ -31,7 +31,9 @@ import com.example.jaamebaade_client.utility.DownloadStatus
 fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
-            .data("https://ganjoor.net/image/gdap.png") // TODO change hardcoded url!
+            .data(
+                poet.imageUrl ?: "https://ganjoor.net/image/gdap.png"
+            ) // TODO change hardcoded url!
             .size(coil.size.Size.ORIGINAL) // Set the target size to load the image at.
             .build()
     )

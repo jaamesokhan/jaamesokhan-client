@@ -1,10 +1,7 @@
 package com.example.jaamebaade_client.repository
 
-import android.content.Context
 import com.example.jaamebaade_client.database.AppDatabase
-import com.example.jaamebaade_client.database.DatabaseBuilder
 import com.example.jaamebaade_client.model.Category
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 
@@ -13,6 +10,12 @@ class CategoryRepository @Inject constructor(appDatabase: AppDatabase) {
     private val categoryDao = db.categoryDao()
 
     fun getAllCategories() = categoryDao.getAll()
+
+    fun getCategoriesByPoetIdFilteredByParentId(poetId: Int, parentId: Int) =
+        categoryDao.getCategoriesByPoetIdFilteredByParentId(poetId, parentId)
+
+    fun getPoetCategoryId(poetId: Int) =
+        categoryDao.getPoetCategoryId(poetId)
 
     fun insertCategory(category: Category) = categoryDao.insertAll(category)
 
