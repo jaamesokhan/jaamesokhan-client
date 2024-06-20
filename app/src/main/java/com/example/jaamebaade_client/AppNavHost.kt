@@ -42,6 +42,7 @@ fun AppNavHost() {
                     )
                 }
 
+
             ) { innerPadding ->
                 NavHost(navController = navController, startDestination = "downloadedPoetsScreen") {
                     // TODO find a way for referencing the routes NOT as a String

@@ -13,19 +13,22 @@ import com.example.jaamebaade_client.model.Poet
 import com.example.jaamebaade_client.utility.DownloadStatus
 import com.example.jaamebaade_client.view.components.LoadingIndicator
 import com.example.jaamebaade_client.view.components.PoetItem
+import com.example.jaamebaade_client.view.components.ServerFailure
 import com.example.jaamebaade_client.viewmodel.PoetViewModel
 import java.io.File
 
 @Composable
 fun DownloadablePoetsScreen(
+    modifier: Modifier = Modifier,
     poetViewModel: PoetViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
 ) {
     val poets = poetViewModel.poets
     val isLoading = poetViewModel.isLoading
     Box(modifier = modifier) {
         if (isLoading) {
             LoadingIndicator()
+        } else if (poets.isEmpty()) {
+            ServerFailure()
         } else {
             DownloadablePoetsList(poetViewModel, poets) { }
         }
