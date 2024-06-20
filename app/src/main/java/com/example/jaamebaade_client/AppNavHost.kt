@@ -28,7 +28,7 @@ fun AppNavHost() {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 bottomBar = { Navbar(navController = navController) },
-                topBar = { TopBar(innerPadding = PaddingValues(16.dp, 16.dp, 16.dp, 16.dp)) }
+                topBar = { TopBar(innerPadding = PaddingValues(16.dp, 16.dp, 16.dp, 16.dp), navController = navController) }
 
             ) { innerPadding ->
                 NavHost(navController = navController, startDestination = "downloadedPoetsScreen") {
