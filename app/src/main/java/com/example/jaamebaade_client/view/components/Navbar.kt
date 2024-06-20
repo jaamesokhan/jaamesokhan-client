@@ -48,7 +48,7 @@ fun Navbar(navController: NavController) {
             )
         }
 
-        IconButton(onClick = { /*TODO: Handle Settings click*/ }) {
+        IconButton(onClick = { navController.navigate("settingsScreen") }) {
             Icon(
                 Icons.Filled.Settings,
                 contentDescription = "Settings",
