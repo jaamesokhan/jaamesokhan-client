@@ -18,4 +18,6 @@ class VerseRepository @Inject constructor(appDatabase: AppDatabase) {
     fun deleteVerse(verse: Verse) = verseDao.delete(verse)
 
     fun updateVerse(verse: Verse) = verseDao.update(verse)
+
+    fun getPoemVerses(poemId: Int): List<Verse> = verseDao.getPoemVerses(poemId)
 }

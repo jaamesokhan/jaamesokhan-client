@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.jaamebaade_client.model.Category
@@ -29,37 +31,23 @@ class PoemsListViewModel @AssistedInject constructor(
     @Assisted("categoryId") private val categoryId: Int,
     private val poemRepository: PoemRepository,
 ) : ViewModel() {
-    var poems by mutableStateOf<List<Poem>>(emptyList())
-        private set
-    var isLoading by mutableStateOf<Boolean>(true)
+    val poemsPageData: Flow<PagingData<Poem>> = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = {
+            poemRepository.getPoemPagingSource(
+                categoryId
+            )
+        }
+    ).flow.cachedIn(viewModelScope)
+
     @AssistedFactory
     interface PoemsListViewModelFactory {
         fun create(
             @Assisted("categoryId") categoryId: Int,
         ): PoemsListViewModel
-    }
-
-    init {
-        isLoading = true
-//        getAllPoems()
-    }
-
-    private suspend fun getPoemsFromDatabase(){
-        withContext(Dispatchers.IO) {
-            poems = poemRepository.getPoemsByCategory(categoryId)
-        }
-
-    }
-    private fun getAllPoems() {
-        viewModelScope.launch {
-            getPoemsFromDatabase()
-            isLoading = false
-
-        }
-    }
-    fun getPoemsByCategoryId(categoryId: Int): Flow<PagingData<Poem>> {
-        return poemRepository.getPoemsByCategoryIdPaged(categoryId)
-            .cachedIn(viewModelScope)
     }
 
 

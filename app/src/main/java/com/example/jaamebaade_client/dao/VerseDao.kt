@@ -20,4 +20,7 @@ interface VerseDao {
 
     @Update
     fun update(verse: Verse)
+
+    @Query("SELECT * FROM verses where poem_id = :poemId ORDER BY verse_order")
+    fun getPoemVerses(poemId: Int): List<Verse>
 }

@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
@@ -25,19 +26,20 @@ import com.example.jaamebaade_client.view.components.PoemsListItem
 
 
 @Composable
-fun PoemListScreen(categoryId: Int, modifier: Modifier) {
+fun PoemListScreen(categoryId: Int, modifier: Modifier, navController: NavController) {
 
     val poemsListViewModel: PoemsListViewModel =
         hiltViewModel<PoemsListViewModel, PoemsListViewModel.PoemsListViewModelFactory> { factory ->
             factory.create(categoryId)
         }
-    val poems = poemsListViewModel.getPoemsByCategoryId(categoryId).collectAsLazyPagingItems()
-
+    val poems =  poemsListViewModel.poemsPageData.collectAsLazyPagingItems()
 
     LazyColumn(modifier = modifier) {
         itemsIndexed(poems) { _, poem ->
             poem?.let {
-                PoemsListItem(poem, {})
+                PoemsListItem(poem) {
+                    navController.navigate("poem/${poem.id}")
+                }
             }
         }
 

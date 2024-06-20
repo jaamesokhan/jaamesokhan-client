@@ -29,9 +29,9 @@ interface PoemDao {
     fun update(poem: Poem)
 
     @Query("SELECT * FROM poems WHERE category_id = :categoryId")
-    fun getPoemsByCategory(categoryId: Int): PagingSource<Int, Poem>
-    @Query("SELECT * FROM poems WHERE category_id = :categoryId")
+    fun getPoemsByCategory(categoryId: Int): List<Poem>
 
-    fun getAllPoemsByCategory(categoryId: Int): List<Poem>
+    @Query("SELECT * FROM poems WHERE category_id = :categoryId")
+    fun getPoemPagingSource(categoryId: Int): PagingSource<Int, Poem>
 
 }
