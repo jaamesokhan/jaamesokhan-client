@@ -19,7 +19,8 @@ private val DarkColorScheme = darkColorScheme(
     primary = darkBrown,
     secondary = lightBrown,
     tertiary = darkBrown,
-    surface = lightOrange
+    surface = lightOrange,
+    background = paleOrange,
 
 )
 
@@ -27,9 +28,9 @@ private val LightColorScheme = lightColorScheme(
     primary = darkBrown,
     secondary = lightBrown,
     tertiary = darkBrown,
-    surface = lightOrange
+    surface = lightOrange,
+    background = paleOrange,
     /* Other default colors to override
-    background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
     onPrimary = Color.White,
     onSecondary = Color.White,
