@@ -23,4 +23,16 @@ interface VerseDao {
 
     @Query("SELECT * FROM verses where poem_id = :poemId ORDER BY verse_order")
     fun getPoemVerses(poemId: Int): List<Verse>
+
+    @Query(
+        """
+            SELECT v.*
+            FROM verses v
+            JOIN poems p ON v.poem_id = p.id
+            JOIN categories c ON p.category_id = c.id
+            WHERE (:poetId is null OR c.poet_id = :poetId)
+                AND v.text LIKE :query
+        """
+    )
+    fun searchVerses(query: String, poetId: Int?): List<Verse>
 }
