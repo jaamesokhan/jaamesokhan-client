@@ -34,4 +34,6 @@ interface PoemDao {
     @Query("SELECT * FROM poems WHERE category_id = :categoryId")
     fun getPoemPagingSource(categoryId: Int): PagingSource<Int, Poem>
 
+    @Query("SELECT * FROM poems WHERE id = :id")
+    fun getPoemById(id: Int): Poem
 }

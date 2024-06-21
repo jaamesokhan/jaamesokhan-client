@@ -7,7 +7,9 @@ import com.example.jaamebaade_client.api.PoetApiService
 import com.example.jaamebaade_client.database.AppDatabase
 import com.example.jaamebaade_client.datamanager.PoetDataManager
 import com.example.jaamebaade_client.model.Verse
+import com.example.jaamebaade_client.repository.BookmarkRepository
 import com.example.jaamebaade_client.repository.CategoryRepository
+import com.example.jaamebaade_client.repository.HighlightRepository
 import com.example.jaamebaade_client.repository.PoemRepository
 import com.example.jaamebaade_client.repository.PoetRepository
 import com.example.jaamebaade_client.repository.VerseRepository
@@ -94,5 +96,17 @@ object AppModule {
     @Singleton
     fun provideVerseRepository(appDatabase: AppDatabase): VerseRepository {
         return VerseRepository(appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHighlightRepository(appDatabase: AppDatabase): HighlightRepository {
+        return HighlightRepository(appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBookmarkRepository(appDatabase: AppDatabase): BookmarkRepository {
+        return BookmarkRepository(appDatabase)
     }
 }

@@ -20,7 +20,9 @@ import com.example.jaamebaade_client.R
 @Composable
 fun ServerFailure() {
     Column(
-        modifier = Modifier.fillMaxSize().padding(5.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(5.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -26,7 +26,7 @@ import com.example.jaamebaade_client.view.components.PoemsListItem
 
 
 @Composable
-fun PoemListScreen(categoryId: Int, modifier: Modifier, navController: NavController) {
+fun PoemListScreen(categoryId: Int, poetId: Int, modifier: Modifier, navController: NavController) {
 
     val poemsListViewModel: PoemsListViewModel =
         hiltViewModel<PoemsListViewModel, PoemsListViewModel.PoemsListViewModelFactory> { factory ->
@@ -38,7 +38,7 @@ fun PoemListScreen(categoryId: Int, modifier: Modifier, navController: NavContro
         itemsIndexed(poems) { _, poem ->
             poem?.let {
                 PoemsListItem(poem) {
-                    navController.navigate("poem/${poem.id}")
+                    navController.navigate("poem/${poetId}/${poem.id}")
                 }
             }
         }

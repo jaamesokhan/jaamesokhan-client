@@ -30,4 +30,8 @@ class PoemRepository @Inject constructor(appDatabase: AppDatabase) {
         return poemDao.getPoemPagingSource(categoryId)
     }
 
+    fun getPoemById(id: Int): Poem {
+        return poemDao.getPoemById(id)
+    }
+
 }

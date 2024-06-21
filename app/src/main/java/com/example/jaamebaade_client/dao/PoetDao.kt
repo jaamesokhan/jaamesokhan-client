@@ -22,4 +22,7 @@ interface PoetDao {
     @Update
     fun update(poet: Poet)
 
+    @Query("SELECT * FROM poets WHERE id = :poetId")
+    fun getPoetById(poetId: Int): Poet
+
 }
