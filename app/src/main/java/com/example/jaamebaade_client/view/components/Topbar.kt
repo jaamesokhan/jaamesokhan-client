@@ -38,7 +38,8 @@ import androidx.compose.ui.Alignment
 fun TopBar(innerPadding: PaddingValues, navController: NavController) {
     val myIcon = painterResource(id = R.mipmap.logo)
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val canPop = (backStackEntry?.destination?.route != "downloadedPoetsScreen" && backStackEntry?.destination?.route!="settingsScreen")
+    val canPop =
+        (backStackEntry?.destination?.route != "downloadedPoetsScreen" && backStackEntry?.destination?.route != "settingsScreen")
 
 
     Row(
@@ -54,7 +55,7 @@ fun TopBar(innerPadding: PaddingValues, navController: NavController) {
     {
         Row(
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Image(
                 myIcon,
                 contentDescription = "Logo",

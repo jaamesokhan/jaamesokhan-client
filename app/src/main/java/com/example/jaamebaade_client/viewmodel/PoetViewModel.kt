@@ -112,7 +112,10 @@ class PoetViewModel @Inject constructor(
                     }
                 } else {
                     // Handle the error
-                    Log.e(PoetViewModel::class.simpleName, "download poet failed with ${response.body()}", )
+                    Log.e(
+                        PoetViewModel::class.simpleName,
+                        "download poet failed with ${response.body()}",
+                    )
                     downloadStatus[id] = DownloadStatus.Failed
                 }
             } catch (e: Exception) {

@@ -22,7 +22,7 @@ private val DarkColorScheme = darkColorScheme(
     surface = lightOrange,
     background = paleOrange,
 
-)
+    )
 
 private val LightColorScheme = lightColorScheme(
     primary = darkBrown,

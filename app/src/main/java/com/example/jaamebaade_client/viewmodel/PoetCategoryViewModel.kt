@@ -43,7 +43,7 @@ class PoetCategoryViewModel @AssistedInject constructor(
         }
     }
 
-    private suspend fun getPoetCategoriesFromRepository(
+    suspend fun getPoetCategoriesFromRepository(
         poetId: Int,
         parentId: Int
     ): List<Category> {

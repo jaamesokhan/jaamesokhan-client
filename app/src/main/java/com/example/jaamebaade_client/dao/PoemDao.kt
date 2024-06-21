@@ -1,5 +1,6 @@
 package com.example.jaamebaade_client.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -26,4 +27,11 @@ interface PoemDao {
     @Transaction
     @Update
     fun update(poem: Poem)
+
+    @Query("SELECT * FROM poems WHERE category_id = :categoryId")
+    fun getPoemsByCategory(categoryId: Int): List<Poem>
+
+    @Query("SELECT * FROM poems WHERE category_id = :categoryId")
+    fun getPoemPagingSource(categoryId: Int): PagingSource<Int, Poem>
+
 }

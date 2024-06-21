@@ -8,7 +8,7 @@ import com.example.jaamebaade_client.view.components.SettingsItem
 
 @Composable
 fun SettingsScreen(modifier: Modifier, navController: NavController) {
-    Column (modifier = modifier) {
+    Column(modifier = modifier) {
         SettingsItem(modifier = Modifier, text = "دانلود شاعر جدید") {
             navController.navigate("downloadablePoetsScreen")
         }

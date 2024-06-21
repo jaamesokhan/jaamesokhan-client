@@ -18,8 +18,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
 import com.example.jaamebaade_client.view.DownloadedPoetsScreen
+import com.example.jaamebaade_client.view.PoemListScreen
 import com.example.jaamebaade_client.view.PoetCategoryScreen
 import com.example.jaamebaade_client.view.SettingsScreen
+import com.example.jaamebaade_client.view.VerseScreen
 import com.example.jaamebaade_client.view.components.Navbar
 import com.example.jaamebaade_client.view.components.TopBar
 
@@ -33,7 +35,13 @@ fun AppNavHost() {
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background),
                 bottomBar = { Navbar(navController = navController) },
-                topBar = { TopBar(innerPadding = PaddingValues(16.dp, 16.dp, 16.dp, 16.dp), navController = navController) }
+                topBar = {
+                    TopBar(
+                        innerPadding = PaddingValues(16.dp, 16.dp, 16.dp, 16.dp),
+                        navController = navController
+                    )
+                }
+
 
             ) { innerPadding ->
                 NavHost(navController = navController, startDestination = "downloadedPoetsScreen") {
@@ -63,6 +71,24 @@ fun AppNavHost() {
                             modifier = Modifier.padding(innerPadding),
                             navController = navController
                         )
+                    }
+                    composable("poemsListScreen/{categoryId}") { backStackEntry ->
+                        val categoryId = backStackEntry.arguments?.getString("categoryId")?.toInt()
+
+                        PoemListScreen(
+                            categoryId = categoryId!!,
+                            modifier = Modifier.padding(innerPadding),
+                            navController
+                        )
+
+                    }
+                    composable("poem/{poemId}") { backStackEntry ->
+                        val poemId = backStackEntry.arguments?.getString("poemId")?.toInt()
+                        VerseScreen(
+                            poemId = poemId!!, modifier = Modifier.padding(innerPadding),
+                        )
+
+
                     }
                 }
             }
