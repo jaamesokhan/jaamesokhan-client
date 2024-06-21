@@ -20,8 +20,8 @@ import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
+import com.example.jaamebaade_client.view.components.ErrorItem
 import com.example.jaamebaade_client.viewmodel.PoemsListViewModel
-//import androidx.compose.runtime.getValue
 import com.example.jaamebaade_client.view.components.PoemsListItem
 
 
@@ -32,7 +32,7 @@ fun PoemListScreen(categoryId: Int, modifier: Modifier, navController: NavContro
         hiltViewModel<PoemsListViewModel, PoemsListViewModel.PoemsListViewModelFactory> { factory ->
             factory.create(categoryId)
         }
-    val poems =  poemsListViewModel.poemsPageData.collectAsLazyPagingItems()
+    val poems = poemsListViewModel.poemsPageData.collectAsLazyPagingItems()
 
     LazyColumn(modifier = modifier) {
         itemsIndexed(poems) { _, poem ->
@@ -49,13 +49,16 @@ fun PoemListScreen(categoryId: Int, modifier: Modifier, navController: NavContro
                 loadState.refresh is LoadState.Loading -> {
                     item { CircularProgressIndicator() }
                 }
+
                 loadState.append is LoadState.Loading -> {
                     item { CircularProgressIndicator() }
                 }
+
                 loadState.refresh is LoadState.Error -> {
                     val e = poems.loadState.refresh as LoadState.Error
                     item { ErrorItem(e.error) { poems.retry() } }
                 }
+
                 loadState.append is LoadState.Error -> {
                     val e = poems.loadState.append as LoadState.Error
                     item { ErrorItem(e.error) { poems.retry() } }
@@ -65,14 +68,6 @@ fun PoemListScreen(categoryId: Int, modifier: Modifier, navController: NavContro
     }
 }
 
-@Composable
-fun ErrorItem(error: Throwable, onRetry: () -> Unit) {
-    Column {
-        Text(text = error.message ?: "Unknown Error")
-        Button(onClick = onRetry) {
-            Text(text = "Retry")
-        }
-    }
-}
+
 
 

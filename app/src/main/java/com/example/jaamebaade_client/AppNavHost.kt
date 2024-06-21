@@ -73,21 +73,20 @@ fun AppNavHost() {
                     }
                     composable("poemsListScreen/{categoryId}") { backStackEntry ->
                         val categoryId = backStackEntry.arguments?.getString("categoryId")?.toInt()
-                        if (categoryId != null) {
-                            PoemListScreen(
-                                categoryId = categoryId,
-                                modifier = Modifier.padding(innerPadding),
-                                navController
-                            )
-                        }
+
+                        PoemListScreen(
+                            categoryId = categoryId!!,
+                            modifier = Modifier.padding(innerPadding),
+                            navController
+                        )
+
                     }
                     composable("poem/{poemId}") { backStackEntry ->
                         val poemId = backStackEntry.arguments?.getString("poemId")?.toInt()
-                        if (poemId != null) {
-                            VerseScreen(
-                                poemId = poemId, modifier = Modifier.padding(innerPadding),
-                            )
-                        }
+                        VerseScreen(
+                            poemId = poemId!!, modifier = Modifier.padding(innerPadding),
+                        )
+
 
                     }
                 }

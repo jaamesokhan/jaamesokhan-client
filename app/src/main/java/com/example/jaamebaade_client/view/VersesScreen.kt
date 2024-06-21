@@ -23,8 +23,8 @@ fun VerseScreen(poemId: Int, modifier: Modifier) {
             )
         }
     val verses by poemViewModel.verses.collectAsState()
-    LazyColumn (modifier = modifier){
-        itemsIndexed(verses){_, verse ->
+    LazyColumn(modifier = modifier) {
+        itemsIndexed(verses) { _, verse ->
             VerseItem(verse = verse)
         }
     }

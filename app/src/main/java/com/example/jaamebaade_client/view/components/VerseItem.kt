@@ -11,10 +11,12 @@ import androidx.compose.ui.unit.dp
 import com.example.jaamebaade_client.model.Verse
 
 @Composable
-fun VerseItem(verse: Verse, modifier: Modifier = Modifier){
-    Row(modifier = modifier
-        .fillMaxWidth()
-        .padding(vertical = 4.dp, horizontal = 4.dp)) {
+fun VerseItem(verse: Verse, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp, horizontal = 4.dp)
+    ) {
         Text(text = verse.text, style = MaterialTheme.typography.headlineSmall)
     }
 }

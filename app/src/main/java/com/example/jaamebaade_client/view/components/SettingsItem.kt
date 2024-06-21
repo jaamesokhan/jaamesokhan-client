@@ -24,7 +24,11 @@ fun SettingsItem(modifier: Modifier, text: String, onClick: () -> Unit) {
     ) {
         Row {
 
-            Text(modifier = Modifier.padding(10.dp), text = text, style = MaterialTheme.typography.headlineMedium)
+            Text(
+                modifier = Modifier.padding(10.dp),
+                text = text,
+                style = MaterialTheme.typography.headlineMedium
+            )
         }
 
     }
