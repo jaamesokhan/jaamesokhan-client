@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
@@ -23,6 +24,7 @@ import com.example.jaamebaade_client.view.PoetCategoryScreen
 import com.example.jaamebaade_client.view.SettingsScreen
 import com.example.jaamebaade_client.view.VerseScreen
 import com.example.jaamebaade_client.view.components.Navbar
+import com.example.jaamebaade_client.view.components.SelectionOptionView
 import com.example.jaamebaade_client.view.components.TopBar
 
 @Composable
@@ -92,9 +94,18 @@ fun AppNavHost() {
                             poemId = poemId!!,
                             poetId = poetId!!,
                             modifier = Modifier.padding(innerPadding),
+                            navController = navController,
                         )
-
-
+                    }
+                    dialog("selectionOptionView/{verseId}/{startIndex}/{endIndex}") { backStackEntry ->
+                        val verseId = backStackEntry.arguments?.getString("verseId")?.toInt()!!
+                        val startIndex = backStackEntry.arguments?.getString("startIndex")?.toInt()!!
+                        val endIndex = backStackEntry.arguments?.getString("endIndex")?.toInt()!!
+                        SelectionOptionView(
+                            verseId = verseId,
+                            startIndex = startIndex,
+                            endIndex = endIndex
+                        )
                     }
                 }
             }

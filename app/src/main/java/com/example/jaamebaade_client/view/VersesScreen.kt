@@ -18,12 +18,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.jaamebaade_client.view.components.VerseItem
 import com.example.jaamebaade_client.view.components.VersePageHeader
 import com.example.jaamebaade_client.viewmodel.VersesViewModel
 
 @Composable
-fun VerseScreen(poemId: Int, poetId: Int, modifier: Modifier) {
+fun VerseScreen(poemId: Int, poetId: Int, modifier: Modifier, navController: NavController) {
     val versesViewModel =
         hiltViewModel<VersesViewModel, VersesViewModel.VerseViewModelFactory> { factory ->
             factory.create(
@@ -56,7 +57,7 @@ fun VerseScreen(poemId: Int, poetId: Int, modifier: Modifier) {
 
         LazyColumn() {
             itemsIndexed(verses) { _, verse ->
-                VerseItem(verse = verse)
+                VerseItem(verse = verse, navController = navController)
             }
         }
     }

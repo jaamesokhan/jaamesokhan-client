@@ -2,6 +2,7 @@ package com.example.jaamebaade_client.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.jaamebaade_client.dao.BookmarkDao
 import com.example.jaamebaade_client.dao.CategoryDao
 import com.example.jaamebaade_client.dao.HighlightDao
