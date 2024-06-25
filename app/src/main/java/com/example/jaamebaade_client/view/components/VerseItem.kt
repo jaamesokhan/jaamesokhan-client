@@ -36,18 +36,19 @@ fun VerseItem(modifier: Modifier = Modifier, verse: Verse, navController: NavCon
             factory.create(verseId = verse.id)
         }
 
-    val verseWithHighlights = viewModel.verse
+    val highlights = viewModel.highlights.value
     var showDialog by remember { mutableStateOf(false) }
     var startIndex by remember { mutableIntStateOf(0) }
     var endIndex by remember { mutableIntStateOf(0) }
     var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
+    val meaning by viewModel.apiResult
 
     var annotatedString by remember { mutableStateOf<AnnotatedString?>(null) }
 
-    LaunchedEffect(key1 = verseWithHighlights) {
+    LaunchedEffect(key1 = highlights) {
         annotatedString = buildAnnotatedString {
             append(verse.text)
-            verseWithHighlights?.highlights?.forEach {
+            highlights?.forEach {
                 addStyle(
                     style = SpanStyle(
                         color = Color.Red,
@@ -65,6 +66,7 @@ fun VerseItem(modifier: Modifier = Modifier, verse: Verse, navController: NavCon
         Dialog(onDismissRequest = {
             showDialog = false
         }) {
+            viewModel.getWordMeaning(verse.text.substring(startIndex, endIndex))
             Column(modifier = Modifier.background(color = Color.White)) {
                 Row {
                     Button(onClick = {
@@ -74,6 +76,7 @@ fun VerseItem(modifier: Modifier = Modifier, verse: Verse, navController: NavCon
                             endIndex
                         )
                         showDialog = false
+
                     }) {
                         Text("هایلایت")
                     }
@@ -86,7 +89,9 @@ fun VerseItem(modifier: Modifier = Modifier, verse: Verse, navController: NavCon
                         )
                     }"
                 )
-                Text(text = "verse id ${verse.id} start index ${startIndex} end index ${endIndex}")
+                Text(
+                    text = meaning
+                )
             }
         }
     }
@@ -104,7 +109,7 @@ fun VerseItem(modifier: Modifier = Modifier, verse: Verse, navController: NavCon
             },
             modifier = modifier,
             textStyle = MaterialTheme.typography.headlineSmall,
-            readOnly = true // make it read-only if you don't want the user to edit the text
+            readOnly = true
         )
     }
 }
