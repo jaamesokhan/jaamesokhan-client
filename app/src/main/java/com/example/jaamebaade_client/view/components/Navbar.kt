@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
@@ -36,6 +37,14 @@ fun Navbar(navController: NavController) {
             Icon(
                 Icons.Filled.Home,
                 contentDescription = "Home",
+                modifier = Modifier.size(36.dp)
+            )
+        }
+
+        IconButton(onClick = { navController.navigate("favoriteScreen") }) {
+            Icon(
+                Icons.Filled.Favorite,
+                contentDescription = "Favorites",
                 modifier = Modifier.size(36.dp)
             )
         }

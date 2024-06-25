@@ -26,6 +26,9 @@ interface VerseDao {
     @Query("SELECT * FROM verses WHERE poem_id = :poemId ORDER BY verse_order")
     fun getPoemVerses(poemId: Int): List<Verse>
 
+    @Query("SELECT * FROM verses WHERE poem_id = :poemId ORDER BY verse_order")
+    fun getPoemVersesWithHighlights(poemId: Int): List<VerseWithHighlights>
+
     @Query(
         """
             SELECT v.*

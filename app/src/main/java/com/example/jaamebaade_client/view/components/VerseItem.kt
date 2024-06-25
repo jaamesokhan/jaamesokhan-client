@@ -3,7 +3,6 @@ package com.example.jaamebaade_client.view.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,19 +23,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
+import com.example.jaamebaade_client.model.Highlight
 import com.example.jaamebaade_client.model.Verse
 import com.example.jaamebaade_client.viewmodel.SelectionOptionViewModel
 
 
 @Composable
-fun VerseItem(modifier: Modifier = Modifier, verse: Verse, navController: NavController) {
-    val viewModel =
-        hiltViewModel<SelectionOptionViewModel, SelectionOptionViewModel.SelectionOptionViewModelFactory> { factory ->
-            factory.create(verseId = verse.id)
-        }
+fun VerseItem(
+    modifier: Modifier = Modifier,
+    viewModel: SelectionOptionViewModel = hiltViewModel(),
+    verse: Verse,
+    highlights: List<Highlight>,
+    highlightCallBack: (startIndex: Int, endIndex: Int) -> Unit
+) {
 
-    val highlights = viewModel.highlights.value
     var showDialog by remember { mutableStateOf(false) }
     var startIndex by remember { mutableIntStateOf(0) }
     var endIndex by remember { mutableIntStateOf(0) }
@@ -48,7 +48,7 @@ fun VerseItem(modifier: Modifier = Modifier, verse: Verse, navController: NavCon
     LaunchedEffect(key1 = highlights) {
         annotatedString = buildAnnotatedString {
             append(verse.text)
-            highlights?.forEach {
+            highlights.forEach {
                 addStyle(
                     style = SpanStyle(
                         color = Color.Red,
@@ -70,8 +70,7 @@ fun VerseItem(modifier: Modifier = Modifier, verse: Verse, navController: NavCon
             Column(modifier = Modifier.background(color = Color.White)) {
                 Row {
                     Button(onClick = {
-                        viewModel.highlight(
-                            verse.id,
+                        highlightCallBack(
                             startIndex,
                             endIndex
                         )
@@ -81,14 +80,15 @@ fun VerseItem(modifier: Modifier = Modifier, verse: Verse, navController: NavCon
                         Text("هایلایت")
                     }
                 }
-                Text(
-                    text = "معنی: ${
-                        verse.text.substring(
-                            startIndex,
-                            endIndex
-                        )
-                    }"
-                )
+                Row {
+                    Text(
+                        text = " معنی:"
+                    )
+                    Text(
+                        text = verse.text.substring(startIndex, endIndex),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
                 Text(
                     text = meaning
                 )
@@ -96,21 +96,20 @@ fun VerseItem(modifier: Modifier = Modifier, verse: Verse, navController: NavCon
         }
     }
 
-    SelectionContainer {
-        TextField(
-            value = textFieldValue,
-            onValueChange = {
-                textFieldValue = it
-                if (it.selection.start != it.selection.end) {
-                    startIndex = it.selection.start
-                    endIndex = it.selection.end
-                    showDialog = true
-                }
-            },
-            modifier = modifier,
-            textStyle = MaterialTheme.typography.headlineSmall,
-            readOnly = true
-        )
-    }
-}
+//    SelectionContainer {
+    TextField(
+        value = textFieldValue,
+        onValueChange = {
+            if (it.selection.start != it.selection.end) {
+                startIndex = it.selection.start
+                endIndex = it.selection.end
+                showDialog = true
+            }
+        },
+        modifier = Modifier,
+        textStyle = MaterialTheme.typography.headlineSmall,
+        readOnly = true,
+    )
 
+//    }
+}

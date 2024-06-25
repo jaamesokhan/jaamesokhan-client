@@ -1,11 +1,12 @@
 package com.example.jaamebaade_client.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import android.content.Context
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jaamebaade_client.model.Highlight
-import com.example.jaamebaade_client.model.Verse
+import com.example.jaamebaade_client.model.VerseWithHighlights
 import com.example.jaamebaade_client.repository.BookmarkRepository
 import com.example.jaamebaade_client.repository.HighlightRepository
 import com.example.jaamebaade_client.repository.PoemRepository
@@ -26,11 +27,29 @@ class VersesViewModel @AssistedInject constructor(
     @Assisted("poemId") val poemId: Int,
     @Assisted("poetId") val poetId: Int,
     private val versesRepository: VerseRepository,
-    val highlightRepository: HighlightRepository,
+    private val highlightRepository: HighlightRepository,
     private val poetRepository: PoetRepository,
     private val poemRepository: PoemRepository,
-    private val bookmarkRepository: BookmarkRepository
+    private val bookmarkRepository: BookmarkRepository,
 ) : ViewModel() {
+
+    private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
+    val verses: StateFlow<List<VerseWithHighlights>> = _verses
+
+    private var _isBookmarked = MutableStateFlow(false)
+    val isBookmarked: StateFlow<Boolean> = _isBookmarked
+
+    fun share(verses: List<VerseWithHighlights>, context: Context) {
+        val poemText = verses.joinToString("\n") { it.verse.text }
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, poemText)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        context.startActivity(shareIntent)
+    }
 
     @AssistedFactory
     interface VerseViewModelFactory {
@@ -41,11 +60,6 @@ class VersesViewModel @AssistedInject constructor(
             ): VersesViewModel
     }
 
-    private val _verses = MutableStateFlow<List<Verse>>(emptyList())
-    val verses: StateFlow<List<Verse>> = _verses
-
-    private var _isBookmarked = MutableStateFlow(false)
-    val isBookmarked: StateFlow<Boolean> = _isBookmarked
 
     init {
         fetchPoemVerses()
@@ -64,21 +78,40 @@ class VersesViewModel @AssistedInject constructor(
     private fun fetchPoemVerses() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val verses = versesRepository.getPoemVerses(poemId)
+                val verses = versesRepository.getPoemVersesWithHighlights(poemId)
                 _verses.value = verses
             }
         }
     }
 
-    fun addHighlight(verseId: Int, startIndex: Int, endIndex: Int) {
+    fun highlight(verseId: Int, startIndex: Int, endIndex: Int) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-
-                val highlight =
-                    Highlight(verseId = verseId, startIndex = startIndex, endIndex = endIndex)
-                highlightRepository.insertHighlight(highlight)
+            val highlight = addHighlightToRepository(verseId, startIndex, endIndex)
+            _verses.value = _verses.value.map {
+                if (it.verse.id == verseId) {
+                    it.copy(highlights = it.highlights + highlight)
+                } else {
+                    it
+                }
             }
+            Log.i("highlight", "highlight: $highlight")
         }
+    }
+
+    private suspend fun addHighlightToRepository(
+        verseId: Int,
+        startIndex: Int,
+        endIndex: Int
+    ): Highlight {
+        val highlight = Highlight(
+            verseId = verseId,
+            startIndex = startIndex,
+            endIndex = endIndex
+        )
+        withContext(Dispatchers.IO) {
+            highlightRepository.insertHighlight(highlight)
+        }
+        return highlight
     }
 
     suspend fun getPoetName(id: Int): String {

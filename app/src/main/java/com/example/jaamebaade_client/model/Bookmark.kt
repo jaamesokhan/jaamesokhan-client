@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "bookmarks",
     foreignKeys = [ForeignKey(
-        entity = Verse::class,
+        entity = Poem::class,
         parentColumns = ["id"],
         childColumns = ["poem_id"],
         onDelete = ForeignKey.CASCADE

@@ -8,8 +8,13 @@ class DictionaryApiClient @Inject constructor(
     private val dictionaryApiService: DictionaryApiService
 ) {
     suspend fun getMeaning(word: String): String? {
-        val res = dictionaryApiService.getMeaning(WordRequest(word = word)).body()
-        Log.e("fuck", "getMeaning: $res")
-        return res?.result?.meaning
+        try {
+            val request = WordRequest(word = word.trim())
+            val res = dictionaryApiService.getMeaning(request).body()
+            return res?.result?.meaning
+        } catch (e: Exception) {
+            Log.e("DictionaryApiClient", "getMeaning: ${e.message}")
+            return "خطای اتصال به سرور"
+        }
     }
 }

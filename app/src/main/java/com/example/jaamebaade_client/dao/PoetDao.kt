@@ -25,4 +25,14 @@ interface PoetDao {
     @Query("SELECT * FROM poets WHERE id = :poetId")
     fun getPoetById(poetId: Int): Poet
 
+    @Query(
+        """
+        SELECT poets.* FROM poets
+        INNER JOIN categories ON poets.id = categories.poet_id
+        INNER JOIN poems ON categories.id = poems.category_id
+        WHERE poems.id = :poemId
+    """
+    )
+    fun getPoetByPoemId(poemId: Int): Poet
+
 }

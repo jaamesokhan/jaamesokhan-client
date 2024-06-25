@@ -2,6 +2,7 @@ package com.example.jaamebaade_client.repository
 
 import com.example.jaamebaade_client.database.AppDatabase
 import com.example.jaamebaade_client.model.Bookmark
+import com.example.jaamebaade_client.model.BookmarkPoemPoet
 import javax.inject.Inject
 
 class BookmarkRepository @Inject constructor(appDatabase: AppDatabase) {
@@ -19,5 +20,13 @@ class BookmarkRepository @Inject constructor(appDatabase: AppDatabase) {
 
     fun removeBookmark(poemId: Int) {
         bookmarkDao.removeBookmark(poemId)
+    }
+
+    fun getAllBookmarks(): List<Bookmark> {
+        return bookmarkDao.getAllBookmarks()
+    }
+
+    fun getAllBookmarksWithPoemAndPoet(): List<BookmarkPoemPoet> {
+        return bookmarkDao.getAllBookMarksWithPoemAndPoet()
     }
 }
