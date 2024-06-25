@@ -40,7 +40,7 @@ fun Navbar(navController: NavController) {
             )
         }
 
-        IconButton(onClick = { /*TODO: Handle Search click*/ }) {
+        IconButton(onClick = { navController.navigate("searchScreen") }) {
             Icon(
                 Icons.Filled.Search,
                 contentDescription = "Search",

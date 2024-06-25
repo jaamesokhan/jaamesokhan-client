@@ -21,6 +21,7 @@ import com.example.jaamebaade_client.view.DownloadablePoetsScreen
 import com.example.jaamebaade_client.view.DownloadedPoetsScreen
 import com.example.jaamebaade_client.view.PoemListScreen
 import com.example.jaamebaade_client.view.PoetCategoryScreen
+import com.example.jaamebaade_client.view.SearchScreen
 import com.example.jaamebaade_client.view.SettingsScreen
 import com.example.jaamebaade_client.view.VerseScreen
 import com.example.jaamebaade_client.view.components.Navbar
@@ -43,8 +44,6 @@ fun AppNavHost() {
                         navController = navController
                     )
                 }
-
-
             ) { innerPadding ->
                 NavHost(navController = navController, startDestination = "downloadedPoetsScreen") {
                     // TODO find a way for referencing the routes NOT as a String
@@ -70,6 +69,12 @@ fun AppNavHost() {
                     }
                     composable("settingsScreen") {
                         SettingsScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            navController = navController
+                        )
+                    }
+                    composable("searchScreen") {
+                        SearchScreen(
                             modifier = Modifier.padding(innerPadding),
                             navController = navController
                         )
