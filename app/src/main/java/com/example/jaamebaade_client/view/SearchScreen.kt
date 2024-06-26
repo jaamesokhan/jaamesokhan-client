@@ -13,7 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.jaamebaade_client.model.Verse
+import com.example.jaamebaade_client.model.VersePoemCategoryPoet
 import com.example.jaamebaade_client.view.components.SearchBar
 import com.example.jaamebaade_client.view.components.SearchResultItem
 import com.example.jaamebaade_client.viewmodel.SearchViewModel
@@ -46,7 +46,11 @@ fun SearchScreen(
 }
 
 @Composable
-fun SearchResults(results: List<Verse>, hasSearched: Boolean, navController: NavController) {
+fun SearchResults(
+    results: List<VersePoemCategoryPoet>,
+    hasSearched: Boolean,
+    navController: NavController
+) {
     LazyColumn {
         if (results.isEmpty() && hasSearched) {
             item {

@@ -12,23 +12,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.jaamebaade_client.model.Verse
+import com.example.jaamebaade_client.model.VersePoemCategoryPoet
 
 @Composable
-fun SearchResultItem(modifier: Modifier, result: Verse, navController: NavController) {
+fun SearchResultItem(
+    modifier: Modifier,
+    result: VersePoemCategoryPoet,
+    navController: NavController
+) {
     OutlinedCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(4.dp)
-            .clickable { navController.navigate("poem/${result.poemId}") }
+            .clickable { navController.navigate("poem/${result.poet.id}/${result.verse.poemId}") }
     ) {
-        Column(modifier = Modifier.fillMaxWidth().padding(4.dp)) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
-                // TODO add full path in here
-                Text(text = result.poemId.toString(), style = MaterialTheme.typography.labelMedium)
-                Text(text = ">", style = MaterialTheme.typography.labelMedium)
+                Text(
+                    text = "${result.poet.name}>${result.category.text}>${result.poem.title}",
+                    style = MaterialTheme.typography.labelMedium
+                )
             }
-            Text(text = result.text, style = MaterialTheme.typography.headlineSmall)
+            Text(text = result.verse.text, style = MaterialTheme.typography.headlineSmall)
         }
     }
 }

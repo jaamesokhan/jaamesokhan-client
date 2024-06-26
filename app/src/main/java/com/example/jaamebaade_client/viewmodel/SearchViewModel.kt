@@ -1,13 +1,12 @@
 package com.example.jaamebaade_client.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jaamebaade_client.model.Poet
-import com.example.jaamebaade_client.model.Verse
+import com.example.jaamebaade_client.model.VersePoemCategoryPoet
 import com.example.jaamebaade_client.repository.PoetRepository
 import com.example.jaamebaade_client.repository.VerseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +25,7 @@ class SearchViewModel @Inject constructor(
     var query by mutableStateOf("")
 
     var poetFilter by mutableStateOf<Poet?>(null)
-    var results by mutableStateOf<List<Verse>>(emptyList())
+    var results by mutableStateOf<List<VersePoemCategoryPoet>>(emptyList())
         private set
 
     private val _allPoets = MutableStateFlow<List<Poet>>(emptyList())
@@ -50,9 +49,7 @@ class SearchViewModel @Inject constructor(
 
     private suspend fun runSearchOnDatabase() {
         withContext(Dispatchers.IO) {
-            Log.i("shit", "query: $query and poemfilter: ${poetFilter?.id}")
             results = verseRepository.searchVerses(query, poetFilter?.id)
-            Log.i("shit", "runSearchOnDatabase: $results")
         }
     }
 

@@ -1,12 +1,17 @@
 package com.example.jaamebaade_client.view.components
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -66,7 +71,11 @@ fun VerseItem(
         Dialog(onDismissRequest = {
             showDialog = false
         }) {
-            viewModel.getWordMeaning(verse.text.substring(startIndex, endIndex))
+            try {
+                viewModel.getWordMeaning(verse.text.substring(startIndex, endIndex))
+            } catch (e: Exception) {
+                Log.e("VerseItem", "Error in getting word meaning", e)
+            }
             Column(modifier = Modifier.background(color = Color.White)) {
                 Row {
                     Button(onClick = {
@@ -96,20 +105,36 @@ fun VerseItem(
         }
     }
 
-//    SelectionContainer {
-    TextField(
-        value = textFieldValue,
-        onValueChange = {
-            if (it.selection.start != it.selection.end) {
-                startIndex = it.selection.start
-                endIndex = it.selection.end
-                showDialog = true
-            }
-        },
-        modifier = Modifier,
-        textStyle = MaterialTheme.typography.headlineSmall,
-        readOnly = true,
-    )
 
-//    }
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = if (verse.position % 2 == 0) Arrangement.Start else Arrangement.End
+
+    ) {
+        SelectionContainer {
+            TextField(
+                value = textFieldValue,
+                onValueChange = {
+                    if (it.selection.start != it.selection.end) {
+                        startIndex = it.selection.start
+                        endIndex = it.selection.end
+                        showDialog = true
+                    }
+                },
+                textStyle = MaterialTheme.typography.headlineSmall,
+                readOnly = true,
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent,
+                    errorContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                ),
+            )
+
+        }
+
+    }
 }
