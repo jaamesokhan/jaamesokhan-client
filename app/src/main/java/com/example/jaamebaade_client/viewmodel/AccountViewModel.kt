@@ -1,6 +1,5 @@
 package com.example.jaamebaade_client.viewmodel
 
-import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -8,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jaamebaade_client.api.AccountApiClient
 import com.example.jaamebaade_client.utility.SharedPrefManager
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountViewModel @Inject constructor(
     private val accountApiClient: AccountApiClient,
-    private val appContext: Context
+    private val sharedPrefManager: SharedPrefManager,
 ) : ViewModel() {
     private val _apiResult = mutableStateOf<Boolean?>(null)
     val apiResult: State<Boolean?> = _apiResult
@@ -45,7 +43,6 @@ class AccountViewModel @Inject constructor(
     private suspend fun login(username: String, password: String): Boolean {
         val token = accountApiClient.login(username, password)
         if (token != null) {
-            val sharedPrefManager = SharedPrefManager(getApplication(appContext))
             sharedPrefManager.saveAuthCredentials(username, token)
             return true
         } else {

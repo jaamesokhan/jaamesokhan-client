@@ -17,6 +17,7 @@ import com.example.jaamebaade_client.repository.PoemRepository
 import com.example.jaamebaade_client.repository.PoetRepository
 import com.example.jaamebaade_client.repository.VerseRepository
 import com.example.jaamebaade_client.utility.DownloadStatusManager
+import com.example.jaamebaade_client.utility.SharedPrefManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,12 +30,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-    @Singleton
-    @Provides
-    fun provideApplicationContext(
-        @ApplicationContext appContext: Context
-    ): Context = appContext
-
     @Provides
     @Singleton
     fun provideApiService(@ApplicationContext context: Context): PoetApiService {
@@ -49,6 +44,13 @@ object AppModule {
     @Singleton
     fun provideDownloadStatusManager(@ApplicationContext context: Context): DownloadStatusManager {
         return DownloadStatusManager(context)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideSharedPrefManager(@ApplicationContext context: Context): SharedPrefManager {
+        return SharedPrefManager(context)
     }
 
     @Provides

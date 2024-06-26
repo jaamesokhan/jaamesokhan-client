@@ -2,8 +2,11 @@ package com.example.jaamebaade_client.utility
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
 
-class SharedPrefManager(context: Context) {
+class SharedPrefManager(
+    @ApplicationContext private val context: Context
+) {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("JaameBaadePrefs", Context.MODE_PRIVATE)
 
