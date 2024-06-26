@@ -31,7 +31,7 @@ import com.example.jaamebaade_client.view.components.TopBar
 
 @Composable
 fun AppNavHost() {
-    val navController = rememberNavController()
+    val navController = rememberNavController() // TODO explore the possibility of using a single instance of NavController
     JaamebaadeclientTheme {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             Scaffold(
