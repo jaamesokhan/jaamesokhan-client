@@ -69,7 +69,7 @@ fun SearchBar(
                 }
             },
             label = {
-                Text("search", style = MaterialTheme.typography.bodyLarge)
+                Text("جست‌وجو", style = MaterialTheme.typography.bodyLarge)
             },
             textStyle = MaterialTheme.typography.headlineSmall,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
