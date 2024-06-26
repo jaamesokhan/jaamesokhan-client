@@ -2,6 +2,8 @@ package com.example.jaamebaade_client
 
 import android.content.Context
 import androidx.room.Room
+import com.example.jaamebaade_client.api.AccountApiClient
+import com.example.jaamebaade_client.api.AccountApiService
 import com.example.jaamebaade_client.api.DictionaryApiClient
 import com.example.jaamebaade_client.api.DictionaryApiService
 import com.example.jaamebaade_client.api.PoetApiClient
@@ -27,6 +29,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    @Singleton
+    @Provides
+    fun provideApplicationContext(
+        @ApplicationContext appContext: Context
+    ): Context = appContext
 
     @Provides
     @Singleton
@@ -69,6 +76,7 @@ object AppModule {
             .build()
             .create(DictionaryApiService::class.java)
     }
+
     @Provides
     @Singleton
     fun providesDictionaryApiClient(
@@ -90,6 +98,24 @@ object AppModule {
         }
 
         return instance
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccountApiService(@ApplicationContext context: Context): AccountApiService {
+        return Retrofit.Builder()
+            .baseUrl(context.getString(R.string.SERVER_BASE_URL))
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AccountApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAccountApiClient(
+        apiService: AccountApiService,
+    ): AccountApiClient {
+        return AccountApiClient(apiService)
     }
 
     @Provides
