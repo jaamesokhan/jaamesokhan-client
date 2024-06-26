@@ -2,15 +2,19 @@ package com.example.jaamebaade_client
 
 import android.content.Context
 import androidx.room.Room
+import com.example.jaamebaade_client.api.DictionaryApiClient
+import com.example.jaamebaade_client.api.DictionaryApiService
 import com.example.jaamebaade_client.api.PoetApiClient
 import com.example.jaamebaade_client.api.PoetApiService
 import com.example.jaamebaade_client.database.AppDatabase
 import com.example.jaamebaade_client.datamanager.PoetDataManager
-import com.example.jaamebaade_client.model.Verse
+import com.example.jaamebaade_client.repository.BookmarkRepository
 import com.example.jaamebaade_client.repository.CategoryRepository
+import com.example.jaamebaade_client.repository.HighlightRepository
 import com.example.jaamebaade_client.repository.PoemRepository
 import com.example.jaamebaade_client.repository.PoetRepository
 import com.example.jaamebaade_client.repository.VerseRepository
+import com.example.jaamebaade_client.utility.DownloadStatusManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +23,6 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-import com.example.jaamebaade_client.utility.DownloadStatusManager
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -59,6 +62,23 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideDictionaryApiService(@ApplicationContext context: Context): DictionaryApiService {
+        return Retrofit.Builder()
+            .baseUrl(context.getString(R.string.SERVER_BASE_URL))
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(DictionaryApiService::class.java)
+    }
+    @Provides
+    @Singleton
+    fun providesDictionaryApiClient(
+        apiService: DictionaryApiService,
+    ): DictionaryApiClient {
+        return DictionaryApiClient(apiService)
+    }
+
+    @Provides
+    @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         var instance: AppDatabase
         synchronized(AppDatabase::class) {
@@ -69,7 +89,7 @@ object AppModule {
             ).build()
         }
 
-        return instance!!
+        return instance
     }
 
     @Provides
@@ -94,5 +114,17 @@ object AppModule {
     @Singleton
     fun provideVerseRepository(appDatabase: AppDatabase): VerseRepository {
         return VerseRepository(appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHighlightRepository(appDatabase: AppDatabase): HighlightRepository {
+        return HighlightRepository(appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBookmarkRepository(appDatabase: AppDatabase): BookmarkRepository {
+        return BookmarkRepository(appDatabase)
     }
 }

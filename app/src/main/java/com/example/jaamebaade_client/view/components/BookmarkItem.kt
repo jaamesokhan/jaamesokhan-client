@@ -12,30 +12,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.jaamebaade_client.model.VersePoemCategoryPoet
+import com.example.jaamebaade_client.model.Poem
+import com.example.jaamebaade_client.model.Poet
 
 @Composable
-fun SearchResultItem(
-    modifier: Modifier,
-    result: VersePoemCategoryPoet,
-    navController: NavController
+fun BookmarkItem(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    poet: Poet,
+    poem: Poem,
 ) {
     OutlinedCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(4.dp)
-            .clickable { navController.navigate("poem/${result.poet.id}/${result.verse.poemId}") }
+            .clickable { navController.navigate("poem/${poet.id}/${poem.id}") }
     ) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(4.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp)
+        ) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "${result.poet.name}>${result.category.text}>${result.poem.title}",
-                    style = MaterialTheme.typography.labelMedium
+                    text = "${poem.title} - ${poet.name}",
+                    style = MaterialTheme.typography.headlineMedium
                 )
             }
-            Text(text = result.verse.text, style = MaterialTheme.typography.headlineSmall)
         }
     }
 }

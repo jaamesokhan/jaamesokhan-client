@@ -37,7 +37,7 @@ fun PoetCategoryScreen(
                     val childCategories =
                         poetCategoryViewModel.getPoetCategoriesFromRepository(poetId, category.id)
                     if (childCategories.isEmpty())
-                        navController.navigate("poemsListScreen/${category.id}")
+                        navController.navigate("poemsListScreen/${category.poetId}/${category.id}")
                     else
                         navController.navigate("poetCategoryScreen/${poetId}/${category.id}")
 

@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
 import com.example.jaamebaade_client.view.DownloadedPoetsScreen
+import com.example.jaamebaade_client.view.FavoritesScreen
 import com.example.jaamebaade_client.view.PoemListScreen
 import com.example.jaamebaade_client.view.PoetCategoryScreen
 import com.example.jaamebaade_client.view.SearchScreen
@@ -77,20 +78,32 @@ fun AppNavHost() {
                             navController = navController
                         )
                     }
-                    composable("poemsListScreen/{categoryId}") { backStackEntry ->
+                    composable("favoriteScreen") {
+                        FavoritesScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            navController = navController
+                        )
+                    }
+                    composable("poemsListScreen/{poetId}/{categoryId}") { backStackEntry ->
                         val categoryId = backStackEntry.arguments?.getString("categoryId")?.toInt()
+                        val poetId = backStackEntry.arguments?.getString("poetId")?.toInt()
 
                         PoemListScreen(
                             categoryId = categoryId!!,
+                            poetId = poetId!!,
                             modifier = Modifier.padding(innerPadding),
                             navController
                         )
 
                     }
-                    composable("poem/{poemId}") { backStackEntry ->
+                    composable("poem/{poetId}/{poemId}") { backStackEntry ->
                         val poemId = backStackEntry.arguments?.getString("poemId")?.toInt()
+                        val poetId = backStackEntry.arguments?.getString("poetId")?.toInt()
+
                         VerseScreen(
-                            poemId = poemId!!, modifier = Modifier.padding(innerPadding),
+                            poemId = poemId!!,
+                            poetId = poetId!!,
+                            modifier = Modifier.padding(innerPadding),
                         )
                     }
                 }

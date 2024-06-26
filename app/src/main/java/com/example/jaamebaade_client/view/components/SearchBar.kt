@@ -1,5 +1,6 @@
 package com.example.jaamebaade_client.view.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -52,6 +55,7 @@ fun SearchBar(
             },
             modifier = modifier
                 .fillMaxWidth()
+                .background(Color.Transparent)
                 .height(75.dp),
             trailingIcon = {
                 IconButton(onClick = {
@@ -72,7 +76,13 @@ fun SearchBar(
             keyboardActions = KeyboardActions(onSearch = {
                 onSearchQueryIconClicked(query)
                 keyboardController?.hide()
-            })
+            }),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Gray,
+                errorContainerColor = Color.Red,
+            ),
         )
 
         Row {
