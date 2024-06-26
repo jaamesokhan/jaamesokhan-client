@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -112,29 +114,31 @@ fun VerseItem(
 
     ) {
         SelectionContainer {
-            TextField(
-                value = textFieldValue,
-                onValueChange = {
-                    if (it.selection.start != it.selection.end) {
-                        startIndex = minOf(it.selection.start, it.selection.end)
-                        endIndex = maxOf(it.selection.start, it.selection.end)
-                        showDialog = true
-                    }
-                },
-                textStyle = MaterialTheme.typography.headlineSmall,
-                readOnly = true,
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                    errorContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                ),
-            )
-
+            CompositionLocalProvider(
+                LocalTextInputService provides null
+            ) {
+                TextField(
+                    value = textFieldValue,
+                    onValueChange = {
+                        if (it.selection.start != it.selection.end) {
+                            startIndex = minOf(it.selection.start, it.selection.end)
+                            endIndex = maxOf(it.selection.start, it.selection.end)
+                            showDialog = true
+                        }
+                    },
+                    textStyle = MaterialTheme.typography.headlineSmall,
+                    readOnly = true,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                        errorContainerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                    ),
+                )
+            }
         }
-
     }
 }
