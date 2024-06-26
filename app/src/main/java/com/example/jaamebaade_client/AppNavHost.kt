@@ -14,8 +14,10 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
+import com.example.jaamebaade_client.view.AccountScreen
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
 import com.example.jaamebaade_client.view.DownloadedPoetsScreen
 import com.example.jaamebaade_client.view.FavoritesScreen
@@ -29,7 +31,7 @@ import com.example.jaamebaade_client.view.components.TopBar
 
 @Composable
 fun AppNavHost() {
-    val navController = rememberNavController()
+    val navController = rememberNavController() // TODO explore the possibility of using a single instance of NavController
     JaamebaadeclientTheme {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             Scaffold(
@@ -105,6 +107,9 @@ fun AppNavHost() {
                             poetId = poetId!!,
                             modifier = Modifier.padding(innerPadding),
                         )
+                    }
+                    dialog("accountScreen") {
+                        AccountScreen(navController = navController)
                     }
                 }
             }

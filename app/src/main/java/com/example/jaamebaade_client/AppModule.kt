@@ -2,6 +2,8 @@ package com.example.jaamebaade_client
 
 import android.content.Context
 import androidx.room.Room
+import com.example.jaamebaade_client.api.AccountApiClient
+import com.example.jaamebaade_client.api.AccountApiService
 import com.example.jaamebaade_client.api.DictionaryApiClient
 import com.example.jaamebaade_client.api.DictionaryApiService
 import com.example.jaamebaade_client.api.PoetApiClient
@@ -15,6 +17,7 @@ import com.example.jaamebaade_client.repository.PoemRepository
 import com.example.jaamebaade_client.repository.PoetRepository
 import com.example.jaamebaade_client.repository.VerseRepository
 import com.example.jaamebaade_client.utility.DownloadStatusManager
+import com.example.jaamebaade_client.utility.SharedPrefManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,7 +30,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
     @Provides
     @Singleton
     fun provideApiService(@ApplicationContext context: Context): PoetApiService {
@@ -42,6 +44,13 @@ object AppModule {
     @Singleton
     fun provideDownloadStatusManager(@ApplicationContext context: Context): DownloadStatusManager {
         return DownloadStatusManager(context)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideSharedPrefManager(@ApplicationContext context: Context): SharedPrefManager {
+        return SharedPrefManager(context)
     }
 
     @Provides
@@ -69,6 +78,7 @@ object AppModule {
             .build()
             .create(DictionaryApiService::class.java)
     }
+
     @Provides
     @Singleton
     fun providesDictionaryApiClient(
@@ -90,6 +100,24 @@ object AppModule {
         }
 
         return instance
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccountApiService(@ApplicationContext context: Context): AccountApiService {
+        return Retrofit.Builder()
+            .baseUrl(context.getString(R.string.SERVER_BASE_URL))
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AccountApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAccountApiClient(
+        apiService: AccountApiService,
+    ): AccountApiClient {
+        return AccountApiClient(apiService)
     }
 
     @Provides
