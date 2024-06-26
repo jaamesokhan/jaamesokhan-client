@@ -116,8 +116,8 @@ fun VerseItem(
                 value = textFieldValue,
                 onValueChange = {
                     if (it.selection.start != it.selection.end) {
-                        startIndex = it.selection.start
-                        endIndex = it.selection.end
+                        startIndex = minOf(it.selection.start, it.selection.end)
+                        endIndex = maxOf(it.selection.start, it.selection.end)
                         showDialog = true
                     }
                 },
