@@ -126,7 +126,7 @@ fun VerseItem(
                             showDialog = true
                         }
                     },
-                    textStyle = MaterialTheme.typography.headlineSmall,
+                    textStyle = MaterialTheme.typography.bodyMedium,
                     readOnly = true,
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,

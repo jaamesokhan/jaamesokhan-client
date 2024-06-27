@@ -33,7 +33,7 @@ fun PoemsListItem(poem: Poem, onClick: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween
 
         ) {
-            Text(text = poem.title, style = MaterialTheme.typography.headlineMedium)
+            Text(text = poem.title, style = MaterialTheme.typography.headlineLarge)
         }
     }
 }

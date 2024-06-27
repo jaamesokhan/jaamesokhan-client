@@ -47,6 +47,8 @@ val Typography = Typography(
 )
 var FONTS =  listOf("Serif", "SansSerif", "IranNastaliq", "VazirMatn")
 
+const val FONT_SCALE = 12
+
 fun getFontByFontFamilyName(fontFamily: String): FontFamily {
     val ff = when (fontFamily) {
         "Serif" -> FontFamily.Serif

@@ -30,9 +30,9 @@ class SharedPrefManager(
         editor.putString("font", font)
         editor.apply()
     }
-    fun saveFontSize(fontSize: Float) {
+    fun saveFontSize(fontSize: Int) {
         val editor = sharedPreferences.edit()
-        editor.putFloat("fontSize", fontSize)
+        editor.putInt("fontSize", fontSize)
         editor.apply()
     }
 
@@ -40,8 +40,8 @@ class SharedPrefManager(
         return sharedPreferences.getString("font", "Default")?:"Default"
 
     }
-    fun getFontSize(): Float {
-        return sharedPreferences.getFloat("fontSize", 16.0f)
+    fun getFontSize(): Int {
+        return sharedPreferences.getInt("fontSize", 1)
 
     }
 }

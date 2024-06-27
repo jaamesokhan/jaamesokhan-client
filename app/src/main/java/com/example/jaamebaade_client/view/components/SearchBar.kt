@@ -71,7 +71,7 @@ fun SearchBar(
             label = {
                 Text("جست‌وجو", style = MaterialTheme.typography.bodyLarge)
             },
-            textStyle = MaterialTheme.typography.headlineSmall,
+            textStyle = MaterialTheme.typography.headlineMedium,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
                 onSearchQueryIconClicked(query)

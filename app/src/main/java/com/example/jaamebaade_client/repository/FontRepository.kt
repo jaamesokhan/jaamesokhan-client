@@ -12,8 +12,8 @@ class FontRepository @Inject constructor(
 ) {
 
     public var fonts = FONTS
-    private val _fontSize = MutableStateFlow(16f) // Default font size
-    val fontSize: StateFlow<Float> get() = _fontSize
+    private val _fontSize = MutableStateFlow(1) // Default font size
+    val fontSize: StateFlow<Int> get() = _fontSize
 
     private val _fontFamily = MutableStateFlow("DefaultFontFamily")
     val fontFamily: StateFlow<String> get() = _fontFamily
@@ -22,7 +22,7 @@ class FontRepository @Inject constructor(
         _fontSize.value = sharedPrefManager.getFontSize()
         _fontFamily.value = sharedPrefManager.getFont()
     }
-    fun setFontSize(size: Float) {
+    fun setFontSize(size: Int) {
         _fontSize.value = size
         sharedPrefManager.saveFontSize(size)
     }

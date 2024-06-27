@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import com.example.jaamebaade_client.repository.FontRepository
+import com.example.jaamebaade_client.ui.theme.FONT_SCALE
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import com.example.jaamebaade_client.ui.theme.Nastaliq
 import com.example.jaamebaade_client.ui.theme.VazirMatn
@@ -48,25 +49,35 @@ fun AppNavHost(fontRepository: FontRepository) {
     val fontSize by fontRepository.fontSize.collectAsState()
     val fontFamily by fontRepository.fontFamily.collectAsState()
 
-    fun createTextStyle(): TextStyle {
+    fun createTextStyle(type: String): TextStyle {
         val selectedFontFamily = getFontByFontFamilyName(fontFamily)
-        return TextStyle(
-            fontFamily = selectedFontFamily,
-            fontSize = fontSize.sp
-        )
+        return when (type) {
+            "small" -> TextStyle(
+                fontFamily = selectedFontFamily,
+                fontSize = (fontSize * FONT_SCALE - 5).sp
+            )
+            "large" -> TextStyle(
+                fontFamily = selectedFontFamily,
+                fontSize = (fontSize * FONT_SCALE + 5).sp
+            )
+            else -> TextStyle(
+                fontFamily = selectedFontFamily,
+                fontSize = (fontSize * FONT_SCALE).sp
+            )
+        }
     }
 
     val typography = remember {
         Typography(
-            bodyLarge = createTextStyle(),
-            bodyMedium = createTextStyle(),
-            bodySmall = createTextStyle(),
-            headlineLarge = createTextStyle(),
-            headlineMedium = createTextStyle(),
-            headlineSmall = createTextStyle(),
-            titleLarge = createTextStyle(),
-            titleMedium = createTextStyle(),
-            titleSmall = createTextStyle(),
+            bodyLarge = createTextStyle("large"),
+            bodyMedium = createTextStyle("medium"),
+            bodySmall = createTextStyle("small"),
+            headlineLarge = createTextStyle("large"),
+            headlineMedium = createTextStyle("medium"),
+            headlineSmall = createTextStyle("small"),
+            titleLarge = createTextStyle("large"),
+            titleMedium = createTextStyle("medium"),
+            titleSmall = createTextStyle("small"),
             // Define other text styles as needed
         )
     }

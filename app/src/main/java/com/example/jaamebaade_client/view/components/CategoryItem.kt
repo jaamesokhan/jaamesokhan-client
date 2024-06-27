@@ -33,7 +33,7 @@ fun CategoryItem(category: Category, onClick: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween
 
         ) {
-            Text(text = category.text, style = MaterialTheme.typography.headlineMedium)
+            Text(text = category.text, style = MaterialTheme.typography.headlineLarge)
         }
     }
 }
