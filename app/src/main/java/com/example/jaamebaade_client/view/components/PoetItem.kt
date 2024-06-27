@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.example.jaamebaade_client.model.Poet
 import com.example.jaamebaade_client.utility.DownloadStatus
@@ -35,6 +36,8 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                 poet.imageUrl ?: "https://ganjoor.net/image/gdap.png"
             ) // TODO change hardcoded url!
             .size(coil.size.Size.ORIGINAL) // Set the target size to load the image at.
+            .diskCachePolicy(CachePolicy.ENABLED) // Enable disk cache
+            .memoryCachePolicy(CachePolicy.ENABLED) // Enable memory cache
             .build()
     )
 
