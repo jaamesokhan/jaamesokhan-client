@@ -25,6 +25,9 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import com.example.jaamebaade_client.repository.FontRepository
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
+import com.example.jaamebaade_client.ui.theme.Nastaliq
+import com.example.jaamebaade_client.ui.theme.VazirMatn
+import com.example.jaamebaade_client.ui.theme.getFontByFontFamilyName
 import com.example.jaamebaade_client.view.AccountScreen
 import com.example.jaamebaade_client.view.ChangeFontScreen
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
@@ -40,21 +43,33 @@ import com.example.jaamebaade_client.view.components.TopBar
 
 @Composable
 fun AppNavHost(fontRepository: FontRepository) {
-    val navController = rememberNavController() // TODO explore the possibility of using a single instance of NavController
+    val navController =
+        rememberNavController() // TODO explore the possibility of using a single instance of NavController
     val fontSize by fontRepository.fontSize.collectAsState()
     val fontFamily by fontRepository.fontFamily.collectAsState()
 
-    val typography = remember { Typography(
-        bodyLarge = TextStyle(
-            fontFamily = when (fontFamily) {
-                "serif" -> FontFamily.Serif
-                "sans-serif" -> FontFamily.SansSerif
-                else -> FontFamily.Default
-            }, // You can change this to a specific fontFamily
+    fun createTextStyle(): TextStyle {
+        val selectedFontFamily = getFontByFontFamilyName(fontFamily)
+        return TextStyle(
+            fontFamily = selectedFontFamily,
             fontSize = fontSize.sp
         )
-        // Define other text styles as needed
-    )}
+    }
+
+    val typography = remember {
+        Typography(
+            bodyLarge = createTextStyle(),
+            bodyMedium = createTextStyle(),
+            bodySmall = createTextStyle(),
+            headlineLarge = createTextStyle(),
+            headlineMedium = createTextStyle(),
+            headlineSmall = createTextStyle(),
+            titleLarge = createTextStyle(),
+            titleMedium = createTextStyle(),
+            titleSmall = createTextStyle(),
+            // Define other text styles as needed
+        )
+    }
     JaamebaadeclientTheme(typography = typography) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             Scaffold(
@@ -132,7 +147,10 @@ fun AppNavHost(fontRepository: FontRepository) {
                         )
                     }
                     composable("changeFontScreen") {
-                        ChangeFontScreen(modifier= Modifier.padding(innerPadding),fontRepository = fontRepository)
+                        ChangeFontScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            fontRepository = fontRepository
+                        )
                     }
                     dialog("accountScreen") {
                         AccountScreen(navController = navController)
@@ -142,3 +160,4 @@ fun AppNavHost(fontRepository: FontRepository) {
         }
     }
 }
+
