@@ -25,4 +25,23 @@ class SharedPrefManager(
         return sharedPreferences.getString("AuthToken", null)
     }
 
+    fun saveFont(font: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString("font", font)
+        editor.apply()
+    }
+    fun saveFontSize(fontSize: Float) {
+        val editor = sharedPreferences.edit()
+        editor.putFloat("fontSize", fontSize)
+        editor.apply()
+    }
+
+    fun getFont(): String {
+        return sharedPreferences.getString("font", "Default")?:"Default"
+
+    }
+    fun getFontSize(): Float {
+        return sharedPreferences.getFloat("fontSize", 16.0f)
+
+    }
 }

@@ -12,6 +12,7 @@ import com.example.jaamebaade_client.database.AppDatabase
 import com.example.jaamebaade_client.datamanager.PoetDataManager
 import com.example.jaamebaade_client.repository.BookmarkRepository
 import com.example.jaamebaade_client.repository.CategoryRepository
+import com.example.jaamebaade_client.repository.FontRepository
 import com.example.jaamebaade_client.repository.HighlightRepository
 import com.example.jaamebaade_client.repository.PoemRepository
 import com.example.jaamebaade_client.repository.PoetRepository
@@ -154,5 +155,11 @@ object AppModule {
     @Singleton
     fun provideBookmarkRepository(appDatabase: AppDatabase): BookmarkRepository {
         return BookmarkRepository(appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFontRepository(sharedPrefManager: SharedPrefManager): FontRepository {
+        return FontRepository(sharedPrefManager)
     }
 }
