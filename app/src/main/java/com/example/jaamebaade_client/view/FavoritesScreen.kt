@@ -24,7 +24,7 @@ fun FavoritesScreen(
     viewModel: FavoritesViewModel = hiltViewModel()
 ) {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val tabs = listOf("اشعار", "علاقه‌مندی‌ها")
+    val tabs = listOf("علاقه‌مندی‌ها", "هایلایت‌ها")
     Column(modifier) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
