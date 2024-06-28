@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jaamebaade_client.model.BookmarkPoemPoet
 import com.example.jaamebaade_client.model.Highlight
-import com.example.jaamebaade_client.model.VerseWithHighlights
+import com.example.jaamebaade_client.model.HighlightVersePoemPoet
 import com.example.jaamebaade_client.repository.BookmarkRepository
 import com.example.jaamebaade_client.repository.HighlightRepository
 import com.example.jaamebaade_client.repository.VerseRepository
@@ -28,7 +28,7 @@ class FavoritesViewModel @Inject constructor(
     var highlights by mutableStateOf<List<Highlight>>(emptyList())
         private set
 
-    var highlightedText by mutableStateOf<List<VerseWithHighlights>>(emptyList())
+    var highlightedText by mutableStateOf<List<HighlightVersePoemPoet>>(emptyList())
         private set
 
     init {
@@ -38,16 +38,16 @@ class FavoritesViewModel @Inject constructor(
 
     private fun getHighlightedText() {
         viewModelScope.launch {
-            highlightedText = getHighlightedTextFromRepository()
+            highlightedText = getHighlightVersePoemPoetsFromRepository()
         }
 
     }
 
-    private suspend fun getHighlightedTextFromRepository(): List<VerseWithHighlights> {
-        val res = mutableListOf<VerseWithHighlights>()
+    private suspend fun getHighlightVersePoemPoetsFromRepository(): List<HighlightVersePoemPoet> {
+        val res = mutableListOf<HighlightVersePoemPoet>()
         withContext(Dispatchers.IO){
             for (highlight in highlights) {
-                res.add(verseRepository.getVerseWithHighlights(highlight.verseId))
+                res.add(verseRepository.getHighlightVersePoemPoet(highlight.verseId))
             }
         }
         return res

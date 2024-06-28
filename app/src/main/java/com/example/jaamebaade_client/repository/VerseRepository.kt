@@ -1,6 +1,7 @@
 package com.example.jaamebaade_client.repository
 
 import com.example.jaamebaade_client.database.AppDatabase
+import com.example.jaamebaade_client.model.HighlightVersePoemPoet
 import com.example.jaamebaade_client.model.Verse
 import com.example.jaamebaade_client.model.VersePoemCategoryPoet
 import javax.inject.Inject
@@ -27,4 +28,6 @@ class VerseRepository @Inject constructor(appDatabase: AppDatabase) {
 
     fun searchVerses(query: String, poetId: Int?): List<VersePoemCategoryPoet> =
         verseDao.searchVerses("%${query}%", poetId)
+
+    fun getHighlightVersePoemPoet(verseId: Int) : HighlightVersePoemPoet = verseDao.getHighlightVersePoemPoet(verseId)
 }

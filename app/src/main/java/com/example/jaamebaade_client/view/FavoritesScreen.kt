@@ -41,7 +41,7 @@ fun FavoritesScreen(
         }
         when (selectedTabIndex) {
             0 -> BookmarkList(viewModel, navController)
-            1 -> HighlightList(viewModel)
+            1 -> HighlightList(viewModel, navController)
         }
     }
 
