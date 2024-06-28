@@ -5,10 +5,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 import com.example.jaamebaade_client.viewmodel.FavoritesViewModel
 
 @Composable
-fun HighlightList(viewModel: FavoritesViewModel) {
+fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
     val highlights = viewModel.highlightedText
     LazyColumn {
         if (highlights.isEmpty()) {
@@ -18,7 +19,8 @@ fun HighlightList(viewModel: FavoritesViewModel) {
         } else {
             items(highlights) { highlight ->
                 HighlightItem(
-                    verseWithHighlights = highlight
+                    highlightVersePoemPoet = highlight,
+                    navController = navController
                 )
             }
         }
