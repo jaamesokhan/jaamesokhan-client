@@ -36,7 +36,7 @@ fun BookmarkItem(
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "${poem.title} - ${poet.name}",
-                    style = MaterialTheme.typography.headlineMedium
+                    style = MaterialTheme.typography.headlineLarge
                 )
             }
         }

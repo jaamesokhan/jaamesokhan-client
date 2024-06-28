@@ -35,7 +35,7 @@ fun SearchResultItem(
                     style = MaterialTheme.typography.labelMedium
                 )
             }
-            Text(text = result.verse.text, style = MaterialTheme.typography.headlineSmall)
+            Text(text = result.verse.text, style = MaterialTheme.typography.headlineLarge)
         }
     }
 }
