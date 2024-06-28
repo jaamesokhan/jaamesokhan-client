@@ -45,7 +45,7 @@ class FavoritesViewModel @Inject constructor(
 
     private suspend fun getHighlightVersePoemPoetsFromRepository(): List<HighlightVersePoemPoet> {
         val res = mutableListOf<HighlightVersePoemPoet>()
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             for (highlight in highlights) {
                 res.add(verseRepository.getHighlightVersePoemPoet(highlight.verseId))
             }
@@ -60,6 +60,7 @@ class FavoritesViewModel @Inject constructor(
             getHighlightedText()
         }
     }
+
     private fun getAllHighlights() {
         viewModelScope.launch {
             highlights = getHighlightFromRepository()
@@ -73,6 +74,7 @@ class FavoritesViewModel @Inject constructor(
         }
         return res
     }
+
     private suspend fun getHighlightFromRepository(): List<Highlight> {
         val res = withContext(Dispatchers.IO) {
             highlightRepository.getAllHighlights()

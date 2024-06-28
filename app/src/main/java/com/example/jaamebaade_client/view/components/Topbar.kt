@@ -36,9 +36,9 @@ fun TopBar(innerPadding: PaddingValues, navController: NavController) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
         (backStackEntry?.destination?.route != "downloadedPoetsScreen"
-                        && backStackEntry?.destination?.route != "settingsScreen"
-                        && backStackEntry?.destination?.route != "searchScreen"
-                        && backStackEntry?.destination?.route != "favoriteScreen")
+                && backStackEntry?.destination?.route != "settingsScreen"
+                && backStackEntry?.destination?.route != "searchScreen"
+                && backStackEntry?.destination?.route != "favoriteScreen")
 
 
     Row(

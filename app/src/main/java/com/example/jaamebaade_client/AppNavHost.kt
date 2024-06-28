@@ -56,10 +56,12 @@ fun AppNavHost(fontRepository: FontRepository) {
                 fontFamily = selectedFontFamily,
                 fontSize = (fontSize * FONT_SCALE - 5).sp
             )
+
             "large" -> TextStyle(
                 fontFamily = selectedFontFamily,
                 fontSize = (fontSize * FONT_SCALE + 5).sp
             )
+
             else -> TextStyle(
                 fontFamily = selectedFontFamily,
                 fontSize = (fontSize * FONT_SCALE).sp

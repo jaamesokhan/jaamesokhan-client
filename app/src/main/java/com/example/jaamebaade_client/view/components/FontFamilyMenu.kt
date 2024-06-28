@@ -19,7 +19,7 @@ import com.example.jaamebaade_client.ui.theme.getFontByFontFamilyName
 import com.example.jaamebaade_client.utility.restartApp
 
 @Composable
-fun FontFamilyMenu(fontRepository: FontRepository){
+fun FontFamilyMenu(fontRepository: FontRepository) {
     var selectedFontFamily by remember { mutableStateOf(fontRepository.fontFamily.value) }
     val fontFamiliesList = fontRepository.fonts // Example font families
     var expanded by remember { mutableStateOf(false) }

@@ -53,7 +53,9 @@ fun DownloadedPoetsScreen(
             }
         }
     } else {
-        Box(modifier = modifier.fillMaxSize().padding(8.dp)) {
+        Box(modifier = modifier
+            .fillMaxSize()
+            .padding(8.dp)) {
             LazyVerticalGrid(columns = GridCells.Fixed(3)) {
                 items(poets) { poet ->
                     DownloadedPoet(poet = poet) {

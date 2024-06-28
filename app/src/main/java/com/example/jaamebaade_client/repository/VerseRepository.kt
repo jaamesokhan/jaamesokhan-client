@@ -29,5 +29,6 @@ class VerseRepository @Inject constructor(appDatabase: AppDatabase) {
     fun searchVerses(query: String, poetId: Int?): List<VersePoemCategoryPoet> =
         verseDao.searchVerses("%${query}%", poetId)
 
-    fun getHighlightVersePoemPoet(verseId: Int) : HighlightVersePoemPoet = verseDao.getHighlightVersePoemPoet(verseId)
+    fun getHighlightVersePoemPoet(verseId: Int): HighlightVersePoemPoet =
+        verseDao.getHighlightVersePoemPoet(verseId)
 }

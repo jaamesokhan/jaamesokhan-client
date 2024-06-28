@@ -66,6 +66,7 @@ interface VerseDao {
     @Transaction
     @Query("SELECT * FROM verses WHERE id = :verseId")
     fun getVerseWithHighlights(verseId: Int): VerseWithHighlights
+
     @Query(
         """
             SELECT 
@@ -93,5 +94,5 @@ interface VerseDao {
             WHERE (v.id = :verseId)
         """
     )
-    fun getHighlightVersePoemPoet(verseId: Int) : HighlightVersePoemPoet
+    fun getHighlightVersePoemPoet(verseId: Int): HighlightVersePoemPoet
 }
