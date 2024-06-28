@@ -78,6 +78,9 @@ fun AppNavHost(fontRepository: FontRepository) {
             titleLarge = createTextStyle("large"),
             titleMedium = createTextStyle("medium"),
             titleSmall = createTextStyle("small"),
+            labelLarge = createTextStyle("large"),
+            labelMedium = createTextStyle("medium"),
+            labelSmall = createTextStyle("small"),
             // Define other text styles as needed
         )
     }

@@ -32,10 +32,10 @@ fun SearchResultItem(
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "${result.poet.name}>${result.category.text}>${result.poem.title}",
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelLarge
                 )
             }
-            Text(text = result.verse.text, style = MaterialTheme.typography.headlineLarge)
+            Text(text = result.verse.text, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

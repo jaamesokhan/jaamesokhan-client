@@ -42,7 +42,7 @@ fun HighlightItem(
         ) {
             Text(
                 text = "${highlightVersePoemPoet.poet.name}>${highlightVersePoemPoet.poem.title}",
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelSmall
             )
             Text(
                 highlightVersePoemPoet.verse.text.substring(startIndex, endIndex),
