@@ -17,7 +17,7 @@ val VazirMatn = FontFamily(
     Font(R.font.vazirmatnextrabold, weight = FontWeight.ExtraBold),
     Font(R.font.vazirmatnlight, weight = FontWeight.Light),
     Font(R.font.vazirmatnextralight, weight = FontWeight.ExtraLight),
-    )
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -45,7 +45,7 @@ val Typography = Typography(
     )
     */
 )
-var FONTS =  listOf("Serif", "SansSerif", "IranNastaliq", "VazirMatn")
+var FONTS = listOf("Serif", "SansSerif", "IranNastaliq", "VazirMatn")
 
 const val FONT_SCALE = 12
 

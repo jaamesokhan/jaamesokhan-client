@@ -48,7 +48,9 @@ fun VersePageHeader(
         Text(
             text = "$poetName - $poemTitle",
             style = MaterialTheme.typography.headlineLarge,
-            modifier = Modifier.padding(end = 8.dp).weight(0.5f),
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .weight(0.5f),
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )
