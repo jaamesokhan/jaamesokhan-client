@@ -15,7 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,8 +25,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jaamebaade_client.repository.FontRepository
 import com.example.jaamebaade_client.ui.theme.FONT_SCALE
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
-import com.example.jaamebaade_client.ui.theme.Nastaliq
-import com.example.jaamebaade_client.ui.theme.VazirMatn
 import com.example.jaamebaade_client.ui.theme.getFontByFontFamilyName
 import com.example.jaamebaade_client.view.AccountScreen
 import com.example.jaamebaade_client.view.ChangeFontScreen

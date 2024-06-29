@@ -5,13 +5,12 @@ import com.example.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class FontRepository @Inject constructor(
     private val sharedPrefManager: SharedPrefManager,
 ) {
 
-    public var fonts = FONTS
+    var fonts = FONTS
     private val _fontSize = MutableStateFlow(1) // Default font size
     val fontSize: StateFlow<Int> get() = _fontSize
 
