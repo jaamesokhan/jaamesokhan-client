@@ -1,14 +1,12 @@
 package com.example.jaamebaade_client.view.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
@@ -33,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.jaamebaade_client.viewmodel.VersesViewModel
 
@@ -97,7 +94,10 @@ fun VersePageHeader(
                                 contentDescription = if (showVerseNumbers) "Hide Verse Numbers" else "Show Verse Numbers",
                                 modifier = Modifier.padding(end = 8.dp)
                             )
-                            Text(text = if (showVerseNumbers) "مخفی‌سازی شماره بیت" else "نمایش شماره بیت", style = MaterialTheme.typography.headlineMedium)
+                            Text(
+                                text = if (showVerseNumbers) "مخفی‌سازی شماره بیت" else "نمایش شماره بیت",
+                                style = MaterialTheme.typography.headlineMedium
+                            )
                         }
                     },
                     onClick = {
