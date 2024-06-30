@@ -48,7 +48,6 @@ fun VerseItem(
     highlights: List<Highlight>,
     highlightCallBack: (startIndex: Int, endIndex: Int) -> Unit
 ) {
-    Log.d("kiri", "$showVerseNumber")
     var showDialog by remember { mutableStateOf(false) }
     var startIndex by remember { mutableIntStateOf(0) }
     var endIndex by remember { mutableIntStateOf(0) }
@@ -116,12 +115,12 @@ fun VerseItem(
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = if (verse.position % 2 == 0) Arrangement.Start else Arrangement.End,
-        verticalAlignment = Alignment.CenterVertically // Ensure vertical alignment
+        verticalAlignment = Alignment.CenterVertically
 
     ) {
         if (showVerseNumber && index % 2 == 0) {
             Text(
-                text = "${index / 2 + 1}", // Display the index as verse number
+                text = "${index / 2 + 1}",
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(end = 2.dp)
             )
