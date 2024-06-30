@@ -44,12 +44,6 @@ import com.example.jaamebaade_client.view.components.FontSizeTileMenu
 @Composable
 fun ChangeFontScreen(modifier: Modifier, fontRepository: FontRepository) {
 
-    //   var fontFamily by remember { mutableStateOf("DefaultFontFamily") }
-    var selectedFontFamily by remember { mutableStateOf(fontRepository.fontFamily.value) }
-    val fontFamiliesList = fontRepository.fonts // Example font families
-    var expanded by remember { mutableStateOf(false) }
-    var showDialog by remember { mutableStateOf(false) }
-
     Column(modifier = modifier) {
         Text("اندازه فونت")
         FontSizeTileMenu(fontRepository)
