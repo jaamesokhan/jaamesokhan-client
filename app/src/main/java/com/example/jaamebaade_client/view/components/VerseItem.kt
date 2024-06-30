@@ -1,7 +1,6 @@
 package com.example.jaamebaade_client.view.components
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -82,35 +82,37 @@ fun VerseItem(
             } catch (e: Exception) {
                 Log.e("VerseItem", "Error in getting word meaning", e)
             }
-            Column(modifier = Modifier.background(color = Color.White)) {
-                Row {
-                    Button(onClick = {
-                        highlightCallBack(
-                            startIndex,
-                            endIndex
-                        )
-                        showDialog = false
+            Surface {
+                Column(modifier = Modifier.padding(8.dp)) {
+                    Row {
+                        Button(onClick = {
+                            highlightCallBack(
+                                startIndex,
+                                endIndex
+                            )
+                            showDialog = false
 
-                    }) {
-                        Text("هایلایت")
+                        }) {
+                            Text("هایلایت", style = MaterialTheme.typography.bodySmall)
+                        }
                     }
-                }
-                Row {
+                    Row {
+                        Text(
+                            text = " معنی:"
+                        )
+                        Text(
+                            text = verse.text.substring(startIndex, endIndex),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                     Text(
-                        text = " معنی:"
-                    )
-                    Text(
-                        text = verse.text.substring(startIndex, endIndex),
-                        fontWeight = FontWeight.Bold
+                        text = meaning
                     )
                 }
-                Text(
-                    text = meaning
-                )
             }
         }
-    }
 
+    }
 
     Row(
         modifier = modifier.fillMaxWidth(),

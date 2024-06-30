@@ -1,8 +1,8 @@
 package com.example.jaamebaade_client.view.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,97 +48,106 @@ fun VersePageHeader(
     val bookmarkIconColor = if (isBookmarked) Color.Red else Color.Gray
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Color.Yellow) // TODO change header color
-    ) {
-        Text(
-            text = poetName,
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier
-                .padding(end = 3.dp)
-                .weight(0.5f),
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 2
-        )
-        Text(
-            text = poemTitle,
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier
-                .padding(end = 3.dp)
-                .weight(0.5f),
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 2
-        )
+    Column {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(4.dp, 10.dp)
+        ) {
+            Text(
+                text = poetName,
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier
+                    .padding(end = 3.dp)
+                    .weight(0.5f),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2
+            )
+            Text(
+                text = poemTitle,
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier
+                    .padding(end = 3.dp)
+                    .weight(0.5f),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2
+            )
 
-        Spacer(modifier = Modifier.weight(0.1f))
+            Spacer(modifier = Modifier.weight(0.1f))
 
-        Box {
-            IconButton(onClick = { expanded = true }) {
-                Icon(Icons.Default.MoreVert, contentDescription = "More Options")
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                DropdownMenuItem(
-                    text = {
+            Box {
+                IconButton(onClick = { expanded = true }) {
+                    Icon(Icons.Default.MoreVert, contentDescription = "More Options")
+                }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                ) {
+                    DropdownMenuItem(
+                        text = {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Icon(
+                                    imageVector = if (showVerseNumbers) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                    contentDescription = if (showVerseNumbers) "Hide Verse Numbers" else "Show Verse Numbers",
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(
+                                    text = if (showVerseNumbers) "مخفی‌سازی شماره بیت" else "نمایش شماره بیت",
+                                    style = MaterialTheme.typography.headlineMedium
+                                )
+                            }
+                        },
+                        onClick = {
+                            onToggleVerseNumbers()
+                        },
+                    )
+                    Divider()
+                    DropdownMenuItem(text = {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Icon(
-                                imageVector = if (showVerseNumbers) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                contentDescription = if (showVerseNumbers) "Hide Verse Numbers" else "Show Verse Numbers",
+                                imageVector = Icons.Default.Favorite,
+                                contentDescription = "Bookmark",
+                                tint = bookmarkIconColor,
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(
-                                text = if (showVerseNumbers) "مخفی‌سازی شماره بیت" else "نمایش شماره بیت",
+                                text = "علاقه‌مندی",
                                 style = MaterialTheme.typography.headlineMedium
                             )
                         }
-                    },
-                    onClick = {
-                        onToggleVerseNumbers()
-                    },
-                )
-                Divider()
-                DropdownMenuItem(text = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Favorite,
-                            contentDescription = "Bookmark",
-                            tint = bookmarkIconColor,
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text(text = "علاقه‌مندی", style = MaterialTheme.typography.headlineMedium)
-                    }
-                }, onClick = {
-                    versesViewModel.onBookmarkClicked()
-                })
-                Divider()
-                DropdownMenuItem(text = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Share,
-                            contentDescription = "Share",
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text(text = "اشتراک‌گذاری", style = MaterialTheme.typography.headlineMedium)
-                    }
-                }, onClick = {
-                    versesViewModel.share(versesViewModel.verses.value, context)
-                })
+                    }, onClick = {
+                        versesViewModel.onBookmarkClicked()
+                    })
+                    Divider()
+                    DropdownMenuItem(text = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Share,
+                                contentDescription = "Share",
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                            Text(
+                                text = "اشتراک‌گذاری",
+                                style = MaterialTheme.typography.headlineMedium
+                            )
+                        }
+                    }, onClick = {
+                        versesViewModel.share(versesViewModel.verses.value, context)
+                    })
+                }
             }
+
+
         }
-
-
+        Divider()
     }
-}
 
+}

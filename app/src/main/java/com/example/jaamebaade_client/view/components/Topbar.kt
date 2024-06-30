@@ -40,10 +40,10 @@ fun TopBar(innerPadding: PaddingValues, navController: NavController) {
                 && backStackEntry?.destination?.route != "searchScreen"
                 && backStackEntry?.destination?.route != "favoriteScreen")
 
+    // TODO change this to Material TopBar
 
     Row(
         modifier = Modifier
-            .clip(RoundedCornerShape(0.dp, 0.dp, 15.dp, 15.dp))
             .background(MaterialTheme.colorScheme.primary)
             .padding(innerPadding)
             .fillMaxWidth(),
@@ -76,8 +76,6 @@ fun TopBar(innerPadding: PaddingValues, navController: NavController) {
                     .clickable { navController.popBackStack() }
                     .padding(end = 16.dp)
                     .size(24.dp),
-                tint = Color.White
-
             )
         }
     }
