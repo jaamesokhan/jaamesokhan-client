@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +21,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalTextInputService
@@ -28,6 +30,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jaamebaade_client.model.Highlight
@@ -40,10 +43,11 @@ fun VerseItem(
     modifier: Modifier = Modifier,
     viewModel: SelectionOptionViewModel = hiltViewModel(),
     verse: Verse,
+    index: Int,
+    showVerseNumber: Boolean,
     highlights: List<Highlight>,
     highlightCallBack: (startIndex: Int, endIndex: Int) -> Unit
 ) {
-
     var showDialog by remember { mutableStateOf(false) }
     var startIndex by remember { mutableIntStateOf(0) }
     var endIndex by remember { mutableIntStateOf(0) }
@@ -110,13 +114,22 @@ fun VerseItem(
 
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = if (verse.position % 2 == 0) Arrangement.Start else Arrangement.End
+        horizontalArrangement = if (verse.position % 2 == 0) Arrangement.Start else Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically
 
     ) {
+        if (showVerseNumber && index % 2 == 0) {
+            Text(
+                text = "${index / 2 + 1}",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(end = 2.dp)
+            )
+        }
         SelectionContainer {
             CompositionLocalProvider(
                 LocalTextInputService provides null
             ) {
+
                 TextField(
                     value = textFieldValue,
                     onValueChange = {
