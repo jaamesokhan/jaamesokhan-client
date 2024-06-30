@@ -1,10 +1,14 @@
 package com.example.jaamebaade_client.view
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -35,6 +39,8 @@ fun VerseScreen(poemId: Int, poetId: Int, modifier: Modifier) {
         mutableStateOf("")
     }
 
+    var showVerseNumbers by remember { mutableStateOf(false) }
+
     LaunchedEffect(poetId) {
         poetName = versesViewModel.getPoetName(poetId)
     }
@@ -47,15 +53,22 @@ fun VerseScreen(poemId: Int, poetId: Int, modifier: Modifier) {
         VersePageHeader(
             poetName = poetName,
             poemTitle = poemTitle,
-            versesViewModel = versesViewModel
+            versesViewModel = versesViewModel,
+            showVerseNumbers = showVerseNumbers,
+            onToggleVerseNumbers = { showVerseNumbers = !showVerseNumbers }
         )
+
+        Spacer(modifier = Modifier.width(200.dp)) // Add space
+
         Spacer(modifier = Modifier.width(200.dp)) // Add space
 
         LazyColumn {
-            items(versesWithHighlights) { verseWithHighlights ->
+            itemsIndexed(versesWithHighlights) { index, verseWithHighlights ->
                 VerseItem(
                     verse = verseWithHighlights.verse,
-                    highlights = verseWithHighlights.highlights
+                    highlights = verseWithHighlights.highlights,
+                    index = index,
+                    showVerseNumber = showVerseNumbers
                 ) { startIndex, endIndex ->
                     versesViewModel.highlight(verseWithHighlights.verse.id, startIndex, endIndex)
                 }

@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +33,9 @@ fun VersePageHeader(
     poetName: String,
     poemTitle: String,
     modifier: Modifier = Modifier,
-    versesViewModel: VersesViewModel
+    versesViewModel: VersesViewModel,
+    showVerseNumbers: Boolean,
+    onToggleVerseNumbers: () -> Unit
 ) {
     val isBookmarked by versesViewModel.isBookmarked.collectAsState()
 
@@ -46,21 +50,37 @@ fun VersePageHeader(
             .background(Color.Yellow) // TODO change header color
     ) {
         Text(
-            text = "$poetName - $poemTitle",
+            text = "$poetName",
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier
-                .padding(end = 8.dp)
+                .padding(end = 3.dp)
+                .weight(0.5f),
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1
+        )
+        Text(
+            text = poemTitle,
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier
+                .padding(end = 3.dp)
                 .weight(0.5f),
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )
 
         Spacer(modifier = Modifier.weight(0.1f))
+        IconButton(onClick = onToggleVerseNumbers) {
+            Icon(
+                modifier = Modifier.size(30.dp),
+                imageVector = if (showVerseNumbers) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                contentDescription = if (showVerseNumbers) "Hide Verse Numbers" else "Show Verse Numbers"
+            )
+        }
 
         IconButton(
             onClick = { versesViewModel.onBookmarkClicked() },
             modifier = Modifier
-                .padding(end = 10.dp)
+                .padding(end = 5.dp)
                 .weight(0.1F)
         ) {
             Icon(
