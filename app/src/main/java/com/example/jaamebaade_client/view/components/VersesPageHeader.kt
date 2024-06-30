@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -103,6 +104,7 @@ fun VersePageHeader(
                         onToggleVerseNumbers()
                     },
                 )
+                Divider()
                 DropdownMenuItem(text = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -118,6 +120,7 @@ fun VersePageHeader(
                 }, onClick = {
                     versesViewModel.onBookmarkClicked()
                 })
+                Divider()
                 DropdownMenuItem(text = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
