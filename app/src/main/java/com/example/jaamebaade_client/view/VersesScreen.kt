@@ -1,19 +1,10 @@
 package com.example.jaamebaade_client.view
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.navOptions
 import com.example.jaamebaade_client.view.components.VerseItem
 import com.example.jaamebaade_client.view.components.VersePageHeader
 import com.example.jaamebaade_client.viewmodel.VersesViewModel
@@ -52,10 +42,9 @@ fun VerseScreen(navController: NavController, poemId: Int, poetId: Int, modifier
     var maxId by remember { mutableIntStateOf(0) }
 
     var showVerseNumbers by remember { mutableStateOf(false) }
-    var categoryId: Int = 0
     LaunchedEffect(poetId) {
         poetName = versesViewModel.getPoetName(poetId)
-        categoryId = versesViewModel.getCategoryIdByPoemId(poemId)
+        val categoryId = versesViewModel.getCategoryIdByPoemId(poemId)
         val minMaxPair = versesViewModel.getFirstAndLastWithCategoryId(categoryId)
         minId = minMaxPair.first
         maxId = minMaxPair.second
