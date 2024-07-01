@@ -1,16 +1,9 @@
 package com.example.jaamebaade_client.repository
 
-import android.content.Context
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.PagingSource
-import androidx.paging.PagingState
 import com.example.jaamebaade_client.database.AppDatabase
-import com.example.jaamebaade_client.database.DatabaseBuilder
+import com.example.jaamebaade_client.model.Pair
 import com.example.jaamebaade_client.model.Poem
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PoemRepository @Inject constructor(appDatabase: AppDatabase) {
@@ -33,5 +26,10 @@ class PoemRepository @Inject constructor(appDatabase: AppDatabase) {
     fun getPoemById(id: Int): Poem {
         return poemDao.getPoemById(id)
     }
+
+    fun getFirstAndLastWithCategoryId(categoryId: Int): Pair =
+        poemDao.getFirstAndLastWithCategoryId(categoryId)
+
+    fun getCategoryIdByPoemId(poemId: Int): Int = poemDao.getCategoryByPoemId(poemId)
 
 }

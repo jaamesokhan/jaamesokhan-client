@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jaamebaade_client.model.Highlight
+import com.example.jaamebaade_client.model.Pair
 import com.example.jaamebaade_client.model.VerseWithHighlights
 import com.example.jaamebaade_client.repository.BookmarkRepository
 import com.example.jaamebaade_client.repository.HighlightRepository
@@ -150,5 +151,13 @@ class VersesViewModel @AssistedInject constructor(
             poemRepository.getPoemById(id).title
         }
         return res
+    }
+
+    suspend fun getCategoryIdByPoemId(poemId: Int): Int {
+        return withContext(Dispatchers.IO) { poemRepository.getCategoryIdByPoemId(poemId) }
+    }
+
+    suspend fun getFirstAndLastWithCategoryId(categoryId: Int): Pair {
+        return withContext(Dispatchers.IO) { poemRepository.getFirstAndLastWithCategoryId(categoryId) }
     }
 }

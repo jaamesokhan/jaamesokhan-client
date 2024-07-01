@@ -154,6 +154,7 @@ fun AppNavHost(fontRepository: FontRepository) {
                         val poetId = backStackEntry.arguments?.getString("poetId")?.toInt()
 
                         VerseScreen(
+                            navController,
                             poemId = poemId!!,
                             poetId = poetId!!,
                             modifier = Modifier.padding(innerPadding),
