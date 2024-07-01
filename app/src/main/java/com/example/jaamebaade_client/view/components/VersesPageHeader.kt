@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Visibility
@@ -32,10 +34,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.navOptions
 import com.example.jaamebaade_client.viewmodel.VersesViewModel
 
 @Composable
 fun VersePageHeader(
+    navController: NavController,
+    poetId: Int,
+    poemId: Int,
+    minId: Int,
+    maxId: Int,
     poetName: String,
     poemTitle: String,
     modifier: Modifier = Modifier,
@@ -65,6 +74,26 @@ fun VersePageHeader(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 2
             )
+            IconButton(
+                onClick = {
+
+                    navController.navigate(
+                        "poem/${poetId}/${poemId - 1}",
+                        navOptions {
+                            popUpTo("poem/{poetId}/{poemId}") {
+                                inclusive = true
+                            }
+                        }
+                    )
+                },
+                enabled = poemId - 1 >= minId
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = "Previous"
+                )
+            }
+
             Text(
                 text = poemTitle,
                 style = MaterialTheme.typography.headlineMedium,
@@ -74,6 +103,24 @@ fun VersePageHeader(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 2
             )
+            IconButton(
+                onClick = {
+                    navController.navigate(
+                        "poem/${poetId}/${poemId + 1}",
+                        navOptions {
+                            popUpTo("poem/{poetId}/{poemId}") {
+                                inclusive = true
+                            }
+                        }
+                    )
+                },
+                enabled = poemId + 1 <= maxId
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowLeft,
+                    contentDescription = "Next"
+                )
+            }
 
             Spacer(modifier = Modifier.weight(0.1f))
 
