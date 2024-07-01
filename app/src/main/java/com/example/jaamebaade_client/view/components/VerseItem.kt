@@ -55,6 +55,7 @@ fun VerseItem(
     val meaning by viewModel.apiResult
 
     var annotatedString by remember { mutableStateOf<AnnotatedString?>(null) }
+    val highlightColor = MaterialTheme.colorScheme.tertiary
 
     LaunchedEffect(key1 = highlights) {
         annotatedString = buildAnnotatedString {
@@ -62,7 +63,7 @@ fun VerseItem(
             highlights.forEach {
                 addStyle(
                     style = SpanStyle(
-                        color = Color.Red,
+                        background = highlightColor,
                         fontWeight = FontWeight.Bold
                     ),
                     start = it.startIndex,
