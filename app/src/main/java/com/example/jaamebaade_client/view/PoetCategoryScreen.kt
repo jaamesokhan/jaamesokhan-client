@@ -39,7 +39,6 @@ fun PoetCategoryScreen(
                         navController.navigate("poemsListScreen/${category.poetId}/${category.id}")
                     else
                         navController.navigate("poetCategoryScreen/${poetId}/${category.id}")
-
                 }
             }
             if (index != categories.size - 1) {

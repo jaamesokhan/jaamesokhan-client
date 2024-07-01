@@ -3,11 +3,14 @@ package com.example.jaamebaade_client.view
 
 import android.content.Context
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jaamebaade_client.model.Poet
 import com.example.jaamebaade_client.utility.DownloadStatus
@@ -30,7 +33,7 @@ fun DownloadablePoetsScreen(
         } else if (poets.isEmpty()) {
             ServerFailure()
         } else {
-            DownloadablePoetsList(poetViewModel, poets) { }
+            DownloadablePoetsList(poetViewModel, poets)
         }
     }
 }
@@ -39,18 +42,19 @@ fun DownloadablePoetsScreen(
 fun DownloadablePoetsList(
     poetViewModel: PoetViewModel,
     poets: List<Poet>,
-    onPoetClick: (Poet) -> Unit
 ) {
     val context = LocalContext.current
-    LazyColumn(userScrollEnabled = true) {
-        items(poets) { poet ->
+    LazyColumn(userScrollEnabled = true, modifier = Modifier.padding(8.dp)) {
+        itemsIndexed(poets) { index, poet ->
             PoetItem(
                 poet = poet,
                 poetViewModel.downloadStatus[poet.id.toString()] ?: DownloadStatus.NotDownloaded
             ) {
                 val targetDir = getInternalStorageDir(context)
                 poetViewModel.importPoetData(poet.id.toString(), targetDir)
-
+            }
+            if (index != poets.size - 1) {
+                Divider()
             }
         }
     }

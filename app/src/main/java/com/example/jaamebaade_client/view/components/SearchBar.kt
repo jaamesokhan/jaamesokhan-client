@@ -19,7 +19,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,7 +58,7 @@ fun SearchBar(
             modifier = modifier
                 .fillMaxWidth()
                 .background(Color.Transparent)
-                .height(75.dp),
+                .height(80.dp),
             trailingIcon = {
                 IconButton(onClick = {
                     onSearchQueryIconClicked(query)
@@ -80,12 +79,6 @@ fun SearchBar(
                 onSearchQueryIconClicked(query)
                 keyboardController?.hide()
             }),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Gray,
-                errorContainerColor = Color.Red,
-            ),
         )
 
         Row(modifier = Modifier.padding(8.dp)) {
@@ -105,7 +98,8 @@ fun SearchBar(
                 onDismissRequest = { expanded = false },
                 modifier = Modifier
                     .height(200.dp)
-                    .padding(8.dp)) {
+                    .padding(8.dp)
+            ) {
                 DropdownMenuItem(
                     text = { Text("همه", style = MaterialTheme.typography.labelMedium) },
                     onClick = {

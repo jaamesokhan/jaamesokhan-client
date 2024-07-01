@@ -3,7 +3,6 @@ package com.example.jaamebaade_client.view
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.runtime.Composable
@@ -41,14 +40,6 @@ fun SettingsScreen(
 
             }
         }
-        SettingsItem(
-            modifier = Modifier,
-            text = "دانلود شاعر جدید",
-            icon = Icons.Default.AddCircle
-        ) {
-            navController.navigate("downloadablePoetsScreen")
-        }
-
         SettingsItem(
             modifier = Modifier,
             text = "تنظیمات فونت",
