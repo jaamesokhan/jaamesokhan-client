@@ -92,7 +92,7 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
             Text(
                 text = poet.description,
                 modifier = Modifier
-                    .width(160.dp)
+                    .weight(1f)
                     .clickable { expanded = !expanded },
                 style = MaterialTheme.typography.bodySmall,
                 overflow = TextOverflow.Ellipsis,
@@ -103,7 +103,7 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
 
             Box(
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(0.2f)
                     .clickable { onClick() },
             ) {
                 when (status) {
