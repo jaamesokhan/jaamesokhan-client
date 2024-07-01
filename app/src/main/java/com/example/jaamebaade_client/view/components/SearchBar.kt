@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -17,7 +19,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +28,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.jaamebaade_client.model.Poet
@@ -56,7 +58,7 @@ fun SearchBar(
             modifier = modifier
                 .fillMaxWidth()
                 .background(Color.Transparent)
-                .height(75.dp),
+                .height(80.dp),
             trailingIcon = {
                 IconButton(onClick = {
                     onSearchQueryIconClicked(query)
@@ -69,7 +71,7 @@ fun SearchBar(
                 }
             },
             label = {
-                Text("جست‌وجو", style = MaterialTheme.typography.bodyLarge)
+                Text("جست‌وجو", style = MaterialTheme.typography.labelSmall)
             },
             textStyle = MaterialTheme.typography.headlineMedium,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
@@ -77,32 +79,38 @@ fun SearchBar(
                 onSearchQueryIconClicked(query)
                 keyboardController?.hide()
             }),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Gray,
-                errorContainerColor = Color.Red,
-            ),
         )
 
-        Row {
-            Text("جست‌وجو در: ")
+        Row(modifier = Modifier.padding(8.dp)) {
+            Text("جست‌وجو در: ", style = MaterialTheme.typography.labelSmall)
             if (selectedPoet == null) {
-                Text(text = "همه", modifier = Modifier.clickable { expanded = true })
+                Text(
+                    text = "همه",
+                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier.clickable { expanded = true })
             } else {
-                Text(text = selectedPoet!!.name, modifier = Modifier.clickable { expanded = true })
+                Text(text = selectedPoet!!.name,
+                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier.clickable { expanded = true })
             }
-            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+                    .height(200.dp)
+                    .padding(8.dp)
+            ) {
                 DropdownMenuItem(
-                    text = { Text("همه") },
+                    text = { Text("همه", style = MaterialTheme.typography.labelMedium) },
                     onClick = {
                         onSearchFilterChanged(null)
                         selectedPoet = null
                         expanded = false
                     })
                 poets.forEach { poet ->
+                    Divider()
                     DropdownMenuItem(
-                        text = { Text(poet.name) },
+                        text = { Text(poet.name, style = MaterialTheme.typography.labelMedium) },
                         onClick = {
                             onSearchFilterChanged(poet)
                             selectedPoet = poet

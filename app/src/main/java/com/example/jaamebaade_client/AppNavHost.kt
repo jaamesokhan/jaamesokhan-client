@@ -1,7 +1,8 @@
 package com.example.jaamebaade_client
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -16,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -50,18 +50,15 @@ fun AppNavHost(fontRepository: FontRepository) {
         val selectedFontFamily = getFontByFontFamilyName(fontFamily)
         return when (type) {
             "small" -> TextStyle(
-                fontFamily = selectedFontFamily,
-                fontSize = (fontSize * FONT_SCALE - 5).sp
+                fontFamily = selectedFontFamily, fontSize = (fontSize * FONT_SCALE - 5).sp
             )
 
             "large" -> TextStyle(
-                fontFamily = selectedFontFamily,
-                fontSize = (fontSize * FONT_SCALE + 5).sp
+                fontFamily = selectedFontFamily, fontSize = (fontSize * FONT_SCALE + 5).sp
             )
 
             else -> TextStyle(
-                fontFamily = selectedFontFamily,
-                fontSize = (fontSize * FONT_SCALE).sp
+                fontFamily = selectedFontFamily, fontSize = (fontSize * FONT_SCALE).sp
             )
         }
     }
@@ -85,31 +82,63 @@ fun AppNavHost(fontRepository: FontRepository) {
     }
     JaamebaadeclientTheme(typography = typography) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-            Scaffold(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background),
+            Scaffold(modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
                 bottomBar = { Navbar(navController = navController) },
                 topBar = {
                     TopBar(
-                        innerPadding = PaddingValues(16.dp, 16.dp, 16.dp, 16.dp),
                         navController = navController
                     )
-                }
-            ) { innerPadding ->
+                }) { innerPadding ->
                 NavHost(navController = navController, startDestination = "downloadedPoetsScreen") {
                     // TODO find a way for referencing the routes NOT as a String
-                    composable("downloadedPoetsScreen") {
+                    composable(route = "downloadedPoetsScreen",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(700)
+                            )
+                        }, exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(700)
+                            )
+                        }) {
                         DownloadedPoetsScreen(
                             modifier = Modifier.padding(
                                 innerPadding
                             ), navController = navController
                         )
                     }
-                    composable("downloadablePoetsScreen") {
+                    composable(route = "downloadablePoetsScreen",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(700)
+                            )
+                        }, exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(700)
+                            )
+                        }) {
                         DownloadablePoetsScreen(modifier = Modifier.padding(innerPadding))
                     }
-                    composable("poetCategoryScreen/{poetId}/{parentId}") { backStackEntry ->
+                    composable(route = "poetCategoryScreen/{poetId}/{parentId}",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(700)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(700)
+                            )
+                        }
+                    ) { backStackEntry ->
                         val poetId = backStackEntry.arguments?.getString("poetId")?.toInt()
                         val parentId = backStackEntry.arguments?.getString("parentId")?.toInt()
                         PoetCategoryScreen(
@@ -119,22 +148,45 @@ fun AppNavHost(fontRepository: FontRepository) {
                             navController = navController
                         )
                     }
-                    composable("settingsScreen") {
+                    composable("settingsScreen",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(700)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(700)
+                            )
+                        }
+                    ) {
                         SettingsScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            navController = navController
+                            modifier = Modifier.padding(innerPadding), navController = navController
                         )
                     }
-                    composable("searchScreen") {
+                    composable(route = "searchScreen",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(700)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(700)
+                            )
+                        }
+                    ) {
                         SearchScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            navController = navController
+                            modifier = Modifier.padding(innerPadding), navController = navController
                         )
                     }
                     composable("favoriteScreen") {
                         FavoritesScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            navController = navController
+                            modifier = Modifier.padding(innerPadding), navController = navController
                         )
                     }
                     composable("poemsListScreen/{poetId}/{categoryId}") { backStackEntry ->
