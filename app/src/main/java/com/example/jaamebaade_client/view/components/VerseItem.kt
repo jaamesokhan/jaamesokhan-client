@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
@@ -117,7 +119,7 @@ fun VerseItem(
 
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = if (verse.position % 2 == 0) Arrangement.Start else Arrangement.End,
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
 
     ) {
@@ -157,4 +159,7 @@ fun VerseItem(
             }
         }
     }
+    if (verse.position % 2 == 1)
+        Spacer(modifier = Modifier.height(24.dp))
+        
 }
