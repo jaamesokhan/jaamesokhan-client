@@ -3,7 +3,6 @@ package com.example.jaamebaade_client
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -90,7 +88,6 @@ fun AppNavHost(fontRepository: FontRepository) {
                 bottomBar = { Navbar(navController = navController) },
                 topBar = {
                     TopBar(
-                        innerPadding = PaddingValues(16.dp, 16.dp, 16.dp, 16.dp),
                         navController = navController
                     )
                 }) { innerPadding ->
@@ -182,7 +179,7 @@ fun AppNavHost(fontRepository: FontRepository) {
                                 animationSpec = tween(700)
                             )
                         }
-                        ) {
+                    ) {
                         SearchScreen(
                             modifier = Modifier.padding(innerPadding), navController = navController
                         )
