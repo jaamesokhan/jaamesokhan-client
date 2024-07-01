@@ -1,5 +1,6 @@
 package com.example.jaamebaade_client
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -23,7 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import com.example.jaamebaade_client.repository.FontRepository
-import com.example.jaamebaade_client.ui.theme.FONT_SCALE
+import com.example.jaamebaade_client.ui.theme.FONT_SIZE_LIST
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import com.example.jaamebaade_client.ui.theme.getFontByFontFamilyName
 import com.example.jaamebaade_client.view.AccountScreen
@@ -48,17 +49,19 @@ fun AppNavHost(fontRepository: FontRepository) {
 
     fun createTextStyle(type: String): TextStyle {
         val selectedFontFamily = getFontByFontFamilyName(fontFamily)
+        val selectedSize = FONT_SIZE_LIST[fontSize] ?: 16
+        Log.d("size", "$fontSize")
         return when (type) {
             "small" -> TextStyle(
-                fontFamily = selectedFontFamily, fontSize = (fontSize * FONT_SCALE - 5).sp
+                fontFamily = selectedFontFamily, fontSize = (selectedSize - 5).sp
             )
 
             "large" -> TextStyle(
-                fontFamily = selectedFontFamily, fontSize = (fontSize * FONT_SCALE + 5).sp
+                fontFamily = selectedFontFamily, fontSize = (selectedSize + 5).sp
             )
 
             else -> TextStyle(
-                fontFamily = selectedFontFamily, fontSize = (fontSize * FONT_SCALE).sp
+                fontFamily = selectedFontFamily, fontSize = (selectedSize).sp
             )
         }
     }
