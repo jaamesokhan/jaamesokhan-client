@@ -69,6 +69,11 @@ fun VerseScreen(navController: NavController, poemId: Int, poetId: Int, modifier
         modifier = modifier
     ) {
         VersePageHeader(
+            navController,
+            poetId,
+            poemId,
+            minId,
+            maxId,
             poetName = poetName,
             poemTitle = poemTitle,
             versesViewModel = versesViewModel,
@@ -90,51 +95,6 @@ fun VerseScreen(navController: NavController, poemId: Int, poetId: Int, modifier
                 ) { startIndex, endIndex ->
                     versesViewModel.highlight(verseWithHighlights.verse.id, startIndex, endIndex)
                 }
-                if (index == versesWithHighlights.lastIndex)
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    ) {
-                        IconButton(
-                            onClick = {
-
-                                navController.navigate(
-                                    "poem/${poetId}/${poemId - 1}",
-                                    navOptions {
-                                        popUpTo("poem/{poetId}/{poemId}") {
-                                            inclusive = true
-                                        }
-                                    }
-                                )
-                            },
-                            enabled = poemId - 1 > minId
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.KeyboardArrowRight,
-                                contentDescription = "Previous"
-                            )
-                        }
-                        IconButton(
-                            onClick = {
-                                navController.navigate(
-                                    "poem/${poetId}/${poemId + 1}",
-                                    navOptions {
-                                        popUpTo("poem/{poetId}/{poemId}") {
-                                            inclusive = true
-                                        }
-                                    }
-                                )
-                            },
-                            enabled = poemId + 1 < maxId
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.KeyboardArrowLeft,
-                                contentDescription = "Next"
-                            )
-                        }
-                    }
             }
         }
 
