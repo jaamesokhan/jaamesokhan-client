@@ -132,7 +132,7 @@ fun NavbarItem(
                 icon,
                 contentDescription = contentDescription,
                 modifier = Modifier.size(36.dp),
-                tint = MaterialTheme.colorScheme.onBackground
+                tint = MaterialTheme.colorScheme.inversePrimary
             )
         }
     }

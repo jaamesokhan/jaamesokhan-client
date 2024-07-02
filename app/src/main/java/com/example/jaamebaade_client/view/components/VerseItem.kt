@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -86,9 +88,20 @@ fun VerseItem(
             } catch (e: Exception) {
                 Log.e("VerseItem", "Error in getting word meaning", e)
             }
-            Surface {
+            Surface(
+                shape = RoundedCornerShape(4.dp),
+                modifier = Modifier.defaultMinSize(
+                    minWidth = 300.dp,
+                    minHeight = 200.dp
+                )
+            ) {
                 Column(modifier = Modifier.padding(8.dp)) {
-                    Row {
+                    Row(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
                         Button(onClick = {
                             highlightCallBack(
                                 startIndex,

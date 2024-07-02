@@ -57,8 +57,7 @@ fun SearchBar(
             },
             modifier = modifier
                 .fillMaxWidth()
-                .background(Color.Transparent)
-                .height(80.dp),
+                .background(Color.Transparent),
             trailingIcon = {
                 IconButton(onClick = {
                     onSearchQueryIconClicked(query)

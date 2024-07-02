@@ -63,7 +63,7 @@ fun VersePageHeader(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(2.dp, 2.dp)
+                .padding(4.dp, 2.dp)
         ) {
             Text(
                 text = poetName,

@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.HideSource
+import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -99,7 +99,7 @@ fun AccountScreen(
                                 passwordVisibility.value = !passwordVisibility.value
                             }) {
                                 Icon(
-                                    imageVector = if (passwordVisibility.value) Icons.Default.Close else Icons.Default.Add,
+                                    imageVector = if (passwordVisibility.value) Icons.Filled.HideSource else Icons.Filled.RemoveRedEye,
                                     contentDescription = if (passwordVisibility.value) "Hide password" else "Show password"
                                 )
                             }
