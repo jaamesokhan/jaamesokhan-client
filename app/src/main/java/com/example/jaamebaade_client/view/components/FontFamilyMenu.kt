@@ -25,7 +25,7 @@ fun FontFamilyMenu(fontRepository: FontRepository) {
     var expanded by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     Text(
-        text = selectedFontFamily.takeIf { it.isNotBlank() } ?: "Default",
+        text = selectedFontFamily.takeIf { it.isNotBlank() } ?: "VazirMatn",
         modifier = Modifier.clickable(onClick = { expanded = true }),
         style = TextStyle(
             fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,

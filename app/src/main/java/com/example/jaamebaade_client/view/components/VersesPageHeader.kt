@@ -150,7 +150,7 @@ fun VersePageHeader(
                                 )
                                 Text(
                                     text = if (showVerseNumbers) "مخفی‌سازی شماره بیت" else "نمایش شماره بیت",
-                                    style = MaterialTheme.typography.headlineMedium
+                                    style = MaterialTheme.typography.headlineSmall
                                 )
                             }
                         },
@@ -171,7 +171,7 @@ fun VersePageHeader(
                             )
                             Text(
                                 text = "علاقه‌مندی",
-                                style = MaterialTheme.typography.headlineMedium
+                                style = MaterialTheme.typography.headlineSmall
                             )
                         }
                     }, onClick = {
