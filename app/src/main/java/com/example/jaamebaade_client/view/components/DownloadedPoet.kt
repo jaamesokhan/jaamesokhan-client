@@ -37,6 +37,9 @@ fun DownloadedPoet(poet: Poet, onClick: () -> Unit) {
                 .size(100.dp) // adjust the size as needed
                 .clip(CircleShape)
         )
-        Text(text = poet.name, style = MaterialTheme.typography.headlineSmall) // replace with your poet's name
+        Text(
+            text = poet.name,
+            style = MaterialTheme.typography.headlineSmall
+        ) // replace with your poet's name
     }
 }

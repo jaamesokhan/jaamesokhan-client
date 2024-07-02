@@ -118,7 +118,9 @@ fun VerseItem(
     }
 
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(0.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
 
@@ -130,7 +132,7 @@ fun VerseItem(
                 modifier = Modifier.padding(end = 2.dp)
             )
         }
-        SelectionContainer {
+        SelectionContainer(modifier = Modifier.padding(0.dp)) {
             CompositionLocalProvider(
                 LocalTextInputService provides null
             ) {
@@ -144,6 +146,7 @@ fun VerseItem(
                             showDialog = true
                         }
                     },
+                    modifier = Modifier.padding(0.dp),
                     textStyle = MaterialTheme.typography.bodyMedium,
                     readOnly = true,
                     colors = TextFieldDefaults.colors(
@@ -161,5 +164,5 @@ fun VerseItem(
     }
     if (verse.position % 2 == 1)
         Spacer(modifier = Modifier.height(24.dp))
-        
+
 }

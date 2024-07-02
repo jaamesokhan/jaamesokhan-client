@@ -3,7 +3,6 @@ package com.example.jaamebaade_client.view.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -51,7 +50,9 @@ fun TopBar(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Row {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
                     Image(
                         myIcon,
                         contentDescription = "Logo",
@@ -69,6 +70,7 @@ fun TopBar(navController: NavController) {
                 if (canPop) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                         contentDescription = "Back",
                         modifier = Modifier
                             .clickable { navController.popBackStack() }

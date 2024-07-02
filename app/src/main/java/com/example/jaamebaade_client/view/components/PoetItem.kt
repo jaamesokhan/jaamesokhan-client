@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -72,66 +74,84 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
 
         ) {
             if (painter.state is AsyncImagePainter.State.Loading) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    modifier = Modifier.widthIn(min = 100.dp)
+                )
             } else {
                 Image(
                     painter = painter,
                     modifier = Modifier
-                        .size(100.dp),
+                        .size(100.dp)
+                        .widthIn(min = 100.dp),
                     contentDescription = poet.name
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = poet.name,
-                modifier = Modifier.width(80.dp),
-                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-                maxLines = 3
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = poet.description,
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable { expanded = !expanded },
-                style = MaterialTheme.typography.bodySmall,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = if (expanded) Int.MAX_VALUE else 3
-            )
+            Column {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
+                ) {
+                    Text(
+                        text = poet.name,
+                        modifier = Modifier.width(80.dp),
+                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                        maxLines = 3
+                    )
 
-            Spacer(modifier = Modifier.width(16.dp))
+                    Box(
+                        modifier = Modifier
+//                            .weight(0.2f)
+                            .clickable { onClick() },
+                    ) {
+                        when (status) {
+                            DownloadStatus.NotDownloaded -> {
+                                Icon(
+                                    imageVector = Icons.Filled.Download,
+                                    contentDescription = "Download"
+                                )
+                            }
 
-            Box(
-                modifier = Modifier
-                    .weight(0.2f)
-                    .clickable { onClick() },
-            ) {
-                when (status) {
-                    DownloadStatus.NotDownloaded -> {
-                        Icon(imageVector = Icons.Filled.Download, contentDescription = "Download")
-                    }
+                            DownloadStatus.Downloading -> {
+                                CircularProgressIndicator()
+                            }
 
-                    DownloadStatus.Downloading -> {
-                        CircularProgressIndicator()
-                    }
+                            DownloadStatus.Downloaded -> {
+                                Icon(
+                                    imageVector = Icons.Filled.DownloadDone,
+                                    contentDescription = "Downloaded"
+                                )
+                            }
 
-                    DownloadStatus.Downloaded -> {
-                        Icon(
-                            imageVector = Icons.Filled.DownloadDone,
-                            contentDescription = "Downloaded"
-                        )
-                    }
-
-                    DownloadStatus.Failed -> {
-                        Toast.makeText(
-                            LocalContext.current,
-                            "Failed to download ${poet.name} ",
-                            Toast.LENGTH_SHORT
-                        ).show() // TODO
-                        Icon(imageVector = Icons.Filled.Add, contentDescription = "Download")
+                            DownloadStatus.Failed -> {
+                                Toast.makeText(
+                                    LocalContext.current,
+                                    "Failed to download ${poet.name} ",
+                                    Toast.LENGTH_SHORT
+                                ).show() // TODO
+                                Icon(
+                                    imageVector = Icons.Filled.Add,
+                                    contentDescription = "Download"
+                                )
+                            }
+                        }
                     }
                 }
+
+                Text(
+                    text = poet.description,
+                    modifier = Modifier
+//                        .weight(1f)
+                        .clickable { expanded = !expanded },
+                    style = MaterialTheme.typography.bodySmall,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = if (expanded) Int.MAX_VALUE else 3
+                )
             }
+
         }
     }
 }

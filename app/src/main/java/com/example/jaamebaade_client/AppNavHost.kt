@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Typography
@@ -87,6 +88,7 @@ fun AppNavHost(fontRepository: FontRepository) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             Scaffold(modifier = Modifier
                 .fillMaxSize()
+                .systemBarsPadding()
                 .background(MaterialTheme.colorScheme.background),
                 bottomBar = { Navbar(navController = navController) },
                 topBar = {
