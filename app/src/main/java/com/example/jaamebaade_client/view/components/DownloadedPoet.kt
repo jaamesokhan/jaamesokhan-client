@@ -39,7 +39,7 @@ fun DownloadedPoet(poet: Poet, onClick: () -> Unit) {
         )
         Text(
             text = poet.name,
-            style = MaterialTheme.typography.headlineSmall
-        ) // replace with your poet's name
+            style = MaterialTheme.typography.headlineMedium
+        )
     }
 }

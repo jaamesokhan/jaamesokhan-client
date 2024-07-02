@@ -167,6 +167,6 @@ fun VerseItem(
         }
     }
     if (verse.position % 2 == 1)
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
 }
