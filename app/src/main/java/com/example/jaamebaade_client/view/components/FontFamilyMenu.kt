@@ -1,6 +1,7 @@
 package com.example.jaamebaade_client.view.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +26,7 @@ fun FontFamilyMenu(fontRepository: FontRepository) {
     var expanded by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     Text(
-        text = selectedFontFamily.takeIf { it.isNotBlank() } ?: "Default",
+        text = selectedFontFamily.takeIf { it.isNotBlank() } ?: "VazirMatn",
         modifier = Modifier.clickable(onClick = { expanded = true }),
         style = TextStyle(
             fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
@@ -36,7 +37,7 @@ fun FontFamilyMenu(fontRepository: FontRepository) {
         expanded = expanded,
         onDismissRequest = { expanded = false }
     ) {
-        fontFamiliesList.forEach { fontFamily ->
+        fontFamiliesList.forEachIndexed() { index, fontFamily ->
             DropdownMenuItem(text = {
                 Text(
                     fontFamily, style = TextStyle(
@@ -50,6 +51,8 @@ fun FontFamilyMenu(fontRepository: FontRepository) {
                 showDialog = true
                 expanded = false
             })
+            if (index != fontFamiliesList.lastIndex)
+                Divider()
         }
     }
     if (showDialog) {

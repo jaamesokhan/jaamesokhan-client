@@ -16,9 +16,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.DownloadDone
+import androidx.compose.material.icons.filled.FileDownloadOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
@@ -98,7 +97,7 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                     Text(
                         text = poet.name,
                         modifier = Modifier.width(80.dp),
-                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                        style = MaterialTheme.typography.titleLarge,
                         maxLines = 3
                     )
 
@@ -131,9 +130,9 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                                     LocalContext.current,
                                     "Failed to download ${poet.name} ",
                                     Toast.LENGTH_SHORT
-                                ).show() // TODO
+                                ).show()
                                 Icon(
-                                    imageVector = Icons.Filled.Add,
+                                    imageVector = Icons.Filled.FileDownloadOff,
                                     contentDescription = "Download"
                                 )
                             }

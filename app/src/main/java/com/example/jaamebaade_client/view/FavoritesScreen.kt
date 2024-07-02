@@ -33,7 +33,7 @@ fun FavoritesScreen(
                 Tab(
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
-                    text = { Text(text = title, style = MaterialTheme.typography.headlineLarge) },
+                    text = { Text(text = title, style = MaterialTheme.typography.headlineMedium) },
                     selectedContentColor = MaterialTheme.colorScheme.onSurface,
                     unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

@@ -49,7 +49,7 @@ fun Navbar(navController: NavController) {
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.primary)
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(4.dp)
             .navigationBarsPadding(),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
@@ -99,11 +99,16 @@ fun NavbarItem(
     val isSelected = currentRoute == route
     IconButton(
         onClick = {
+            var myInclusive = false
+            if (currentRoute != route)
+                if (route == "downloadedPoetsScreen")
+                    myInclusive = true
             navController.navigate(route, navOptions {
                 popUpTo("downloadedPoetsScreen") {
-                    inclusive = false
+                    inclusive = myInclusive
                 }
             })
+
         },
         modifier = Modifier
     ) {
@@ -127,7 +132,7 @@ fun NavbarItem(
                 icon,
                 contentDescription = contentDescription,
                 modifier = Modifier.size(36.dp),
-                tint = MaterialTheme.colorScheme.onBackground
+                tint = MaterialTheme.colorScheme.inversePrimary
             )
         }
     }

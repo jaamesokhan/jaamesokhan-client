@@ -62,7 +62,7 @@ fun TopBar(navController: NavController) {
                     Spacer(modifier = Modifier.width(16.dp)) // Add space
                     Text(
                         text = "جام باده",
-                        style = MaterialTheme.typography.headlineMedium,
+                        style = MaterialTheme.typography.titleLarge,
                         color = Color.White
                     )
                 }

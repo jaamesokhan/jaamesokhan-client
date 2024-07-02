@@ -22,7 +22,7 @@ val VazirMatn = FontFamily(
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = VazirMatn,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
@@ -48,7 +48,7 @@ val Typography = Typography(
 var FONTS = listOf("Serif", "SansSerif", "IranNastaliq", "VazirMatn")
 
 const val FONT_SCALE = 11
-val FONT_SIZE_LIST = mutableMapOf((1 to 14), (2 to 21), (3 to 28))
+val FONT_SIZE_LIST = mutableMapOf((1 to 9), (2 to 15), (3 to 20))
 
 fun getFontByFontFamilyName(fontFamily: String): FontFamily {
     val ff = when (fontFamily) {

@@ -63,11 +63,11 @@ fun VersePageHeader(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(4.dp, 10.dp)
+                .padding(4.dp, 2.dp)
         ) {
             Text(
                 text = poetName,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .padding(end = 3.dp)
                     .weight(0.2f),
@@ -78,6 +78,7 @@ fun VersePageHeader(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
+                    .padding(4.dp)
                     .weight(0.5f),
             ) {
 
@@ -102,7 +103,7 @@ fun VersePageHeader(
 
                 Text(
                     text = poemTitle,
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
                         .padding(end = 3.dp),
                     overflow = TextOverflow.Ellipsis,
@@ -150,7 +151,7 @@ fun VersePageHeader(
                                 )
                                 Text(
                                     text = if (showVerseNumbers) "مخفی‌سازی شماره بیت" else "نمایش شماره بیت",
-                                    style = MaterialTheme.typography.headlineMedium
+                                    style = MaterialTheme.typography.headlineSmall
                                 )
                             }
                         },
@@ -171,7 +172,7 @@ fun VersePageHeader(
                             )
                             Text(
                                 text = "علاقه‌مندی",
-                                style = MaterialTheme.typography.headlineMedium
+                                style = MaterialTheme.typography.headlineSmall
                             )
                         }
                     }, onClick = {
