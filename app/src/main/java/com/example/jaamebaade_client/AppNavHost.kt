@@ -110,12 +110,12 @@ fun AppNavHost(fontRepository: FontRepository) {
                         enterTransition = {
                             slideIntoContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(700)
+                                animationSpec = tween(400)
                             )
                         }, exitTransition = {
                             slideOutOfContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Right,
-                                animationSpec = tween(700)
+                                animationSpec = tween(400)
                             )
                         }) {
                         DownloadedPoetsScreen(
@@ -128,12 +128,12 @@ fun AppNavHost(fontRepository: FontRepository) {
                         enterTransition = {
                             slideIntoContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(700)
+                                animationSpec = tween(400)
                             )
                         }, exitTransition = {
                             slideOutOfContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Right,
-                                animationSpec = tween(700)
+                                animationSpec = tween(400)
                             )
                         }) {
                         DownloadablePoetsScreen(modifier = Modifier.padding(innerPadding))
@@ -142,13 +142,13 @@ fun AppNavHost(fontRepository: FontRepository) {
                         enterTransition = {
                             slideIntoContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(700)
+                                animationSpec = tween(400)
                             )
                         },
                         exitTransition = {
                             slideOutOfContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Right,
-                                animationSpec = tween(700)
+                                animationSpec = tween(400)
                             )
                         }
                     ) { backStackEntry ->

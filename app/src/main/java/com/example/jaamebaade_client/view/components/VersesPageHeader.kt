@@ -78,6 +78,7 @@ fun VersePageHeader(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
+                    .padding(4.dp)
                     .weight(0.5f),
             ) {
 
