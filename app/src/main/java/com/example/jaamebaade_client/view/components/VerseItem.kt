@@ -32,6 +32,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -122,9 +123,10 @@ fun VerseItem(
             .fillMaxWidth()
             .padding(0.dp),
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
 
-    ) {
+
+        ) {
         if (showVerseNumber && index % 2 == 0) {
             Text(
                 text = "${index / 2 + 1}",
@@ -147,7 +149,9 @@ fun VerseItem(
                         }
                     },
                     modifier = Modifier.padding(0.dp),
-                    textStyle = MaterialTheme.typography.bodyMedium,
+                    textStyle = MaterialTheme.typography.bodyMedium.copy(
+                        textAlign = TextAlign.Center // Center the text within the TextField
+                    ),
                     readOnly = true,
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
