@@ -62,7 +62,7 @@ fun AppNavHost(fontRepository: FontRepository) {
                 (selectedSize).sp
         }
 
-        val typeBasedFontWeight = when(type){
+        val typeBasedFontWeight = when (type) {
             "headline" -> FontWeight.Medium
             "title" -> FontWeight.Bold
             "label" -> FontWeight.Light
@@ -70,7 +70,9 @@ fun AppNavHost(fontRepository: FontRepository) {
         }
         Log.d("size", "$sizeBasedFontSize")
         return TextStyle(
-            fontFamily = selectedFontFamily, fontSize = sizeBasedFontSize, fontWeight = typeBasedFontWeight
+            fontFamily = selectedFontFamily,
+            fontSize = sizeBasedFontSize,
+            fontWeight = typeBasedFontWeight
         )
     }
 

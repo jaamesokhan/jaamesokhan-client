@@ -4,9 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.jaamebaade_client.repository.FontRepository
+import com.example.jaamebaade_client.ui.theme.primaryDark
+import com.example.jaamebaade_client.ui.theme.primaryLight
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -21,11 +25,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        // Set the navigation bar color
-        window.navigationBarColor = android.graphics.Color.BLACK// Replace with your desired color
-        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars = true
-
         setContent {
+            val isDarkTheme = isSystemInDarkTheme()
+            val navBarColor = if (isDarkTheme) primaryDark else primaryLight
+            window.navigationBarColor = navBarColor.toArgb()
+            WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars =
+                true
             AppNavHost(fontRepository)
         }
     }
