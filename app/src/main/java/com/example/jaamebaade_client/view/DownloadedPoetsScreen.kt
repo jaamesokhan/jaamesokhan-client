@@ -73,6 +73,7 @@ fun DownloadedPoetsScreen(
                 Icon(
                     imageVector = Icons.Filled.Download,
                     contentDescription = "Add Poet",
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }

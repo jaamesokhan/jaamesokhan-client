@@ -14,13 +14,11 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -39,6 +37,7 @@ val routeMap = mapOf(
     "searchScreen" to "searchScreen",
     "favoriteScreen" to "favoriteScreen",
 )
+
 @Composable
 fun Navbar(navController: NavController) {
     val currentRoute = currentRoute(navController, routeMap)
@@ -95,22 +94,23 @@ fun NavbarItem(
 ) {
     val isSelected = currentRoute == route
     IconButton(
-        onClick = { navController.navigate(route, navOptions {
-            popUpTo("downloadedPoetsScreen") {
-                inclusive = false
-            }
-        }) },
+        onClick = {
+            navController.navigate(route, navOptions {
+                popUpTo("downloadedPoetsScreen") {
+                    inclusive = false
+                }
+            })
+        },
         modifier = Modifier
     ) {
         Icon(
             icon,
             contentDescription = contentDescription,
             modifier = Modifier.size(36.dp),
-            tint = if (isSelected) MaterialTheme.colorScheme.onPrimary else LocalContentColor.current
+            tint = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onBackground
         )
     }
 }
-
 
 
 @Composable

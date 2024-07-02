@@ -28,14 +28,14 @@ fun FavoritesScreen(
     Column(modifier) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
-//            containerColor = MaterialTheme.colorScheme.inversePrimary, TODO colors!
-//            contentColor = contentColorFor(backgroundColor = MaterialTheme.colorScheme.primary)
         ) {
             tabs.forEachIndexed { index, title ->
                 Tab(
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
-                    text = { Text(text = title, style = MaterialTheme.typography.headlineLarge) }
+                    text = { Text(text = title, style = MaterialTheme.typography.headlineLarge) },
+                    selectedContentColor = MaterialTheme.colorScheme.onSurface,
+                    unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }

@@ -70,58 +70,64 @@ fun VersePageHeader(
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier
                     .padding(end = 3.dp)
-                    .weight(0.5f),
+                    .weight(0.2f),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 2
             )
-            IconButton(
-                onClick = {
-
-                    navController.navigate(
-                        "poem/${poetId}/${poemId - 1}",
-                        navOptions {
-                            popUpTo("poem/{poetId}/{poemId}") {
-                                inclusive = true
-                            }
-                        }
-                    )
-                },
-                enabled = poemId - 1 >= minId
-            ) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = "Previous"
-                )
-            }
-
-            Text(
-                text = poemTitle,
-                style = MaterialTheme.typography.headlineMedium,
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(end = 3.dp)
                     .weight(0.5f),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2
-            )
-            IconButton(
-                onClick = {
-                    navController.navigate(
-                        "poem/${poetId}/${poemId + 1}",
-                        navOptions {
-                            popUpTo("poem/{poetId}/{poemId}") {
-                                inclusive = true
-                            }
-                        }
-                    )
-                },
-                enabled = poemId + 1 <= maxId
             ) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowLeft,
-                    contentDescription = "Next"
-                )
-            }
 
+                IconButton(
+                    onClick = {
+                        navController.navigate(
+                            "poem/${poetId}/${poemId - 1}",
+                            navOptions {
+                                popUpTo("poem/{poetId}/{poemId}") {
+                                    inclusive = true
+                                }
+                            }
+                        )
+                    },
+                    enabled = poemId - 1 >= minId
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = "Previous"
+                    )
+                }
+
+                Text(
+                    text = poemTitle,
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier
+                        .padding(end = 3.dp),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+                IconButton(
+                    onClick = {
+                        navController.navigate(
+                            "poem/${poetId}/${poemId + 1}",
+                            navOptions {
+                                popUpTo("poem/{poetId}/{poemId}") {
+                                    inclusive = true
+                                }
+                            }
+                        )
+                    },
+                    enabled = poemId + 1 <= maxId
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowLeft,
+                        contentDescription = "Next"
+                    )
+                }
+
+            }
             Spacer(modifier = Modifier.weight(0.1f))
 
             Box {

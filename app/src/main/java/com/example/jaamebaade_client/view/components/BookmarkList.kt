@@ -9,7 +9,6 @@ import com.example.jaamebaade_client.viewmodel.FavoritesViewModel
 
 @Composable
 fun BookmarkList(viewModel: FavoritesViewModel, navController: NavController) {
-    // Your content for Tab 1
     val bookmarks = viewModel.bookmarks
     LazyColumn {
         if (bookmarks.isEmpty()) {

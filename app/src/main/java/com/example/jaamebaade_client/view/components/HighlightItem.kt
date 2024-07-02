@@ -1,23 +1,18 @@
 package com.example.jaamebaade_client.view.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
-import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.jaamebaade_client.model.HighlightVersePoemPoet
-import com.example.jaamebaade_client.model.Poem
-import com.example.jaamebaade_client.model.Poet
-import com.example.jaamebaade_client.model.VerseWithHighlights
 
 @Composable
 fun HighlightItem(
@@ -28,17 +23,17 @@ fun HighlightItem(
 ) {
     val startIndex = highlightVersePoemPoet.highlight.startIndex
     val endIndex = highlightVersePoemPoet.highlight.endIndex
-    OutlinedCard(
+    Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(4.dp)
+            .padding(10.dp)
             .clickable { navController.navigate("poem/${highlightVersePoemPoet.poet.id}/${highlightVersePoemPoet.poem.id}") }
 
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp)
+                .padding(8.dp)
         ) {
             Text(
                 text = "${highlightVersePoemPoet.poet.name}>${highlightVersePoemPoet.poem.title}",
@@ -47,7 +42,9 @@ fun HighlightItem(
             Text(
                 highlightVersePoemPoet.verse.text.substring(startIndex, endIndex),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.Red,
+                modifier = Modifier.background(
+                    color = MaterialTheme.colorScheme.tertiary,
+                ),
             )
 
         }
