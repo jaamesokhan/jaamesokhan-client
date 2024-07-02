@@ -63,11 +63,11 @@ fun VersePageHeader(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(4.dp, 10.dp)
+                .padding(2.dp, 2.dp)
         ) {
             Text(
                 text = poetName,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .padding(end = 3.dp)
                     .weight(0.2f),
@@ -102,7 +102,7 @@ fun VersePageHeader(
 
                 Text(
                     text = poemTitle,
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
                         .padding(end = 3.dp),
                     overflow = TextOverflow.Ellipsis,
