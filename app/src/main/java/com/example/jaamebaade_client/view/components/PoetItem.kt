@@ -98,7 +98,7 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                     Text(
                         text = poet.name,
                         modifier = Modifier.width(80.dp),
-                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                        style = MaterialTheme.typography.titleLarge,
                         maxLines = 3
                     )
 
@@ -133,7 +133,7 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                                     Toast.LENGTH_SHORT
                                 ).show() // TODO
                                 Icon(
-                                    imageVector = Icons.Filled.Add,
+                                    imageVector = Icons.Filled.Download,
                                     contentDescription = "Download"
                                 )
                             }

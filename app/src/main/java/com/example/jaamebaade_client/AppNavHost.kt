@@ -54,9 +54,9 @@ fun AppNavHost(fontRepository: FontRepository) {
         val selectedFontFamily = getFontByFontFamilyName(fontFamily)
         val selectedSize = FONT_SIZE_LIST[fontSize] ?: 16
         val sizeBasedFontSize: TextUnit = when (size) {
-            "small" -> (selectedSize - 5).sp
+            "small" -> (selectedSize - 3.5).sp
 
-            "large" -> (selectedSize + 5).sp
+            "large" -> (selectedSize + 3.5).sp
 
             else ->
                 (selectedSize).sp

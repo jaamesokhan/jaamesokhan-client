@@ -99,11 +99,16 @@ fun NavbarItem(
     val isSelected = currentRoute == route
     IconButton(
         onClick = {
+            var myInclusive = false
+            if (currentRoute != route)
+                if (route == "downloadedPoetsScreen")
+                    myInclusive = true
             navController.navigate(route, navOptions {
                 popUpTo("downloadedPoetsScreen") {
-                    inclusive = false
+                    inclusive = myInclusive
                 }
             })
+
         },
         modifier = Modifier
     ) {
