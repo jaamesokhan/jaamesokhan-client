@@ -47,7 +47,7 @@ fun Navbar(navController: NavController) {
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.primary)
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(4.dp)
             .navigationBarsPadding(),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically

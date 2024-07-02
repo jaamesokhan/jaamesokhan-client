@@ -48,7 +48,7 @@ val Typography = Typography(
 var FONTS = listOf("Serif", "SansSerif", "IranNastaliq", "VazirMatn")
 
 const val FONT_SCALE = 11
-val FONT_SIZE_LIST = mutableMapOf((1 to 14), (2 to 21), (3 to 28))
+val FONT_SIZE_LIST = mutableMapOf((1 to 8), (2 to 14), (3 to 20))
 
 fun getFontByFontFamilyName(fontFamily: String): FontFamily {
     val ff = when (fontFamily) {
