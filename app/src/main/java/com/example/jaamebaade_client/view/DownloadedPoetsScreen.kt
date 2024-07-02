@@ -35,18 +35,37 @@ fun DownloadedPoetsScreen(
     val poets = downloadedPoetViewModel.poets
     val coroutineScope = rememberCoroutineScope()
     if (poets.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = modifier
+                .fillMaxSize(), contentAlignment = Alignment.Center
+        ) {
             Text(
                 text = "هیچ شاعری را دانلود نکرده‌ای!",
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = modifier.padding(8.dp)
             )
+            IconButton(
+                onClick = {
+                    navController.navigate("downloadablePoetsScreen")
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
+                    .size(60.dp)
+                    .background(MaterialTheme.colorScheme.primary, shape = CircleShape)
+
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Download,
+                    contentDescription = "Add Poet",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
         }
     } else {
         Box(
             modifier = modifier
                 .fillMaxSize()
-                .padding(8.dp, 16.dp)
         ) {
             LazyVerticalGrid(columns = GridCells.Fixed(3)) {
                 items(poets) { poet ->

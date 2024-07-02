@@ -43,7 +43,7 @@ class SharedPrefManager(
     }
 
     fun getFontSize(): Int {
-        return sharedPreferences.getInt("fontSize", 1)
+        return sharedPreferences.getInt("fontSize", 2)
 
     }
 }
