@@ -18,7 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -48,39 +50,45 @@ fun AppNavHost(fontRepository: FontRepository) {
     val fontSize by fontRepository.fontSize.collectAsState()
     val fontFamily by fontRepository.fontFamily.collectAsState()
 
-    fun createTextStyle(type: String): TextStyle {
+    fun createTextStyle(size: String, type: String): TextStyle {
         val selectedFontFamily = getFontByFontFamilyName(fontFamily)
         val selectedSize = FONT_SIZE_LIST[fontSize] ?: 16
-        Log.d("size", "$fontSize")
-        return when (type) {
-            "small" -> TextStyle(
-                fontFamily = selectedFontFamily, fontSize = (selectedSize - 5).sp
-            )
+        val sizeBasedFontSize: TextUnit = when (size) {
+            "small" -> (selectedSize - 5).sp
 
-            "large" -> TextStyle(
-                fontFamily = selectedFontFamily, fontSize = (selectedSize + 5).sp
-            )
+            "large" -> (selectedSize + 5).sp
 
-            else -> TextStyle(
-                fontFamily = selectedFontFamily, fontSize = (selectedSize).sp
-            )
+            else ->
+                (selectedSize).sp
         }
+
+        val typeBasedFontWeight = when(type){
+            "headline" -> FontWeight.Medium
+            "title" -> FontWeight.Bold
+            "label" -> FontWeight.Light
+            else -> FontWeight.Normal
+        }
+        Log.d("size", "$sizeBasedFontSize")
+        return TextStyle(
+            fontFamily = selectedFontFamily, fontSize = sizeBasedFontSize, fontWeight = typeBasedFontWeight
+        )
     }
 
     val typography = remember {
         Typography(
-            bodyLarge = createTextStyle("large"),
-            bodyMedium = createTextStyle("medium"),
-            bodySmall = createTextStyle("small"),
-            headlineLarge = createTextStyle("large"),
-            headlineMedium = createTextStyle("medium"),
-            headlineSmall = createTextStyle("small"),
-            titleLarge = createTextStyle("large"),
-            titleMedium = createTextStyle("medium"),
-            titleSmall = createTextStyle("small"),
-            labelLarge = createTextStyle("large"),
-            labelMedium = createTextStyle("medium"),
-            labelSmall = createTextStyle("small"),
+            bodyLarge = createTextStyle("large", "body"),
+            bodyMedium = createTextStyle("medium", "body"),
+            bodySmall = createTextStyle("small", "body"),
+            headlineLarge = createTextStyle("large", "headline"),
+            headlineMedium = createTextStyle("medium", "headline"),
+            headlineSmall = createTextStyle("small", "headline"),
+            titleLarge = createTextStyle("large", "title"),
+            titleMedium = createTextStyle("medium", "title"),
+            titleSmall = createTextStyle("small", "title"),
+            labelLarge = createTextStyle("large", "label"),
+            labelMedium = createTextStyle("medium", "label"),
+            labelSmall = createTextStyle("small", "label"),
+
             // Define other text styles as needed
         )
     }
