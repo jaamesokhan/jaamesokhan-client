@@ -1,6 +1,7 @@
 package com.example.jaamebaade_client.view
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
@@ -8,6 +9,7 @@ import androidx.compose.material.icons.filled.Create
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jaamebaade_client.view.components.SettingsItem
@@ -20,7 +22,7 @@ fun SettingsScreen(
 ) {
     val username by viewModel.username
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.padding(8.dp)) {
         SettingsItem(
             modifier = Modifier,
             text = username ?: "حساب کاربری",
@@ -41,7 +43,7 @@ fun SettingsScreen(
             }
         }
         SettingsItem(
-            modifier = Modifier,
+            modifier = Modifier.padding(4.dp),
             text = "تنظیمات فونت",
             icon = Icons.Default.Create
         ) {
