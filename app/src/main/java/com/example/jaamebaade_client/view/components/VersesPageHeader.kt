@@ -190,7 +190,7 @@ fun VersePageHeader(
                             )
                             Text(
                                 text = "اشتراک‌گذاری",
-                                style = MaterialTheme.typography.headlineMedium
+                                style = MaterialTheme.typography.headlineSmall
                             )
                         }
                     }, onClick = {

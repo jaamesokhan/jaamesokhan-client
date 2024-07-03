@@ -96,14 +96,14 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                 ) {
                     Text(
                         text = poet.name,
-                        modifier = Modifier.width(80.dp),
+                        modifier = Modifier.weight(0.8f),
                         style = MaterialTheme.typography.titleLarge,
                         maxLines = 3
                     )
 
                     Box(
                         modifier = Modifier
-//                            .weight(0.2f)
+                            .weight(0.2f)
                             .clickable { onClick() },
                     ) {
                         when (status) {
