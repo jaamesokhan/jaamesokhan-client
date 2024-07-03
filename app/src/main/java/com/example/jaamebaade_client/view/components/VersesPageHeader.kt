@@ -83,6 +83,7 @@ fun VersePageHeader(
             ) {
 
                 IconButton(
+                    modifier = Modifier.weight(0.1f),
                     onClick = {
                         navController.navigate(
                             "poem/${poetId}/${poemId - 1}",
@@ -105,11 +106,13 @@ fun VersePageHeader(
                     text = poemTitle,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
+                        .weight(0.3f)
                         .padding(end = 3.dp),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1
                 )
                 IconButton(
+                    modifier = Modifier.weight(0.1f),
                     onClick = {
                         navController.navigate(
                             "poem/${poetId}/${poemId + 1}",
