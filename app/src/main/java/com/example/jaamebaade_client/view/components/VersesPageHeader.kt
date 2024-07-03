@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -83,6 +84,7 @@ fun VersePageHeader(
             ) {
 
                 IconButton(
+                    modifier = Modifier.weight(0.1f),
                     onClick = {
                         navController.navigate(
                             "poem/${poetId}/${poemId - 1}",
@@ -105,11 +107,14 @@ fun VersePageHeader(
                     text = poemTitle,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
+                        .weight(0.3f)
                         .padding(end = 3.dp),
                     overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
                     maxLines = 1
                 )
                 IconButton(
+                    modifier = Modifier.weight(0.1f),
                     onClick = {
                         navController.navigate(
                             "poem/${poetId}/${poemId + 1}",
