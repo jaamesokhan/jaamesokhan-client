@@ -54,6 +54,7 @@ fun VersePageHeader(
     onToggleVerseNumbers: () -> Unit
 ) {
     val isBookmarked by versesViewModel.isBookmarked.collectAsState()
+    val urls by versesViewModel.urls.collectAsState()
 
     val bookmarkIconColor = if (isBookmarked) Color.Red else Color.Gray
     val context = LocalContext.current
@@ -75,6 +76,7 @@ fun VersePageHeader(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 2
             )
+            AudioMenu(urls)
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
