@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">jaamebaade-client</string>
     <string name="SERVER_BASE_URL">http://185.8.174.93:8080/</string>
+    <string name="GANJOOR_BASE_URL">https://api.ganjoor.net/</string>
 </resources>

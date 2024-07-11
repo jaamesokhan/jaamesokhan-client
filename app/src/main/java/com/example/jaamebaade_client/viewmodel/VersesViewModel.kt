@@ -5,6 +5,8 @@ import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.jaamebaade_client.api.AudioApiClient
+import com.example.jaamebaade_client.api.response.AudioData
 import com.example.jaamebaade_client.model.Highlight
 import com.example.jaamebaade_client.model.Pair
 import com.example.jaamebaade_client.model.VerseWithHighlights
@@ -32,6 +34,7 @@ class VersesViewModel @AssistedInject constructor(
     private val poetRepository: PoetRepository,
     private val poemRepository: PoemRepository,
     private val bookmarkRepository: BookmarkRepository,
+    private val audioApiClient: AudioApiClient,
 ) : ViewModel() {
 
     private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
@@ -39,6 +42,9 @@ class VersesViewModel @AssistedInject constructor(
 
     private var _isBookmarked = MutableStateFlow(false)
     val isBookmarked: StateFlow<Boolean> = _isBookmarked
+
+    private val _urls = MutableStateFlow<List<AudioData>>(emptyList())
+    val urls: StateFlow<List<AudioData>> = _urls
 
     fun share(verses: List<VerseWithHighlights>, context: Context) {
         val poemText = verses.joinToString("\n") { it.verse.text }
@@ -65,6 +71,13 @@ class VersesViewModel @AssistedInject constructor(
     init {
         fetchPoemVerses()
         fetchIsBookmarked()
+        fetchRecitationsForPoem()
+    }
+
+    private fun fetchRecitationsForPoem() {
+        viewModelScope.launch {
+            _urls.value = audioApiClient.getAllRecitations(poemId)
+        }
     }
 
     private fun fetchIsBookmarked() {

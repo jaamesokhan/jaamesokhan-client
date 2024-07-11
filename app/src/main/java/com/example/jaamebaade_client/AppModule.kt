@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.example.jaamebaade_client.api.AccountApiClient
 import com.example.jaamebaade_client.api.AccountApiService
+import com.example.jaamebaade_client.api.AudioApiClient
+import com.example.jaamebaade_client.api.AudioApiService
 import com.example.jaamebaade_client.api.DictionaryApiClient
 import com.example.jaamebaade_client.api.DictionaryApiService
 import com.example.jaamebaade_client.api.PoetApiClient
@@ -87,6 +89,25 @@ object AppModule {
     ): DictionaryApiClient {
         return DictionaryApiClient(apiService)
     }
+
+    @Provides
+    @Singleton
+    fun provideAudioApiService(@ApplicationContext context: Context): AudioApiService {
+        return Retrofit.Builder()
+            .baseUrl(context.getString(R.string.GANJOOR_BASE_URL))
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AudioApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAudioApiClient(
+        apiService: AudioApiService,
+    ): AudioApiClient {
+        return AudioApiClient(apiService)
+    }
+
 
     @Provides
     @Singleton

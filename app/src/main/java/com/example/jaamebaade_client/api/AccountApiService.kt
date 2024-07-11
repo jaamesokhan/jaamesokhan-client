@@ -14,5 +14,4 @@ interface AccountApiService {
 
     @POST("/api/v1/auth/login")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
-
 }
