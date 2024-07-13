@@ -1,6 +1,5 @@
 package com.example.jaamebaade_client.view.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,10 +42,9 @@ fun AudioListScreen(
         }
         audioDataList.forEachIndexed { i, audioData ->
             DropdownMenuItem(
-                modifier = Modifier
-                    .clickable {
-                        onClick(audioData)
-                    },
+                onClick = {
+                    onClick(audioData)
+                },
                 text = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -62,8 +60,8 @@ fun AudioListScreen(
                         Text(text = audioData.artist)
                         // TODO add more data
                     }
-                }, onClick = {
-                })
+                }
+            )
             if (i != audioDataList.size - 1) {
                 Divider()
             }
