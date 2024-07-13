@@ -83,3 +83,14 @@ fun TopBar(navController: NavController) {
 
         )
 }
+
+//fun createPathBreadCrumbs(path: String): List<String> {
+//    val pathList = path.split("/")
+//    val breadCrumbs = mutableListOf<String>()
+//    for (i in pathList.indices) {
+//        if (pathList[i] == "poet") {
+//            breadCrumbs.add(pathList[i + 1])
+//        }
+//    }
+//    return breadCrumbs
+//}
