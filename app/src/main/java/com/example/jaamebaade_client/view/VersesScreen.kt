@@ -63,8 +63,6 @@ fun VerseScreen(navController: NavController, poemId: Int, poetId: Int, modifier
             poemId,
             minId,
             maxId,
-            poetName = poetName,
-            poemTitle = poemTitle,
             versesViewModel = versesViewModel,
             showVerseNumbers = showVerseNumbers,
             onToggleVerseNumbers = { showVerseNumbers = !showVerseNumbers }
