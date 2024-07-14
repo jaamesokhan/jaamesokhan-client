@@ -25,7 +25,7 @@ import kotlinx.coroutines.withContext
 @HiltViewModel(assistedFactory = PoetCategoryPoemViewModel.PoetCategoryPoemViewModelFactory::class)
 class PoetCategoryPoemViewModel @AssistedInject constructor(
     @Assisted("poetId") private val poetId: Int,
-    @Assisted("parentId") private val parentId: Int,
+    @Assisted("parentIds") private val parentIds: IntArray,
     private val categoryRepository: CategoryRepository,
     private val poemRepository: PoemRepository,
 ) : ViewModel() {
@@ -46,20 +46,20 @@ class PoetCategoryPoemViewModel @AssistedInject constructor(
     ).flow.cachedIn(viewModelScope)
 
     init {
-        fetchPoetCategoriesWithParentId(poetId = poetId, parentId = parentId)
+        fetchPoetCategoriesWithParentId(poetId = poetId, parentIds = parentIds)
     }
 
     @AssistedFactory
     interface PoetCategoryPoemViewModelFactory {
         fun create(
             @Assisted("poetId") poetId: Int,
-            @Assisted("parentId") parentId: Int
+            @Assisted("parentIds") parentIds: IntArray
         ): PoetCategoryPoemViewModel
     }
 
-    private fun fetchPoetCategoriesWithParentId(poetId: Int, parentId: Int) {
+    private fun fetchPoetCategoriesWithParentId(poetId: Int, parentIds: IntArray) {
         viewModelScope.launch {
-            categories = getPoetCategoriesFromRepository(poetId, parentId)
+            categories = getPoetCategoriesFromRepository(poetId, parentIds.last())
         }
     }
 

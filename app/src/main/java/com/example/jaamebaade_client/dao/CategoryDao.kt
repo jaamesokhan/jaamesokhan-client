@@ -37,4 +37,12 @@ interface CategoryDao {
         """
     )
     fun getCategoriesByPoetIdFilteredByParentId(poetId: Int, parentId: Int): List<Category>
+
+    @Query(
+        """
+            SELECT * FROM categories
+                WHERE id = :id
+        """
+    )
+    fun getCategoryById(id: Int): Category
 }

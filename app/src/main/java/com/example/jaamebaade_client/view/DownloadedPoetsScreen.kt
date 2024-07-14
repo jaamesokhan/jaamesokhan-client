@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.jaamebaade_client.constants.AppRoutes
+import com.example.jaamebaade_client.ui.theme.toNavArgs
 import com.example.jaamebaade_client.view.components.DownloadedPoet
 import com.example.jaamebaade_client.viewmodel.DownloadedPoetViewModel
 import kotlinx.coroutines.launch
@@ -73,7 +75,13 @@ fun DownloadedPoetsScreen(
                     DownloadedPoet(poet = poet) {
                         coroutineScope.launch {
                             val poetCategoryId = downloadedPoetViewModel.getPoetCategoryId(poet.id)
-                            navController.navigate("poetCategoryScreen/${poet.id}/${poetCategoryId}")
+                            navController.navigate(
+                                "${AppRoutes.POET_CATEGORY_SCREEN}/${poet.id}/${
+                                    intArrayOf(
+                                        poetCategoryId
+                                    ).toNavArgs()
+                                }"
+                            )
                         }
                     }
                 }

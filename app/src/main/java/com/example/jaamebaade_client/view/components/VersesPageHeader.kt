@@ -32,8 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.navOptions
@@ -46,8 +44,6 @@ fun VersePageHeader(
     poemId: Int,
     minId: Int,
     maxId: Int,
-    poetName: String,
-    poemTitle: String,
     modifier: Modifier = Modifier,
     versesViewModel: VersesViewModel,
     showVerseNumbers: Boolean,
@@ -67,15 +63,6 @@ fun VersePageHeader(
                 .fillMaxWidth()
                 .padding(4.dp, 2.dp)
         ) {
-            Text(
-                text = poetName,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
-                    .padding(end = 3.dp)
-                    .weight(0.2f),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2
-            )
             AudioMenu(urls)
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -105,16 +92,6 @@ fun VersePageHeader(
                     )
                 }
 
-                Text(
-                    text = poemTitle,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier
-                        .weight(0.3f)
-                        .padding(end = 3.dp),
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1
-                )
                 IconButton(
                     modifier = Modifier.weight(0.1f),
                     onClick = {
