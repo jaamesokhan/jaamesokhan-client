@@ -35,8 +35,7 @@ import com.example.jaamebaade_client.view.ChangeFontScreen
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
 import com.example.jaamebaade_client.view.DownloadedPoetsScreen
 import com.example.jaamebaade_client.view.FavoritesScreen
-import com.example.jaamebaade_client.view.PoemListScreen
-import com.example.jaamebaade_client.view.PoetCategoryScreen
+import com.example.jaamebaade_client.view.PoetCategoryPoemScreen
 import com.example.jaamebaade_client.view.SearchScreen
 import com.example.jaamebaade_client.view.SettingsScreen
 import com.example.jaamebaade_client.view.VerseScreen
@@ -156,7 +155,7 @@ fun AppNavHost(fontRepository: FontRepository) {
                     ) { backStackEntry ->
                         val poetId = backStackEntry.arguments?.getString("poetId")?.toInt()
                         val parentId = backStackEntry.arguments?.getString("parentId")?.toInt()
-                        PoetCategoryScreen(
+                        PoetCategoryPoemScreen(
                             modifier = Modifier.padding(innerPadding),
                             poetId = poetId!!,
                             parentId = parentId ?: 0,
@@ -203,18 +202,6 @@ fun AppNavHost(fontRepository: FontRepository) {
                         FavoritesScreen(
                             modifier = Modifier.padding(innerPadding), navController = navController
                         )
-                    }
-                    composable("poemsListScreen/{poetId}/{categoryId}") { backStackEntry ->
-                        val categoryId = backStackEntry.arguments?.getString("categoryId")?.toInt()
-                        val poetId = backStackEntry.arguments?.getString("poetId")?.toInt()
-
-                        PoemListScreen(
-                            categoryId = categoryId!!,
-                            poetId = poetId!!,
-                            modifier = Modifier.padding(innerPadding),
-                            navController
-                        )
-
                     }
                     composable("poem/{poetId}/{poemId}") { backStackEntry ->
                         val poemId = backStackEntry.arguments?.getString("poemId")?.toInt()
