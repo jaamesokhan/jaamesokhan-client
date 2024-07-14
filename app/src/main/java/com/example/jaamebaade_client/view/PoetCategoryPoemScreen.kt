@@ -11,6 +11,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
+import com.example.jaamebaade_client.constants.AppRoutes
+import com.example.jaamebaade_client.ui.theme.toNavArgs
 import com.example.jaamebaade_client.view.components.CategoryItem
 import com.example.jaamebaade_client.view.components.PoemsListItem
 import com.example.jaamebaade_client.viewmodel.PoetCategoryPoemViewModel
@@ -19,12 +21,12 @@ import com.example.jaamebaade_client.viewmodel.PoetCategoryPoemViewModel
 fun PoetCategoryPoemScreen(
     modifier: Modifier = Modifier,
     poetId: Int,
-    parentId: Int = 0,
+    parentIds: IntArray = intArrayOf(),
     navController: NavController
 ) {
     val poetCategoryPoemViewModel =
         hiltViewModel<PoetCategoryPoemViewModel, PoetCategoryPoemViewModel.PoetCategoryPoemViewModelFactory> { factory ->
-            factory.create(poetId, parentId)
+            factory.create(poetId, parentIds)
         }
 
     val categories = poetCategoryPoemViewModel.categories
@@ -33,7 +35,13 @@ fun PoetCategoryPoemScreen(
     LazyColumn(modifier = modifier.padding(8.dp)) {
         itemsIndexed(categories) { index, category ->
             CategoryItem(category = category) {
-                navController.navigate("poetCategoryScreen/${poetId}/${category.id}")
+                navController.navigate(
+                    "${AppRoutes.POET_CATEGORY_SCREEN}/$poetId/${
+                        parentIds.plus(
+                            category.id
+                        ).toNavArgs()
+                    }"
+                )
             }
             if (index != categories.size - 1) {
                 Divider()

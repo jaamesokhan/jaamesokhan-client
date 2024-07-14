@@ -40,7 +40,7 @@ class PoetCategoryPoemViewModel @AssistedInject constructor(
         ),
         pagingSourceFactory = {
             poemRepository.getPoemPagingSource(
-                parentId
+                parentIds.last()
             )
         }
     ).flow.cachedIn(viewModelScope)
