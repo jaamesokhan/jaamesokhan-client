@@ -7,7 +7,6 @@ enum class AppRoutes(val route:String) {
     SETTINGS_SCREEN("settingsScreen"),
     SEARCH_SCREEN("searchScreen"),
     FAVORITE_SCREEN("favoriteScreen"),
-    POEMS_LIST_SCREEN("poemsListScreen"),
     POEM("poem"),
     CHANGE_FONT_SCREEN("changeFontScreen"),
     ACCOUNT_SCREEN("accountScreen");

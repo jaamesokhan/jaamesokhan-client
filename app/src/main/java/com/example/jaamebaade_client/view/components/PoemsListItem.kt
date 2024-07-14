@@ -1,11 +1,14 @@
 package com.example.jaamebaade_client.view.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Article
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -30,9 +33,10 @@ fun PoemsListItem(poem: Poem, onClick: () -> Unit) {
                 .fillMaxWidth()
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
 
-        ) {
+            ) {
+            Icon(imageVector = Icons.Outlined.Article, contentDescription = "شعر")
+            Spacer(modifier = Modifier.padding(8.dp))
             Text(text = poem.title, style = MaterialTheme.typography.headlineLarge)
         }
     }

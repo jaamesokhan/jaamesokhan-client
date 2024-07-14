@@ -39,8 +39,7 @@ import com.example.jaamebaade_client.view.ChangeFontScreen
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
 import com.example.jaamebaade_client.view.DownloadedPoetsScreen
 import com.example.jaamebaade_client.view.FavoritesScreen
-import com.example.jaamebaade_client.view.PoemListScreen
-import com.example.jaamebaade_client.view.PoetCategoryScreen
+import com.example.jaamebaade_client.view.PoetCategoryPoemScreen
 import com.example.jaamebaade_client.view.SearchScreen
 import com.example.jaamebaade_client.view.SettingsScreen
 import com.example.jaamebaade_client.view.VerseScreen
@@ -163,7 +162,7 @@ fun AppNavHost(fontRepository: FontRepository) {
                     ) { backStackEntry ->
                         val poetId = backStackEntry.arguments?.getInt("poetId")
                         val parentIds = backStackEntry.arguments?.getString("parentIds")?.toIntArray()
-                        PoetCategoryScreen(
+                        PoetCategoryPoemScreen(
                             modifier = Modifier.padding(innerPadding),
                             poetId = poetId!!,
                             parentIds = parentIds ?: intArrayOf(),
@@ -210,22 +209,6 @@ fun AppNavHost(fontRepository: FontRepository) {
                         FavoritesScreen(
                             modifier = Modifier.padding(innerPadding), navController = navController
                         )
-                    }
-                    composable("${AppRoutes.POEMS_LIST_SCREEN}/{poetId}/{categoryIds}",
-                        arguments = listOf(
-                            navArgument("poetId") { type = NavType.IntType },
-                            navArgument("categoryIds") { type = NavType.StringType }
-                        )
-                    ) { backStackEntry ->
-                        val poetId = backStackEntry.arguments?.getInt("poetId")
-                        val categoryIds = backStackEntry.arguments?.getString("categoryIds")?.toIntArray()
-                        PoemListScreen(
-                            categoryId = categoryIds!!.last(),
-                            poetId = poetId!!,
-                            modifier = Modifier.padding(innerPadding),
-                            navController
-                        )
-
                     }
                     composable(
                         "${AppRoutes.POEM}/{poetId}/{poemId}",

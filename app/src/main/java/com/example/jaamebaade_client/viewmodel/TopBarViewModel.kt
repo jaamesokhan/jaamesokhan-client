@@ -45,19 +45,7 @@ class TopBarViewModel @Inject constructor(
                 val lastCategoryText = getCategoryText(parentIds!!.last())
                 if (parentIds.size > 2) {
                     return "$poetName > ... > $lastCategoryText"
-                }
-                return lastCategoryText
-            }
-
-            AppRoutes.POEMS_LIST_SCREEN.toString() -> {
-                val poetId = navStack.arguments?.getInt("poetId")
-                val categoryIds = navStack.arguments?.getString("categoryIds")?.toIntArray()
-
-                val poetName = getPoetName(poetId!!)
-                val lastCategoryText = getCategoryText(categoryIds!!.last())
-                if (categoryIds.size > 2) {
-                    return "$poetName > ... > $lastCategoryText"
-                } else if (categoryIds.size == 2) {
+                } else if (parentIds.size == 2) {
                     return "$poetName > $lastCategoryText"
                 }
                 return lastCategoryText
