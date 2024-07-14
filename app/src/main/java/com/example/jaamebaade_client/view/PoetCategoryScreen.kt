@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.jaamebaade_client.constants.AppRoutes
+import com.example.jaamebaade_client.ui.theme.toNavArgs
 import com.example.jaamebaade_client.view.components.CategoryItem
 import com.example.jaamebaade_client.viewmodel.PoetCategoryViewModel
 import kotlinx.coroutines.launch
@@ -18,16 +20,15 @@ import kotlinx.coroutines.launch
 fun PoetCategoryScreen(
     modifier: Modifier = Modifier,
     poetId: Int,
-    parentId: Int = 0,
+    parentIds: IntArray = intArrayOf(),
     navController: NavController
 ) {
     val poetCategoryViewModel =
         hiltViewModel<PoetCategoryViewModel, PoetCategoryViewModel.PoetCategoryViewModelFactory> { factory ->
-            factory.create(poetId, parentId)
+            factory.create(poetId, parentIds)
         }
     // Observe categories LiveData
     val categories = poetCategoryViewModel.categories
-    // TODO maybe add poet or parent Id to top of the page
     val coroutineScope = rememberCoroutineScope()
     LazyColumn(modifier = modifier.padding(8.dp)) {
         itemsIndexed(categories) { index, category ->
@@ -35,10 +36,23 @@ fun PoetCategoryScreen(
                 coroutineScope.launch {
                     val childCategories =
                         poetCategoryViewModel.getPoetCategoriesFromRepository(poetId, category.id)
-                    if (childCategories.isEmpty())
-                        navController.navigate("poemsListScreen/${category.poetId}/${category.id}")
-                    else
-                        navController.navigate("poetCategoryScreen/${poetId}/${category.id}")
+                    if (childCategories.isEmpty()) {
+                        navController.navigate(
+                            "${AppRoutes.POEMS_LIST_SCREEN}/${category.poetId}/${
+                                parentIds.plus(
+                                    category.id
+                                ).toNavArgs()
+                            }"
+                        )
+                    } else {
+                        navController.navigate(
+                            "${AppRoutes.POET_CATEGORY_SCREEN}/$poetId/${
+                                parentIds.plus(
+                                    category.id
+                                ).toNavArgs()
+                            }"
+                        )
+                    }
                 }
             }
             if (index != categories.size - 1) {

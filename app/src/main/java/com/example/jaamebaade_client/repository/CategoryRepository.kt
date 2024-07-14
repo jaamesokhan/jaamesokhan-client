@@ -9,7 +9,7 @@ class CategoryRepository @Inject constructor(appDatabase: AppDatabase) {
     private val db = appDatabase
     private val categoryDao = db.categoryDao()
 
-    fun getAllCategories() = categoryDao.getAll()
+    fun getCategoryById(id: Int) = categoryDao.getCategoryById(id)
 
     fun getCategoriesByPoetIdFilteredByParentId(poetId: Int, parentId: Int) =
         categoryDao.getCategoriesByPoetIdFilteredByParentId(poetId, parentId)
@@ -18,8 +18,4 @@ class CategoryRepository @Inject constructor(appDatabase: AppDatabase) {
         categoryDao.getPoetCategoryId(poetId)
 
     fun insertCategory(category: Category) = categoryDao.insertAll(category)
-
-    fun deleteCategory(category: Category) = categoryDao.delete(category)
-
-    fun updateCategory(category: Category) = categoryDao.update(category)
 }

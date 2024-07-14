@@ -22,14 +22,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.jaamebaade_client.constants.AppRoutes
 import com.example.jaamebaade_client.repository.FontRepository
 import com.example.jaamebaade_client.ui.theme.FONT_SIZE_LIST
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import com.example.jaamebaade_client.ui.theme.getFontByFontFamilyName
+import com.example.jaamebaade_client.ui.theme.toIntArray
 import com.example.jaamebaade_client.view.AccountScreen
 import com.example.jaamebaade_client.view.ChangeFontScreen
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
@@ -107,8 +111,7 @@ fun AppNavHost(fontRepository: FontRepository) {
                     )
                 }) { innerPadding ->
                 NavHost(navController = navController, startDestination = "downloadedPoetsScreen") {
-                    // TODO find a way for referencing the routes NOT as a String
-                    composable(route = "downloadedPoetsScreen",
+                    composable(route = AppRoutes.DOWNLOADED_POETS_SCREEN.toString(),
                         enterTransition = {
                             slideIntoContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -126,7 +129,7 @@ fun AppNavHost(fontRepository: FontRepository) {
                             ), navController = navController
                         )
                     }
-                    composable(route = "downloadablePoetsScreen",
+                    composable(route = AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString(),
                         enterTransition = {
                             slideIntoContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -140,7 +143,11 @@ fun AppNavHost(fontRepository: FontRepository) {
                         }) {
                         DownloadablePoetsScreen(modifier = Modifier.padding(innerPadding))
                     }
-                    composable(route = "poetCategoryScreen/{poetId}/{parentId}",
+                    composable(route = "${AppRoutes.POET_CATEGORY_SCREEN}/{poetId}/{parentIds}",
+                        arguments = listOf(
+                            navArgument("poetId") { type = NavType.IntType },
+                            navArgument("parentIds") { type = NavType.StringType }
+                        ),
                         enterTransition = {
                             slideIntoContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -154,16 +161,16 @@ fun AppNavHost(fontRepository: FontRepository) {
                             )
                         }
                     ) { backStackEntry ->
-                        val poetId = backStackEntry.arguments?.getString("poetId")?.toInt()
-                        val parentId = backStackEntry.arguments?.getString("parentId")?.toInt()
+                        val poetId = backStackEntry.arguments?.getInt("poetId")
+                        val parentIds = backStackEntry.arguments?.getString("parentIds")?.toIntArray()
                         PoetCategoryScreen(
                             modifier = Modifier.padding(innerPadding),
                             poetId = poetId!!,
-                            parentId = parentId ?: 0,
+                            parentIds = parentIds ?: intArrayOf(),
                             navController = navController
                         )
                     }
-                    composable("settingsScreen",
+                    composable(AppRoutes.SETTINGS_SCREEN.toString(),
                         enterTransition = {
                             slideIntoContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -181,7 +188,7 @@ fun AppNavHost(fontRepository: FontRepository) {
                             modifier = Modifier.padding(innerPadding), navController = navController
                         )
                     }
-                    composable(route = "searchScreen",
+                    composable(route = AppRoutes.SEARCH_SCREEN.toString(),
                         enterTransition = {
                             slideIntoContainer(
                                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -199,26 +206,37 @@ fun AppNavHost(fontRepository: FontRepository) {
                             modifier = Modifier.padding(innerPadding), navController = navController
                         )
                     }
-                    composable("favoriteScreen") {
+                    composable(AppRoutes.FAVORITE_SCREEN.toString()) {
                         FavoritesScreen(
                             modifier = Modifier.padding(innerPadding), navController = navController
                         )
                     }
-                    composable("poemsListScreen/{poetId}/{categoryId}") { backStackEntry ->
-                        val categoryId = backStackEntry.arguments?.getString("categoryId")?.toInt()
-                        val poetId = backStackEntry.arguments?.getString("poetId")?.toInt()
-
+                    composable("${AppRoutes.POEMS_LIST_SCREEN}/{poetId}/{categoryIds}",
+                        arguments = listOf(
+                            navArgument("poetId") { type = NavType.IntType },
+                            navArgument("categoryIds") { type = NavType.StringType }
+                        )
+                    ) { backStackEntry ->
+                        val poetId = backStackEntry.arguments?.getInt("poetId")
+                        val categoryIds = backStackEntry.arguments?.getString("categoryIds")?.toIntArray()
                         PoemListScreen(
-                            categoryId = categoryId!!,
+                            categoryId = categoryIds!!.last(),
                             poetId = poetId!!,
                             modifier = Modifier.padding(innerPadding),
                             navController
                         )
 
                     }
-                    composable("poem/{poetId}/{poemId}") { backStackEntry ->
-                        val poemId = backStackEntry.arguments?.getString("poemId")?.toInt()
-                        val poetId = backStackEntry.arguments?.getString("poetId")?.toInt()
+                    composable(
+                        "${AppRoutes.POEM}/{poetId}/{poemId}",
+                        arguments = listOf(
+                            navArgument("poetId") { type = NavType.IntType },
+                            // TODO add parentIds here (or at least the last of them)
+                            navArgument("poemId") { type = NavType.IntType },
+                        )
+                    ) { backStackEntry ->
+                        val poetId = backStackEntry.arguments?.getInt("poetId")
+                        val poemId = backStackEntry.arguments?.getInt("poemId")
 
                         VerseScreen(
                             navController,
@@ -227,13 +245,13 @@ fun AppNavHost(fontRepository: FontRepository) {
                             modifier = Modifier.padding(innerPadding),
                         )
                     }
-                    composable("changeFontScreen") {
+                    composable(AppRoutes.CHANGE_FONT_SCREEN.toString()) {
                         ChangeFontScreen(
                             modifier = Modifier.padding(innerPadding),
                             fontRepository = fontRepository
                         )
                     }
-                    dialog("accountScreen") {
+                    dialog(AppRoutes.ACCOUNT_SCREEN.toString()) {
                         AccountScreen(navController = navController)
                     }
                 }
