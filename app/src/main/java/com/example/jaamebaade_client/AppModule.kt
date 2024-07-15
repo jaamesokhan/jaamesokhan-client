@@ -14,6 +14,7 @@ import com.example.jaamebaade_client.database.AppDatabase
 import com.example.jaamebaade_client.datamanager.PoetDataManager
 import com.example.jaamebaade_client.repository.BookmarkRepository
 import com.example.jaamebaade_client.repository.CategoryRepository
+import com.example.jaamebaade_client.repository.CommentRepository
 import com.example.jaamebaade_client.repository.FontRepository
 import com.example.jaamebaade_client.repository.HighlightRepository
 import com.example.jaamebaade_client.repository.PoemRepository
@@ -182,5 +183,11 @@ object AppModule {
     @Singleton
     fun provideFontRepository(sharedPrefManager: SharedPrefManager): FontRepository {
         return FontRepository(sharedPrefManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommentRepository(appDatabase: AppDatabase): CommentRepository {
+        return CommentRepository(appDatabase)
     }
 }

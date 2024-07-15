@@ -36,6 +36,7 @@ import com.example.jaamebaade_client.ui.theme.getFontByFontFamilyName
 import com.example.jaamebaade_client.ui.theme.toIntArray
 import com.example.jaamebaade_client.view.AccountScreen
 import com.example.jaamebaade_client.view.ChangeFontScreen
+import com.example.jaamebaade_client.view.CommentScreen
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
 import com.example.jaamebaade_client.view.DownloadedPoetsScreen
 import com.example.jaamebaade_client.view.FavoritesScreen
@@ -49,7 +50,7 @@ import com.example.jaamebaade_client.view.components.TopBar
 @Composable
 fun AppNavHost(fontRepository: FontRepository) {
     val navController =
-        rememberNavController() // TODO explore the possibility of using a single instance of NavController
+        rememberNavController()
     val fontSize by fontRepository.fontSize.collectAsState()
     val fontFamily by fontRepository.fontFamily.collectAsState()
 
@@ -161,7 +162,8 @@ fun AppNavHost(fontRepository: FontRepository) {
                         }
                     ) { backStackEntry ->
                         val poetId = backStackEntry.arguments?.getInt("poetId")
-                        val parentIds = backStackEntry.arguments?.getString("parentIds")?.toIntArray()
+                        val parentIds =
+                            backStackEntry.arguments?.getString("parentIds")?.toIntArray()
                         PoetCategoryPoemScreen(
                             modifier = Modifier.padding(innerPadding),
                             poetId = poetId!!,
@@ -225,6 +227,20 @@ fun AppNavHost(fontRepository: FontRepository) {
                             navController,
                             poemId = poemId!!,
                             poetId = poetId!!,
+                            modifier = Modifier.padding(innerPadding),
+                        )
+                    }
+                    composable(
+                        "${AppRoutes.COMMENTS}/{poetId}/{poemId}",
+                        arguments = listOf(
+                            navArgument("poetId") { type = NavType.IntType },
+                            navArgument("poemId") { type = NavType.IntType },
+                        )
+                    ) { backStackEntry ->
+                        val poemId = backStackEntry.arguments?.getInt("poemId")
+
+                        CommentScreen(
+                            poemId = poemId!!,
                             modifier = Modifier.padding(innerPadding),
                         )
                     }

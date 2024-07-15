@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.Comment
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -35,6 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.navOptions
+import com.example.jaamebaade_client.constants.AppRoutes
 import com.example.jaamebaade_client.viewmodel.VersesViewModel
 
 @Composable
@@ -64,6 +66,9 @@ fun VersePageHeader(
                 .padding(4.dp, 2.dp)
         ) {
             AudioMenu(urls)
+            IconButton(onClick = { navController.navigate("${AppRoutes.COMMENTS}/$poetId/$poemId") }) {
+                Icon(imageVector = Icons.Outlined.Comment, contentDescription = "یادداشت")
+            }
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -182,10 +187,7 @@ fun VersePageHeader(
                     })
                 }
             }
-
-
         }
         Divider()
     }
-
 }

@@ -60,6 +60,15 @@ class TopBarViewModel @Inject constructor(
                 return "$poetName > $poemName"
             }
 
+            AppRoutes.COMMENTS.toString() -> {
+                val poetId = navStack.arguments?.getInt("poetId")
+                val poemId = navStack.arguments?.getInt("poemId")
+
+                val poetName = getPoetName(poetId!!)
+                val poemName = getPoemName(poemId!!)
+                return "$poetName > $poemName"
+            }
+
             AppRoutes.SETTINGS_SCREEN.toString() -> return "تنظیمات"
             AppRoutes.SEARCH_SCREEN.toString() -> return "جست‌وجو"
             AppRoutes.FAVORITE_SCREEN.toString() -> return "علاقه‌مندی‌ها"
