@@ -1,9 +1,9 @@
 package com.example.jaamebaade_client.view.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +37,7 @@ fun FontFamilyMenu(fontRepository: FontRepository) {
         expanded = expanded,
         onDismissRequest = { expanded = false }
     ) {
-        fontFamiliesList.forEachIndexed() { index, fontFamily ->
+        fontFamiliesList.forEachIndexed { index, fontFamily ->
             DropdownMenuItem(text = {
                 Text(
                     fontFamily, style = TextStyle(
@@ -52,7 +52,7 @@ fun FontFamilyMenu(fontRepository: FontRepository) {
                 expanded = false
             })
             if (index != fontFamiliesList.lastIndex)
-                Divider()
+                HorizontalDivider()
         }
     }
     if (showDialog) {

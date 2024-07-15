@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
@@ -33,10 +34,10 @@ import com.example.jaamebaade_client.repository.FontRepository
 import com.example.jaamebaade_client.ui.theme.FONT_SIZE_LIST
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import com.example.jaamebaade_client.ui.theme.getFontByFontFamilyName
-import com.example.jaamebaade_client.ui.theme.toIntArray
+import com.example.jaamebaade_client.utility.toIntArray
 import com.example.jaamebaade_client.view.AccountScreen
 import com.example.jaamebaade_client.view.ChangeFontScreen
-import com.example.jaamebaade_client.view.CommentScreen
+import com.example.jaamebaade_client.view.CommentsScreen
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
 import com.example.jaamebaade_client.view.DownloadedPoetsScreen
 import com.example.jaamebaade_client.view.FavoritesScreen
@@ -103,6 +104,7 @@ fun AppNavHost(fontRepository: FontRepository) {
             Scaffold(modifier = Modifier
                 .fillMaxSize()
                 .systemBarsPadding()
+                .imePadding()
                 .background(MaterialTheme.colorScheme.background),
                 bottomBar = { Navbar(navController = navController) },
                 topBar = {
@@ -239,7 +241,7 @@ fun AppNavHost(fontRepository: FontRepository) {
                     ) { backStackEntry ->
                         val poemId = backStackEntry.arguments?.getInt("poemId")
 
-                        CommentScreen(
+                        CommentsScreen(
                             poemId = poemId!!,
                             modifier = Modifier.padding(innerPadding),
                         )

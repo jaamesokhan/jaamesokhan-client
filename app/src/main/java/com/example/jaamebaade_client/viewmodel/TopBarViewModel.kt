@@ -10,7 +10,7 @@ import com.example.jaamebaade_client.constants.AppRoutes
 import com.example.jaamebaade_client.repository.CategoryRepository
 import com.example.jaamebaade_client.repository.PoemRepository
 import com.example.jaamebaade_client.repository.PoetRepository
-import com.example.jaamebaade_client.ui.theme.toIntArray
+import com.example.jaamebaade_client.utility.toIntArray
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

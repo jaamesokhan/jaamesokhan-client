@@ -3,16 +3,15 @@ package com.example.jaamebaade_client.view
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
 import com.example.jaamebaade_client.constants.AppRoutes
-import com.example.jaamebaade_client.ui.theme.toNavArgs
+import com.example.jaamebaade_client.utility.toNavArgs
 import com.example.jaamebaade_client.view.components.CategoryItem
 import com.example.jaamebaade_client.view.components.PoemsListItem
 import com.example.jaamebaade_client.viewmodel.PoetCategoryPoemViewModel
@@ -44,22 +43,22 @@ fun PoetCategoryPoemScreen(
                 )
             }
             if (index != categories.size - 1) {
-                Divider()
+                HorizontalDivider()
             }
         }
         if (categories.isNotEmpty() && poems.itemCount > 0) {
             item {
-                Divider(thickness = 2.dp)
+                HorizontalDivider(thickness = 2.dp)
             }
         }
-        itemsIndexed(poems) { index, poem ->
-            poem?.let {
-                PoemsListItem(poem) {
-                    navController.navigate("poem/${poetId}/${poem.id}")
+        items(poems.itemCount) { index ->
+            poems[index]?.let {
+                PoemsListItem(poems[index]!!) {
+                    navController.navigate("poem/${poetId}/${poems[index]!!.id}")
                 }
             }
             if (index != poems.itemCount - 1) {
-                Divider()
+                HorizontalDivider()
             }
         }
     }

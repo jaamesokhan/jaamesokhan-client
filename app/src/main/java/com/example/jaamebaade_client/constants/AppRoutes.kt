@@ -1,6 +1,6 @@
 package com.example.jaamebaade_client.constants
 
-enum class AppRoutes(val route: String) {
+enum class AppRoutes(private val route: String) {
     DOWNLOADED_POETS_SCREEN("downloadedPoetsScreen"),
     DOWNLOADABLE_POETS_SCREEN("downloadablePoetsScreen"),
     POET_CATEGORY_SCREEN("poetCategoryScreen"),

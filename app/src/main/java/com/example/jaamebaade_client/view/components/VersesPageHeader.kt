@@ -8,17 +8,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.outlined.Comment
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.icons.outlined.Comment
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -67,7 +67,10 @@ fun VersePageHeader(
         ) {
             AudioMenu(urls)
             IconButton(onClick = { navController.navigate("${AppRoutes.COMMENTS}/$poetId/$poemId") }) {
-                Icon(imageVector = Icons.Outlined.Comment, contentDescription = "یادداشت")
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.Comment,
+                    contentDescription = "یادداشت"
+                )
             }
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -92,7 +95,7 @@ fun VersePageHeader(
                     enabled = poemId - 1 >= minId
                 ) {
                     Icon(
-                        imageVector = Icons.Default.KeyboardArrowRight,
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                         contentDescription = "Previous"
                     )
                 }
@@ -112,7 +115,7 @@ fun VersePageHeader(
                     enabled = poemId + 1 <= maxId
                 ) {
                     Icon(
-                        imageVector = Icons.Default.KeyboardArrowLeft,
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = "Next"
                     )
                 }
@@ -148,7 +151,7 @@ fun VersePageHeader(
                             onToggleVerseNumbers()
                         },
                     )
-                    Divider()
+                    HorizontalDivider()
                     DropdownMenuItem(text = {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -167,7 +170,7 @@ fun VersePageHeader(
                     }, onClick = {
                         versesViewModel.onBookmarkClicked()
                     })
-                    Divider()
+                    HorizontalDivider()
                     DropdownMenuItem(text = {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -188,6 +191,6 @@ fun VersePageHeader(
                 }
             }
         }
-        Divider()
+        HorizontalDivider()
     }
 }

@@ -16,10 +16,6 @@ local.properties
 # Gradle files
 .gradle/
 build/
-
-# Local configuration file (sdk path, etc)
-local.properties
-
 # Log/OS Files
 *.log
 
@@ -31,7 +27,6 @@ captures/
 output.json
 
 # IntelliJ
-*.iml
 .idea/
 misc.xml
 deploymentTargetDropDown.xml

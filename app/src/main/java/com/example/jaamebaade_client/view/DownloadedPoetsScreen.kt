@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jaamebaade_client.constants.AppRoutes
-import com.example.jaamebaade_client.ui.theme.toNavArgs
+import com.example.jaamebaade_client.utility.toNavArgs
 import com.example.jaamebaade_client.view.components.DownloadedPoet
 import com.example.jaamebaade_client.viewmodel.DownloadedPoetViewModel
 import kotlinx.coroutines.launch
