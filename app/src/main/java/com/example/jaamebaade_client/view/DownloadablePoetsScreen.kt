@@ -3,11 +3,19 @@ package com.example.jaamebaade_client.view
 
 import android.content.Context
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -27,13 +35,23 @@ fun DownloadablePoetsScreen(
 ) {
     val poets = poetViewModel.poets
     val isLoading = poetViewModel.isLoading
+    var searchQuery by remember { mutableStateOf("") }
+
     Box(modifier = modifier) {
         if (isLoading) {
             LoadingIndicator()
         } else if (poets.isEmpty()) {
             ServerFailure()
         } else {
-            DownloadablePoetsList(poetViewModel, poets)
+            Column {
+                TextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    label = { Text("نام شاعر") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                DownloadablePoetsList(poetViewModel, poets.filter { it.name.contains(searchQuery) })
+            }
         }
     }
 }
