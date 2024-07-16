@@ -215,20 +215,24 @@ fun AppNavHost(fontRepository: FontRepository) {
                         )
                     }
                     composable(
-                        "${AppRoutes.POEM}/{poetId}/{poemId}",
+                        "${AppRoutes.POEM}/{poetId}/{poemId}/{verseId}",
                         arguments = listOf(
                             navArgument("poetId") { type = NavType.IntType },
                             // TODO add parentIds here (or at least the last of them)
                             navArgument("poemId") { type = NavType.IntType },
+                            navArgument("verseId") { type = NavType.IntType },
                         )
                     ) { backStackEntry ->
                         val poetId = backStackEntry.arguments?.getInt("poetId")
                         val poemId = backStackEntry.arguments?.getInt("poemId")
+                        val verseId = backStackEntry.arguments?.getInt("verseId")
+                            ?.let { if (it == -1) null else it }
 
                         VerseScreen(
                             navController,
                             poemId = poemId!!,
                             poetId = poetId!!,
+                            focusedVerseId = verseId,
                             modifier = Modifier.padding(innerPadding),
                         )
                     }

@@ -1,10 +1,13 @@
 package com.example.jaamebaade_client.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,9 +23,16 @@ import androidx.navigation.NavController
 import com.example.jaamebaade_client.view.components.VerseItem
 import com.example.jaamebaade_client.view.components.VersePageHeader
 import com.example.jaamebaade_client.viewmodel.VersesViewModel
+import kotlinx.coroutines.delay
 
 @Composable
-fun VerseScreen(navController: NavController, poemId: Int, poetId: Int, modifier: Modifier) {
+fun VerseScreen(
+    navController: NavController,
+    poemId: Int,
+    poetId: Int,
+    focusedVerseId: Int?,
+    modifier: Modifier
+) {
 
     var poetName by remember(poetId) {
         mutableStateOf("")
@@ -41,7 +51,13 @@ fun VerseScreen(navController: NavController, poemId: Int, poetId: Int, modifier
     var minId by remember { mutableIntStateOf(0) }
     var maxId by remember { mutableIntStateOf(0) }
 
+    var shouldfocus by remember { mutableStateOf(false) }
+
+
     var showVerseNumbers by remember { mutableStateOf(false) }
+
+    val lazyListState = rememberLazyListState()
+
     LaunchedEffect(poetId) {
         poetName = versesViewModel.getPoetName(poetId)
         val categoryId = versesViewModel.getCategoryIdByPoemId(poemId)
@@ -53,7 +69,19 @@ fun VerseScreen(navController: NavController, poemId: Int, poetId: Int, modifier
     LaunchedEffect(poemId) {
         poemTitle = versesViewModel.getPoemTitle(poemId)
     }
+
     val versesWithHighlights by versesViewModel.verses.collectAsState()
+
+    val focusedVerse = versesWithHighlights.find { it.verse.id == focusedVerseId }
+    if (focusedVerse != null) {
+        LaunchedEffect(key1 = focusedVerse) {
+            lazyListState.scrollToItem(index = versesWithHighlights.indexOf(focusedVerse))
+            shouldfocus = true
+            delay(2000)
+            shouldfocus = false
+        }
+    }
+
     Column(
         modifier = modifier
     ) {
@@ -72,9 +100,17 @@ fun VerseScreen(navController: NavController, poemId: Int, poetId: Int, modifier
 
         Spacer(modifier = Modifier.width(200.dp))
 
-        LazyColumn {
+        LazyColumn(state = lazyListState) {
             itemsIndexed(versesWithHighlights) { index, verseWithHighlights ->
+                val itemModifier =
+                    if (shouldfocus && index == versesWithHighlights.indexOf(focusedVerse)) {
+                        Modifier.background(color = MaterialTheme.colorScheme.inverseOnSurface)
+                    } else {
+                        Modifier
+                    }
+
                 VerseItem(
+                    modifier = itemModifier,
                     verse = verseWithHighlights.verse,
                     highlights = verseWithHighlights.highlights,
                     index = index,
@@ -84,7 +120,5 @@ fun VerseScreen(navController: NavController, poemId: Int, poetId: Int, modifier
                 }
             }
         }
-
-
     }
 }
