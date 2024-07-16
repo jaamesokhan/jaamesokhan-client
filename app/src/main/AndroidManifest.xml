@@ -16,12 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jaamebaadeclient"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31"> <!-- TODO change to https -->
+        > <!-- TODO change to https -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Jaamebaadeclient">
+            android:theme="@style/Theme.Jaamebaadeclient"
+            android:windowSoftInputMode="adjustResize"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

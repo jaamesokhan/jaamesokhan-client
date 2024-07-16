@@ -40,6 +40,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jaamebaade_client.model.Highlight
 import com.example.jaamebaade_client.model.Verse
+import com.example.jaamebaade_client.utility.toPersianNumber
 import com.example.jaamebaade_client.viewmodel.SelectionOptionViewModel
 
 
@@ -142,7 +143,7 @@ fun VerseItem(
         ) {
         if (showVerseNumber && index % 2 == 0) {
             Text(
-                text = "${index / 2 + 1}",
+                text = (index / 2 + 1).toPersianNumber(),
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(end = 2.dp)
             )

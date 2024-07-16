@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Article
+import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -35,7 +35,7 @@ fun PoemsListItem(poem: Poem, onClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
 
             ) {
-            Icon(imageVector = Icons.Outlined.Article, contentDescription = "شعر")
+            Icon(imageVector = Icons.AutoMirrored.Outlined.Article, contentDescription = "شعر")
             Spacer(modifier = Modifier.padding(8.dp))
             Text(text = poem.title, style = MaterialTheme.typography.headlineLarge)
         }

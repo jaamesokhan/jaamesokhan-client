@@ -12,7 +12,6 @@ interface HighlightDao {
     fun insertHighlight(highlight: Highlight)
 
     @Query("SELECT * FROM highlights")
-
     fun getAll(): List<Highlight>
 
     @Query("SELECT * FROM highlights WHERE verse_id = :verseId")

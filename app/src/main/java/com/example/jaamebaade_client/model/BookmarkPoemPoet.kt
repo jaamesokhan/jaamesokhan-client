@@ -1,4 +1,4 @@
-package com.example.jaamebaade_client.model;
+package com.example.jaamebaade_client.model
 
 import androidx.room.Embedded
 

@@ -1,6 +1,6 @@
 package com.example.jaamebaade_client.constants
 
-enum class AppRoutes(val route:String) {
+enum class AppRoutes(private val route: String) {
     DOWNLOADED_POETS_SCREEN("downloadedPoetsScreen"),
     DOWNLOADABLE_POETS_SCREEN("downloadablePoetsScreen"),
     POET_CATEGORY_SCREEN("poetCategoryScreen"),
@@ -9,7 +9,10 @@ enum class AppRoutes(val route:String) {
     FAVORITE_SCREEN("favoriteScreen"),
     POEM("poem"),
     CHANGE_FONT_SCREEN("changeFontScreen"),
-    ACCOUNT_SCREEN("accountScreen");
+    ACCOUNT_SCREEN("accountScreen"),
+    COMMENTS("comments")
+    ;
+
 
     override fun toString() = route
 }

@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -54,7 +54,7 @@ fun DownloadablePoetsList(
                 poetViewModel.importPoetData(poet.id.toString(), targetDir)
             }
             if (index != poets.size - 1) {
-                Divider()
+                HorizontalDivider()
             }
         }
     }

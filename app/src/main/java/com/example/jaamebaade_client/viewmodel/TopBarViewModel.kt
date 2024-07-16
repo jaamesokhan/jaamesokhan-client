@@ -10,7 +10,7 @@ import com.example.jaamebaade_client.constants.AppRoutes
 import com.example.jaamebaade_client.repository.CategoryRepository
 import com.example.jaamebaade_client.repository.PoemRepository
 import com.example.jaamebaade_client.repository.PoetRepository
-import com.example.jaamebaade_client.ui.theme.toIntArray
+import com.example.jaamebaade_client.utility.toIntArray
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,6 +52,15 @@ class TopBarViewModel @Inject constructor(
             }
 
             AppRoutes.POEM.toString() -> {
+                val poetId = navStack.arguments?.getInt("poetId")
+                val poemId = navStack.arguments?.getInt("poemId")
+
+                val poetName = getPoetName(poetId!!)
+                val poemName = getPoemName(poemId!!)
+                return "$poetName > $poemName"
+            }
+
+            AppRoutes.COMMENTS.toString() -> {
                 val poetId = navStack.arguments?.getInt("poetId")
                 val poemId = navStack.arguments?.getInt("poemId")
 
