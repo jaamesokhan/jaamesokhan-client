@@ -8,5 +8,6 @@ class HighlightRepository @Inject constructor(appDatabase: AppDatabase) {
     private val db = appDatabase
     private val highlightDao = db.highlightDao()
     fun insertHighlight(highlight: Highlight) = highlightDao.insertHighlight(highlight)
-    fun getAllHighlights() = highlightDao.getAll()
+    fun deleteHighlight(highlight: Highlight) = highlightDao.deleteHighlight(highlight)
+    fun getAllHighlightsWithVersePoemPoet() = highlightDao.getHighlightsWithVersePoemPoet()
 }

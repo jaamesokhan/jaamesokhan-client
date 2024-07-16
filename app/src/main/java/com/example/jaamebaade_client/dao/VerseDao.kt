@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.example.jaamebaade_client.model.HighlightVersePoemPoet
 import com.example.jaamebaade_client.model.Verse
 import com.example.jaamebaade_client.model.VersePoemCategoryPoet
 import com.example.jaamebaade_client.model.VerseWithHighlights
@@ -66,33 +65,4 @@ interface VerseDao {
     @Transaction
     @Query("SELECT * FROM verses WHERE id = :verseId")
     fun getVerseWithHighlights(verseId: Int): VerseWithHighlights
-
-    @Query(
-        """
-            SELECT 
-                v.id AS verse_id, 
-                v.text AS verse_text, 
-                v.poem_id AS verse_poem_id, 
-                v.verse_order AS verse_verse_order,
-                v.position AS verse_position,
-                p.id AS poem_id, 
-                p.title AS poem_title, 
-                p.category_id AS poem_category_id,
-                pt.id AS poet_id, 
-                pt.name AS poet_name,
-                pt.description AS poet_description,
-                pt.imageUrl AS poet_image_url,
-                hg.id AS highlight_id,
-                hg.start_index AS highlight_start_index,
-                hg.end_index AS highlight_end_index,
-                hg.verse_id  AS highlight_verse_id
-            FROM verses v
-            JOIN poems p ON v.poem_id = p.id
-            JOIN categories c ON p.category_id = c.id
-            JOIN poets pt ON c.poet_id = pt.id
-            JOIN highlights hg ON hg.verse_id = :verseId
-            WHERE (v.id = :verseId)
-        """
-    )
-    fun getHighlightVersePoemPoet(verseId: Int): HighlightVersePoemPoet
 }

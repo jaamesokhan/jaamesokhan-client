@@ -41,11 +41,27 @@ class CommentViewModel @AssistedInject constructor(
         }
     }
 
+    fun deleteComment(comment: Comment) {
+        viewModelScope.launch {
+            deleteCommentFromRepository(comment)
+            _comments.value -= comment
+        }
+    }
+
     private suspend fun addCommentToRepository(
         comment: Comment
     ): Comment {
         withContext(Dispatchers.IO) {
             commentRepository.insertComment(comment)
+        }
+        return comment
+    }
+
+    private suspend fun deleteCommentFromRepository(
+        comment: Comment
+    ): Comment {
+        withContext(Dispatchers.IO) {
+            commentRepository.deleteComment(comment)
         }
         return comment
     }

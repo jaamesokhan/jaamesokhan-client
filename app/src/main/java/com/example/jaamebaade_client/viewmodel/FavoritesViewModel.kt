@@ -10,7 +10,6 @@ import com.example.jaamebaade_client.model.Highlight
 import com.example.jaamebaade_client.model.HighlightVersePoemPoet
 import com.example.jaamebaade_client.repository.BookmarkRepository
 import com.example.jaamebaade_client.repository.HighlightRepository
-import com.example.jaamebaade_client.repository.VerseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,14 +20,10 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val bookmarkRepository: BookmarkRepository,
     private val highlightRepository: HighlightRepository,
-    private val verseRepository: VerseRepository
 ) : ViewModel() {
     var bookmarks by mutableStateOf<List<BookmarkPoemPoet>>(emptyList())
         private set
-    var highlights by mutableStateOf<List<Highlight>>(emptyList())
-        private set
-
-    var highlightedText by mutableStateOf<List<HighlightVersePoemPoet>>(emptyList())
+    var highlights by mutableStateOf<List<HighlightVersePoemPoet>>(emptyList())
         private set
 
     init {
@@ -36,34 +31,31 @@ class FavoritesViewModel @Inject constructor(
         getAllHighlights()
     }
 
-    private fun getHighlightedText() {
+    fun deleteHighlight(highlightVersePoemPoet: HighlightVersePoemPoet) {
         viewModelScope.launch {
-            highlightedText = getHighlightVersePoemPoetsFromRepository()
-        }
-
-    }
-
-    private suspend fun getHighlightVersePoemPoetsFromRepository(): List<HighlightVersePoemPoet> {
-        val res = mutableListOf<HighlightVersePoemPoet>()
-        withContext(Dispatchers.IO) {
-            for (highlight in highlights) {
-                res.add(verseRepository.getHighlightVersePoemPoet(highlight.verseId))
+            highlights = highlights.toMutableList().also {
+                it.remove(highlightVersePoemPoet)
             }
+            deleteHighlightFromRepository(highlightVersePoemPoet.highlight)
         }
-        return res
-
     }
+
+    private suspend fun deleteHighlightFromRepository(highlight: Highlight) {
+        withContext(Dispatchers.IO) {
+            highlightRepository.deleteHighlight(highlight)
+        }
+    }
+
 
     private fun getAllBookmarks() {
         viewModelScope.launch {
             bookmarks = getBookmarksFromRepository()
-            getHighlightedText()
         }
     }
 
     private fun getAllHighlights() {
         viewModelScope.launch {
-            highlights = getHighlightFromRepository()
+            highlights = getHighlightsWithVersePoemPoetFromRepository()
 
         }
     }
@@ -75,9 +67,9 @@ class FavoritesViewModel @Inject constructor(
         return res
     }
 
-    private suspend fun getHighlightFromRepository(): List<Highlight> {
+    private suspend fun getHighlightsWithVersePoemPoetFromRepository(): List<HighlightVersePoemPoet> {
         val res = withContext(Dispatchers.IO) {
-            highlightRepository.getAllHighlights()
+            highlightRepository.getAllHighlightsWithVersePoemPoet()
         }
         return res
     }

@@ -16,7 +16,7 @@ import com.example.jaamebaade_client.viewmodel.FavoritesViewModel
 
 @Composable
 fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
-    val highlights = viewModel.highlightedText
+    val highlights = viewModel.highlights
     LazyColumn {
         if (highlights.isEmpty()) {
             item {
@@ -36,7 +36,8 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
             items(highlights) { highlight ->
                 HighlightItem(
                     highlightVersePoemPoet = highlight,
-                    navController = navController
+                    navController = navController,
+                    onDeleteClicked = { viewModel.deleteHighlight(highlight) }
                 )
             }
         }

@@ -10,4 +10,5 @@ class CommentRepository @Inject constructor(appDatabase: AppDatabase) {
     fun insertComment(comment: Comment) = commentDao.insertComment(comment)
     fun getAllComments() = commentDao.getAll()
     fun getCommentsForPoem(poemId: Int) = commentDao.getCommentsForPoem(poemId)
+    fun deleteComment(comment: Comment) = commentDao.deleteComment(comment)
 }
