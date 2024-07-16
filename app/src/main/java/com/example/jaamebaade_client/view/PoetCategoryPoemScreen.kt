@@ -54,7 +54,7 @@ fun PoetCategoryPoemScreen(
         items(poems.itemCount) { index ->
             poems[index]?.let {
                 PoemsListItem(poems[index]!!) {
-                    navController.navigate("poem/${poetId}/${poems[index]!!.id}")
+                    navController.navigate("${AppRoutes.POEM}/${poetId}/${poems[index]!!.id}/-1")
                 }
             }
             if (index != poems.itemCount - 1) {

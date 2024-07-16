@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.jaamebaade_client.constants.AppRoutes
 import com.example.jaamebaade_client.model.VersePoemCategoryPoet
 
 @Composable
@@ -24,16 +25,20 @@ fun SearchResultItem(
         modifier = modifier
             .fillMaxWidth()
             .padding(10.dp)
-            .clickable { navController.navigate("poem/${result.poet.id}/${result.verse.poemId}") }
+            .clickable {
+                navController.navigate("${AppRoutes.POEM}/${result.poet.id}/${result.verse.poemId}/${result.verse.id}")
+            }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp)
         ) {
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
                 Text(
                     text = "${result.poet.name}>${result.category.text}>${result.poem.title}",
                     style = MaterialTheme.typography.labelMedium
