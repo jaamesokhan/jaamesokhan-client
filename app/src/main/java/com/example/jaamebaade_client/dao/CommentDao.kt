@@ -1,6 +1,7 @@
 package com.example.jaamebaade_client.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -16,4 +17,6 @@ interface CommentDao {
 
     @Query("SELECT * FROM comments WHERE poem_id = :poemId")
     fun getCommentsForPoem(poemId: Int): List<Comment>
+    @Delete
+    fun deleteComment(comment: Comment)
 }
