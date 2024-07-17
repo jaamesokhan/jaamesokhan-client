@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jaamebaade_client.R
+import com.example.jaamebaade_client.constants.AppRoutes
 import com.example.jaamebaade_client.viewmodel.TopBarViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,10 +43,10 @@ fun TopBar(navController: NavController, viewModel: TopBarViewModel = hiltViewMo
     val myIcon = painterResource(id = R.mipmap.logo)
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
-        (backStackEntry?.destination?.route != "downloadedPoetsScreen"
-                && backStackEntry?.destination?.route != "settingsScreen"
-                && backStackEntry?.destination?.route != "searchScreen"
-                && backStackEntry?.destination?.route != "favoriteScreen")
+        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString()
+                && backStackEntry?.destination?.route != AppRoutes.SETTINGS_SCREEN.toString()
+                && backStackEntry?.destination?.route != AppRoutes.SEARCH_SCREEN.toString()
+                && backStackEntry?.destination?.route != AppRoutes.FAVORITE_SCREEN.toString())
     val breadCrumbs = viewModel.breadCrumbs
 
     LaunchedEffect(key1 = backStackEntry) {
@@ -90,7 +91,18 @@ fun TopBar(navController: NavController, viewModel: TopBarViewModel = hiltViewMo
                         tint = MaterialTheme.colorScheme.onPrimary,
                         contentDescription = "Back",
                         modifier = Modifier
-                            .clickable { navController.popBackStack() }
+                            .clickable {
+                                if (backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
+                                    navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                                        popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                                            inclusive = true
+                                        }
+
+                                    }
+                                } else {
+                                    navController.popBackStack()
+                                }
+                            }
                             .padding(end = 16.dp)
                             .requiredWidth(24.dp)
                             .size(24.dp),
