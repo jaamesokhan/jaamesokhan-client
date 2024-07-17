@@ -58,8 +58,10 @@ fun SearchBar(
                 .background(Color.Transparent),
             trailingIcon = {
                 IconButton(onClick = {
-                    onSearchQueryIconClicked(query)
-                    keyboardController?.hide()
+                    if (query.length > 2) {
+                        onSearchQueryIconClicked(query)
+                        keyboardController?.hide()
+                    }
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -70,7 +72,7 @@ fun SearchBar(
             label = {
                 Text("جست‌وجو", style = MaterialTheme.typography.labelSmall)
             },
-            textStyle = MaterialTheme.typography.headlineMedium,
+            textStyle = MaterialTheme.typography.headlineSmall,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
                 onSearchQueryIconClicked(query)

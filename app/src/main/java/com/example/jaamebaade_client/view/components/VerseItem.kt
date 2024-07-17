@@ -1,5 +1,8 @@
 package com.example.jaamebaade_client.view.components
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -18,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -28,7 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -62,6 +63,8 @@ fun VerseItem(
 
     var annotatedString by remember { mutableStateOf<AnnotatedString?>(null) }
     val highlightColor = MaterialTheme.colorScheme.tertiary
+
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = highlights) {
         annotatedString = buildAnnotatedString {
@@ -101,7 +104,7 @@ fun VerseItem(
                         modifier = Modifier
                             .padding(4.dp)
                             .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
+                        horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
                     ) {
                         Button(onClick = {
                             highlightCallBack(
@@ -112,6 +115,19 @@ fun VerseItem(
 
                         }) {
                             Text("هایلایت", style = MaterialTheme.typography.bodySmall)
+                        }
+
+                        Button(onClick = {
+                            val clipboard =
+                                context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            val clip = ClipData.newPlainText(
+                                "جام باده",
+                                verse.text.substring(startIndex, endIndex)
+                            )
+                            clipboard.setPrimaryClip(clip)
+                            showDialog = false
+                        }) {
+                            Text("کپی", style = MaterialTheme.typography.bodySmall)
                         }
                     }
                     Row {
@@ -148,37 +164,30 @@ fun VerseItem(
                 modifier = Modifier.padding(end = 2.dp)
             )
         }
-        SelectionContainer(modifier = Modifier.padding(0.dp)) {
-            CompositionLocalProvider(
-                LocalTextInputService provides null
-            ) {
-
-                TextField(
-                    value = textFieldValue,
-                    onValueChange = {
-                        if (it.selection.start != it.selection.end) {
-                            startIndex = minOf(it.selection.start, it.selection.end)
-                            endIndex = maxOf(it.selection.start, it.selection.end)
-                            showDialog = true
-                        }
-                    },
-                    modifier = Modifier.padding(0.dp),
-                    textStyle = MaterialTheme.typography.bodyMedium.copy(
-                        textAlign = TextAlign.Center // Center the text within the TextField
-                    ),
-                    readOnly = true,
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                        errorContainerColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                    ),
-                )
-            }
-        }
+        TextField(
+            value = textFieldValue,
+            onValueChange = {
+                if (it.selection.start != it.selection.end) {
+                    startIndex = it.selection.min
+                    endIndex = it.selection.max
+                    showDialog = true
+                }
+            },
+            modifier = Modifier.padding(0.dp),
+            textStyle = MaterialTheme.typography.bodyMedium.copy(
+                textAlign = TextAlign.Center // Center the text within the TextField
+            ),
+            readOnly = true,
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                errorContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+            ),
+        )
     }
     if (verse.position % 2 == 1)
         Spacer(modifier = Modifier.height(20.dp))
