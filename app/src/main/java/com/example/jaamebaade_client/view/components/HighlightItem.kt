@@ -46,6 +46,7 @@ fun HighlightItem(
             Column(
                 modifier = Modifier
                     .padding(8.dp)
+                    .weight(0.9f)
             ) {
                 Text(
                     text = "${highlightVersePoemPoet.poet.name}>${highlightVersePoemPoet.poem.title}",
@@ -60,7 +61,9 @@ fun HighlightItem(
                 )
             }
 
-            Box(modifier = Modifier.padding(8.dp)) {
+            Box(modifier = Modifier
+                .padding(8.dp)
+                .weight(0.1f)) {
                 IconButton(
                     onClick = {
                         onDeleteClicked()
