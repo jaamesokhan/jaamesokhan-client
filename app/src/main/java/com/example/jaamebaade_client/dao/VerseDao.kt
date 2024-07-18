@@ -13,7 +13,7 @@ import com.example.jaamebaade_client.model.VerseWithHighlights
 @Dao
 interface VerseDao {
     @Insert
-    fun insertAll(vararg verse: Verse)
+    fun insertAll(verses: List<Verse>)
 
     @Query("SELECT * FROM verses")
     fun getAll(): List<Verse>
