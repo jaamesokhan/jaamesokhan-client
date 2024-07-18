@@ -1,6 +1,5 @@
 package com.example.jaamebaade_client.view.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,13 +24,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jaamebaade_client.repository.FontRepository
-import com.example.jaamebaade_client.ui.theme.FONT_SCALE
 import com.example.jaamebaade_client.utility.restartApp
 
 @Composable
 fun FontSizeTileMenu(fontRepository: FontRepository) {
     // State to track the selected option
-    var selectedOption by remember { mutableStateOf<Int?>(fontRepository.fontSize.value - 1) }
+    var selectedOption by remember { mutableStateOf<Int?>(fontRepository.fontSizeIndex.value) }
     var showDialog by remember { mutableStateOf(false) }
 
     val options = listOf("ریز", "متوسط", "درشت")
@@ -46,11 +44,11 @@ fun FontSizeTileMenu(fontRepository: FontRepository) {
         options.forEachIndexed { index, option ->
             FontSizeTile(
                 option = option,
-                fontSize = index + 1,
+                fontSize = fontRepository.fontFamily.value.getFontSizes()[index],
                 isSelected = selectedOption == index,
                 onClick = {
                     selectedOption = index
-                    fontRepository.setFontSize(index + 1)
+                    fontRepository.setFontSize(index)
                     showDialog = true
                 }
             )
@@ -98,9 +96,8 @@ fun FontSizeTile(
             text = option,
 
             color = Color.White,
-            fontSize = ((fontSize) * FONT_SCALE).sp,
+            fontSize = fontSize.sp,
             textAlign = TextAlign.Center
         )
-        Log.d("fsize", "$fontSize")
     }
 }

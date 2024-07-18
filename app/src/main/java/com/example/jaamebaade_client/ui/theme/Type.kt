@@ -2,27 +2,14 @@ package com.example.jaamebaade_client.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.jaamebaade_client.R
 
-val Nastaliq = FontFamily(
-    Font(R.font.irannastaliq),
-)
-val VazirMatn = FontFamily(
-    Font(R.font.vazirmatnregular),
-    Font(R.font.vazirmatnbold, weight = FontWeight.Bold),
-    Font(R.font.vazirmatnextrabold, weight = FontWeight.ExtraBold),
-    Font(R.font.vazirmatnlight, weight = FontWeight.Light),
-    Font(R.font.vazirmatnextralight, weight = FontWeight.ExtraLight),
-)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = VazirMatn,
+        fontFamily = CustomFont.VAZIRMATN.getFontFamily(),
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
@@ -45,18 +32,3 @@ val Typography = Typography(
     )
     */
 )
-var FONTS = listOf("Serif", "SansSerif", "IranNastaliq", "VazirMatn")
-
-const val FONT_SCALE = 11
-val FONT_SIZE_LIST = mutableMapOf((1 to 9), (2 to 15), (3 to 20))
-
-fun getFontByFontFamilyName(fontFamily: String): FontFamily {
-    val ff = when (fontFamily) {
-        "Serif" -> FontFamily.Serif
-        "SansSerif" -> FontFamily.SansSerif
-        "IranNastaliq" -> Nastaliq
-        "VazirMatn" -> VazirMatn
-        else -> FontFamily.Default
-    }
-    return ff
-}

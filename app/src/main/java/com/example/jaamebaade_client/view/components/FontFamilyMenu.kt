@@ -16,17 +16,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import com.example.jaamebaade_client.repository.FontRepository
-import com.example.jaamebaade_client.ui.theme.getFontByFontFamilyName
+import com.example.jaamebaade_client.ui.theme.CustomFont
 import com.example.jaamebaade_client.utility.restartApp
 
 @Composable
 fun FontFamilyMenu(fontRepository: FontRepository) {
     var selectedFontFamily by remember { mutableStateOf(fontRepository.fontFamily.value) }
-    val fontFamiliesList = fontRepository.fonts // Example font families
     var expanded by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     Text(
-        text = selectedFontFamily.takeIf { it.isNotBlank() } ?: "VazirMatn",
+        text = selectedFontFamily.displayName,
         modifier = Modifier.clickable(onClick = { expanded = true }),
         style = TextStyle(
             fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
@@ -37,21 +36,22 @@ fun FontFamilyMenu(fontRepository: FontRepository) {
         expanded = expanded,
         onDismissRequest = { expanded = false }
     ) {
-        fontFamiliesList.forEachIndexed { index, fontFamily ->
+        CustomFont.entries.forEachIndexed { index, customFont ->
             DropdownMenuItem(text = {
                 Text(
-                    fontFamily, style = TextStyle(
-                        fontFamily = getFontByFontFamilyName(fontFamily),
+                    text = customFont.displayName,
+                    style = TextStyle(
+                        fontFamily = customFont.getFontFamily(),
                         fontSize = 20.sp
                     )
                 )
             }, onClick = {
-                selectedFontFamily = fontFamily
-                fontRepository.setFontFamily(fontFamily)
+                selectedFontFamily = customFont
+                fontRepository.setFontFamily(customFont)
                 showDialog = true
                 expanded = false
             })
-            if (index != fontFamiliesList.lastIndex)
+            if (index != CustomFont.entries.lastIndex)
                 HorizontalDivider()
         }
     }
@@ -60,16 +60,11 @@ fun FontFamilyMenu(fontRepository: FontRepository) {
         ConfirmationDialog(
             message = "برای تغییر فونت برنامه الان مجددا آغاز شود؟",
             onConfirm = {
-                // Handle confirmation action
                 showDialog = false
                 restartApp(context)
-                // Place your logic here for the action after confirmation
-                // e.g., navigate to a new screen, perform an action, etc.
             },
             onDismiss = {
-                // Handle dismiss action (cancel)
                 showDialog = false
-                // Optionally handle cancel action
             }
         )
     }

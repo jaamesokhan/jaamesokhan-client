@@ -31,9 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.jaamebaade_client.constants.AppRoutes
 import com.example.jaamebaade_client.repository.FontRepository
-import com.example.jaamebaade_client.ui.theme.FONT_SIZE_LIST
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
-import com.example.jaamebaade_client.ui.theme.getFontByFontFamilyName
 import com.example.jaamebaade_client.utility.toIntArray
 import com.example.jaamebaade_client.view.AccountScreen
 import com.example.jaamebaade_client.view.ChangeFontScreen
@@ -52,12 +50,12 @@ import com.example.jaamebaade_client.view.components.TopBar
 fun AppNavHost(fontRepository: FontRepository) {
     val navController =
         rememberNavController()
-    val fontSize by fontRepository.fontSize.collectAsState()
+    val fontSize by fontRepository.fontSizeIndex.collectAsState()
     val fontFamily by fontRepository.fontFamily.collectAsState()
 
     fun createTextStyle(size: String, type: String): TextStyle {
-        val selectedFontFamily = getFontByFontFamilyName(fontFamily)
-        val selectedSize = FONT_SIZE_LIST[fontSize] ?: 16
+        val selectedFontFamily = fontFamily
+        val selectedSize = fontFamily.getFontSizes()[fontSize]
         val sizeBasedFontSize: TextUnit = when (size) {
             "small" -> (selectedSize - 3.5).sp
 
@@ -75,7 +73,7 @@ fun AppNavHost(fontRepository: FontRepository) {
         }
         Log.d("size", "$sizeBasedFontSize")
         return TextStyle(
-            fontFamily = selectedFontFamily,
+            fontFamily = selectedFontFamily.getFontFamily(),
             fontSize = sizeBasedFontSize,
             fontWeight = typeBasedFontWeight
         )
@@ -95,8 +93,6 @@ fun AppNavHost(fontRepository: FontRepository) {
             labelLarge = createTextStyle("large", "label"),
             labelMedium = createTextStyle("medium", "label"),
             labelSmall = createTextStyle("small", "label"),
-
-            // Define other text styles as needed
         )
     }
     JaamebaadeclientTheme(typography = typography) {

@@ -1,6 +1,5 @@
 package com.example.jaamebaade_client.view.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -143,6 +142,5 @@ fun NavbarItem(
 fun currentRoute(navController: NavController, routeMap: Map<String, String>): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    Log.d("curr", "$currentRoute")
     return routeMap[currentRoute]
 }
