@@ -56,13 +56,14 @@ fun importVerseData(csvFilePath: String, verseRepository: VerseRepository) {
     val reader = FileReader(csvFilePath)
     val csvParser = CSVParser(reader, CSVFormat.DEFAULT.withHeader())
 
+    val versesList = mutableListOf<Verse>()
     for (record in csvParser) {
         val id = record["id"].toInt()
         val text = record["text"]
         val verseOrder = record["verse_order"].toInt()
         val position = record["position"].toInt()
         val poemId = record["poem_id"].toInt()
-        verseRepository.insertVerse(
+        versesList.add(
             Verse(
                 id = id,
                 text = text,
@@ -72,6 +73,7 @@ fun importVerseData(csvFilePath: String, verseRepository: VerseRepository) {
             )
         )
     }
+    verseRepository.insertVerses(versesList)
     csvParser.close()
     reader.close()
 }

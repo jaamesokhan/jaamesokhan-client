@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -29,17 +30,18 @@ fun DownloadedPoet(poet: Poet, onClick: () -> Unit) {
             painter = rememberAsyncImagePainter(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(poet.imageUrl ?: "https://ganjoor.net/image/gdap.png")
-                    .size(Size.ORIGINAL) // Set the target size to load the image at.
+                    .size(Size.ORIGINAL)
                     .build()
             ),
             contentDescription = poet.name,
             modifier = Modifier
-                .size(100.dp) // adjust the size as needed
+                .size(100.dp)
                 .clip(CircleShape)
         )
         Text(
             text = poet.name,
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineMedium,
+            textAlign = TextAlign.Center,
         )
     }
 }

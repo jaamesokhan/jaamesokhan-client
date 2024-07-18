@@ -84,9 +84,9 @@ fun VersePageHeader(
                     modifier = Modifier.weight(0.1f),
                     onClick = {
                         navController.navigate(
-                            "poem/${poetId}/${poemId - 1}",
+                            "${AppRoutes.POEM}/${poetId}/${poemId - 1}/-1",
                             navOptions {
-                                popUpTo("poem/{poetId}/{poemId}") {
+                                popUpTo("poem/{poetId}/{poemId}/-1") {
                                     inclusive = true
                                 }
                             }
@@ -104,9 +104,9 @@ fun VersePageHeader(
                     modifier = Modifier.weight(0.1f),
                     onClick = {
                         navController.navigate(
-                            "poem/${poetId}/${poemId + 1}",
+                            "${AppRoutes.POEM}/${poetId}/${poemId + 1}/-1",
                             navOptions {
-                                popUpTo("poem/{poetId}/{poemId}") {
+                                popUpTo("poem/{poetId}/{poemId}/-1") {
                                     inclusive = true
                                 }
                             }

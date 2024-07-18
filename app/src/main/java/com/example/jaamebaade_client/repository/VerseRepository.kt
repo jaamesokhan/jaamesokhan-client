@@ -9,10 +9,10 @@ class VerseRepository @Inject constructor(appDatabase: AppDatabase) {
     private val db = appDatabase
     private val verseDao = db.verseDao()
 
-    fun insertVerse(verse: Verse) = verseDao.insertAll(verse)
-
     fun getPoemVersesWithHighlights(poemId: Int) = verseDao.getPoemVersesWithHighlights(poemId)
 
     fun searchVerses(query: String, poetId: Int?): List<VersePoemCategoryPoet> =
         verseDao.searchVerses("%${query}%", poetId)
+
+    fun insertVerses(verses: List<Verse>) = verseDao.insertAll(verses)
 }
