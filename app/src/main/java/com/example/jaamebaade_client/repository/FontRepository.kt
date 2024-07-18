@@ -1,6 +1,6 @@
 package com.example.jaamebaade_client.repository
 
-import com.example.jaamebaade_client.ui.theme.FONTS
+import com.example.jaamebaade_client.ui.theme.CustomFont
 import com.example.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,24 +10,23 @@ class FontRepository @Inject constructor(
     private val sharedPrefManager: SharedPrefManager,
 ) {
 
-    var fonts = FONTS
-    private val _fontSize = MutableStateFlow(1) // Default font size
-    val fontSize: StateFlow<Int> get() = _fontSize
+    private val _fontSizeIndex = MutableStateFlow(1)
+    val fontSizeIndex: StateFlow<Int> get() = _fontSizeIndex
 
-    private val _fontFamily = MutableStateFlow("DefaultFontFamily")
-    val fontFamily: StateFlow<String> get() = _fontFamily
+    private val _fontFamily = MutableStateFlow(CustomFont.VAZIRMATN)
+    val fontFamily: StateFlow<CustomFont> get() = _fontFamily
 
     init {
-        _fontSize.value = sharedPrefManager.getFontSize()
+        _fontSizeIndex.value = sharedPrefManager.getFontSizeIndex()
         _fontFamily.value = sharedPrefManager.getFont()
     }
 
     fun setFontSize(size: Int) {
-        _fontSize.value = size
-        sharedPrefManager.saveFontSize(size)
+        _fontSizeIndex.value = size
+        sharedPrefManager.saveFontSizeIndex(size)
     }
 
-    fun setFontFamily(family: String) {
+    fun setFontFamily(family: CustomFont) {
         _fontFamily.value = family
         sharedPrefManager.saveFont(family)
     }
