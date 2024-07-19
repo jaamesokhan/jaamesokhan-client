@@ -52,7 +52,6 @@ fun VersePageHeader(
     onToggleVerseNumbers: () -> Unit
 ) {
     val isBookmarked by versesViewModel.isBookmarked.collectAsState()
-    val urls by versesViewModel.urls.collectAsState()
 
     val bookmarkIconColor = if (isBookmarked) Color.Red else Color.Gray
     val context = LocalContext.current
@@ -65,7 +64,7 @@ fun VersePageHeader(
                 .fillMaxWidth()
                 .padding(4.dp, 2.dp)
         ) {
-            AudioMenu(urls)
+            AudioMenu(versesViewModel)
             IconButton(onClick = { navController.navigate("${AppRoutes.COMMENTS}/$poetId/$poemId") }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Outlined.Comment,

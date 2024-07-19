@@ -7,7 +7,11 @@ import javax.inject.Inject
 class AudioApiClient @Inject constructor(
     private val audioApiService: AudioApiService,
 ) {
-    suspend fun getAllRecitations(poemId: Int): List<AudioData> {
+    suspend fun getAllRecitations(
+        poemId: Int,
+        successCallBack: () -> Unit,
+        failCallBack: () -> Unit
+    ): List<AudioData> {
         try {
             val res = audioApiService.getAllRecitations(poemId).body()
             val audioLinks = mutableListOf<AudioData>()
@@ -24,10 +28,11 @@ class AudioApiClient @Inject constructor(
                     }
                 }
             }
-
+            successCallBack()
             return audioLinks
         } catch (e: Exception) {
             Log.e("AudioApiClient", "error: ${e.message}")
+            failCallBack()
             return listOf()
         }
     }

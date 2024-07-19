@@ -10,22 +10,25 @@ import androidx.compose.material.icons.filled.PlayCircleOutline
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.jaamebaade_client.api.response.AudioData
+import com.example.jaamebaade_client.model.Status
+import com.example.jaamebaade_client.viewmodel.VersesViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AudioMenu(audioDataList: List<AudioData>) {
+fun AudioMenu(viewModel: VersesViewModel) {
+    val audioUrls = viewModel.urls.collectAsState()
     var expanded by remember { mutableStateOf(false) }
+    var fetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
     var isPlaying by remember { mutableStateOf(false) }
     var selectedAudioData by remember { mutableStateOf<AudioData?>(null) }
-    val mediaPlayer = remember {
-        MediaPlayer()
-    }
+    val mediaPlayer = remember { MediaPlayer() }
 
     LaunchedEffect(mediaPlayer) {
         mediaPlayer.setOnPreparedListener {
@@ -43,6 +46,10 @@ fun AudioMenu(audioDataList: List<AudioData>) {
                 onClick = {
                     if (selectedAudioData == null) {
                         expanded = true
+                        fetchStatus = Status.LOADING
+                        viewModel.fetchRecitationsForPoem(
+                            { fetchStatus = Status.SUCCESS },
+                            { fetchStatus = Status.FAILED })
                     } else {
                         if (isPlaying) {
                             mediaPlayer.pause()
@@ -66,9 +73,10 @@ fun AudioMenu(audioDataList: List<AudioData>) {
         }
 
         AudioListScreen(
+            audioDataList = audioUrls.value,
             expanded = expanded,
             onDismiss = { expanded = false },
-            audioDataList = audioDataList
+            fetchStatus = fetchStatus
         ) {
             mediaPlayer.reset()
             selectedAudioData = it
