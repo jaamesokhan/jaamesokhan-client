@@ -4,5 +4,6 @@ enum class Status {
     NOT_STARTED,
     LOADING,
     SUCCESS,
+    FAILED,
     ;
 }

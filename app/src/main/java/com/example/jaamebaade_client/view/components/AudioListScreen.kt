@@ -18,11 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.jaamebaade_client.api.response.AudioData
+import com.example.jaamebaade_client.model.Status
 
 @Composable
 fun AudioListScreen(
-    expanded: Boolean,
     audioDataList: List<AudioData>,
+    expanded: Boolean,
+    fetchStatus: Status,
     onDismiss: () -> Unit,
     onClick: (AudioData) -> Unit
 ) {
@@ -34,36 +36,51 @@ fun AudioListScreen(
         expanded = expanded,
         onDismissRequest = onDismiss,
     ) {
-        if (audioDataList.isEmpty()) {
+        if (audioDataList.isEmpty() && fetchStatus == Status.SUCCESS) {
             Text(
                 text = "هیچ خوانشی یافت نشد",
                 modifier = Modifier.padding(8.dp)
             )
         }
-        audioDataList.forEachIndexed { i, audioData ->
-            DropdownMenuItem(
-                onClick = {
-                    onClick(audioData)
-                },
-                text = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth()
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.MusicNote,
-                            contentDescription = "audio for ${audioData.artist}"
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = audioData.artist)
-                        // TODO add more data
+        when (fetchStatus) {
+            Status.LOADING -> {
+                LoadingIndicator()
+            }
+
+            Status.FAILED -> {
+                Text(
+                    text = "خطا در دریافت اطلاعات",
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+
+            else -> {
+                audioDataList.forEachIndexed { i, audioData ->
+                    DropdownMenuItem(
+                        onClick = {
+                            onClick(audioData)
+                        },
+                        text = {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.MusicNote,
+                                    contentDescription = "audio for ${audioData.artist}"
+                                )
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Text(text = audioData.artist)
+                                // TODO add more data
+                            }
+                        }
+                    )
+                    if (i != audioDataList.size - 1) {
+                        HorizontalDivider()
                     }
                 }
-            )
-            if (i != audioDataList.size - 1) {
-                HorizontalDivider()
             }
         }
     }

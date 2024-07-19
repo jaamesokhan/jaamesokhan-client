@@ -63,20 +63,22 @@ class VersesViewModel @AssistedInject constructor(
         fun create(
             @Assisted("poemId") poemId: Int,
             @Assisted("poetId") poetId: Int,
-
-            ): VersesViewModel
+        ): VersesViewModel
     }
 
 
     init {
         fetchPoemVerses()
         fetchIsBookmarked()
-        fetchRecitationsForPoem()
     }
 
-    private fun fetchRecitationsForPoem() {
+    fun fetchRecitationsForPoem(successCallBack: () -> Unit, failCallBack: () -> Unit) {
         viewModelScope.launch {
-            _urls.value = audioApiClient.getAllRecitations(poemId)
+            _urls.value = audioApiClient.getAllRecitations(
+                poemId = poemId,
+                successCallBack = successCallBack,
+                failCallBack = failCallBack
+            )
         }
     }
 
