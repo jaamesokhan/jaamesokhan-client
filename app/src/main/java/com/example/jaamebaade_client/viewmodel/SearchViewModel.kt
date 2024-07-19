@@ -38,18 +38,20 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun search() {
+    fun search(callBack: () -> Unit) {
         viewModelScope.launch {
             if (query.isEmpty()) {
+                callBack()
                 return@launch
             }
-            runSearchOnDatabase()
+            runSearchOnDatabase(callBack)
         }
     }
 
-    private suspend fun runSearchOnDatabase() {
+    private suspend fun runSearchOnDatabase(callBack: () -> Unit) {
         withContext(Dispatchers.IO) {
             results = verseRepository.searchVerses(query, poetFilter?.id)
+            callBack()
         }
     }
 

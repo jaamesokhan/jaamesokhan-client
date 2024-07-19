@@ -14,7 +14,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.jaamebaade_client.model.Status
 import com.example.jaamebaade_client.model.VersePoemCategoryPoet
+import com.example.jaamebaade_client.view.components.LoadingIndicator
 import com.example.jaamebaade_client.view.components.SearchBar
 import com.example.jaamebaade_client.view.components.SearchResultItem
 import com.example.jaamebaade_client.viewmodel.SearchViewModel
@@ -25,7 +27,7 @@ fun SearchScreen(
     navController: NavController,
     searchViewModel: SearchViewModel = hiltViewModel(),
 ) {
-    var hasSearched by remember { mutableStateOf(false) }
+    var searchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
 
     val results = searchViewModel.results
     val poets = searchViewModel.allPoets
@@ -34,12 +36,12 @@ fun SearchScreen(
             poets = poets.collectAsState().value,
             onSearchFilterChanged = { searchViewModel.poetFilter = it },
             onSearchQueryChanged = { searchViewModel.query = it }) {
-            searchViewModel.search()
-            hasSearched = true
+            searchStatus = Status.LOADING
+            searchViewModel.search(callBack = { searchStatus = Status.SUCCESS })
         }
         SearchResults(
             results = results,
-            hasSearched = hasSearched,
+            searchStatus = searchStatus,
             navController = navController
         )
     }
@@ -48,15 +50,15 @@ fun SearchScreen(
 @Composable
 fun SearchResults(
     results: List<VersePoemCategoryPoet>,
-    hasSearched: Boolean,
+    searchStatus: Status,
     navController: NavController
 ) {
-    LazyColumn {
-        if (results.isEmpty() && hasSearched) {
-            item {
-                Text(text = "جست‌وجوی شما نتیجه‌ای در بر نداشت!")
-            }
-        } else {
+    if (results.isEmpty() && searchStatus == Status.SUCCESS) {
+        Text(text = "جست‌وجوی شما نتیجه‌ای در بر نداشت!")
+    } else if (searchStatus == Status.LOADING) {
+        LoadingIndicator()
+    } else {
+        LazyColumn {
             items(results) { result ->
                 SearchResultItem(
                     modifier = Modifier, result = result, navController = navController
