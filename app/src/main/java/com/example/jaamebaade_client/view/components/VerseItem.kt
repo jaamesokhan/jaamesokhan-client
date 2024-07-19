@@ -3,8 +3,8 @@ package com.example.jaamebaade_client.view.components
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jaamebaade_client.model.Highlight
+import com.example.jaamebaade_client.model.Status
 import com.example.jaamebaade_client.model.Verse
 import com.example.jaamebaade_client.utility.toPersianNumber
 import com.example.jaamebaade_client.viewmodel.SelectionOptionViewModel
@@ -60,6 +61,7 @@ fun VerseItem(
     var endIndex by remember { mutableIntStateOf(0) }
     var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
     val meaning by viewModel.apiResult
+    var meaningFetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
 
     var annotatedString by remember { mutableStateOf<AnnotatedString?>(null) }
     val highlightColor = MaterialTheme.colorScheme.tertiary
@@ -87,11 +89,14 @@ fun VerseItem(
         Dialog(onDismissRequest = {
             showDialog = false
         }) {
-            try {
-                viewModel.getWordMeaning(verse.text.substring(startIndex, endIndex))
-            } catch (e: Exception) {
-                Log.e("VerseItem", "Error in getting word meaning", e)
-            }
+            viewModel.getWordMeaning(
+                word = verse.text.substring(startIndex, endIndex),
+                successCallBack = {
+                    meaningFetchStatus = Status.SUCCESS
+                },
+                failCallBack = {
+                    meaningFetchStatus = Status.FAILED
+                })
             Surface(
                 shape = RoundedCornerShape(4.dp),
                 modifier = Modifier.defaultMinSize(
@@ -139,9 +144,23 @@ fun VerseItem(
                             fontWeight = FontWeight.Bold
                         )
                     }
-                    Text(
-                        text = meaning
-                    )
+                    when (meaningFetchStatus) {
+                        Status.LOADING, Status.NOT_STARTED -> {
+                            Box(modifier = Modifier.height(40.dp)) {
+                                LoadingIndicator()
+                            }
+                        }
+
+                        Status.FAILED -> {
+                            Text("خطا در دریافت معنی")
+                        }
+
+                        Status.SUCCESS -> {
+                            Text(
+                                text = meaning
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -175,7 +194,7 @@ fun VerseItem(
             },
             modifier = Modifier.padding(0.dp),
             textStyle = MaterialTheme.typography.bodyMedium.copy(
-                textAlign = TextAlign.Center // Center the text within the TextField
+                textAlign = TextAlign.Center
             ),
             readOnly = true,
             colors = TextFieldDefaults.colors(
