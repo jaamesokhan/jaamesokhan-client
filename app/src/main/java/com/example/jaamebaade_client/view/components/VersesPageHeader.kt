@@ -85,7 +85,7 @@ fun VersePageHeader(
                         navController.navigate(
                             "${AppRoutes.POEM}/${poetId}/${poemId - 1}/-1",
                             navOptions {
-                                popUpTo("poem/{poetId}/{poemId}/-1") {
+                                popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
                                     inclusive = true
                                 }
                             }
@@ -105,7 +105,7 @@ fun VersePageHeader(
                         navController.navigate(
                             "${AppRoutes.POEM}/${poetId}/${poemId + 1}/-1",
                             navOptions {
-                                popUpTo("poem/{poetId}/{poemId}/-1") {
+                                popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
                                     inclusive = true
                                 }
                             }

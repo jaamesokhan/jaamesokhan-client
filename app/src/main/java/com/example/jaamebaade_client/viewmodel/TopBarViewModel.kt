@@ -35,7 +35,7 @@ class TopBarViewModel @Inject constructor(
     private suspend fun createPathBreadCrumbs(navStack: NavBackStackEntry?): String {
         val path = navStack?.destination?.route?.split("/")?.first()
         when (path) {
-            null, AppRoutes.DOWNLOADED_POETS_SCREEN.toString() -> return "جام باده"
+            null, AppRoutes.DOWNLOADED_POETS_SCREEN.toString() -> return "جام سخن"
             AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString() -> return "دانلود شاعر جدید"
             AppRoutes.POET_CATEGORY_SCREEN.toString() -> {
                 val poetId = navStack.arguments?.getInt("poetId")
@@ -75,7 +75,7 @@ class TopBarViewModel @Inject constructor(
             AppRoutes.CHANGE_FONT_SCREEN.toString() -> return "تغییر فونت"
             AppRoutes.ACCOUNT_SCREEN.toString() -> return "حساب کاربری"
             AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString() -> return "شاعران قابل دانلود"
-            else -> return "جام باده"
+            else -> return "جام سخن"
         }
     }
 

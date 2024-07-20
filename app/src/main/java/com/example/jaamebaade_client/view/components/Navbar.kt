@@ -14,6 +14,10 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -56,7 +60,8 @@ fun Navbar(navController: NavController) {
         NavbarItem(
             route = "downloadedPoetsScreen",
             currentRoute = currentRoute,
-            icon = Icons.Filled.Home,
+            idleIcon = Icons.Outlined.Home,
+            selectedIcon = Icons.Filled.Home,
             contentDescription = "Home",
             navController = navController
         )
@@ -64,7 +69,8 @@ fun Navbar(navController: NavController) {
         NavbarItem(
             route = "favoriteScreen",
             currentRoute = currentRoute,
-            icon = Icons.Filled.Favorite,
+            idleIcon = Icons.Outlined.FavoriteBorder,
+            selectedIcon = Icons.Filled.Favorite,
             contentDescription = "Favorites",
             navController = navController
         )
@@ -72,7 +78,8 @@ fun Navbar(navController: NavController) {
         NavbarItem(
             route = "searchScreen",
             currentRoute = currentRoute,
-            icon = Icons.Filled.Search,
+            idleIcon = Icons.Outlined.Search,
+            selectedIcon = Icons.Filled.Search,
             contentDescription = "Search",
             navController = navController
         )
@@ -80,7 +87,8 @@ fun Navbar(navController: NavController) {
         NavbarItem(
             route = "settingsScreen",
             currentRoute = currentRoute,
-            icon = Icons.Filled.Settings,
+            idleIcon = Icons.Outlined.Settings,
+            selectedIcon = Icons.Filled.Settings,
             contentDescription = "Settings",
             navController = navController
         )
@@ -91,7 +99,8 @@ fun Navbar(navController: NavController) {
 fun NavbarItem(
     route: String,
     currentRoute: String?,
-    icon: ImageVector,
+    idleIcon: ImageVector,
+    selectedIcon: ImageVector,
     contentDescription: String,
     navController: NavController
 ) {
@@ -128,7 +137,7 @@ fun NavbarItem(
                 )
         ) {
             Icon(
-                icon,
+                imageVector = if (isSelected) selectedIcon else idleIcon,
                 contentDescription = contentDescription,
                 modifier = Modifier.size(36.dp),
                 tint = MaterialTheme.colorScheme.inversePrimary

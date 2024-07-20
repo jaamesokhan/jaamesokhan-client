@@ -126,7 +126,7 @@ fun VerseItem(
                             val clipboard =
                                 context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                             val clip = ClipData.newPlainText(
-                                "جام باده",
+                                "جام سخن",
                                 verse.text.substring(startIndex, endIndex)
                             )
                             clipboard.setPrimaryClip(clip)

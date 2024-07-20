@@ -36,8 +36,10 @@ fun SearchScreen(
             poets = poets.collectAsState().value,
             onSearchFilterChanged = { searchViewModel.poetFilter = it },
             onSearchQueryChanged = { searchViewModel.query = it }) {
-            searchStatus = Status.LOADING
-            searchViewModel.search(callBack = { searchStatus = Status.SUCCESS })
+            if (it.length > 2) {
+                searchStatus = Status.LOADING
+                searchViewModel.search(callBack = { searchStatus = Status.SUCCESS })
+            }
         }
         SearchResults(
             results = results,
