@@ -58,10 +58,8 @@ fun SearchBar(
                 .background(Color.Transparent),
             trailingIcon = {
                 IconButton(onClick = {
-                    if (query.length > 2) {
                         onSearchQueryIconClicked(query)
                         keyboardController?.hide()
-                    }
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -104,6 +102,7 @@ fun SearchBar(
                     onClick = {
                         onSearchFilterChanged(null)
                         selectedPoet = null
+                        onSearchQueryIconClicked(query)
                         expanded = false
                     })
                 poets.forEach { poet ->
@@ -113,6 +112,7 @@ fun SearchBar(
                         onClick = {
                             onSearchFilterChanged(poet)
                             selectedPoet = poet
+                            onSearchQueryIconClicked(query)
                             expanded = false
                         })
                 }

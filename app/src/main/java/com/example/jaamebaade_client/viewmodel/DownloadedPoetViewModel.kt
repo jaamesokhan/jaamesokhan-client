@@ -19,7 +19,7 @@ class DownloadedPoetViewModel @Inject constructor(
     private val poetRepository: PoetRepository,
     private val categoryRepository: CategoryRepository,
 ) : ViewModel() {
-    var poets by mutableStateOf<List<Poet>>(emptyList())
+    var poets by mutableStateOf<List<Poet>?>(null)
         private set
 
 
