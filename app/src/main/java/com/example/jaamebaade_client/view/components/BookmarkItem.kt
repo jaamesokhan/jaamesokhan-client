@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.jaamebaade_client.constants.AppRoutes
 import com.example.jaamebaade_client.model.Poem
 import com.example.jaamebaade_client.model.Poet
 
@@ -25,7 +26,7 @@ fun BookmarkItem(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navController.navigate("poem/${poet.id}/${poem.id}") }
+            .clickable { navController.navigate("${AppRoutes.POEM}/${poet.id}/${poem.id}/-1") }
     ) {
         Row(
             modifier = Modifier
