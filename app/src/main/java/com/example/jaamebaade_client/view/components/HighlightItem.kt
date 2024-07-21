@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.jaamebaade_client.constants.AppRoutes
 import com.example.jaamebaade_client.model.HighlightVersePoemPoet
 
 @Composable
@@ -35,7 +36,7 @@ fun HighlightItem(
         modifier = modifier
             .fillMaxWidth()
             .padding(10.dp)
-            .clickable { navController.navigate("poem/${highlightVersePoemPoet.poet.id}/${highlightVersePoemPoet.poem.id}") }
+            .clickable { navController.navigate("${AppRoutes.POEM}/${highlightVersePoemPoet.poet.id}/${highlightVersePoemPoet.poem.id}/${highlightVersePoemPoet.verse.id}") }
 
     ) {
         Row(
