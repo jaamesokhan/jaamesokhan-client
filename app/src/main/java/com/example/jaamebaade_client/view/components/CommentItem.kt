@@ -44,8 +44,10 @@ fun CommentItem(comment: Comment, onDeleteClicked: () -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(text = comment.text)
-                Box(modifier = Modifier.padding(8.dp)) {
+                Box(modifier = Modifier.weight(0.9f)) {
+                    Text(text = comment.text)
+                }
+                Box(modifier = Modifier.padding(8.dp).weight(0.1f)) {
                     IconButton(
                         onClick = {
                             onDeleteClicked()
