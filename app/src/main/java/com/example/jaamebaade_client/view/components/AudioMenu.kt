@@ -4,6 +4,7 @@ import android.media.MediaPlayer
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PauseCircleOutline
 import androidx.compose.material.icons.filled.PlayCircleOutline
@@ -16,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.jaamebaade_client.api.response.AudioData
 import com.example.jaamebaade_client.model.Status
 import com.example.jaamebaade_client.viewmodel.VersesViewModel
@@ -26,22 +28,23 @@ fun AudioMenu(viewModel: VersesViewModel) {
     val audioUrls = viewModel.urls.collectAsState()
     var expanded by remember { mutableStateOf(false) }
     var fetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
-    var isPlaying by remember { mutableStateOf(false) }
+    var playStatus by remember { mutableStateOf(Status.NOT_STARTED) }
     var selectedAudioData by remember { mutableStateOf<AudioData?>(null) }
     val mediaPlayer = remember { MediaPlayer() }
 
     LaunchedEffect(mediaPlayer) {
         mediaPlayer.setOnPreparedListener {
-            isPlaying = true
+            playStatus = Status.IN_PROGRESS
             it.start()
         }
         mediaPlayer.setOnCompletionListener {
-            isPlaying = false
+            playStatus = Status.FINISHED
         }
     }
 
     Box(
         modifier = Modifier
+            .size(24.dp)
             .combinedClickable(
                 onClick = {
                     if (selectedAudioData == null) {
@@ -51,12 +54,14 @@ fun AudioMenu(viewModel: VersesViewModel) {
                             { fetchStatus = Status.SUCCESS },
                             { fetchStatus = Status.FAILED })
                     } else {
-                        if (isPlaying) {
+                        if (playStatus == Status.IN_PROGRESS) {
                             mediaPlayer.pause()
+                            playStatus = Status.STOPPED
+
                         } else {
                             mediaPlayer.start()
+                            playStatus = Status.IN_PROGRESS
                         }
-                        isPlaying = !isPlaying
                     }
                 },
                 onLongClick = {
@@ -66,10 +71,21 @@ fun AudioMenu(viewModel: VersesViewModel) {
             ),
 
         ) {
-        if (isPlaying) {
-            Icon(Icons.Default.PauseCircleOutline, contentDescription = "All audios")
-        } else {
-            Icon(Icons.Default.PlayCircleOutline, contentDescription = "All audios")
+        when (playStatus) {
+            Status.IN_PROGRESS -> {
+                Icon(Icons.Default.PauseCircleOutline, contentDescription = "pause")
+            }
+
+            Status.STOPPED, Status.NOT_STARTED, Status.SUCCESS -> {
+                Icon(Icons.Default.PlayCircleOutline, contentDescription = "play")
+            }
+
+            Status.LOADING -> {
+                LoadingIndicator()
+            }
+
+            Status.FAILED -> TODO()
+            Status.FINISHED -> TODO()
         }
 
         AudioListScreen(
@@ -81,6 +97,8 @@ fun AudioMenu(viewModel: VersesViewModel) {
             mediaPlayer.reset()
             selectedAudioData = it
             expanded = false
+            playStatus = Status.LOADING
+            viewModel.fetchAudioSyncInfo(it.syncXmlUrl)
             mediaPlayer.setDataSource(it.url)
             mediaPlayer.prepareAsync()
         }

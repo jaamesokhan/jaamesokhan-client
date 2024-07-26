@@ -5,5 +5,16 @@ enum class Status {
     LOADING,
     SUCCESS,
     FAILED,
+    FINISHED,
+
+    /**
+     * Something is in progress, like audio is being played
+     */
+    IN_PROGRESS,
+
+    /**
+     * In audio, it means Paused
+     */
+    STOPPED,
     ;
 }

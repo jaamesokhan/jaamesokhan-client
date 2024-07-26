@@ -10,6 +10,7 @@ import com.example.jaamebaade_client.api.DictionaryApiClient
 import com.example.jaamebaade_client.api.DictionaryApiService
 import com.example.jaamebaade_client.api.PoetApiClient
 import com.example.jaamebaade_client.api.PoetApiService
+import com.example.jaamebaade_client.api.SyncAudioClient
 import com.example.jaamebaade_client.database.AppDatabase
 import com.example.jaamebaade_client.datamanager.PoetDataManager
 import com.example.jaamebaade_client.repository.BookmarkRepository
@@ -107,6 +108,12 @@ object AppModule {
         apiService: AudioApiService,
     ): AudioApiClient {
         return AudioApiClient(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAudioSyncClient(): SyncAudioClient {
+        return SyncAudioClient()
     }
 
 

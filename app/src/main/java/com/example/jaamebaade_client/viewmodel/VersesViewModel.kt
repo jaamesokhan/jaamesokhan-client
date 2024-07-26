@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jaamebaade_client.api.AudioApiClient
+import com.example.jaamebaade_client.api.SyncAudioClient
 import com.example.jaamebaade_client.api.response.AudioData
 import com.example.jaamebaade_client.model.Highlight
 import com.example.jaamebaade_client.model.Pair
@@ -35,6 +36,7 @@ class VersesViewModel @AssistedInject constructor(
     private val poemRepository: PoemRepository,
     private val bookmarkRepository: BookmarkRepository,
     private val audioApiClient: AudioApiClient,
+    private val syncAudioClient: SyncAudioClient,
 ) : ViewModel() {
 
     private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
@@ -174,5 +176,12 @@ class VersesViewModel @AssistedInject constructor(
 
     suspend fun getFirstAndLastWithCategoryId(categoryId: Int): Pair {
         return withContext(Dispatchers.IO) { poemRepository.getFirstAndLastWithCategoryId(categoryId) }
+    }
+
+    fun fetchAudioSyncInfo(syncXmlUrl: String?) {
+        if (syncXmlUrl == null) return
+        viewModelScope.launch {
+            val res = syncAudioClient.getAudioSyncInfo(syncXmlUrl, {}, {})
+        }
     }
 }
