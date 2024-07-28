@@ -13,6 +13,11 @@ enum class AppRoutes(private val route: String) {
     COMMENTS("comments")
     ;
 
+    companion object {
+        fun fromString(route: String): AppRoutes? {
+            return entries.find { it.route == route }
+        }
+    }
 
     override fun toString() = route
 }

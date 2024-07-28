@@ -7,14 +7,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -22,6 +23,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +38,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jaamebaade_client.R
 import com.example.jaamebaade_client.constants.AppRoutes
 import com.example.jaamebaade_client.viewmodel.TopBarViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,11 +50,17 @@ fun TopBar(navController: NavController, viewModel: TopBarViewModel = hiltViewMo
                 && backStackEntry?.destination?.route != AppRoutes.SETTINGS_SCREEN.toString()
                 && backStackEntry?.destination?.route != AppRoutes.SEARCH_SCREEN.toString()
                 && backStackEntry?.destination?.route != AppRoutes.FAVORITE_SCREEN.toString())
-    val breadCrumbs = viewModel.breadCrumbs
 
     LaunchedEffect(key1 = backStackEntry) {
         viewModel.updateBreadCrumbs(backStackEntry)
+        viewModel.shouldShowShuffle(backStackEntry)
     }
+
+    val breadCrumbs = viewModel.breadCrumbs
+    val showShuffle = viewModel.showShuffleIcon
+
+    val coroutineScope = rememberCoroutineScope()
+
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary
@@ -65,13 +74,36 @@ fun TopBar(navController: NavController, viewModel: TopBarViewModel = hiltViewMo
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Image(
-                        myIcon,
-                        contentDescription = "Logo",
-                        modifier = Modifier.size(48.dp),
-                        contentScale = ContentScale.Fit,
-                    )
-                    Spacer(modifier = Modifier.width(16.dp))
+                    if (canPop) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            contentDescription = "Back",
+                            modifier = Modifier
+                                .clickable {
+                                    if (backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
+                                        navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                                            popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                                                inclusive = true
+                                            }
+
+                                        }
+                                    } else {
+                                        navController.popBackStack()
+                                    }
+                                }
+                                .padding(end = 8.dp)
+                                .size(24.dp),
+                        )
+                    } else {
+                        Image(
+                            myIcon,
+                            contentDescription = "Logo",
+                            modifier = Modifier.size(48.dp),
+                            contentScale = ContentScale.Fit,
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = breadCrumbs,
                         style = MaterialTheme.typography.titleLarge,
@@ -79,34 +111,26 @@ fun TopBar(navController: NavController, viewModel: TopBarViewModel = hiltViewMo
                         overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.sizeIn(
-                            maxWidth = 250.dp
+                            maxWidth = 260.dp
                         ),
                         maxLines = 1
                     )
                 }
-
-                if (canPop) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        contentDescription = "Back",
-                        modifier = Modifier
-                            .clickable {
-                                if (backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
-                                    navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
-                                        popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
-                                            inclusive = true
-                                        }
-
-                                    }
-                                } else {
-                                    navController.popBackStack()
-                                }
-                            }
-                            .padding(end = 16.dp)
-                            .requiredWidth(24.dp)
-                            .size(24.dp),
-                    )
+                if (showShuffle) {
+                    IconButton(onClick = {
+                        coroutineScope.launch {
+                            val poemWithPoet = viewModel.findShuffledPoem(backStackEntry)
+                            navController.navigate(
+                                "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
+                            )
+                        }
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Shuffle,
+                            contentDescription = "shuffle",
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
                 }
             }
         },
