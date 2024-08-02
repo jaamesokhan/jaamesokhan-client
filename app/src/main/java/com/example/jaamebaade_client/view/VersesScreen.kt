@@ -108,7 +108,8 @@ fun VerseScreen(
                     shouldFocusForSearch = false
                 }
             }
-        } else {
+        }
+        if (playStatus == Status.FINISHED) {
             shouldFocusForSearch = false
         }
     }
