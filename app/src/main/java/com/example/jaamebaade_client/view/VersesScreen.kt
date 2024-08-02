@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.jaamebaade_client.model.Status
 import com.example.jaamebaade_client.view.components.VerseItem
 import com.example.jaamebaade_client.view.components.VersePageHeader
 import com.example.jaamebaade_client.viewmodel.VersesViewModel
@@ -61,6 +62,7 @@ fun VerseScreen(
 
     val mediaPlayer = versesViewModel.mediaPlayer
     val playStatus = versesViewModel.playStatus
+    val syncInfoFetchStatus = versesViewModel.syncInfoFetchStatus
     val audioSyncData = versesViewModel.audioSyncInfo.collectAsState().value
     var recitedVerseIndex by remember { mutableIntStateOf(0) }
 
@@ -89,16 +91,23 @@ fun VerseScreen(
         }
     }
 
-    LaunchedEffect(playStatus) {
-        while (mediaPlayer.isPlaying) {
-            val currentPosition =
-                mediaPlayer.currentPosition + (audioSyncData?.poemAudio?.oneSecondBugFix ?: 0)
-            val syncInfo = audioSyncData?.poemAudio?.syncArray?.syncInfo?.findLast {
-                currentPosition >= it.audioMiliseconds!!
-            }!!
-            recitedVerseIndex = syncInfo.verseOrder!!
-            shouldFocusForRecitation = true
-            delay(25)
+    LaunchedEffect(playStatus, syncInfoFetchStatus) {
+        if (syncInfoFetchStatus == Status.SUCCESS && audioSyncData != null) {
+            while (mediaPlayer.isPlaying) {
+                val currentPosition =
+                    mediaPlayer.currentPosition + (audioSyncData.poemAudio?.oneSecondBugFix ?: 0)
+                val syncInfo = audioSyncData.poemAudio?.syncArray?.syncInfo?.findLast {
+                    currentPosition >= it.audioMiliseconds!!
+                }
+
+                if (syncInfo?.verseOrder != null) {
+                    recitedVerseIndex = syncInfo.verseOrder!!
+                    shouldFocusForRecitation = true
+                    delay(25)
+                } else {
+                    shouldFocusForSearch = false
+                }
+            }
         }
     }
 

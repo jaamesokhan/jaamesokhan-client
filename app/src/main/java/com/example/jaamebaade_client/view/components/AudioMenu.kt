@@ -92,6 +92,8 @@ fun AudioMenu(viewModel: VersesViewModel) {
 
             Status.FINISHED -> {
                 mediaPlayer.reset()
+                selectedAudioData = null
+                Icon(Icons.Default.PlayCircleOutline, contentDescription = "play")
             }
         }
 

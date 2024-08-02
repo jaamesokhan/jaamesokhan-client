@@ -63,6 +63,9 @@ class VersesViewModel @AssistedInject constructor(
     var playStatus by mutableStateOf(Status.NOT_STARTED)
         private set
 
+    var syncInfoFetchStatus by mutableStateOf(Status.NOT_STARTED)
+        private set
+
     fun share(verses: List<VerseWithHighlights>, context: Context) {
         val poemText = verses.joinToString("\n") { it.verse.text }
         val sendIntent: Intent = Intent().apply {
@@ -196,7 +199,8 @@ class VersesViewModel @AssistedInject constructor(
     fun fetchAudioSyncInfo(syncXmlUrl: String?) {
         if (syncXmlUrl == null) return
         viewModelScope.launch {
-            _audioSyncInfo.value = syncAudioClient.getAudioSyncInfo(syncXmlUrl, {}, {})
+            syncInfoFetchStatus = Status.LOADING
+            _audioSyncInfo.value = syncAudioClient.getAudioSyncInfo(syncXmlUrl, {syncInfoFetchStatus = Status.SUCCESS}, {syncInfoFetchStatus = Status.FAILED})
         }
     }
 
