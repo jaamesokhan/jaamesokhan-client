@@ -95,7 +95,7 @@ fun VerseScreen(
         if (syncInfoFetchStatus == Status.SUCCESS && audioSyncData != null) {
             while (mediaPlayer.isPlaying) {
                 val currentPosition =
-                    mediaPlayer.currentPosition + 2 * (audioSyncData.poemAudio?.oneSecondBugFix ?: 0)
+                    mediaPlayer.currentPosition + (audioSyncData.poemAudio?.oneSecondBugFix ?: 0)
                 val syncInfo = audioSyncData.poemAudio?.syncArray?.syncInfo?.findLast {
                     currentPosition >= it.audioMiliseconds!!
                 }
