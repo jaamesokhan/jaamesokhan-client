@@ -29,7 +29,7 @@ data class PoemAudio @JvmOverloads constructor(
     var fileCheckSum: String? = null,
 
     @field:Element(name = "OneSecondBugFix", required = false)
-    var oneSecondBugFix: String? = null,
+    var oneSecondBugFix: Int? = null,
 
     @field:Element(name = "SyncArray", required = false)
     var syncArray: SyncArray? = null
