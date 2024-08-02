@@ -9,8 +9,8 @@ class AudioApiClient @Inject constructor(
 ) {
     suspend fun getAllRecitations(
         poemId: Int,
-        successCallBack: () -> Unit,
-        failCallBack: () -> Unit
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit
     ): List<AudioData> {
         try {
             val res = audioApiService.getAllRecitations(poemId).body()
@@ -29,11 +29,11 @@ class AudioApiClient @Inject constructor(
                     }
                 }
             }
-            successCallBack()
+            onSuccess()
             return audioLinks
         } catch (e: Exception) {
             Log.e("AudioApiClient", "error: ${e.message}")
-            failCallBack()
+            onFailure()
             return listOf()
         }
     }

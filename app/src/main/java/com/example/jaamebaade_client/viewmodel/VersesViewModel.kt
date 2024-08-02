@@ -1,6 +1,6 @@
 package com.example.jaamebaade_client.viewmodel
 
-import DesktopGanjoorPoemAudioList
+import AudioSyncResponse
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
@@ -54,8 +54,8 @@ class VersesViewModel @AssistedInject constructor(
     private val _urls = MutableStateFlow<List<AudioData>>(emptyList())
     val urls: StateFlow<List<AudioData>> = _urls
 
-    private val _audioSyncInfo = MutableStateFlow<DesktopGanjoorPoemAudioList?>(null)
-    val audioSyncInfo: StateFlow<DesktopGanjoorPoemAudioList?> = _audioSyncInfo
+    private val _audioSyncInfo = MutableStateFlow<AudioSyncResponse?>(null)
+    val audioSyncInfo: StateFlow<AudioSyncResponse?> = _audioSyncInfo
 
     var mediaPlayer by mutableStateOf(MediaPlayer())
         private set
@@ -92,12 +92,12 @@ class VersesViewModel @AssistedInject constructor(
         fetchIsBookmarked()
     }
 
-    fun fetchRecitationsForPoem(successCallBack: () -> Unit, failCallBack: () -> Unit) {
+    fun fetchRecitationsForPoem(onSuccess: () -> Unit, onFailure: () -> Unit) {
         viewModelScope.launch {
             _urls.value = audioApiClient.getAllRecitations(
                 poemId = poemId,
-                successCallBack = successCallBack,
-                failCallBack = failCallBack
+                onSuccess = onSuccess,
+                onFailure = onFailure
             )
         }
     }

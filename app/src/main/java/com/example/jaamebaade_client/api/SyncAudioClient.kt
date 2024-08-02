@@ -1,6 +1,6 @@
 package com.example.jaamebaade_client.api
 
-import DesktopGanjoorPoemAudioList
+import AudioSyncResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.simpleframework.xml.core.Persister
@@ -13,9 +13,9 @@ import java.net.URL
 class SyncAudioClient {
     suspend fun getAudioSyncInfo(
         urlPath: String,
-        successCallBack: () -> Unit,
-        failCallBack: () -> Unit
-    ): DesktopGanjoorPoemAudioList? {
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit
+    ): AudioSyncResponse? {
         try {
             val url = URL(urlPath)
             return withContext(Dispatchers.IO) {
@@ -33,18 +33,18 @@ class SyncAudioClient {
 
                     val serializer = Persister()
                     val result = serializer.read(
-                        DesktopGanjoorPoemAudioList::class.java,
+                        AudioSyncResponse::class.java,
                         StringReader(xmlResponse)
                     )
-                    successCallBack()
+                    onSuccess()
                     result
                 } else {
-                    failCallBack()
+                    onFailure()
                     null
                 }
             }
         } catch (e: Exception) {
-            failCallBack()
+            onFailure()
             e.printStackTrace()
             return null
         }

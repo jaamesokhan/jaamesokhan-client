@@ -3,7 +3,7 @@ import org.simpleframework.xml.ElementList
 import org.simpleframework.xml.Root
 
 @Root(name = "DesktopGanjoorPoemAudioList", strict = false)
-data class DesktopGanjoorPoemAudioList @JvmOverloads constructor(
+data class AudioSyncResponse @JvmOverloads constructor(
     @field:Element(name = "PoemAudio", required = false)
     var poemAudio: PoemAudio? = null
 )

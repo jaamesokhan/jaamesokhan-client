@@ -92,7 +92,9 @@ fun VerseScreen(
     }
 
     LaunchedEffect(playStatus, syncInfoFetchStatus) {
-        if (syncInfoFetchStatus == Status.SUCCESS && audioSyncData != null) {
+        if (playStatus == Status.FINISHED) {
+            shouldFocusForRecitation = false
+        } else if (syncInfoFetchStatus == Status.SUCCESS && audioSyncData != null) {
             while (mediaPlayer.isPlaying) {
                 val currentPosition =
                     mediaPlayer.currentPosition + (audioSyncData.poemAudio?.oneSecondBugFix ?: 0)
@@ -105,12 +107,9 @@ fun VerseScreen(
                     shouldFocusForRecitation = true
                     delay(25)
                 } else {
-                    shouldFocusForSearch = false
+                    shouldFocusForRecitation = false
                 }
             }
-        }
-        if (playStatus == Status.FINISHED) {
-            shouldFocusForSearch = false
         }
     }
 
