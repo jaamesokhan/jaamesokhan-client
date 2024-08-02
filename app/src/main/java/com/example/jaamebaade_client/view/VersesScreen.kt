@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.jaamebaade_client.model.Status
 import com.example.jaamebaade_client.view.components.VerseItem
 import com.example.jaamebaade_client.view.components.VersePageHeader
 import com.example.jaamebaade_client.viewmodel.VersesViewModel
@@ -51,12 +52,23 @@ fun VerseScreen(
     var minId by remember { mutableIntStateOf(0) }
     var maxId by remember { mutableIntStateOf(0) }
 
-    var shouldfocus by remember { mutableStateOf(false) }
+    var shouldFocusForSearch by remember { mutableStateOf(false) }
+    var shouldFocusForRecitation by remember { mutableStateOf(false) }
 
 
     var showVerseNumbers by remember { mutableStateOf(false) }
 
     val lazyListState = rememberLazyListState()
+
+    val mediaPlayer = versesViewModel.mediaPlayer
+    val playStatus = versesViewModel.playStatus
+    val syncInfoFetchStatus = versesViewModel.syncInfoFetchStatus
+    val audioSyncData = versesViewModel.audioSyncInfo.collectAsState().value
+    var recitedVerseIndex by remember { mutableIntStateOf(0) }
+
+    val versesWithHighlights by versesViewModel.verses.collectAsState()
+
+    val focusedVerse = versesWithHighlights.find { it.verse.id == focusedVerseId }
 
     LaunchedEffect(poetId) {
         poetName = versesViewModel.getPoetName(poetId)
@@ -70,16 +82,39 @@ fun VerseScreen(
         poemTitle = versesViewModel.getPoemTitle(poemId)
     }
 
-    val versesWithHighlights by versesViewModel.verses.collectAsState()
-
-    val focusedVerse = versesWithHighlights.find { it.verse.id == focusedVerseId }
     if (focusedVerse != null) {
         LaunchedEffect(key1 = focusedVerse) {
-            lazyListState.scrollToItem(index = versesWithHighlights.indexOf(focusedVerse))
-            shouldfocus = true
+            lazyListState.animateScrollToItem(index = versesWithHighlights.indexOf(focusedVerse))
+            shouldFocusForSearch = true
             delay(2000)
-            shouldfocus = false
+            shouldFocusForSearch = false
         }
+    }
+
+    LaunchedEffect(playStatus, syncInfoFetchStatus) {
+        if (playStatus == Status.FINISHED) {
+            shouldFocusForRecitation = false
+        } else if (syncInfoFetchStatus == Status.SUCCESS && audioSyncData != null) {
+            while (mediaPlayer.isPlaying) {
+                val currentPosition =
+                    mediaPlayer.currentPosition + (audioSyncData.poemAudio?.oneSecondBugFix ?: 0)
+                val syncInfo = audioSyncData.poemAudio?.syncArray?.syncInfo?.findLast {
+                    currentPosition >= it.audioMiliseconds!!
+                }
+
+                if (syncInfo?.verseOrder != null && syncInfo.verseOrder!! >= 0) {
+                    recitedVerseIndex = syncInfo.verseOrder!!
+                    shouldFocusForRecitation = true
+                    delay(25)
+                } else {
+                    shouldFocusForRecitation = false
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(recitedVerseIndex) {
+        lazyListState.animateScrollToItem(index = recitedVerseIndex)
     }
 
     Column(
@@ -103,8 +138,10 @@ fun VerseScreen(
         LazyColumn(state = lazyListState) {
             itemsIndexed(versesWithHighlights) { index, verseWithHighlights ->
                 val itemModifier =
-                    if (shouldfocus && index == versesWithHighlights.indexOf(focusedVerse)) {
+                    if (shouldFocusForSearch && index == versesWithHighlights.indexOf(focusedVerse)) {
                         Modifier.background(color = MaterialTheme.colorScheme.inverseOnSurface)
+                    } else if (shouldFocusForRecitation && index == recitedVerseIndex) {
+                        Modifier.background(color = MaterialTheme.colorScheme.inverseOnSurface) // TODO change color maybe?
                     } else {
                         Modifier
                     }

@@ -96,7 +96,7 @@ fun VerseItem(
                 successCallBack = {
                     meaningFetchStatus = Status.SUCCESS
                 },
-                failCallBack = {
+                failureCallBack = {
                     meaningFetchStatus = Status.FAILED
                 })
             Column(modifier = Modifier.padding(8.dp)) {
@@ -157,6 +157,10 @@ fun VerseItem(
                                 bottom = 10.dp
                             )
                         )
+                    }
+
+                    else -> {
+
                     }
                 }
             }

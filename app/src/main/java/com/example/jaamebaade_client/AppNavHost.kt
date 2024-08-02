@@ -1,6 +1,5 @@
 package com.example.jaamebaade_client
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -71,7 +70,6 @@ fun AppNavHost(fontRepository: FontRepository) {
             "label" -> FontWeight.Light
             else -> FontWeight.Normal
         }
-        Log.d("size", "$sizeBasedFontSize")
         return TextStyle(
             fontFamily = selectedFontFamily.getFontFamily(),
             fontSize = sizeBasedFontSize,

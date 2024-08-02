@@ -94,4 +94,5 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.persiandate)
+    implementation(libs.simple.xml)
 }

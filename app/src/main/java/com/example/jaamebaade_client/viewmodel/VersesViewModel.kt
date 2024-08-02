@@ -1,14 +1,21 @@
 package com.example.jaamebaade_client.viewmodel
 
+import AudioSyncResponse
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jaamebaade_client.api.AudioApiClient
+import com.example.jaamebaade_client.api.SyncAudioClient
 import com.example.jaamebaade_client.api.response.AudioData
 import com.example.jaamebaade_client.model.Highlight
 import com.example.jaamebaade_client.model.Pair
+import com.example.jaamebaade_client.model.Status
 import com.example.jaamebaade_client.model.VerseWithHighlights
 import com.example.jaamebaade_client.repository.BookmarkRepository
 import com.example.jaamebaade_client.repository.HighlightRepository
@@ -35,6 +42,7 @@ class VersesViewModel @AssistedInject constructor(
     private val poemRepository: PoemRepository,
     private val bookmarkRepository: BookmarkRepository,
     private val audioApiClient: AudioApiClient,
+    private val syncAudioClient: SyncAudioClient,
 ) : ViewModel() {
 
     private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
@@ -45,6 +53,18 @@ class VersesViewModel @AssistedInject constructor(
 
     private val _urls = MutableStateFlow<List<AudioData>>(emptyList())
     val urls: StateFlow<List<AudioData>> = _urls
+
+    private val _audioSyncInfo = MutableStateFlow<AudioSyncResponse?>(null)
+    val audioSyncInfo: StateFlow<AudioSyncResponse?> = _audioSyncInfo
+
+    var mediaPlayer by mutableStateOf(MediaPlayer())
+        private set
+
+    var playStatus by mutableStateOf(Status.NOT_STARTED)
+        private set
+
+    var syncInfoFetchStatus by mutableStateOf(Status.NOT_STARTED)
+        private set
 
     fun share(verses: List<VerseWithHighlights>, context: Context) {
         val poemText = verses.joinToString("\n") { it.verse.text }
@@ -72,12 +92,12 @@ class VersesViewModel @AssistedInject constructor(
         fetchIsBookmarked()
     }
 
-    fun fetchRecitationsForPoem(successCallBack: () -> Unit, failCallBack: () -> Unit) {
+    fun fetchRecitationsForPoem(onSuccess: () -> Unit, onFailure: () -> Unit) {
         viewModelScope.launch {
             _urls.value = audioApiClient.getAllRecitations(
                 poemId = poemId,
-                successCallBack = successCallBack,
-                failCallBack = failCallBack
+                onSuccess = onSuccess,
+                onFailure = onFailure
             )
         }
     }
@@ -174,5 +194,17 @@ class VersesViewModel @AssistedInject constructor(
 
     suspend fun getFirstAndLastWithCategoryId(categoryId: Int): Pair {
         return withContext(Dispatchers.IO) { poemRepository.getFirstAndLastWithCategoryId(categoryId) }
+    }
+
+    fun fetchAudioSyncInfo(syncXmlUrl: String?) {
+        if (syncXmlUrl == null) return
+        viewModelScope.launch {
+            syncInfoFetchStatus = Status.LOADING
+            _audioSyncInfo.value = syncAudioClient.getAudioSyncInfo(syncXmlUrl, {syncInfoFetchStatus = Status.SUCCESS}, {syncInfoFetchStatus = Status.FAILED})
+        }
+    }
+
+    fun changePlayStatus(status: Status) {
+        playStatus = status
     }
 }
