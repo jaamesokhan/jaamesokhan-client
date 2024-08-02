@@ -95,12 +95,12 @@ fun VerseScreen(
         if (syncInfoFetchStatus == Status.SUCCESS && audioSyncData != null) {
             while (mediaPlayer.isPlaying) {
                 val currentPosition =
-                    mediaPlayer.currentPosition + (audioSyncData.poemAudio?.oneSecondBugFix ?: 0)
+                    mediaPlayer.currentPosition + 2 * (audioSyncData.poemAudio?.oneSecondBugFix ?: 0)
                 val syncInfo = audioSyncData.poemAudio?.syncArray?.syncInfo?.findLast {
                     currentPosition >= it.audioMiliseconds!!
                 }
 
-                if (syncInfo?.verseOrder != null) {
+                if (syncInfo?.verseOrder != null && syncInfo.verseOrder!! >= 0) {
                     recitedVerseIndex = syncInfo.verseOrder!!
                     shouldFocusForRecitation = true
                     delay(25)
@@ -108,6 +108,8 @@ fun VerseScreen(
                     shouldFocusForSearch = false
                 }
             }
+        } else {
+            shouldFocusForSearch = false
         }
     }
 
