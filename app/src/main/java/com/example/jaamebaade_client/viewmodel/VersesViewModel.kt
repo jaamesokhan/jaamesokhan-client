@@ -3,8 +3,6 @@ package com.example.jaamebaade_client.viewmodel
 import AudioSyncResponse
 import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -56,12 +54,6 @@ class VersesViewModel @AssistedInject constructor(
 
     private val _audioSyncInfo = MutableStateFlow<AudioSyncResponse?>(null)
     val audioSyncInfo: StateFlow<AudioSyncResponse?> = _audioSyncInfo
-
-    var mediaPlayer by mutableStateOf(MediaPlayer())
-        private set
-
-    var playStatus by mutableStateOf(Status.NOT_STARTED)
-        private set
 
     var syncInfoFetchStatus by mutableStateOf(Status.NOT_STARTED)
         private set
@@ -130,7 +122,6 @@ class VersesViewModel @AssistedInject constructor(
                     it
                 }
             }
-            Log.i("highlight", "highlight: $highlight")
         }
     }
 
@@ -200,11 +191,12 @@ class VersesViewModel @AssistedInject constructor(
         if (syncXmlUrl == null) return
         viewModelScope.launch {
             syncInfoFetchStatus = Status.LOADING
-            _audioSyncInfo.value = syncAudioClient.getAudioSyncInfo(syncXmlUrl, {syncInfoFetchStatus = Status.SUCCESS}, {syncInfoFetchStatus = Status.FAILED})
+            _audioSyncInfo.value = syncAudioClient.getAudioSyncInfo(
+                syncXmlUrl,
+                { syncInfoFetchStatus = Status.SUCCESS },
+                { syncInfoFetchStatus = Status.FAILED })
         }
     }
 
-    fun changePlayStatus(status: Status) {
-        playStatus = status
-    }
+
 }

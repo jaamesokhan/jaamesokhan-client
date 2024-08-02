@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -44,9 +45,12 @@ import com.example.jaamebaade_client.view.SettingsScreen
 import com.example.jaamebaade_client.view.VerseScreen
 import com.example.jaamebaade_client.view.components.Navbar
 import com.example.jaamebaade_client.view.components.TopBar
+import com.example.jaamebaade_client.viewmodel.AudioViewModel
 
 @Composable
 fun AppNavHost(fontRepository: FontRepository) {
+    val audioViewModel: AudioViewModel = hiltViewModel()
+
     val navController =
         rememberNavController()
     val fontSize by fontRepository.fontSizeIndex.collectAsState()
@@ -103,7 +107,8 @@ fun AppNavHost(fontRepository: FontRepository) {
                 bottomBar = { Navbar(navController = navController) },
                 topBar = {
                     TopBar(
-                        navController = navController
+                        navController = navController,
+                        audioViewModel = audioViewModel,
                     )
                 }) { innerPadding ->
                 NavHost(navController = navController, startDestination = "downloadedPoetsScreen") {
@@ -227,6 +232,7 @@ fun AppNavHost(fontRepository: FontRepository) {
                             poemId = poemId!!,
                             poetId = poetId!!,
                             focusedVerseId = verseId,
+                            audioViewModel = audioViewModel,
                             modifier = Modifier.padding(innerPadding),
                         )
                     }
@@ -258,4 +264,3 @@ fun AppNavHost(fontRepository: FontRepository) {
         }
     }
 }
-

@@ -22,6 +22,7 @@ class AudioApiClient @Inject constructor(
                         audioLinks.add(
                             AudioData(
                                 artist = recitation["audioArtist"]!!,
+                                poemId = poemId,
                                 syncXmlUrl = recitation["xmlText"],
                                 url = mp3Url!!
                             )

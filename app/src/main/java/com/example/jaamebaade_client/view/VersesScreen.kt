@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.example.jaamebaade_client.model.Status
 import com.example.jaamebaade_client.view.components.VerseItem
 import com.example.jaamebaade_client.view.components.VersePageHeader
+import com.example.jaamebaade_client.viewmodel.AudioViewModel
 import com.example.jaamebaade_client.viewmodel.VersesViewModel
 import kotlinx.coroutines.delay
 
@@ -32,7 +33,8 @@ fun VerseScreen(
     poemId: Int,
     poetId: Int,
     focusedVerseId: Int?,
-    modifier: Modifier
+    modifier: Modifier,
+    audioViewModel: AudioViewModel = hiltViewModel()
 ) {
 
     var poetName by remember(poetId) {
@@ -60,8 +62,8 @@ fun VerseScreen(
 
     val lazyListState = rememberLazyListState()
 
-    val mediaPlayer = versesViewModel.mediaPlayer
-    val playStatus = versesViewModel.playStatus
+    val mediaPlayer = audioViewModel.mediaPlayer
+    val playStatus = audioViewModel.playStatus
     val syncInfoFetchStatus = versesViewModel.syncInfoFetchStatus
     val audioSyncData = versesViewModel.audioSyncInfo.collectAsState().value
     var recitedVerseIndex by remember { mutableIntStateOf(0) }
@@ -91,8 +93,10 @@ fun VerseScreen(
         }
     }
 
-    LaunchedEffect(playStatus, syncInfoFetchStatus) {
+    LaunchedEffect(playStatus) {
         if (playStatus == Status.FINISHED) {
+            shouldFocusForRecitation = false
+        } else if (playStatus == Status.NOT_STARTED) {
             shouldFocusForRecitation = false
         } else if (syncInfoFetchStatus == Status.SUCCESS && audioSyncData != null) {
             while (mediaPlayer.isPlaying) {
@@ -128,6 +132,7 @@ fun VerseScreen(
             maxId,
             versesViewModel = versesViewModel,
             showVerseNumbers = showVerseNumbers,
+            audioViewModel = audioViewModel,
             onToggleVerseNumbers = { showVerseNumbers = !showVerseNumbers }
         )
 

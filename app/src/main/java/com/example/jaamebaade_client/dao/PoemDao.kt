@@ -47,7 +47,8 @@ interface PoemDao {
 
     fun getCategoryByPoemId(poemId: Int): Int
 
-    @Query("""
+    @Query(
+        """
         WITH RECURSIVE category_tree AS (
         SELECT id from categories WHERE id = :categoryId
         UNION ALL
@@ -67,6 +68,25 @@ interface PoemDao {
         WHERE (:categoryId IS NULL OR c.id IN category_tree)
         ORDER BY RANDOM()
         LIMIT 1
-    """)
+    """
+    )
     fun getRandomPoem(categoryId: Int?): PoemWithPoet
+
+    @Query(
+        """
+        SELECT 
+        pm.id AS poem_id,
+        pm.title AS poem_title,
+        pm.category_id AS poem_category_id,
+        pt.id AS poet_id,
+        pt.name AS poet_name,
+        pt.description AS poet_description,
+        pt.imageUrl AS poet_imageUrl
+        FROM poems pm
+        JOIN categories c ON c.id = pm.category_id
+        JOIN poets pt ON pt.id = c.poet_id
+        WHERE pm.id = :poemId 
+    """
+    )
+    fun getPoemWithPoet(poemId: Int): PoemWithPoet
 }

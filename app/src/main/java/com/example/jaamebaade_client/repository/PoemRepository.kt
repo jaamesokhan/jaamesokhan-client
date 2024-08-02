@@ -25,5 +25,8 @@ class PoemRepository @Inject constructor(appDatabase: AppDatabase) {
         poemDao.getFirstAndLastWithCategoryId(categoryId)
 
     fun getCategoryIdByPoemId(poemId: Int): Int = poemDao.getCategoryByPoemId(poemId)
+
     fun getRandomPoem(categoryId: Int? = null): PoemWithPoet = poemDao.getRandomPoem(categoryId)
+
+    fun getPoemWithPoet(poemId: Int): PoemWithPoet = poemDao.getPoemWithPoet(poemId)
 }
