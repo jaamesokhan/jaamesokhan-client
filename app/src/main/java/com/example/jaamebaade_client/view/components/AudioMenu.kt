@@ -1,5 +1,6 @@
 package com.example.jaamebaade_client.view.components
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -14,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.jaamebaade_client.model.Status
 import com.example.jaamebaade_client.viewmodel.AudioViewModel
@@ -26,6 +28,7 @@ fun AudioMenu(viewModel: VersesViewModel, audioViewModel: AudioViewModel) {
     var fetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
 
     val mediaPlayer = audioViewModel.mediaPlayer
+    val context = LocalContext.current
 
     LaunchedEffect(mediaPlayer) {
         mediaPlayer.setOnPreparedListener {
@@ -63,9 +66,16 @@ fun AudioMenu(viewModel: VersesViewModel, audioViewModel: AudioViewModel) {
             audioViewModel.setSelectedAudioDate(it)
             expanded = false
             audioViewModel.changePlayStatus(Status.LOADING)
-            viewModel.fetchAudioSyncInfo(it.syncXmlUrl)
-            mediaPlayer.setDataSource(it.url)
-            mediaPlayer.prepareAsync()
+            viewModel.fetchAudioSyncInfo(it.syncXmlUrl, {
+                mediaPlayer.setDataSource(it.url)
+                mediaPlayer.prepareAsync()
+            }, {
+                Toast.makeText(
+                    context,
+                    "دریافت اطلاعات همگام‌سازی صدا با خطا مواجه شد",
+                    Toast.LENGTH_LONG
+                ).show()
+            })
         }
     }
 }

@@ -187,14 +187,20 @@ class VersesViewModel @AssistedInject constructor(
         return withContext(Dispatchers.IO) { poemRepository.getFirstAndLastWithCategoryId(categoryId) }
     }
 
-    fun fetchAudioSyncInfo(syncXmlUrl: String?) {
+    fun fetchAudioSyncInfo(syncXmlUrl: String?, onSuccess: () -> Unit, onFailure: () -> Unit) {
         if (syncXmlUrl == null) return
         viewModelScope.launch {
             syncInfoFetchStatus = Status.LOADING
             _audioSyncInfo.value = syncAudioClient.getAudioSyncInfo(
                 syncXmlUrl,
-                { syncInfoFetchStatus = Status.SUCCESS },
-                { syncInfoFetchStatus = Status.FAILED })
+                {
+                    syncInfoFetchStatus = Status.SUCCESS
+                    onSuccess()
+                },
+                {
+                    syncInfoFetchStatus = Status.FAILED
+                    onFailure()
+                })
         }
     }
 

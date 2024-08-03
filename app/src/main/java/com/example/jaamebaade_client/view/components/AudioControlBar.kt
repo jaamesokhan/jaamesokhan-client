@@ -1,6 +1,7 @@
 package com.example.jaamebaade_client.view.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
@@ -57,8 +58,14 @@ fun AudioControlBar(navController: NavController, viewModel: AudioViewModel) {
     }
     AnimatedVisibility(
         visible = showControlBar,
-        enter = expandHorizontally(expandFrom = Alignment.CenterHorizontally),
-        exit = shrinkHorizontally(shrinkTowards = Alignment.CenterHorizontally),
+        enter = expandHorizontally(
+            expandFrom = Alignment.CenterHorizontally,
+            animationSpec = tween(durationMillis = 200)
+        ),
+        exit = shrinkHorizontally(
+            shrinkTowards = Alignment.CenterHorizontally,
+            animationSpec = tween(durationMillis = 200)
+        ),
     ) {
         val artistName = viewModel.selectedAudioData?.artist
         Row(
