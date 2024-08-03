@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.AudioFile
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -28,7 +28,6 @@ fun AudioListScreen(
     onDismiss: () -> Unit,
     onClick: (AudioData) -> Unit
 ) {
-
     DropdownMenu(
         modifier = Modifier
             .width(250.dp)
@@ -68,12 +67,11 @@ fun AudioListScreen(
                                     .fillMaxWidth()
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.MusicNote,
+                                    imageVector = Icons.Default.AudioFile,
                                     contentDescription = "audio for ${audioData.artist}"
                                 )
                                 Spacer(modifier = Modifier.width(10.dp))
                                 Text(text = audioData.artist)
-                                // TODO add more data
                             }
                         }
                     )

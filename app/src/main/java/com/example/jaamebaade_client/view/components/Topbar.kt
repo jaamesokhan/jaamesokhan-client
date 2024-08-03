@@ -3,6 +3,7 @@ package com.example.jaamebaade_client.view.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,12 +38,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jaamebaade_client.R
 import com.example.jaamebaade_client.constants.AppRoutes
+import com.example.jaamebaade_client.viewmodel.AudioViewModel
 import com.example.jaamebaade_client.viewmodel.TopBarViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(navController: NavController, viewModel: TopBarViewModel = hiltViewModel()) {
+fun TopBar(
+    navController: NavController,
+    viewModel: TopBarViewModel = hiltViewModel(),
+    audioViewModel: AudioViewModel
+) {
     val myIcon = painterResource(id = R.mipmap.logo)
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
@@ -60,79 +66,81 @@ fun TopBar(navController: NavController, viewModel: TopBarViewModel = hiltViewMo
     val showShuffle = viewModel.showShuffleIcon
 
     val coroutineScope = rememberCoroutineScope()
-
-    TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary
-        ),
-        title = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
+    Column {
+        TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            ),
+            title = {
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    if (canPop) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            contentDescription = "Back",
-                            modifier = Modifier
-                                .clickable {
-                                    if (backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
-                                        navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
-                                            popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
-                                                inclusive = true
-                                            }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        if (canPop) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                                contentDescription = "Back",
+                                modifier = Modifier
+                                    .clickable {
+                                        if (backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
+                                            navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                                                popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                                                    inclusive = true
+                                                }
 
+                                            }
+                                        } else {
+                                            navController.popBackStack()
                                         }
-                                    } else {
-                                        navController.popBackStack()
                                     }
-                                }
-                                .padding(end = 8.dp)
-                                .size(24.dp),
-                        )
-                    } else {
-                        Image(
-                            myIcon,
-                            contentDescription = "Logo",
-                            modifier = Modifier.size(48.dp),
-                            contentScale = ContentScale.Fit,
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = breadCrumbs,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = Color.White,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.sizeIn(
-                            maxWidth = 260.dp
-                        ),
-                        maxLines = 1
-                    )
-                }
-                if (showShuffle) {
-                    IconButton(onClick = {
-                        coroutineScope.launch {
-                            val poemWithPoet = viewModel.findShuffledPoem(backStackEntry)
-                            navController.navigate(
-                                "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
+                                    .padding(end = 8.dp)
+                                    .size(24.dp),
+                            )
+                        } else {
+                            Image(
+                                myIcon,
+                                contentDescription = "Logo",
+                                modifier = Modifier.size(48.dp),
+                                contentScale = ContentScale.Fit,
                             )
                         }
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.Shuffle,
-                            contentDescription = "shuffle",
-                            tint = MaterialTheme.colorScheme.onPrimary,
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = breadCrumbs,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = Color.White,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.sizeIn(
+                                maxWidth = 260.dp
+                            ),
+                            maxLines = 1
                         )
                     }
+                    if (showShuffle) {
+                        IconButton(onClick = {
+                            coroutineScope.launch {
+                                val poemWithPoet = viewModel.findShuffledPoem(backStackEntry)
+                                navController.navigate(
+                                    "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
+                                )
+                            }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Filled.Shuffle,
+                                contentDescription = "shuffle",
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                            )
+                        }
+                    }
                 }
-            }
-        },
-    )
+            },
+        )
+        AudioControlBar(navController = navController, viewModel = audioViewModel)
+    }
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.navOptions
 import com.example.jaamebaade_client.constants.AppRoutes
+import com.example.jaamebaade_client.viewmodel.AudioViewModel
 import com.example.jaamebaade_client.viewmodel.VersesViewModel
 
 @Composable
@@ -49,6 +51,7 @@ fun VersePageHeader(
     modifier: Modifier = Modifier,
     versesViewModel: VersesViewModel,
     showVerseNumbers: Boolean,
+    audioViewModel: AudioViewModel,
     onToggleVerseNumbers: () -> Unit
 ) {
     val isBookmarked by versesViewModel.isBookmarked.collectAsState()
@@ -62,13 +65,14 @@ fun VersePageHeader(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(4.dp, 2.dp)
+                .padding(vertical = 4.dp, horizontal = 3.dp)
         ) {
-            AudioMenu(versesViewModel)
+            AudioMenu(versesViewModel, audioViewModel = audioViewModel)
             IconButton(onClick = { navController.navigate("${AppRoutes.COMMENTS}/$poetId/$poemId") }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Outlined.Comment,
-                    contentDescription = "یادداشت"
+                    contentDescription = "یادداشت",
+                    modifier = Modifier.size(28.dp)
                 )
             }
             Row(
