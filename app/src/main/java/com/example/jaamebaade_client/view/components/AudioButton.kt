@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PauseCircleOutline
 import androidx.compose.material.icons.filled.PlayCircleOutline
+import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -59,6 +60,11 @@ fun AudioButton(viewModel: AudioViewModel, onClick: () -> Unit) {
 
         Status.FAILED -> {
             Toast.makeText(context, "دریافت با خطا مواجه شد", Toast.LENGTH_SHORT).show()
+            Icon(
+                Icons.Outlined.Error,
+                contentDescription = "error",
+                modifier = Modifier.size(iconSize),
+            )
         }
 
         Status.FINISHED -> {
