@@ -1,7 +1,9 @@
 package com.example.jaamebaade_client.view.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,13 +21,23 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.jaamebaade_client.model.Poet
+import com.example.jaamebaade_client.utility.shake
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DownloadedPoet(poet: Poet, onClick: () -> Unit) {
+fun DownloadedPoet(poet: Poet, isSelected: Boolean, onLongClick: () -> Unit, onClick: () -> Unit) {
     // FIXME make ripple effect round
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
-        .padding(8.dp)
-        .clickable { onClick() }) {
+    Column(
+        modifier = if (isSelected) {
+            Modifier.background(color = MaterialTheme.colorScheme.inverseOnSurface)
+        } else {
+            Modifier
+        }
+            .padding(8.dp)
+            .shake(isSelected)
+            .combinedClickable(onClick = onClick, onLongClick = onLongClick),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Image(
             painter = rememberAsyncImagePainter(
                 model = ImageRequest.Builder(LocalContext.current)
