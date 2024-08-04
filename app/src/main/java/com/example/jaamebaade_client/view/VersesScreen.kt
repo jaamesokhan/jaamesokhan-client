@@ -94,9 +94,7 @@ fun VerseScreen(
     }
 
     LaunchedEffect(playStatus) {
-        if (playStatus == Status.FINISHED) {
-            shouldFocusForRecitation = false
-        } else if (playStatus == Status.NOT_STARTED) {
+        if (playStatus == Status.FINISHED || playStatus == Status.NOT_STARTED) {
             shouldFocusForRecitation = false
         } else if (syncInfoFetchStatus == Status.SUCCESS && audioSyncData != null) {
             while (mediaPlayer.isPlaying) {
@@ -109,10 +107,10 @@ fun VerseScreen(
                 if (syncInfo?.verseOrder != null && syncInfo.verseOrder!! >= 0) {
                     recitedVerseIndex = syncInfo.verseOrder!!
                     shouldFocusForRecitation = true
-                    delay(25)
                 } else {
                     shouldFocusForRecitation = false
                 }
+                delay(50)
             }
         }
     }
