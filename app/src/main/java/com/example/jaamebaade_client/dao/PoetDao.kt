@@ -17,7 +17,7 @@ interface PoetDao {
     fun getAll(): List<Poet>
 
     @Delete
-    fun delete(poet: Poet)
+    fun deletePoets(poets: List<Poet>)
 
     @Update
     fun update(poet: Poet)

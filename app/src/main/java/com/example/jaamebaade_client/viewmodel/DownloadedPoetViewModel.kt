@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.jaamebaade_client.model.Poet
 import com.example.jaamebaade_client.repository.CategoryRepository
 import com.example.jaamebaade_client.repository.PoetRepository
+import com.example.jaamebaade_client.utility.DownloadStatus
+import com.example.jaamebaade_client.utility.DownloadStatusManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,10 +20,10 @@ import javax.inject.Inject
 class DownloadedPoetViewModel @Inject constructor(
     private val poetRepository: PoetRepository,
     private val categoryRepository: CategoryRepository,
+    private val downloadStatusManager: DownloadStatusManager
 ) : ViewModel() {
     var poets by mutableStateOf<List<Poet>?>(null)
         private set
-
 
     init {
         getAllPoets()
@@ -31,6 +33,24 @@ class DownloadedPoetViewModel @Inject constructor(
         return withContext(Dispatchers.IO) {
             categoryRepository.getPoetCategoryId(poetId)
         }
+    }
+
+    fun deletePoets(selectedPoets: List<Poet>, onSuccess: () -> Unit) {
+        if (selectedPoets.isEmpty()) {
+            return
+        }
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                poetRepository.deletePoets(selectedPoets)
+                selectedPoets.forEach { changeDownloadStatusToNotDownloaded(it.id.toString()) }
+                poets = poets!!.toMutableList().also { it.removeAll(selectedPoets) }
+                onSuccess()
+            }
+        }
+    }
+
+    private fun changeDownloadStatusToNotDownloaded(poetId: String) {
+        downloadStatusManager.saveDownloadStatus(poetId, DownloadStatus.NotDownloaded)
     }
 
     private fun getAllPoets() {
