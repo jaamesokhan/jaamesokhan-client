@@ -1,12 +1,20 @@
 package com.example.jaamebaade_client.view
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,12 +25,16 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jaamebaade_client.model.Status
-import com.example.jaamebaade_client.model.Verse
+import com.example.jaamebaade_client.model.VerseWithHighlights
+import com.example.jaamebaade_client.view.components.RoundButton
 import com.example.jaamebaade_client.view.components.VerseItem
 import com.example.jaamebaade_client.view.components.VersePageHeader
 import com.example.jaamebaade_client.viewmodel.AudioViewModel
@@ -74,7 +86,8 @@ fun VerseScreen(
 
     val focusedVerse = versesWithHighlights.find { it.verse.id == focusedVerseId }
 
-    val selectedVerses = remember { mutableStateListOf<Verse>() }
+    val selectedVerses = remember { mutableStateListOf<VerseWithHighlights>() }
+    val clipboardManager = LocalClipboardManager.current
 
     LaunchedEffect(poetId) {
         poetName = versesViewModel.getPoetName(poetId)
@@ -144,11 +157,14 @@ fun VerseScreen(
 
         LazyColumn(state = lazyListState) {
             itemsIndexed(versesWithHighlights) { index, verseWithHighlights ->
+                val isSelected = selectedVerses.contains(verseWithHighlights)
                 val itemModifier =
                     if (shouldFocusForSearch && index == versesWithHighlights.indexOf(focusedVerse)) {
                         Modifier.background(color = MaterialTheme.colorScheme.inverseOnSurface)
                     } else if (shouldFocusForRecitation && index == recitedVerseIndex) {
                         Modifier.background(color = MaterialTheme.colorScheme.inverseOnSurface) // TODO change color maybe?
+                    } else if (isSelected) {
+                        Modifier.background(color = MaterialTheme.colorScheme.surfaceVariant)
                     } else {
                         Modifier
                     }
@@ -159,13 +175,40 @@ fun VerseScreen(
                     highlights = verseWithHighlights.highlights,
                     index = index,
                     showVerseNumber = showVerseNumbers,
+                    onClick = {
+                        if (selectedVerses.isNotEmpty()) {
+                            if (isSelected) {
+                                selectedVerses.remove(verseWithHighlights)
+                            } else {
+                                selectedVerses.add(verseWithHighlights)
+                            }
+                        }
+                    },
                     onLongClick = {
-                        selectedVerses.add(verseWithHighlights.verse)
+                        selectedVerses.add(verseWithHighlights)
                     },
                 ) { startIndex, endIndex ->
                     versesViewModel.highlight(verseWithHighlights.verse.id, startIndex, endIndex)
                 }
             }
         }
+    }
+    AnimatedVisibility(
+        visible = selectedVerses.isNotEmpty(),
+        enter = slideInHorizontally(animationSpec = tween(durationMillis = 200)),
+        exit = slideOutHorizontally(animationSpec = tween(durationMillis = 200)),
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            RoundButton(
+                modifier = modifier.align(Alignment.BottomEnd),
+                icon = Icons.Filled.CopyAll,
+                contentDescription = "Copy selected verses"
+            ) {
+                selectedVerses.sortBy { it.verse.verseOrder }
+                val textToCopy = selectedVerses.joinToString(separator = "\n") { it.verse.text }
+                clipboardManager.setText(AnnotatedString(textToCopy))
+            }
+        }
+
     }
 }

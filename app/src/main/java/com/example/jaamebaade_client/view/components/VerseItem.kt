@@ -1,5 +1,7 @@
 package com.example.jaamebaade_client.view.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -38,7 +40,7 @@ import com.example.jaamebaade_client.utility.toPersianNumber
 import com.example.jaamebaade_client.viewmodel.SelectionOptionViewModel
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun VerseItem(
     modifier: Modifier = Modifier,
@@ -46,6 +48,7 @@ fun VerseItem(
     verse: Verse,
     index: Int,
     showVerseNumber: Boolean,
+    onClick: () -> Unit,
     onLongClick: () -> Unit,
     highlights: List<Highlight>,
     highlightCallBack: (startIndex: Int, endIndex: Int) -> Unit
@@ -104,6 +107,7 @@ fun VerseItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .combinedClickable(onLongClick = onLongClick, onClick = onClick)
             .padding(0.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
