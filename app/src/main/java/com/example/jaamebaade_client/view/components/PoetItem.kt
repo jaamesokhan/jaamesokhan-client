@@ -1,6 +1,7 @@
 package com.example.jaamebaade_client.view.components
 
 import android.widget.Toast
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -144,6 +145,7 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                     text = poet.description,
                     modifier = Modifier
 //                        .weight(1f)
+                        .animateContentSize()
                         .clickable { expanded = !expanded },
                     style = MaterialTheme.typography.bodySmall,
                     overflow = TextOverflow.Ellipsis,
