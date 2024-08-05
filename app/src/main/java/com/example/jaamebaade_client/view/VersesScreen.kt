@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jaamebaade_client.model.Status
+import com.example.jaamebaade_client.model.Verse
 import com.example.jaamebaade_client.view.components.VerseItem
 import com.example.jaamebaade_client.view.components.VersePageHeader
 import com.example.jaamebaade_client.viewmodel.AudioViewModel
@@ -71,6 +73,8 @@ fun VerseScreen(
     val versesWithHighlights by versesViewModel.verses.collectAsState()
 
     val focusedVerse = versesWithHighlights.find { it.verse.id == focusedVerseId }
+
+    val selectedVerses = remember { mutableStateListOf<Verse>() }
 
     LaunchedEffect(poetId) {
         poetName = versesViewModel.getPoetName(poetId)
@@ -154,7 +158,10 @@ fun VerseScreen(
                     verse = verseWithHighlights.verse,
                     highlights = verseWithHighlights.highlights,
                     index = index,
-                    showVerseNumber = showVerseNumbers
+                    showVerseNumber = showVerseNumbers,
+                    onLongClick = {
+                        selectedVerses.add(verseWithHighlights.verse)
+                    },
                 ) { startIndex, endIndex ->
                     versesViewModel.highlight(verseWithHighlights.verse.id, startIndex, endIndex)
                 }
