@@ -207,6 +207,7 @@ fun VerseScreen(
                 selectedVerses.sortBy { it.verse.verseOrder }
                 val textToCopy = selectedVerses.joinToString(separator = "\n") { it.verse.text }
                 clipboardManager.setText(AnnotatedString(textToCopy))
+                selectedVerses.clear()
             }
         }
 
