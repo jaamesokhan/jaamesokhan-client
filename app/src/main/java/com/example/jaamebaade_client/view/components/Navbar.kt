@@ -108,14 +108,15 @@ fun NavbarItem(
     IconButton(
         onClick = {
             var myInclusive = false
-            if (currentRoute != route)
+            if (currentRoute != route) {
                 if (route == "downloadedPoetsScreen")
                     myInclusive = true
-            navController.navigate(route, navOptions {
-                popUpTo("downloadedPoetsScreen") {
-                    inclusive = myInclusive
-                }
-            })
+                navController.navigate(route, navOptions {
+                    popUpTo("downloadedPoetsScreen") {
+                        inclusive = myInclusive
+                    }
+                })
+            }
 
         },
         modifier = Modifier
