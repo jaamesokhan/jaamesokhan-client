@@ -1,13 +1,15 @@
 package com.example.jaamebaade_client.view.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -40,7 +42,7 @@ import com.example.jaamebaade_client.utility.toPersianNumber
 import com.example.jaamebaade_client.viewmodel.SelectionOptionViewModel
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VerseItem(
     modifier: Modifier = Modifier,
@@ -48,8 +50,9 @@ fun VerseItem(
     verse: Verse,
     index: Int,
     showVerseNumber: Boolean,
+    selectMode: Boolean,
+    isSelected: Boolean,
     onClick: () -> Unit,
-    onLongClick: () -> Unit,
     highlights: List<Highlight>,
     highlightCallBack: (startIndex: Int, endIndex: Int) -> Unit
 ) {
@@ -63,7 +66,6 @@ fun VerseItem(
     var annotatedString by remember { mutableStateOf<AnnotatedString?>(null) }
     val highlightColor = MaterialTheme.colorScheme.tertiary
     val sheetState = rememberModalBottomSheetState()
-
 
     val context = LocalContext.current
 
@@ -107,13 +109,22 @@ fun VerseItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .combinedClickable(onLongClick = onLongClick, onClick = onClick)
             .padding(0.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
 
 
         ) {
+        AnimatedVisibility(
+            visible = selectMode,
+            enter = slideInHorizontally(
+                initialOffsetX = { it / 2 }
+            ),
+            exit = slideOutHorizontally(
+                targetOffsetX = { it / 2 }),
+        ) {
+            Checkbox(checked = isSelected, onCheckedChange = { onClick() })
+        }
         if (showVerseNumber && index % 2 == 0) {
             Text(
                 text = (index / 2 + 1).toPersianNumber(),
@@ -131,7 +142,9 @@ fun VerseItem(
                     showDialog = true
                 }
             },
-            modifier = Modifier.padding(0.dp),
+            modifier = Modifier
+                .padding(0.dp)
+                .fillMaxWidth(),
             textStyle = MaterialTheme.typography.bodyMedium.copy(
                 textAlign = TextAlign.Center
             ),

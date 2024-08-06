@@ -73,6 +73,7 @@ fun VerseScreen(
 
 
     var showVerseNumbers by remember { mutableStateOf(false) }
+    var selectMode by remember { mutableStateOf(false) }
 
     val lazyListState = rememberLazyListState()
 
@@ -88,6 +89,13 @@ fun VerseScreen(
 
     val selectedVerses = remember { mutableStateListOf<VerseWithHighlights>() }
     val clipboardManager = LocalClipboardManager.current
+
+    fun onClick(boolean: Boolean, item: VerseWithHighlights) {
+        if (boolean) selectedVerses.remove(item)
+        else selectedVerses.add(item)
+
+        if (selectedVerses.isEmpty()) selectMode = false
+    }
 
     LaunchedEffect(poetId) {
         poetName = versesViewModel.getPoetName(poetId)
@@ -147,8 +155,13 @@ fun VerseScreen(
             maxId,
             versesViewModel = versesViewModel,
             showVerseNumbers = showVerseNumbers,
+            selectMode = selectMode,
             audioViewModel = audioViewModel,
-            onToggleVerseNumbers = { showVerseNumbers = !showVerseNumbers }
+            onToggleVerseNumbers = { showVerseNumbers = !showVerseNumbers },
+            onToggleSelectMode = {
+                selectMode = !selectMode
+                if (!selectMode) selectedVerses.clear()
+            }
         )
 
         Spacer(modifier = Modifier.width(200.dp))
@@ -175,21 +188,19 @@ fun VerseScreen(
                     highlights = verseWithHighlights.highlights,
                     index = index,
                     showVerseNumber = showVerseNumbers,
+                    selectMode = selectMode,
+                    isSelected = isSelected,
                     onClick = {
-                        if (selectedVerses.isNotEmpty()) {
-                            if (isSelected) {
-                                selectedVerses.remove(verseWithHighlights)
-                            } else {
-                                selectedVerses.add(verseWithHighlights)
-                            }
-                        }
-                    },
-                    onLongClick = {
-                        selectedVerses.add(verseWithHighlights)
+                        if (selectMode) onClick(isSelected, verseWithHighlights)
                     },
                 ) { startIndex, endIndex ->
-                    versesViewModel.highlight(verseWithHighlights.verse.id, startIndex, endIndex)
+                    versesViewModel.highlight(
+                        verseWithHighlights.verse.id,
+                        startIndex,
+                        endIndex
+                    )
                 }
+
             }
         }
     }
