@@ -3,6 +3,7 @@ package com.example.jaamebaade_client
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -31,10 +32,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.jaamebaade_client.constants.AppRoutes
 import com.example.jaamebaade_client.repository.FontRepository
+import com.example.jaamebaade_client.repository.ThemeRepository
+import com.example.jaamebaade_client.ui.theme.AppThemeType
 import com.example.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import com.example.jaamebaade_client.utility.toIntArray
 import com.example.jaamebaade_client.view.AccountScreen
 import com.example.jaamebaade_client.view.ChangeFontScreen
+import com.example.jaamebaade_client.view.ChangeThemeScreen
 import com.example.jaamebaade_client.view.CommentsScreen
 import com.example.jaamebaade_client.view.DownloadablePoetsScreen
 import com.example.jaamebaade_client.view.DownloadedPoetsScreen
@@ -48,7 +52,7 @@ import com.example.jaamebaade_client.view.components.TopBar
 import com.example.jaamebaade_client.viewmodel.AudioViewModel
 
 @Composable
-fun AppNavHost(fontRepository: FontRepository) {
+fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository) {
     val audioViewModel: AudioViewModel = hiltViewModel()
 
     val navController =
@@ -97,7 +101,16 @@ fun AppNavHost(fontRepository: FontRepository) {
             labelSmall = createTextStyle("small", "label"),
         )
     }
-    JaamebaadeclientTheme(typography = typography) {
+
+    val appTheme by themeRepository.appTheme.collectAsState()
+
+    JaamebaadeclientTheme(
+        darkTheme = when (appTheme) {
+            AppThemeType.LIGHT -> false
+            AppThemeType.DARK -> true
+            AppThemeType.SYSTEM_AUTO -> isSystemInDarkTheme()
+        }, typography = typography
+    ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             Scaffold(modifier = Modifier
                 .fillMaxSize()
@@ -187,7 +200,8 @@ fun AppNavHost(fontRepository: FontRepository) {
                         }
                     ) {
                         SettingsScreen(
-                            modifier = Modifier.padding(innerPadding), navController = navController
+                            modifier = Modifier.padding(innerPadding),
+                            navController = navController,
                         )
                     }
                     composable(route = AppRoutes.SEARCH_SCREEN.toString(),
@@ -253,7 +267,13 @@ fun AppNavHost(fontRepository: FontRepository) {
                     composable(AppRoutes.CHANGE_FONT_SCREEN.toString()) {
                         ChangeFontScreen(
                             modifier = Modifier.padding(innerPadding),
-                            fontRepository = fontRepository
+                            fontRepository = fontRepository,
+                        )
+                    }
+                    composable(AppRoutes.CHANGE_THEME_SCREEN.toString()) {
+                        ChangeThemeScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            themeRepository = themeRepository,
                         )
                     }
                     dialog(AppRoutes.ACCOUNT_SCREEN.toString()) {
