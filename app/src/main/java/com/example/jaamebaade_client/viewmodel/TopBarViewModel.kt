@@ -87,6 +87,7 @@ class TopBarViewModel @Inject constructor(
             AppRoutes.FAVORITE_SCREEN -> return "علاقه‌مندی‌ها"
             AppRoutes.CHANGE_FONT_SCREEN -> return "تغییر فونت"
             AppRoutes.ACCOUNT_SCREEN -> return "حساب کاربری"
+            AppRoutes.CHANGE_THEME_SCREEN -> return "تغییر پوسته"
             else -> return "جام سخن"
         }
     }

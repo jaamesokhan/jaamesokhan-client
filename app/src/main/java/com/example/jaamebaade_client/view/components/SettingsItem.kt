@@ -17,7 +17,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SettingsItem(modifier: Modifier, text: String, icon: ImageVector, onClick: () -> Unit) {
+fun SettingsItem(
+    modifier: Modifier = Modifier,
+    text: String,
+    icon: ImageVector,
+    onClick: () -> Unit
+) {
     Surface(
         modifier = modifier
             .fillMaxWidth()

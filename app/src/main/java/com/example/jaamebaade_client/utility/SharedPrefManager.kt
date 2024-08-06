@@ -2,6 +2,7 @@ package com.example.jaamebaade_client.utility
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.jaamebaade_client.ui.theme.AppThemeType
 import com.example.jaamebaade_client.ui.theme.CustomFont
 import dagger.hilt.android.qualifiers.ApplicationContext
 
@@ -13,6 +14,7 @@ class SharedPrefManager(
         const val FONT_SIZE_INDEX_KEY = "FontSizeIndex"
         const val USERNAME_KEY = "Username"
         const val AUTH_TOKEN_KEY = "AuthToken"
+        const val APP_THEME_TYPE_KEY = "AppThemeType"
     }
 
     private val sharedPreferences: SharedPreferences =
@@ -55,6 +57,19 @@ class SharedPrefManager(
 
     fun getFontSizeIndex(): Int {
         return sharedPreferences.getInt(FONT_SIZE_INDEX_KEY, 1)
+    }
 
+    fun setThemePreference(appThemeType: AppThemeType) {
+        val editor = sharedPreferences.edit()
+        editor.putString(APP_THEME_TYPE_KEY, appThemeType.name)
+        editor.apply()
+    }
+
+    fun getThemePreference(): AppThemeType {
+        val savedTheme =
+            sharedPreferences.getString(APP_THEME_TYPE_KEY, AppThemeType.LIGHT.name)?.let {
+                AppThemeType.valueOf(it)
+            } ?: AppThemeType.SYSTEM_AUTO
+        return savedTheme
     }
 }

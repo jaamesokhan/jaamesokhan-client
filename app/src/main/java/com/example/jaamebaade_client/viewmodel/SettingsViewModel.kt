@@ -15,7 +15,7 @@ class SettingsViewModel @Inject constructor(
     val username: State<String?> = _username
 
     init {
-        getUserNameFromSharedPref()
+//        getUserNameFromSharedPref()
     }
 
     fun logout() {

@@ -10,7 +10,8 @@ enum class AppRoutes(private val route: String) {
     POEM("poem"),
     CHANGE_FONT_SCREEN("changeFontScreen"),
     ACCOUNT_SCREEN("accountScreen"),
-    COMMENTS("comments")
+    COMMENTS("comments"),
+    CHANGE_THEME_SCREEN("changeThemeScreen")
     ;
 
     companion object {
