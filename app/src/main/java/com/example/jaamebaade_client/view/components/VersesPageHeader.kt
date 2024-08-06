@@ -1,7 +1,6 @@
 package com.example.jaamebaade_client.view.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,18 +11,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.outlined.Comment
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -51,8 +41,10 @@ fun VersePageHeader(
     modifier: Modifier = Modifier,
     versesViewModel: VersesViewModel,
     showVerseNumbers: Boolean,
+    selectMode: Boolean,
     audioViewModel: AudioViewModel,
-    onToggleVerseNumbers: () -> Unit
+    onToggleVerseNumbers: () -> Unit,
+    onToggleSelectMode: () -> Unit
 ) {
     val isBookmarked by versesViewModel.isBookmarked.collectAsState()
 
@@ -126,73 +118,17 @@ fun VersePageHeader(
             }
             Spacer(modifier = Modifier.weight(0.1f))
 
-            Box {
-                IconButton(onClick = { expanded = true }) {
-                    Icon(Icons.Default.MoreVert, contentDescription = "More Options")
-                }
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false },
-                ) {
-                    DropdownMenuItem(
-                        text = {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Icon(
-                                    imageVector = if (showVerseNumbers) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                    contentDescription = if (showVerseNumbers) "Hide Verse Numbers" else "Show Verse Numbers",
-                                    modifier = Modifier.padding(end = 8.dp)
-                                )
-                                Text(
-                                    text = if (showVerseNumbers) "مخفی‌سازی شماره بیت" else "نمایش شماره بیت",
-                                    style = MaterialTheme.typography.headlineSmall
-                                )
-                            }
-                        },
-                        onClick = {
-                            onToggleVerseNumbers()
-                        },
-                    )
-                    HorizontalDivider()
-                    DropdownMenuItem(text = {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Favorite,
-                                contentDescription = "Bookmark",
-                                tint = bookmarkIconColor,
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(
-                                text = "علاقه‌مندی",
-                                style = MaterialTheme.typography.headlineSmall
-                            )
-                        }
-                    }, onClick = {
-                        versesViewModel.onBookmarkClicked()
-                    })
-                    HorizontalDivider()
-                    DropdownMenuItem(text = {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Share,
-                                contentDescription = "Share",
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(
-                                text = "اشتراک‌گذاری",
-                                style = MaterialTheme.typography.headlineSmall
-                            )
-                        }
-                    }, onClick = {
-                        versesViewModel.share(versesViewModel.verses.value, context)
-                    })
-                }
-            }
+            VerseScreenMoreOptionsMenu(
+                expanded = expanded,
+                onToggleExpanded = { expanded = !expanded },
+                showVerseNumbers = showVerseNumbers,
+                selectMode = selectMode,
+                onToggleVerseNumbers = onToggleVerseNumbers,
+                onToggleSelectMode = onToggleSelectMode,
+                bookmarkIconColor = bookmarkIconColor,
+                versesViewModel = versesViewModel,
+                context = context
+            )
         }
         HorizontalDivider()
     }
