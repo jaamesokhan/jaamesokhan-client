@@ -5,7 +5,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,11 +16,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.DownloadDone
-import androidx.compose.material.icons.filled.FileDownloadOff
+import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.DownloadDone
+import androidx.compose.material.icons.outlined.FileDownloadOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -45,6 +45,7 @@ import com.example.jaamebaade_client.utility.DownloadStatus
 @Composable
 fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
+    val iconSize = 28.dp
 
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
@@ -97,31 +98,30 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                 ) {
                     Text(
                         text = poet.name,
-                        modifier = Modifier.weight(0.8f),
                         style = MaterialTheme.typography.titleLarge,
                         maxLines = 3
                     )
 
-                    Box(
-                        modifier = Modifier
-                            .weight(0.2f)
-                            .clickable { onClick() },
+                    IconButton(
+                        onClick = onClick,
                     ) {
                         when (status) {
                             DownloadStatus.NotDownloaded -> {
                                 Icon(
-                                    imageVector = Icons.Filled.Download,
+                                    modifier = Modifier.size(iconSize),
+                                    imageVector = Icons.Outlined.Download,
                                     contentDescription = "Download"
                                 )
                             }
 
                             DownloadStatus.Downloading -> {
-                                CircularProgressIndicator()
+                                CircularProgressIndicator(modifier = Modifier.size(iconSize))
                             }
 
                             DownloadStatus.Downloaded -> {
                                 Icon(
-                                    imageVector = Icons.Filled.DownloadDone,
+                                    modifier = Modifier.size(iconSize),
+                                    imageVector = Icons.Outlined.DownloadDone,
                                     contentDescription = "Downloaded"
                                 )
                             }
@@ -129,11 +129,12 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                             DownloadStatus.Failed -> {
                                 Toast.makeText(
                                     LocalContext.current,
-                                    "Failed to download ${poet.name} ",
+                                    " دانلود اشعار ${poet.name} با مشکل مواجه شد!",
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 Icon(
-                                    imageVector = Icons.Filled.FileDownloadOff,
+                                    modifier = Modifier.size(iconSize),
+                                    imageVector = Icons.Outlined.FileDownloadOff,
                                     contentDescription = "Download"
                                 )
                             }
@@ -144,7 +145,6 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                 Text(
                     text = poet.description,
                     modifier = Modifier
-//                        .weight(1f)
                         .animateContentSize()
                         .clickable { expanded = !expanded },
                     style = MaterialTheme.typography.bodySmall,
