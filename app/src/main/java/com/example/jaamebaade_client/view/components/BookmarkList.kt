@@ -17,22 +17,20 @@ import com.example.jaamebaade_client.viewmodel.FavoritesViewModel
 @Composable
 fun BookmarkList(viewModel: FavoritesViewModel, navController: NavController) {
     val bookmarks = viewModel.bookmarks
-    LazyColumn {
-        if (bookmarks.isEmpty()) {
-            item {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxSize(),
-                ) {
-                    Text(
-                        text = "شعری را لایک نکرده‌اید!",
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-            }
-        } else {
+    if (bookmarks.isEmpty()) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxSize(),
+        ) {
+            Text(
+                text = "شعری را لایک نکرده‌اید!",
+                style = MaterialTheme.typography.headlineMedium
+            )
+        }
+    } else {
+        LazyColumn {
             items(bookmarks) { bookmark ->
                 BookmarkItem(
                     poem = bookmark.poem,

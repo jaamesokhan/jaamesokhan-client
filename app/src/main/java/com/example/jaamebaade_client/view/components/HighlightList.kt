@@ -17,22 +17,20 @@ import com.example.jaamebaade_client.viewmodel.FavoritesViewModel
 @Composable
 fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
     val highlights = viewModel.highlights
-    LazyColumn {
-        if (highlights.isEmpty()) {
-            item {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxSize(),
-                ) {
-                    Text(
-                        text = "متنی را هایلایت نکرده‌اید!",
-                        style = MaterialTheme.typography.headlineSmall,
-                    )
-                }
-            }
-        } else {
+    if (highlights.isEmpty()) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxSize(),
+        ) {
+            Text(
+                text = "متنی را هایلایت نکرده‌اید!",
+                style = MaterialTheme.typography.headlineMedium,
+            )
+        }
+    } else {
+        LazyColumn {
             items(highlights) { highlight ->
                 HighlightItem(
                     highlightVersePoemPoet = highlight,

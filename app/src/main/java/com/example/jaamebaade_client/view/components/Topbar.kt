@@ -1,13 +1,11 @@
 package com.example.jaamebaade_client.view.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
@@ -81,26 +79,27 @@ fun TopBar(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         if (canPop) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                                contentDescription = "Back",
-                                modifier = Modifier
-                                    .clickable {
-                                        if (backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
-                                            navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
-                                                popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
-                                                    inclusive = true
-                                                }
-
+                            IconButton(
+                                onClick = {
+                                    if (backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
+                                        navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                                            popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                                                inclusive = true
                                             }
-                                        } else {
-                                            navController.popBackStack()
+
                                         }
+                                    } else {
+                                        navController.popBackStack()
                                     }
-                                    .padding(end = 8.dp)
-                                    .size(24.dp),
-                            )
+                                }) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                    contentDescription = "Back",
+                                    modifier = Modifier
+                                        .size(24.dp),
+                                )
+                            }
                         } else {
                             Image(
                                 myIcon,
