@@ -148,11 +148,11 @@ fun VerseScreen(
         modifier = modifier
     ) {
         VersePageHeader(
-            navController,
-            poetId,
-            poemId,
-            minId,
-            maxId,
+            navController = navController,
+            poetId = poetId,
+            poemId = poemId,
+            minId = minId,
+            maxId = maxId,
             versesViewModel = versesViewModel,
             showVerseNumbers = showVerseNumbers,
             selectMode = selectMode,
@@ -161,7 +161,7 @@ fun VerseScreen(
             onToggleSelectMode = {
                 selectMode = !selectMode
                 if (!selectMode) selectedVerses.clear()
-            }
+            },
         )
 
         Spacer(modifier = Modifier.width(200.dp))
