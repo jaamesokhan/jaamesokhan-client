@@ -13,8 +13,6 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,14 +23,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jaamebaade_client.model.Highlight
@@ -132,35 +129,23 @@ fun VerseItem(
                 modifier = Modifier.padding(end = 2.dp)
             )
         }
-        TextField(
-            value = textFieldValue,
+        VerseTextField(
+            textFieldValue,
             onValueChange = {
                 textFieldValue = it
-                if (it.selection.start != it.selection.end) {
-                    startIndex = it.selection.min
-                    endIndex = it.selection.max
-                    showDialog = true
-                }
-            },
-            modifier = Modifier
-                .padding(0.dp)
-                .fillMaxWidth(),
-            textStyle = MaterialTheme.typography.bodyMedium.copy(
-                textAlign = TextAlign.Center
-            ),
-            readOnly = true,
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                errorContainerColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent,
-            ),
-        )
+            }
+        ) {
+            if (it.selection.start != it.selection.end) {
+                startIndex = it.selection.min
+                endIndex = it.selection.max
+                showDialog = true
+                // Clear the selection
+                textFieldValue = it.copy(selection = TextRange(0))
+            }
+        }
     }
     if (verse.position % 2 == 1)
         Spacer(modifier = Modifier.height(20.dp))
 
 }
+

@@ -219,6 +219,7 @@ fun VerseScreen(
                 val textToCopy = selectedVerses.joinToString(separator = "\n") { it.verse.text }
                 clipboardManager.setText(AnnotatedString(textToCopy))
                 selectedVerses.clear()
+                selectMode = false
             }
         }
 
