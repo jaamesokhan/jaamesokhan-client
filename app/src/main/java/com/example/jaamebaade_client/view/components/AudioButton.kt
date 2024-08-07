@@ -5,7 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PauseCircleOutline
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.PlayCircleOutline
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material3.Icon
@@ -31,7 +32,7 @@ fun AudioButton(viewModel: AudioViewModel, onClick: () -> Unit) {
                 },
             ) {
                 Icon(
-                    Icons.Default.PauseCircleOutline,
+                    Icons.Default.Pause,
                     contentDescription = "pause",
                     modifier = Modifier.size(iconSize),
                 )
@@ -45,7 +46,7 @@ fun AudioButton(viewModel: AudioViewModel, onClick: () -> Unit) {
                 }
             ) {
                 Icon(
-                    Icons.Default.PlayCircleOutline,
+                    Icons.Default.PlayArrow,
                     contentDescription = "play",
                     modifier = Modifier.size(iconSize),
                 )
