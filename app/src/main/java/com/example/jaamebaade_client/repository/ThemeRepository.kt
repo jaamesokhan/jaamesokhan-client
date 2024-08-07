@@ -1,5 +1,6 @@
 package com.example.jaamebaade_client.repository
 
+import android.os.Build
 import com.example.jaamebaade_client.ui.theme.AppThemeType
 import com.example.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,13 @@ class ThemeRepository @Inject constructor(
     }
 
     private fun getAppThemePreference() {
-        _appTheme.value = sharedPrefManager.getThemePreference()
+        val currentApiVersion = Build.VERSION.SDK_INT
+        val currentAppTheme = sharedPrefManager.getThemePreference()
+        if (currentApiVersion < 11 && currentAppTheme == AppThemeType.SYSTEM_AUTO) {
+            setAppThemePreference(AppThemeType.LIGHT)
+        } else {
+            _appTheme.value = currentAppTheme
+        }
     }
 
     fun setAppThemePreference(appThemeType: AppThemeType) {

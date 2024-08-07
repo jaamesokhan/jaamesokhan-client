@@ -1,5 +1,6 @@
 package com.example.jaamebaade_client.view
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.jaamebaade_client.repository.ThemeRepository
@@ -33,6 +35,11 @@ fun ChangeThemeScreen(
             .fillMaxWidth()
     ) {
         AppThemeType.entries.forEachIndexed { index, item ->
+            val currentapiVersion = Build.VERSION.SDK_INT
+
+            if (currentapiVersion < 11 && item == AppThemeType.SYSTEM_AUTO) {
+                return@forEachIndexed
+            }
             val isSelected = appTheme == item
             val rowModifier = if (isSelected) {
                 Modifier.background(color = MaterialTheme.colorScheme.inverseOnSurface)
@@ -44,7 +51,8 @@ fun ChangeThemeScreen(
                     .fillMaxWidth()
                     .padding(8.dp)
                     .clickable { themeRepository.setAppThemePreference(item) },
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = item.displayName, style = MaterialTheme.typography.bodyLarge)
                 if (isSelected) {

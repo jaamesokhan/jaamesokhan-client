@@ -67,7 +67,7 @@ class SharedPrefManager(
 
     fun getThemePreference(): AppThemeType {
         val savedTheme =
-            sharedPreferences.getString(APP_THEME_TYPE_KEY, AppThemeType.LIGHT.name)?.let {
+            sharedPreferences.getString(APP_THEME_TYPE_KEY, AppThemeType.SYSTEM_AUTO.name)?.let {
                 AppThemeType.valueOf(it)
             } ?: AppThemeType.SYSTEM_AUTO
         return savedTheme
