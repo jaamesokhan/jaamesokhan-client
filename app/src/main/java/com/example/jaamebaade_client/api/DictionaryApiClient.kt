@@ -11,10 +11,10 @@ class DictionaryApiClient @Inject constructor(
             val request = WordRequest(word = word.trim())
             val res = dictionaryApiService.getMeaning(request).body()
             successCallBack()
-            return res?.result?.meaning
+            return res?.result?.meaning!!
         } catch (e: Exception) {
             failureCallBack()
-            return ""
+            return null
         }
     }
 }
