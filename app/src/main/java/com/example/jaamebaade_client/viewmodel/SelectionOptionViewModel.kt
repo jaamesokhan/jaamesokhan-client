@@ -21,7 +21,7 @@ class SelectionOptionViewModel @Inject constructor(
     fun getWordMeaning(word: String, successCallBack: () -> Unit, failureCallBack: () -> Unit) {
         viewModelScope.launch {
             val res = dictionaryApiClient.getMeaning(word, successCallBack, failureCallBack)
-            _apiResult.value = res ?: "معنی یافت نشد!"
+            _apiResult.value = if(res?.isNotEmpty() == true) res else "معنی یافت نشد!"
         }
     }
 
