@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.jaamebaade_client"
+    namespace = "ir.jaamebaade.jaamebaade_client"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.jaamebaade_client"
-        minSdk = 31
+        applicationId = "ir.jaamebaade.jaamebaade_client"
+        minSdk = 27
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
