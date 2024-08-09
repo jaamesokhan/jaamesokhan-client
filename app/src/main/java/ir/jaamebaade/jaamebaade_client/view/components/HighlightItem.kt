@@ -50,7 +50,7 @@ fun HighlightItem(
                     .weight(0.9f)
             ) {
                 Text(
-                    text = "${highlightVersePoemPoet.poet.name}>${highlightVersePoemPoet.poem.title}",
+                    text = "${highlightVersePoemPoet.poet.name} > ${highlightVersePoemPoet.poem.title}",
                     style = MaterialTheme.typography.labelSmall
                 )
                 Text(
