@@ -2,4 +2,25 @@
     <string name="app_name">جام سخن</string>
     <string name="SERVER_BASE_URL">https://jaamesokhan.ir/</string>
     <string name="GANJOOR_BASE_URL">https://api.ganjoor.net/</string>
+    <string name="ABOUT_US_BASE">
+        جام سخن یک اپلیکیشن متن باز است و هدف ما از توسعه آن، دسترسی راحت همه علاقه‌مندان به اشعار فارسی است.
+    </string>
+    <string name="ABOUT_US_GITHUB">
+        کد‌های این اپلیکیشن از طریق مخزن GitHub در دسترس عموم هستند.
+    </string>
+    <string name="ABOUT_US_SUPPORT">
+        در صورت تمایل، می‌توانید از طریق لینک زیر از ما حمایت کنید.
+    </string>
+    <string name="ABOUT_US_EMAIL">
+        اگر تمایل دارید به هر نحوی به بهتر شدن این اپلیکیشن کمک کنید،‌از طریق ایمیل زیر با ما در ارتباط باشید.
+    </string>
+    <string name="GITHUB_URL">
+        https://github.com/jaamebaade/jaamebaade-client
+    </string>
+    <string name="HAMIBASH_URL">
+        https://hamibash.com/jaamesokhan
+    </string>
+    <string name="EMAIL">
+        email@gmail.com
+    </string>
 </resources>

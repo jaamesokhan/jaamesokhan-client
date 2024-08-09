@@ -47,6 +47,7 @@ import ir.jaamebaade.jaamebaade_client.view.PoetCategoryPoemScreen
 import ir.jaamebaade.jaamebaade_client.view.SearchScreen
 import ir.jaamebaade.jaamebaade_client.view.SettingsScreen
 import ir.jaamebaade.jaamebaade_client.view.VerseScreen
+import ir.jaamebaade.jaamebaade_client.view.components.AboutUsScreen
 import ir.jaamebaade.jaamebaade_client.view.components.Navbar
 import ir.jaamebaade.jaamebaade_client.view.components.TopBar
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
@@ -274,6 +275,11 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                         ChangeThemeScreen(
                             modifier = Modifier.padding(innerPadding),
                             themeRepository = themeRepository,
+                        )
+                    }
+                    composable(AppRoutes.ABOUT_US_SCREEN.toString()) {
+                        AboutUsScreen(
+                            modifier = Modifier.padding(innerPadding),
                         )
                     }
                     dialog(AppRoutes.ACCOUNT_SCREEN.toString()) {

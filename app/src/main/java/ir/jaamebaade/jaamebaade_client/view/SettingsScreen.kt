@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.People
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -51,6 +52,10 @@ fun SettingsScreen(
 
         SettingsItem(text = "تغییر پوسته", icon = Icons.Filled.ColorLens) {
             navController.navigate(AppRoutes.CHANGE_THEME_SCREEN.toString())
+        }
+
+        SettingsItem(text = "درباره ما", icon = Icons.Default.People) {
+            navController.navigate(AppRoutes.ABOUT_US_SCREEN.toString())
         }
 
     }
