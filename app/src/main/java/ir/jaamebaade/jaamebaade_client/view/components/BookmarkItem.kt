@@ -34,7 +34,7 @@ fun BookmarkItem(
                 .padding(10.dp)
         ) {
             Text(
-                text = "${poem.title} - ${poet.name}",
+                text = "${poet.name} > ${poem.title}",
                 style = MaterialTheme.typography.headlineLarge
             )
         }

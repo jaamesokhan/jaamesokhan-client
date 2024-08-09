@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">جام سخن</string>
-    <string name="SERVER_BASE_URL">http://195.88.208.92:8081/</string>
+    <string name="SERVER_BASE_URL">https://jaamesokhan.ir/</string>
     <string name="GANJOOR_BASE_URL">https://api.ganjoor.net/</string>
 </resources>
