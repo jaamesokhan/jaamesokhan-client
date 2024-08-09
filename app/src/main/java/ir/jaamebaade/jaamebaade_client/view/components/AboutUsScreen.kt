@@ -2,6 +2,7 @@ package ir.jaamebaade.jaamebaade_client.view.components
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -32,6 +34,13 @@ fun AboutUsScreen(modifier: Modifier) {
         modifier = modifier.padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Image(
+            modifier = Modifier.size(100.dp),
+            painter = painterResource(R.mipmap.logo),
+            contentDescription = "جام باده",
+            contentScale = ContentScale.Fit,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         Text(text = context.getString(R.string.ABOUT_US_BASE), style = textStyle)
         Text(text = context.getString(R.string.ABOUT_US_GITHUB), style = textStyle)
         TextButton(onClick = {
