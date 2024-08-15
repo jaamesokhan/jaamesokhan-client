@@ -14,6 +14,9 @@
     <string name="ABOUT_US_EMAIL">
         اگر تمایل دارید به هر نحوی به بهتر شدن این اپلیکیشن کمک کنید،‌ از طریق ایمیل زیر با ما در ارتباط باشید.
     </string>
+    <string name="COPY_RIGHT">
+        منبع اشعار و خوانش‌های موجود در برنامه، پایگاه داده‌ی آزاد گنجور است.
+    </string>
     <string name="GITHUB_URL">
         https://github.com/jaamebaade/jaamebaade-client
     </string>

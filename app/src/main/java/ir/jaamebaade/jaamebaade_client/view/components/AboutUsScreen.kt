@@ -80,6 +80,8 @@ fun AboutUsScreen(modifier: Modifier) {
             }
         }
         Spacer(modifier = Modifier.height(4.dp))
+        Text(text = context.getString(R.string.COPY_RIGHT), style = textStyle)
+        Spacer(modifier = Modifier.height(4.dp))
         Text(text = context.getString(R.string.ABOUT_US_EMAIL), style = textStyle)
         TextButton(onClick = {
             val emailIntent = Intent(
