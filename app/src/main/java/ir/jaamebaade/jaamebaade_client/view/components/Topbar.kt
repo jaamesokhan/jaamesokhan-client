@@ -1,6 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import ir.jaamebaade.jaamebaade_client.R
@@ -68,6 +70,10 @@ fun TopBar(
     val showShuffle = viewModel.showShuffleIcon
 
     val coroutineScope = rememberCoroutineScope()
+
+    BackHandler (enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
+        onBackButtonClicked(backStackEntry, navController)
+    }
     Column {
         TopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
@@ -85,16 +91,7 @@ fun TopBar(
                         if (canPop) {
                             IconButton(
                                 onClick = {
-                                    if (backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
-                                        navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
-                                            popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
-                                                inclusive = true
-                                            }
-
-                                        }
-                                    } else {
-                                        navController.popBackStack()
-                                    }
+                                    onBackButtonClicked(backStackEntry, navController)
                                 }) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -153,5 +150,23 @@ fun TopBar(
             },
         )
         AudioControlBar(navController = navController, viewModel = audioViewModel)
+    }
+}
+
+private fun onBackButtonClicked(
+    backStackEntry: NavBackStackEntry?,
+    navController: NavController
+) {
+    if (backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
+        navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+            popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                inclusive = true
+            }
+            popUpTo(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
+                inclusive = true
+            }
+        }
+    } else {
+        navController.popBackStack()
     }
 }
