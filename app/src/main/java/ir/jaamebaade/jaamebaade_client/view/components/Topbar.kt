@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -54,6 +56,8 @@ fun TopBar(
                 && backStackEntry?.destination?.route != AppRoutes.SETTINGS_SCREEN.toString()
                 && backStackEntry?.destination?.route != AppRoutes.SEARCH_SCREEN.toString()
                 && backStackEntry?.destination?.route != AppRoutes.FAVORITE_SCREEN.toString())
+
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = backStackEntry) {
         viewModel.updateBreadCrumbs(backStackEntry)
@@ -125,9 +129,17 @@ fun TopBar(
                         IconButton(onClick = {
                             coroutineScope.launch {
                                 val poemWithPoet = viewModel.findShuffledPoem(backStackEntry)
-                                navController.navigate(
-                                    "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
-                                )
+                                if (poemWithPoet == null) {
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.NO_POET_DOWNLOADED),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    navController.navigate(
+                                        "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
+                                    )
+                                }
                             }
                         }) {
                             Icon(

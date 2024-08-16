@@ -2,6 +2,8 @@
     <string name="app_name">جام سخن</string>
     <string name="SERVER_BASE_URL">https://jaamesokhan.ir/</string>
     <string name="GANJOOR_BASE_URL">https://api.ganjoor.net/</string>
+
+    <!--  About Us  -->
     <string name="ABOUT_US_BASE">
         جام سخن یک اپلیکیشن متن باز است و هدف ما از توسعه آن، دسترسی راحت همه علاقه‌مندان به اشعار فارسی است.
     </string>
@@ -26,4 +28,7 @@
     <string name="EMAIL">
         jaamesokhan@gmail.com
     </string>
+
+    <!--  Messages  -->
+    <string name="NO_POET_DOWNLOADED">هیچ شاعری دانلود نشده است!</string>
 </resources>
