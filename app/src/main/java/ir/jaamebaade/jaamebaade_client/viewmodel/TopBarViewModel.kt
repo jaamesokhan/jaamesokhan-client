@@ -115,7 +115,7 @@ class TopBarViewModel @Inject constructor(
         }
     }
 
-    suspend fun findShuffledPoem(navStack: NavBackStackEntry?): PoemWithPoet {
+    suspend fun findShuffledPoem(navStack: NavBackStackEntry?): PoemWithPoet? {
         return withContext(Dispatchers.IO) {
             val path = getPath(navStack)
             var randomPoem: PoemWithPoet? = null
@@ -132,7 +132,7 @@ class TopBarViewModel @Inject constructor(
                 // This is unreachable
                 else -> null
             }
-            return@withContext randomPoem!!
+            return@withContext randomPoem
         }
     }
 }

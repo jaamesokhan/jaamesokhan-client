@@ -70,7 +70,7 @@ interface PoemDao {
         LIMIT 1
     """
     )
-    fun getRandomPoem(categoryId: Int?): PoemWithPoet
+    fun getRandomPoem(categoryId: Int?): PoemWithPoet?
 
     @Query(
         """
