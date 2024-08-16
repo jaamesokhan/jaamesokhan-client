@@ -103,7 +103,11 @@ fun DownloadedPoetsScreen(
                 icon = Icons.Filled.Download,
                 contentDescription = "Add Poet"
             ) {
-                navController.navigate(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString())
+                navController.navigate(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
+                    popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                        inclusive = true
+                    }
+                }
             }
         } else if (fetchStatue == Status.SUCCESS) {
             RoundButton(
