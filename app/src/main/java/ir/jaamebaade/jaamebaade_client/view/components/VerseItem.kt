@@ -1,14 +1,13 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -53,6 +52,7 @@ fun VerseItem(
     highlights: List<Highlight>,
     highlightCallBack: (startIndex: Int, endIndex: Int) -> Unit
 ) {
+    val paddingFromStart = 14.dp
     var showDialog by remember { mutableStateOf(false) }
     var startIndex by remember { mutableIntStateOf(0) }
     var endIndex by remember { mutableIntStateOf(0) }
@@ -114,20 +114,20 @@ fun VerseItem(
         ) {
         AnimatedVisibility(
             visible = selectMode,
-            enter = slideInHorizontally(
-                initialOffsetX = { it / 2 }
-            ),
-            exit = slideOutHorizontally(
-                targetOffsetX = { it / 2 }),
         ) {
             Checkbox(checked = isSelected, onCheckedChange = { onClick() })
         }
-        if (showVerseNumber && index % 2 == 0) {
-            Text(
-                text = (index / 2 + 1).toPersianNumber(),
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(end = 2.dp)
-            )
+
+        AnimatedVisibility(visible = showVerseNumber) {
+            if (index % 2 == 0) {
+                Text(
+                    text = (index / 2 + 1).toPersianNumber(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(start = paddingFromStart)
+                )
+            } else {
+                Spacer(modifier = Modifier.width(paddingFromStart))
+            }
         }
         VerseTextField(
             textFieldValue,
