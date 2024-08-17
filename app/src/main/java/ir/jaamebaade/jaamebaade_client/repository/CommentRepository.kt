@@ -7,7 +7,7 @@ import javax.inject.Inject
 class CommentRepository @Inject constructor(appDatabase: AppDatabase) {
     private val db = appDatabase
     private val commentDao = db.commentDao()
-    fun insertComment(comment: Comment) = commentDao.insertComment(comment)
+    fun insertComment(comment: Comment): Long = commentDao.insertComment(comment)
     fun getAllComments() = commentDao.getAll()
     fun getCommentsForPoem(poemId: Int) = commentDao.getCommentsForPoem(poemId)
     fun deleteComment(comment: Comment) = commentDao.deleteComment(comment)
