@@ -10,13 +10,14 @@ import ir.jaamebaade.jaamebaade_client.model.Comment
 @Dao
 interface CommentDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertComment(comment: Comment)
+    fun insertComment(comment: Comment): Long
 
     @Query("SELECT * FROM comments")
     fun getAll(): List<Comment>
 
     @Query("SELECT * FROM comments WHERE poem_id = :poemId")
     fun getCommentsForPoem(poemId: Int): List<Comment>
+
     @Delete
     fun deleteComment(comment: Comment)
 }

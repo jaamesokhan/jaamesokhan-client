@@ -15,7 +15,7 @@ import androidx.room.PrimaryKey
     )]
 )
 data class Comment(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) var id: Int = 0,
     @ColumnInfo(name = "poem_id") val poemId: Int,
     @ColumnInfo(name = "text") val text: String,
     @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis()

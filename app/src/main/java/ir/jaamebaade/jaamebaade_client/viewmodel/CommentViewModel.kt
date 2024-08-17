@@ -2,12 +2,12 @@ package ir.jaamebaade.jaamebaade_client.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ir.jaamebaade.jaamebaade_client.model.Comment
-import ir.jaamebaade.jaamebaade_client.repository.CommentRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.model.Comment
+import ir.jaamebaade.jaamebaade_client.repository.CommentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,14 +37,12 @@ class CommentViewModel @AssistedInject constructor(
         viewModelScope.launch {
             val comment = Comment(poemId = poemId, text = text)
             addCommentToRepository(comment)
-            _comments.value += comment
         }
     }
 
     fun deleteComment(comment: Comment) {
         viewModelScope.launch {
             deleteCommentFromRepository(comment)
-            _comments.value -= comment
         }
     }
 
@@ -52,7 +50,11 @@ class CommentViewModel @AssistedInject constructor(
         comment: Comment
     ): Comment {
         withContext(Dispatchers.IO) {
-            commentRepository.insertComment(comment)
+            val commentId = commentRepository.insertComment(comment)
+            comment.also {
+                it.id = commentId.toInt()
+            }
+            _comments.value += comment
         }
         return comment
     }
@@ -62,6 +64,7 @@ class CommentViewModel @AssistedInject constructor(
     ): Comment {
         withContext(Dispatchers.IO) {
             commentRepository.deleteComment(comment)
+            _comments.value -= comment
         }
         return comment
     }

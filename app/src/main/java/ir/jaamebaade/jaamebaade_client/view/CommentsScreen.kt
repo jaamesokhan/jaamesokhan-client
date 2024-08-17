@@ -47,7 +47,9 @@ fun CommentsScreen(poemId: Int, modifier: Modifier) {
             verticalArrangement = Arrangement.Bottom,
         ) {
             items(comments) { comment ->
-                CommentItem(comment = comment, onDeleteClicked = {viewModel.deleteComment(comment)})
+                CommentItem(
+                    comment = comment,
+                    onDeleteClicked = { viewModel.deleteComment(comment) })
             }
         }
 
