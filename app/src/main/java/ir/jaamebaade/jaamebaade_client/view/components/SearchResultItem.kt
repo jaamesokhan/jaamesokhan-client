@@ -10,6 +10,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
@@ -19,8 +23,27 @@ import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoryPoet
 fun SearchResultItem(
     modifier: Modifier,
     result: VersePoemCategoryPoet,
+    searchQuery: String,
     navController: NavController
 ) {
+    val text = result.verse.text
+    val annotatedString = buildAnnotatedString {
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface)) {
+            append(text)
+        }
+        text.indexOf(searchQuery, ignoreCase = true).let { index ->
+            if (index >= 0) {
+                addStyle(
+                    style = SpanStyle(
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    start = index,
+                    end = index + searchQuery.length
+                )
+            }
+        }
+    }
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -45,7 +68,7 @@ fun SearchResultItem(
                 )
             }
             Text(
-                text = result.verse.text,
+                text = annotatedString,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(8.dp)
             )

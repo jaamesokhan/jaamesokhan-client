@@ -43,6 +43,7 @@ fun SearchScreen(
         }
         SearchResults(
             results = results,
+            searchQuery = searchViewModel.query,
             searchStatus = searchStatus,
             navController = navController
         )
@@ -52,6 +53,7 @@ fun SearchScreen(
 @Composable
 fun SearchResults(
     results: List<VersePoemCategoryPoet>,
+    searchQuery: String,
     searchStatus: Status,
     navController: NavController
 ) {
@@ -63,7 +65,10 @@ fun SearchResults(
         LazyColumn {
             items(results) { result ->
                 SearchResultItem(
-                    modifier = Modifier, result = result, navController = navController
+                    modifier = Modifier,
+                    result = result,
+                    searchQuery = searchQuery,
+                    navController = navController
                 )
             }
         }
