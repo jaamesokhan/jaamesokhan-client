@@ -2,7 +2,6 @@ package ir.jaamebaade.jaamebaade_client.view.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -35,7 +34,6 @@ fun SearchResultItem(
             if (index >= 0) {
                 addStyle(
                     style = SpanStyle(
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontWeight = FontWeight.Bold
                     ),
                     start = index,
