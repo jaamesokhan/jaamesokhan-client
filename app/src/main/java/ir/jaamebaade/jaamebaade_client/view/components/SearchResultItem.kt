@@ -47,7 +47,7 @@ fun SearchResultItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(8.dp)
             .clickable {
                 navController.navigate("${AppRoutes.POEM}/${result.poet.id}/${result.verse.poemId}/${result.verse.id}")
             }
@@ -55,18 +55,12 @@ fun SearchResultItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                PoemTracePath(searchResult = result)
-            }
+            PoemTracePath(searchResult = result)
+
             Text(
                 text = annotatedString,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.padding(8.dp)
             )
         }
