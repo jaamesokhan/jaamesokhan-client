@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.model.Status
-import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoryPoet
+import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.view.components.LoadingIndicator
 import ir.jaamebaade.jaamebaade_client.view.components.SearchBar
 import ir.jaamebaade.jaamebaade_client.view.components.SearchResultItem
@@ -52,7 +52,7 @@ fun SearchScreen(
 
 @Composable
 fun SearchResults(
-    results: List<VersePoemCategoryPoet>,
+    results: List<VersePoemCategoriesPoet>,
     searchQuery: String,
     searchStatus: Status,
     navController: NavController

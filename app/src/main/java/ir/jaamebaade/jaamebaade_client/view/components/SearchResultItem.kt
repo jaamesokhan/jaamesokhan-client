@@ -17,12 +17,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
-import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoryPoet
+import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 
 @Composable
 fun SearchResultItem(
     modifier: Modifier,
-    result: VersePoemCategoryPoet,
+    result: VersePoemCategoriesPoet,
     searchQuery: String,
     navController: NavController
 ) {
@@ -62,10 +62,7 @@ fun SearchResultItem(
                     .fillMaxWidth()
                     .padding(8.dp)
             ) {
-                Text(
-                    text = "${result.poet.name}>${result.category.text}>${result.poem.title}",
-                    style = MaterialTheme.typography.labelMedium
-                )
+                PoemTracePath(searchResult = result)
             }
             Text(
                 text = annotatedString,
