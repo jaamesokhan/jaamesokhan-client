@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
+import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.Poet
 
@@ -21,21 +22,21 @@ fun BookmarkItem(
     navController: NavController,
     poet: Poet,
     poem: Poem,
+    categories: List<Category>,
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navController.navigate("${AppRoutes.POEM}/${poet.id}/${poem.id}/-1") }
-    ) {
+            .clickable { navController.navigate("${AppRoutes.POEM}/${poet.id}/${poem.id}/-1") }) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
         ) {
             Text(
-                text = "${poet.name} > ${poem.title}",
-                style = MaterialTheme.typography.headlineLarge
+                text = "${categories.joinToString(separator = " > ") { it.text }} > ${poem.title}",
+                style = MaterialTheme.typography.headlineMedium
             )
         }
     }

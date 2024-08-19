@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemPoet
+import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.Highlight
 import ir.jaamebaade.jaamebaade_client.model.HighlightVersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
@@ -24,7 +24,7 @@ class FavoritesViewModel @Inject constructor(
     private val highlightRepository: HighlightRepository,
     private val categoryRepository: CategoryRepository,
 ) : ViewModel() {
-    var bookmarks by mutableStateOf<List<BookmarkPoemPoet>>(emptyList())
+    var bookmarks by mutableStateOf<List<BookmarkPoemCategoriesPoet>>(emptyList())
         private set
     var highlights by mutableStateOf<List<HighlightVersePoemCategoriesPoet>>(emptyList())
         private set
@@ -62,9 +62,16 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getBookmarksFromRepository(): List<BookmarkPoemPoet> {
+    private suspend fun getBookmarksFromRepository(): List<BookmarkPoemCategoriesPoet> {
         val res = withContext(Dispatchers.IO) {
-            bookmarkRepository.getAllBookmarksWithPoemAndPoet()
+            bookmarkRepository.getAllBookmarksWithPoemAndPoet().map {
+                BookmarkPoemCategoriesPoet(
+                    bookmark = it.bookmark,
+                    poem = it.poem,
+                    poet = it.poet,
+                    categories = categoryRepository.getAllParentsOfCategoryId(it.poem.categoryId),
+                )
+            }
         }
         return res
     }

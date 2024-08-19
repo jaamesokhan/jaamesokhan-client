@@ -35,7 +35,8 @@ fun BookmarkList(viewModel: FavoritesViewModel, navController: NavController) {
                 BookmarkItem(
                     poem = bookmark.poem,
                     poet = bookmark.poet,
-                    navController = navController
+                    categories = bookmark.categories,
+                    navController = navController,
                 )
             }
         }
