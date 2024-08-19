@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
 import ir.jaamebaade.jaamebaade_client.view.components.FontFamilyMenu
 import ir.jaamebaade.jaamebaade_client.view.components.FontSizeTileMenu
@@ -14,10 +16,10 @@ import ir.jaamebaade.jaamebaade_client.view.components.FontSizeTileMenu
 fun ChangeFontScreen(modifier: Modifier, fontRepository: FontRepository) {
 
     Column(modifier = modifier.padding(8.dp)) {
-        Text("اندازه فونت")
+        Text(stringResource(R.string.FONT_SIZE_TEXT))
         FontSizeTileMenu(fontRepository)
 
-        Text("فونت برنامه")
+        Text(stringResource(R.string.FONT_FAMILY_TEXT))
         FontFamilyMenu(fontRepository = fontRepository)
 
     }

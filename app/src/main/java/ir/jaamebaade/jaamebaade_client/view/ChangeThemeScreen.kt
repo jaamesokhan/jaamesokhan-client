@@ -54,7 +54,7 @@ fun ChangeThemeScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = item.displayName, style = MaterialTheme.typography.bodyLarge)
+                Text(text = item.displayName, style = MaterialTheme.typography.bodyMedium)
                 if (isSelected) {
                     Icon(
                         modifier = Modifier.size(24.dp),
