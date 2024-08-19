@@ -21,7 +21,7 @@ fun PoemTracePath(searchResult: VersePoemCategoriesPoet) {
         Text(
             modifier = Modifier.padding(8.dp),
             text = "${
-                searchResult.categories.reversed().joinToString(separator = " > ") { it.text }
+                searchResult.categories.joinToString(separator = " > ") { it.text }
             } > ${searchResult.poem.title}",
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             style = MaterialTheme.typography.labelSmall,
