@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,57 +20,55 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
-import ir.jaamebaade.jaamebaade_client.model.HighlightVersePoemPoet
+import ir.jaamebaade.jaamebaade_client.model.HighlightVersePoemCategoriesPoet
 
 @Composable
 fun HighlightItem(
     modifier: Modifier = Modifier,
-    highlightVersePoemPoet: HighlightVersePoemPoet,
+    highlightInfo: HighlightVersePoemCategoriesPoet,
     navController: NavController,
     onDeleteClicked: () -> Unit
 ) {
-    val startIndex = highlightVersePoemPoet.highlight.startIndex
-    val endIndex = highlightVersePoemPoet.highlight.endIndex
+    val startIndex = highlightInfo.highlight.startIndex
+    val endIndex = highlightInfo.highlight.endIndex
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(10.dp)
-            .clickable { navController.navigate("${AppRoutes.POEM}/${highlightVersePoemPoet.poet.id}/${highlightVersePoemPoet.poem.id}/${highlightVersePoemPoet.verse.id}") }
-
+            .padding(8.dp)
+            .clickable { navController.navigate("${AppRoutes.POEM}/${highlightInfo.versePath.poet.id}/${highlightInfo.versePath.poem.id}/${highlightInfo.versePath.verse.id}") }
     ) {
+
+        PoemTracePath(versePoemCategoriesPoet = highlightInfo.versePath)
+
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .weight(0.9f)
-            ) {
+            Box(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "${highlightVersePoemPoet.poet.name} > ${highlightVersePoemPoet.poem.title}",
-                    style = MaterialTheme.typography.labelSmall
-                )
-                Text(
-                    highlightVersePoemPoet.verse.text.substring(startIndex, endIndex),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.background(
-                        color = MaterialTheme.colorScheme.tertiary,
+                    highlightInfo.versePath.verse.text.substring(
+                        startIndex,
+                        endIndex
                     ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .background(
+                            color = MaterialTheme.colorScheme.tertiary,
+                        )
+                        .padding(horizontal = 2.dp)
                 )
             }
 
-            Box(modifier = Modifier
-                .padding(8.dp)
-                .weight(0.1f)) {
-                IconButton(
-                    onClick = {
-                        onDeleteClicked()
-                    }
-                ) {
-                    Icon(imageVector = Icons.Outlined.Delete, contentDescription = "حذف")
-                }
+            IconButton(
+                onClick = {
+                    onDeleteClicked()
+                },
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Icon(imageVector = Icons.Outlined.Delete, contentDescription = "حذف")
             }
         }
     }

@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 
 @Composable
-fun PoemTracePath(searchResult: VersePoemCategoriesPoet) {
+fun PoemTracePath(versePoemCategoriesPoet: VersePoemCategoriesPoet) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -21,8 +21,8 @@ fun PoemTracePath(searchResult: VersePoemCategoriesPoet) {
         Text(
             modifier = Modifier.padding(8.dp),
             text = "${
-                searchResult.categories.joinToString(separator = " > ") { it.text }
-            } > ${searchResult.poem.title}",
+                versePoemCategoriesPoet.categories.joinToString(separator = " > ") { it.text }
+            } > ${versePoemCategoriesPoet.poem.title}",
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             style = MaterialTheme.typography.labelSmall,
         )

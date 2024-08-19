@@ -12,5 +12,4 @@ data class HighlightVersePoemPoet(
     val poem: Poem,
     @Embedded(prefix = "poet_")
     val poet: Poet,
-
-    )
+)

@@ -5,12 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemPoet
 import ir.jaamebaade.jaamebaade_client.model.Highlight
-import ir.jaamebaade.jaamebaade_client.model.HighlightVersePoemPoet
+import ir.jaamebaade.jaamebaade_client.model.HighlightVersePoemCategoriesPoet
+import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.repository.BookmarkRepository
+import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,10 +22,11 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val bookmarkRepository: BookmarkRepository,
     private val highlightRepository: HighlightRepository,
+    private val categoryRepository: CategoryRepository,
 ) : ViewModel() {
     var bookmarks by mutableStateOf<List<BookmarkPoemPoet>>(emptyList())
         private set
-    var highlights by mutableStateOf<List<HighlightVersePoemPoet>>(emptyList())
+    var highlights by mutableStateOf<List<HighlightVersePoemCategoriesPoet>>(emptyList())
         private set
 
     init {
@@ -31,7 +34,7 @@ class FavoritesViewModel @Inject constructor(
         getAllHighlights()
     }
 
-    fun deleteHighlight(highlightVersePoemPoet: HighlightVersePoemPoet) {
+    fun deleteHighlight(highlightVersePoemPoet: HighlightVersePoemCategoriesPoet) {
         viewModelScope.launch {
             highlights = highlights.toMutableList().also {
                 it.remove(highlightVersePoemPoet)
@@ -56,7 +59,6 @@ class FavoritesViewModel @Inject constructor(
     private fun getAllHighlights() {
         viewModelScope.launch {
             highlights = getHighlightsWithVersePoemPoetFromRepository()
-
         }
     }
 
@@ -67,9 +69,19 @@ class FavoritesViewModel @Inject constructor(
         return res
     }
 
-    private suspend fun getHighlightsWithVersePoemPoetFromRepository(): List<HighlightVersePoemPoet> {
+    private suspend fun getHighlightsWithVersePoemPoetFromRepository(): List<HighlightVersePoemCategoriesPoet> {
         val res = withContext(Dispatchers.IO) {
-            highlightRepository.getAllHighlightsWithVersePoemPoet()
+            highlightRepository.getAllHighlightsWithVersePoemPoet().map {
+                HighlightVersePoemCategoriesPoet(
+                    highlight = it.highlight,
+                    versePath = VersePoemCategoriesPoet(
+                        verse = it.verse,
+                        poem = it.poem,
+                        poet = it.poet,
+                        categories = categoryRepository.getAllParentsOfCategoryId(it.poem.categoryId),
+                    )
+                )
+            }
         }
         return res
     }

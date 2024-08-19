@@ -54,7 +54,7 @@ fun SearchResultItem(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            PoemTracePath(searchResult = result)
+            PoemTracePath(versePoemCategoriesPoet = result)
 
             Text(
                 text = annotatedString,

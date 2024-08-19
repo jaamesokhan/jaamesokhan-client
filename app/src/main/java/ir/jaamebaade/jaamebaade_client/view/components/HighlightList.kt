@@ -33,7 +33,7 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
         LazyColumn {
             items(highlights) { highlight ->
                 HighlightItem(
-                    highlightVersePoemPoet = highlight,
+                    highlightInfo = highlight,
                     navController = navController,
                     onDeleteClicked = { viewModel.deleteHighlight(highlight) }
                 )
