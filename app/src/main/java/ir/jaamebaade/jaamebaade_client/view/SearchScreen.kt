@@ -1,9 +1,13 @@
 package ir.jaamebaade.jaamebaade_client.view
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -11,11 +15,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.model.Status
-import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoryPoet
+import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.view.components.LoadingIndicator
 import ir.jaamebaade.jaamebaade_client.view.components.SearchBar
 import ir.jaamebaade.jaamebaade_client.view.components.SearchResultItem
@@ -52,13 +57,18 @@ fun SearchScreen(
 
 @Composable
 fun SearchResults(
-    results: List<VersePoemCategoryPoet>,
+    results: List<VersePoemCategoriesPoet>,
     searchQuery: String,
     searchStatus: Status,
     navController: NavController
 ) {
     if (results.isEmpty() && searchStatus == Status.SUCCESS) {
-        Text(text = "جست‌وجوی شما نتیجه‌ای در بر نداشت!")
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "جست‌وجوی شما نتیجه‌ای در بر نداشت!")
+        }
     } else if (searchStatus == Status.LOADING) {
         LoadingIndicator()
     } else {

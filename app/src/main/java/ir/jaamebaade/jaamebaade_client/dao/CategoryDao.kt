@@ -45,4 +45,16 @@ interface CategoryDao {
         """
     )
     fun getCategoryById(id: Int): Category
+
+    @Query(
+        """
+        WITH RECURSIVE category_tree AS (
+            SELECT * from categories WHERE id = :categoryId
+            UNION ALL
+            SELECT c.* FROM categories c JOIN category_tree ct ON c.id = ct.parent_id
+        )
+        SELECT * FROM category_tree ORDER BY id ASC
+    """
+    )
+    fun getAllParentsOfCategoryId(categoryId: Int): List<Category>
 }

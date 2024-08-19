@@ -2,7 +2,6 @@ package ir.jaamebaade.jaamebaade_client.view.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -17,12 +16,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
-import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoryPoet
+import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 
 @Composable
 fun SearchResultItem(
     modifier: Modifier,
-    result: VersePoemCategoryPoet,
+    result: VersePoemCategoriesPoet,
     searchQuery: String,
     navController: NavController
 ) {
@@ -35,7 +34,6 @@ fun SearchResultItem(
             if (index >= 0) {
                 addStyle(
                     style = SpanStyle(
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontWeight = FontWeight.Bold
                     ),
                     start = index,
@@ -47,7 +45,7 @@ fun SearchResultItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(8.dp)
             .clickable {
                 navController.navigate("${AppRoutes.POEM}/${result.poet.id}/${result.verse.poemId}/${result.verse.id}")
             }
@@ -55,21 +53,12 @@ fun SearchResultItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Text(
-                    text = "${result.poet.name}>${result.category.text}>${result.poem.title}",
-                    style = MaterialTheme.typography.labelMedium
-                )
-            }
+            PoemTracePath(searchResult = result)
+
             Text(
                 text = annotatedString,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.padding(8.dp)
             )
         }

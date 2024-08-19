@@ -5,11 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.Poet
-import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoryPoet
+import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
+import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,11 +22,12 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val verseRepository: VerseRepository,
     private val poetRepository: PoetRepository,
+    private val categoryRepository: CategoryRepository,
 ) : ViewModel() {
     var query by mutableStateOf("")
 
     var poetFilter by mutableStateOf<Poet?>(null)
-    var results by mutableStateOf<List<VersePoemCategoryPoet>>(emptyList())
+    var results by mutableStateOf<List<VersePoemCategoriesPoet>>(emptyList())
         private set
 
     private val _allPoets = MutableStateFlow<List<Poet>>(emptyList())
@@ -50,7 +52,19 @@ class SearchViewModel @Inject constructor(
 
     private suspend fun runSearchOnDatabase(callBack: () -> Unit) {
         withContext(Dispatchers.IO) {
-            results = verseRepository.searchVerses(query, poetFilter?.id)
+            val tempResults = verseRepository.searchVerses(query, poetFilter?.id)
+
+            results = tempResults.map {
+                val parentCategories = categoryRepository.getAllParentsOfCategoryId(it.category.id)
+                VersePoemCategoriesPoet(
+                    verse = it.verse,
+                    poem = it.poem,
+                    poet = it.poet,
+                    categories = parentCategories,
+                )
+
+            }
+
             callBack()
         }
     }
