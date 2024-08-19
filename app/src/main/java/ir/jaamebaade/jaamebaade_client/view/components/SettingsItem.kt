@@ -39,13 +39,13 @@ fun SettingsItem(
                 contentDescription = "Settings Icon",
                 modifier = Modifier
                     .padding(10.dp)
-                    .size(45.dp),
+                    .size(32.dp),
             )
 
             Text(
                 modifier = Modifier.padding(10.dp),
                 text = text,
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineSmall
             )
         }
 

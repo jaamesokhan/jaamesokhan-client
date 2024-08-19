@@ -31,4 +31,6 @@
 
     <!--  Messages  -->
     <string name="NO_POET_DOWNLOADED">هیچ شاعری دانلود نشده است!</string>
+    <string name="FONT_SIZE_TEXT">اندازه فونت:</string>
+    <string name="FONT_FAMILY_TEXT">فونت برنامه:</string>
 </resources>
