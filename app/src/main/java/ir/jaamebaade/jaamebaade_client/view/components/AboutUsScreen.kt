@@ -29,7 +29,7 @@ import ir.jaamebaade.jaamebaade_client.R
 @Composable
 fun AboutUsScreen(modifier: Modifier) {
     val context = LocalContext.current
-    val textStyle = MaterialTheme.typography.bodyLarge
+    val textStyle = MaterialTheme.typography.bodyMedium
     Column(
         modifier = modifier.padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,7 +53,7 @@ fun AboutUsScreen(modifier: Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Github")
+                Text(text = "Github", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
                     painter = painterResource(R.drawable.github_mark),
@@ -74,7 +74,7 @@ fun AboutUsScreen(modifier: Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "لینک حامی‌باش")
+                Text(text = "لینک حامی‌باش", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(imageVector = Icons.Filled.Handshake, contentDescription = "Support")
             }
@@ -93,7 +93,7 @@ fun AboutUsScreen(modifier: Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = context.getString(R.string.EMAIL))
+                Text(text = context.getString(R.string.EMAIL), style = textStyle)
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(imageVector = Icons.Filled.Email, contentDescription = "Email")
             }

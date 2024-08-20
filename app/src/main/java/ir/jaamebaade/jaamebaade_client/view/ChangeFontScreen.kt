@@ -2,6 +2,7 @@ package ir.jaamebaade.jaamebaade_client.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,10 +17,16 @@ import ir.jaamebaade.jaamebaade_client.view.components.FontSizeTileMenu
 fun ChangeFontScreen(modifier: Modifier, fontRepository: FontRepository) {
 
     Column(modifier = modifier.padding(8.dp)) {
-        Text(stringResource(R.string.FONT_SIZE_TEXT))
+        Text(
+            style = MaterialTheme.typography.bodyMedium,
+            text = stringResource(R.string.FONT_SIZE_TEXT)
+        )
         FontSizeTileMenu(fontRepository)
 
-        Text(stringResource(R.string.FONT_FAMILY_TEXT))
+        Text(
+            style = MaterialTheme.typography.bodyMedium,
+            text = stringResource(R.string.FONT_FAMILY_TEXT)
+        )
         FontFamilyMenu(fontRepository = fontRepository)
 
     }

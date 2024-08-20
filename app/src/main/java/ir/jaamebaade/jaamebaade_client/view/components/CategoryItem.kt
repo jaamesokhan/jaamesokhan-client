@@ -34,9 +34,12 @@ fun CategoryItem(category: Category, onClick: () -> Unit) {
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(imageVector = Icons.AutoMirrored.Outlined.LibraryBooks, contentDescription = "دسته‌بندی")
+            Icon(
+                imageVector = Icons.AutoMirrored.Outlined.LibraryBooks,
+                contentDescription = "دسته‌بندی"
+            )
             Spacer(modifier = Modifier.padding(8.dp))
-            Text(text = category.text, style = MaterialTheme.typography.headlineLarge)
+            Text(text = category.text, style = MaterialTheme.typography.headlineMedium)
         }
     }
 }
