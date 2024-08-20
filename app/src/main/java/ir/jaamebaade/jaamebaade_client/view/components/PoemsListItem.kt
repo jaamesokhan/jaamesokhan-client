@@ -37,7 +37,7 @@ fun PoemsListItem(poem: Poem, onClick: () -> Unit) {
             ) {
             Icon(imageVector = Icons.AutoMirrored.Outlined.Article, contentDescription = "شعر")
             Spacer(modifier = Modifier.padding(8.dp))
-            Text(text = poem.title, style = MaterialTheme.typography.headlineLarge)
+            Text(text = poem.title, style = MaterialTheme.typography.headlineMedium)
         }
     }
 }

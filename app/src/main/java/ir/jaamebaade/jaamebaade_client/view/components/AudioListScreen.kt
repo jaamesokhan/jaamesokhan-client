@@ -1,5 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,10 +14,12 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
 import ir.jaamebaade.jaamebaade_client.model.Status
@@ -36,21 +40,49 @@ fun AudioListScreen(
         onDismissRequest = onDismiss,
     ) {
         if (audioDataList.isEmpty() && fetchStatus == Status.SUCCESS) {
-            Text(
-                text = "هیچ خوانشی یافت نشد",
-                modifier = Modifier.padding(8.dp)
-            )
+            Column(
+                modifier = Modifier
+                    .height(250.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "هیچ خوانشی یافت نشد",
+                    modifier = Modifier.padding(8.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
         when (fetchStatus) {
             Status.LOADING -> {
-                LoadingIndicator()
+                Column(
+                    modifier = Modifier
+                        .height(250.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    LoadingIndicator()
+                }
             }
 
             Status.FAILED -> {
-                Text(
-                    text = "خطا در دریافت اطلاعات",
-                    modifier = Modifier.padding(8.dp)
-                )
+                Column(
+                    modifier = Modifier
+                        .height(250.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "خطا در دریافت اطلاعات",
+                        modifier = Modifier.padding(8.dp),
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
 
             else -> {
@@ -83,4 +115,3 @@ fun AudioListScreen(
         }
     }
 }
-

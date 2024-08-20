@@ -1,7 +1,5 @@
 package ir.jaamebaade.jaamebaade_client
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
@@ -35,6 +32,7 @@ import ir.jaamebaade.jaamebaade_client.repository.FontRepository
 import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.JaamebaadeclientTheme
+import ir.jaamebaade.jaamebaade_client.utility.animatedComposable
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
 import ir.jaamebaade.jaamebaade_client.view.AccountScreen
 import ir.jaamebaade.jaamebaade_client.view.ChangeFontScreen
@@ -125,56 +123,26 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                         audioViewModel = audioViewModel,
                     )
                 }) { innerPadding ->
-                NavHost(navController = navController, startDestination = "downloadedPoetsScreen") {
-                    composable(route = AppRoutes.DOWNLOADED_POETS_SCREEN.toString(),
-                        enterTransition = {
-                            slideIntoContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(400)
-                            )
-                        }, exitTransition = {
-                            slideOutOfContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Right,
-                                animationSpec = tween(400)
-                            )
-                        }) {
+                NavHost(
+                    navController = navController,
+                    startDestination = AppRoutes.DOWNLOADED_POETS_SCREEN.toString()
+                ) {
+                    animatedComposable(route = AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
                         DownloadedPoetsScreen(
                             modifier = Modifier.padding(
                                 innerPadding
                             ), navController = navController
                         )
                     }
-                    composable(route = AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString(),
-                        enterTransition = {
-                            slideIntoContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(400)
-                            )
-                        }, exitTransition = {
-                            slideOutOfContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Right,
-                                animationSpec = tween(400)
-                            )
-                        }) {
+                    animatedComposable(route = AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
                         DownloadablePoetsScreen(modifier = Modifier.padding(innerPadding))
                     }
-                    composable(route = "${AppRoutes.POET_CATEGORY_SCREEN}/{poetId}/{parentIds}",
+                    animatedComposable(
+                        route = "${AppRoutes.POET_CATEGORY_SCREEN}/{poetId}/{parentIds}",
                         arguments = listOf(
                             navArgument("poetId") { type = NavType.IntType },
                             navArgument("parentIds") { type = NavType.StringType }
                         ),
-                        enterTransition = {
-                            slideIntoContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(400)
-                            )
-                        },
-                        exitTransition = {
-                            slideOutOfContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Right,
-                                animationSpec = tween(400)
-                            )
-                        }
                     ) { backStackEntry ->
                         val poetId = backStackEntry.arguments?.getInt("poetId")
                         val parentIds =
@@ -186,49 +154,23 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                             navController = navController
                         )
                     }
-                    composable(AppRoutes.SETTINGS_SCREEN.toString(),
-                        enterTransition = {
-                            slideIntoContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(700)
-                            )
-                        },
-                        exitTransition = {
-                            slideOutOfContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Right,
-                                animationSpec = tween(700)
-                            )
-                        }
-                    ) {
+                    animatedComposable(AppRoutes.SETTINGS_SCREEN.toString()) {
                         SettingsScreen(
                             modifier = Modifier.padding(innerPadding),
                             navController = navController,
                         )
                     }
-                    composable(route = AppRoutes.SEARCH_SCREEN.toString(),
-                        enterTransition = {
-                            slideIntoContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(700)
-                            )
-                        },
-                        exitTransition = {
-                            slideOutOfContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Right,
-                                animationSpec = tween(700)
-                            )
-                        }
-                    ) {
+                    animatedComposable(route = AppRoutes.SEARCH_SCREEN.toString()) {
                         SearchScreen(
                             modifier = Modifier.padding(innerPadding), navController = navController
                         )
                     }
-                    composable(AppRoutes.FAVORITE_SCREEN.toString()) {
+                    animatedComposable(AppRoutes.FAVORITE_SCREEN.toString()) {
                         FavoritesScreen(
                             modifier = Modifier.padding(innerPadding), navController = navController
                         )
                     }
-                    composable(
+                    animatedComposable(
                         "${AppRoutes.POEM}/{poetId}/{poemId}/{verseId}",
                         arguments = listOf(
                             navArgument("poetId") { type = NavType.IntType },
@@ -251,7 +193,7 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                             modifier = Modifier.padding(innerPadding),
                         )
                     }
-                    composable(
+                    animatedComposable(
                         "${AppRoutes.COMMENTS}/{poetId}/{poemId}",
                         arguments = listOf(
                             navArgument("poetId") { type = NavType.IntType },
@@ -265,19 +207,19 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                             modifier = Modifier.padding(innerPadding),
                         )
                     }
-                    composable(AppRoutes.CHANGE_FONT_SCREEN.toString()) {
+                    animatedComposable(AppRoutes.CHANGE_FONT_SCREEN.toString()) {
                         ChangeFontScreen(
                             modifier = Modifier.padding(innerPadding),
                             fontRepository = fontRepository,
                         )
                     }
-                    composable(AppRoutes.CHANGE_THEME_SCREEN.toString()) {
+                    animatedComposable(AppRoutes.CHANGE_THEME_SCREEN.toString()) {
                         ChangeThemeScreen(
                             modifier = Modifier.padding(innerPadding),
                             themeRepository = themeRepository,
                         )
                     }
-                    composable(AppRoutes.ABOUT_US_SCREEN.toString()) {
+                    animatedComposable(AppRoutes.ABOUT_US_SCREEN.toString()) {
                         AboutUsScreen(
                             modifier = Modifier.padding(innerPadding),
                         )
