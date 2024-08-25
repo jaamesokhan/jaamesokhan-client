@@ -131,7 +131,7 @@ fun NavbarItem(
                                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f),
                                 shape = RoundedCornerShape(8.dp)
                             )
-                            .padding(4.dp) // Adjust padding if needed
+                            .padding(2.dp)
                     } else {
                         Modifier
                     }
