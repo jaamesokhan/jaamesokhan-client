@@ -26,8 +26,10 @@ runtimeLivedata = "1.6.8"
 material = "1.12.0"
 navCompose = "2.7.7"
 simpleXml = "2.7.1"
+accompanist_version = "0.28.0"
 
 [libraries]
+accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist_version" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navCompose" }
@@ -43,6 +45,7 @@ commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "common
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltCompiler" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist_version" }
 hilt-android-v2511 = { module = "com.google.dagger:hilt-android", version.ref = "googleHiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompilerVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
