@@ -7,11 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemCategoriesPoet
+import ir.jaamebaade.jaamebaade_client.model.Comment
+import ir.jaamebaade.jaamebaade_client.model.CommentPoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.Highlight
 import ir.jaamebaade.jaamebaade_client.model.HighlightVersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.repository.BookmarkRepository
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
+import ir.jaamebaade.jaamebaade_client.repository.CommentRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,16 +25,20 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val bookmarkRepository: BookmarkRepository,
     private val highlightRepository: HighlightRepository,
+    private val commentRepository: CommentRepository,
     private val categoryRepository: CategoryRepository,
 ) : ViewModel() {
     var bookmarks by mutableStateOf<List<BookmarkPoemCategoriesPoet>>(emptyList())
         private set
     var highlights by mutableStateOf<List<HighlightVersePoemCategoriesPoet>>(emptyList())
         private set
+    var comments by mutableStateOf<List<CommentPoemCategoriesPoet>>(emptyList())
+        private set
 
     init {
         getAllBookmarks()
         getAllHighlights()
+        getAllComments()
     }
 
     fun deleteHighlight(highlightVersePoemPoet: HighlightVersePoemCategoriesPoet) {
@@ -43,12 +50,26 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
+    fun deleteComment(commentPoemCategoriesPoet: CommentPoemCategoriesPoet) {
+        viewModelScope.launch {
+            comments = comments.toMutableList().also {
+                it.remove(commentPoemCategoriesPoet)
+            }
+            deleteCommentFromRepository(commentPoemCategoriesPoet.comment)
+        }
+    }
+
     private suspend fun deleteHighlightFromRepository(highlight: Highlight) {
         withContext(Dispatchers.IO) {
             highlightRepository.deleteHighlight(highlight)
         }
     }
 
+    private suspend fun deleteCommentFromRepository(comment: Comment) {
+        withContext(Dispatchers.IO) {
+            commentRepository.deleteComment(comment)
+        }
+    }
 
     private fun getAllBookmarks() {
         viewModelScope.launch {
@@ -59,6 +80,12 @@ class FavoritesViewModel @Inject constructor(
     private fun getAllHighlights() {
         viewModelScope.launch {
             highlights = getHighlightsWithVersePoemPoetFromRepository()
+        }
+    }
+
+    private fun getAllComments() {
+        viewModelScope.launch {
+            comments = getAllCommentsWithVersePoemPoetFromRepository()
         }
     }
 
@@ -83,6 +110,23 @@ class FavoritesViewModel @Inject constructor(
                     highlight = it.highlight,
                     versePath = VersePoemCategoriesPoet(
                         verse = it.verse,
+                        poem = it.poem,
+                        poet = it.poet,
+                        categories = categoryRepository.getAllParentsOfCategoryId(it.poem.categoryId),
+                    )
+                )
+            }
+        }
+        return res
+    }
+
+    private suspend fun getAllCommentsWithVersePoemPoetFromRepository(): List<CommentPoemCategoriesPoet> {
+        val res = withContext(Dispatchers.IO) {
+            commentRepository.getAllCommentsWithPoemPoet().map {
+                CommentPoemCategoriesPoet(
+                    comment = it.comment,
+                    path = VersePoemCategoriesPoet(
+                        verse = null,
                         poem = it.poem,
                         poet = it.poet,
                         categories = categoryRepository.getAllParentsOfCategoryId(it.poem.categoryId),

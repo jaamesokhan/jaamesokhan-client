@@ -15,9 +15,10 @@ import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.viewmodel.FavoritesViewModel
 
 @Composable
-fun BookmarkList(viewModel: FavoritesViewModel, navController: NavController) {
-    val bookmarks = viewModel.bookmarks
-    if (bookmarks.isEmpty()) {
+fun CommentsList(viewModel: FavoritesViewModel, navController: NavController) {
+    val comments = viewModel.comments
+
+    if (comments.isEmpty()) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -25,18 +26,20 @@ fun BookmarkList(viewModel: FavoritesViewModel, navController: NavController) {
                 .fillMaxSize(),
         ) {
             Text(
-                text = "شعری به علاقه‌مندی‌ها اضافه نکرده‌اید!",
+                text = "یادداشتی پیدا نشد!",
                 style = MaterialTheme.typography.headlineMedium
             )
         }
     } else {
         LazyColumn {
-            items(bookmarks) { bookmark ->
-                BookmarkItem(
-                    poem = bookmark.poem,
-                    poet = bookmark.poet,
-                    categories = bookmark.categories,
+            items(comments) { commentInfo ->
+                CommentListItem(
+                    comment = commentInfo.comment,
+                    path = commentInfo.path,
                     navController = navController,
+                    onDeleteClicked = {
+                        viewModel.deleteComment(commentInfo)
+                    }
                 )
             }
         }
