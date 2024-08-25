@@ -25,7 +25,7 @@ fun SearchResultItem(
     searchQuery: String,
     navController: NavController
 ) {
-    val text = result.verse.text
+    val text = result.verse!!.text
     val annotatedString = buildAnnotatedString {
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface)) {
             append(text)

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.view.components.BookmarkList
+import ir.jaamebaade.jaamebaade_client.view.components.CommentsList
 import ir.jaamebaade.jaamebaade_client.view.components.HighlightList
 import ir.jaamebaade.jaamebaade_client.viewmodel.FavoritesViewModel
 
@@ -24,7 +25,7 @@ fun FavoritesScreen(
     viewModel: FavoritesViewModel = hiltViewModel()
 ) {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val tabs = listOf("علاقه‌مندی‌ها", "هایلایت‌ها")
+    val tabs = listOf("علاقه‌مندی‌ها", "هایلایت‌ها", "یادداشت‌ها")
     Column(modifier) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
@@ -42,9 +43,9 @@ fun FavoritesScreen(
         when (selectedTabIndex) {
             0 -> BookmarkList(viewModel, navController)
             1 -> HighlightList(viewModel, navController)
+            2 -> CommentsList(viewModel, navController)
         }
     }
-
 }
 
 

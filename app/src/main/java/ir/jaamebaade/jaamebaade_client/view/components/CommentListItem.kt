@@ -1,6 +1,5 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,25 +19,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
-import ir.jaamebaade.jaamebaade_client.model.HighlightVersePoemCategoriesPoet
+import ir.jaamebaade.jaamebaade_client.model.Comment
+import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 
 @Composable
-fun HighlightItem(
+fun CommentListItem(
     modifier: Modifier = Modifier,
-    highlightInfo: HighlightVersePoemCategoriesPoet,
+    comment: Comment,
+    path: VersePoemCategoriesPoet,
     navController: NavController,
-    onDeleteClicked: () -> Unit
+    onDeleteClicked: () -> Unit,
 ) {
-    val startIndex = highlightInfo.highlight.startIndex
-    val endIndex = highlightInfo.highlight.endIndex
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navController.navigate("${AppRoutes.POEM}/${highlightInfo.versePath.poet.id}/${highlightInfo.versePath.poem.id}/${highlightInfo.versePath.verse!!.id}") }
+            .clickable { navController.navigate("${AppRoutes.POEM}/${path.poet.id}/${path.poem.id}/-1") }
     ) {
 
-        PoemTracePath(versePoemCategoriesPoet = highlightInfo.versePath)
+        PoemTracePath(versePoemCategoriesPoet = path)
 
         Row(
             modifier = Modifier
@@ -49,15 +49,9 @@ fun HighlightItem(
         ) {
             Box(modifier = Modifier.weight(1f)) {
                 Text(
-                    highlightInfo.versePath.verse!!.text.substring(
-                        startIndex,
-                        endIndex
-                    ),
+                    comment.text,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
-                        .background(
-                            color = MaterialTheme.colorScheme.tertiary,
-                        )
                         .padding(horizontal = 2.dp)
                 )
             }
