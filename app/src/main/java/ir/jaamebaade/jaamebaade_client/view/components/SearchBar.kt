@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,9 +46,9 @@ fun SearchBar(
     onSearchQueryChanged: (String) -> Unit,
     onSearchQueryIconClicked: (String) -> Unit,
 ) {
-    var query by remember { mutableStateOf("") }
+    var query by rememberSaveable { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
-    var selectedPoet by remember { mutableStateOf<Poet?>(null) }
+    var selectedPoetIndex by rememberSaveable { mutableStateOf<Int?>(null) }
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -101,14 +102,14 @@ fun SearchBar(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (selectedPoet == null) {
+                if (selectedPoetIndex == null) {
                     Text(
                         text = "همه",
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                     )
                 } else {
                     Text(
-                        text = selectedPoet!!.name,
+                        text = poets[selectedPoetIndex!!].name,
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                     )
                 }
@@ -127,17 +128,17 @@ fun SearchBar(
                     text = { Text("همه", style = MaterialTheme.typography.labelMedium) },
                     onClick = {
                         onSearchFilterChanged(null)
-                        selectedPoet = null
+                        selectedPoetIndex = null
                         onSearchQueryIconClicked(query)
                         expanded = false
                     })
-                poets.forEach { poet ->
+                poets.forEachIndexed { index, poet ->
                     HorizontalDivider()
                     DropdownMenuItem(
                         text = { Text(poet.name, style = MaterialTheme.typography.labelMedium) },
                         onClick = {
                             onSearchFilterChanged(poet)
-                            selectedPoet = poet
+                            selectedPoetIndex = index
                             onSearchQueryIconClicked(query)
                             expanded = false
                         })
