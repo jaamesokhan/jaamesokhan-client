@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -56,7 +58,7 @@ fun CommentsScreen(poemId: Int, modifier: Modifier) {
         TextField(
             value = commentText,
             onValueChange = { commentText = it },
-            label = { Text("یادداشت") },
+            label = { Text("یادداشت", style = MaterialTheme.typography.labelMedium) },
             modifier = Modifier
                 .fillMaxWidth(),
             trailingIcon = {
@@ -65,6 +67,7 @@ fun CommentsScreen(poemId: Int, modifier: Modifier) {
                     commentText = ""
                 }) {
                     Icon(
+                        modifier = Modifier.size(24.dp),
                         imageVector = Icons.AutoMirrored.Outlined.Send,
                         contentDescription = "ثبت",
                     )

@@ -30,7 +30,7 @@ fun BookmarkList(viewModel: FavoritesViewModel, navController: NavController) {
             )
         }
     } else {
-        LazyColumn {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(bookmarks) { bookmark ->
                 BookmarkItem(
                     poem = bookmark.poem,

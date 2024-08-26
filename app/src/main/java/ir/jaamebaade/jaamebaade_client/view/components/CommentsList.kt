@@ -31,7 +31,7 @@ fun CommentsList(viewModel: FavoritesViewModel, navController: NavController) {
             )
         }
     } else {
-        LazyColumn {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(comments) { commentInfo ->
                 CommentListItem(
                     comment = commentInfo.comment,

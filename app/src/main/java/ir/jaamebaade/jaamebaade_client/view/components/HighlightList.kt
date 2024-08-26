@@ -30,7 +30,7 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
             )
         }
     } else {
-        LazyColumn {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(highlights) { highlight ->
                 HighlightItem(
                     highlightInfo = highlight,

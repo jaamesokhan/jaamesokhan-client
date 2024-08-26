@@ -52,7 +52,7 @@ fun DownloadedPoet(poet: Poet, isSelected: Boolean, onLongClick: () -> Unit, onC
         )
         Text(
             text = poet.name,
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
         )
     }
