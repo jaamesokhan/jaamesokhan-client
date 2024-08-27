@@ -51,7 +51,6 @@ fun DownloadedPoetsScreen(
     if (fetchStatue == Status.SUCCESS && poets!!.isNotEmpty()) {
         Box(
             modifier = modifier
-                .padding(4.dp)
                 .fillMaxSize()
         ) {
             LazyVerticalGrid(columns = GridCells.Fixed(3)) {
