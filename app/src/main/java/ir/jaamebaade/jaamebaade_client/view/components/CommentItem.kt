@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,23 +32,37 @@ fun CommentItem(comment: Comment, onDeleteClicked: () -> Unit) {
     ) {
         Column(
             modifier = Modifier
-                .padding(8.dp)
                 .fillMaxWidth()
         ) {
-            Text(
-                text = "تاریخ" + ": " +
-                        Date(comment.createdAt).convertToJalali().toLocalFormat(),
-                style = MaterialTheme.typography.labelMedium
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(8.dp),
+                    text = "تاریخ" + ": " +
+                            Date(comment.createdAt).convertToJalali().toLocalFormat(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                )
+            }
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(modifier = Modifier.weight(0.9f)) {
-                    Text(text = comment.text)
+                    Text(text = comment.text, style = MaterialTheme.typography.bodyMedium)
                 }
-                Box(modifier = Modifier.padding(8.dp).weight(0.1f)) {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .weight(0.1f)
+                ) {
                     IconButton(
                         onClick = {
                             onDeleteClicked()

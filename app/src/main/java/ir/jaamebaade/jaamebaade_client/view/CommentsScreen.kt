@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -41,8 +40,7 @@ fun CommentsScreen(poemId: Int, modifier: Modifier) {
 
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(8.dp),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Bottom
     ) {
         LazyColumn(

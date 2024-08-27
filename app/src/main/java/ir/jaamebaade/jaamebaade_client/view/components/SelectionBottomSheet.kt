@@ -86,7 +86,7 @@ fun SelectionBottomSheet(
             }
             Row(modifier = Modifier.padding(bottom = 8.dp)) {
                 Text(
-                    text = " معنی:"
+                    text = "معنی: "
                 )
                 Text(
                     text = verse.text.substring(startIndex, endIndex),
