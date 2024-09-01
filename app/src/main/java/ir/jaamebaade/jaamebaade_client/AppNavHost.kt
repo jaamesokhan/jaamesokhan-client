@@ -1,5 +1,7 @@
 package ir.jaamebaade.jaamebaade_client
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -34,13 +37,13 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import ir.jaamebaade.jaamebaade_client.utility.animatedComposable
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
-import ir.jaamebaade.jaamebaade_client.view.AccountScreen
 import ir.jaamebaade.jaamebaade_client.view.ChangeFontScreen
 import ir.jaamebaade.jaamebaade_client.view.ChangeThemeScreen
 import ir.jaamebaade.jaamebaade_client.view.CommentsScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadablePoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadedPoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.FavoritesScreen
+import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
 import ir.jaamebaade.jaamebaade_client.view.PoetCategoryPoemScreen
 import ir.jaamebaade.jaamebaade_client.view.SearchScreen
 import ir.jaamebaade.jaamebaade_client.view.SettingsScreen
@@ -184,6 +187,10 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                         val verseId = backStackEntry.arguments?.getInt("verseId")
                             ?.let { if (it == -1) null else it }
 
+                        Log.d("err", "$poetId/$poemId/$verseId")
+                        savePoemToHistory( LocalContext.current, "${AppRoutes.POEM}/${poetId}/${poemId}/${verseId}")
+
+
                         VerseScreen(
                             navController,
                             poemId = poemId!!,
@@ -224,11 +231,23 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                             modifier = Modifier.padding(innerPadding),
                         )
                     }
-                    dialog(AppRoutes.ACCOUNT_SCREEN.toString()) {
-                        AccountScreen(navController = navController)
+                    animatedComposable(AppRoutes.ABOUT_US_SCREEN.toString()) {
+                        AboutUsScreen(
+                            modifier = Modifier.padding(innerPadding),
+                        )
+                    }
+                    dialog(AppRoutes.HISTORY.toString()) {
+                        HistoryScreen(navController)
                     }
                 }
             }
         }
     }
+}
+fun savePoemToHistory(context: Context, path: String) {
+    val sharedPreferences = context.getSharedPreferences("poem_history", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    val poemId = System.currentTimeMillis().toString() // using timestamp as unique id
+    editor.putString(poemId, path)
+    editor.apply()
 }
