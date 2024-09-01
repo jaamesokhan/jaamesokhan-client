@@ -12,7 +12,8 @@ enum class AppRoutes(private val route: String) {
     ACCOUNT_SCREEN("accountScreen"),
     COMMENTS("comments"),
     CHANGE_THEME_SCREEN("changeThemeScreen"),
-    ABOUT_US_SCREEN("aboutUsScreen")
+    ABOUT_US_SCREEN("aboutUsScreen"),
+    HISTORY("history")
     ;
 
     companion object {
