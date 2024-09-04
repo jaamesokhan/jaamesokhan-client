@@ -46,6 +46,7 @@ interface HighlightDao {
             JOIN poems p ON v.poem_id = p.id
             JOIN categories c ON p.category_id = c.id
             JOIN poets pt ON c.poet_id = pt.id
+            ORDER BY hg.verse_id
         """
     )
     fun getHighlightsWithVersePoemPoet(): List<HighlightVersePoemPoet>

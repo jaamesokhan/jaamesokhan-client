@@ -1,5 +1,8 @@
 package ir.jaamebaade.jaamebaade_client.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -9,8 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.Comment
 import ir.jaamebaade.jaamebaade_client.repository.CommentRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -19,8 +20,8 @@ class CommentViewModel @AssistedInject constructor(
     @Assisted("poemId") private val poemId: Int,
     private val commentRepository: CommentRepository,
 ) : ViewModel() {
-    private val _comments = MutableStateFlow<List<Comment>>(emptyList())
-    val comments: StateFlow<List<Comment>> = _comments
+    var comments by mutableStateOf<List<Comment>>(emptyList())
+        private set
 
     init {
         getCommentsForPoem()
@@ -54,7 +55,9 @@ class CommentViewModel @AssistedInject constructor(
             comment.also {
                 it.id = commentId.toInt()
             }
-            _comments.value += comment
+            comments = comments.toMutableList().also {
+                it.add(comment)
+            }
         }
         return comment
     }
@@ -64,14 +67,16 @@ class CommentViewModel @AssistedInject constructor(
     ): Comment {
         withContext(Dispatchers.IO) {
             commentRepository.deleteComment(comment)
-            _comments.value -= comment
+            comments = comments.toMutableList().also {
+                it.remove(comment)
+            }
         }
         return comment
     }
 
     private fun getCommentsForPoem() {
         viewModelScope.launch {
-            _comments.value = getCommentsForPoemFromRepository()
+            comments = getCommentsForPoemFromRepository()
         }
     }
 

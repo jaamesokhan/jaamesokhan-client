@@ -9,20 +9,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 
 @Composable
-fun PoemTracePath(versePoemCategoriesPoet: VersePoemCategoriesPoet) {
+fun CardHeader(modifier: Modifier  = Modifier, text: String) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
+    modifier = modifier
+    .fillMaxWidth()
+    .background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
         Text(
             modifier = Modifier.padding(8.dp),
-            text = "${
-                versePoemCategoriesPoet.categories.joinToString(separator = " > ") { it.text }
-            } > ${versePoemCategoriesPoet.poem.title}",
+            text = text,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             style = MaterialTheme.typography.labelSmall,
         )

@@ -24,9 +24,9 @@ import ir.jaamebaade.jaamebaade_client.utility.toLocalFormat
 import java.util.Date
 
 @Composable
-fun CommentItem(comment: Comment, onDeleteClicked: () -> Unit) {
+fun CommentItem(modifier: Modifier = Modifier, comment: Comment, onDeleteClicked: () -> Unit) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {

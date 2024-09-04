@@ -9,3 +9,7 @@ data class VersePoemCategoriesPoet(
     val categories: List<Category>,
     val poet: Poet
 )
+
+fun VersePoemCategoriesPoet.toPathHeaderText() = "${
+    categories.joinToString(separator = " > ") { it.text }
+} > ${poem.title}"

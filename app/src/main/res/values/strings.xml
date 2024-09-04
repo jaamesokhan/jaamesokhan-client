@@ -31,12 +31,14 @@
 
     <!--  Messages  -->
     <string name="NO_POET_DOWNLOADED">هیچ شاعری دانلود نشده است!</string>
-    <string name="FONT_SIZE_TEXT">اندازه فونت:</string>
+    <string name="NO_HIGHLIGHTS_FOUND">متنی را هایلایت نکرده‌اید!</string>
 
     <!--  Titles  -->
     <string name="FONT_FAMILY_TEXT">فونت برنامه:</string>
+    <string name="FONT_SIZE_TEXT">اندازه فونت:</string>
     <string name="BOOKMARKS">علاقه‌مندی‌ها</string>
     <string name="HIGHLIGHTS">هایلایت‌ها</string>
     <string name="COMMENTS">یادداشت‌ها</string>
     <string name="VERSE_NUMBER">شماره بیت</string>
+    <string name="MERGE_HIGHLIGHTS">ادغام هایلایت‌ها</string>
 </resources>

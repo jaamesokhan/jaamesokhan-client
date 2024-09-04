@@ -1,5 +1,8 @@
 package ir.jaamebaade.jaamebaade_client.view
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,12 +18,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.jaamebaade.jaamebaade_client.view.components.CommentItem
@@ -36,7 +39,7 @@ fun CommentsScreen(poemId: Int, modifier: Modifier) {
         }
 
     var commentText by remember { mutableStateOf("") }
-    val comments by viewModel.comments.collectAsState()
+    val comments = viewModel.comments
 
     Column(
         modifier = modifier
@@ -46,10 +49,24 @@ fun CommentsScreen(poemId: Int, modifier: Modifier) {
         LazyColumn(
             verticalArrangement = Arrangement.Bottom,
         ) {
-            items(comments) { comment ->
+            items(items = comments, key = { it.id }) { comment ->
+                var lapVisible by remember { mutableStateOf(false) }
+                val animatedLapAlpha by animateFloatAsState(
+                    targetValue = if (lapVisible) 1f else 0f,
+                    label = "Lap alpha",
+                    animationSpec = tween(
+                        durationMillis = 250,
+                        easing = LinearEasing,
+                    )
+                )
                 CommentItem(
+                    modifier = Modifier.graphicsLayer {
+                        lapVisible = true
+                        alpha = animatedLapAlpha
+                    },
                     comment = comment,
-                    onDeleteClicked = { viewModel.deleteComment(comment) })
+                    onDeleteClicked = { viewModel.deleteComment(comment) }
+                )
             }
         }
 

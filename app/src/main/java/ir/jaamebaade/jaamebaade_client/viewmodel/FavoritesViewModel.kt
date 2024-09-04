@@ -16,6 +16,7 @@ import ir.jaamebaade.jaamebaade_client.repository.BookmarkRepository
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.CommentRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
+import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,6 +28,7 @@ class FavoritesViewModel @Inject constructor(
     private val highlightRepository: HighlightRepository,
     private val commentRepository: CommentRepository,
     private val categoryRepository: CategoryRepository,
+    private val sharedPrefManager: SharedPrefManager,
 ) : ViewModel() {
     var bookmarks by mutableStateOf<List<BookmarkPoemCategoriesPoet>>(emptyList())
         private set
@@ -50,6 +52,13 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
+    fun deleteHighlight(highlight: Highlight) {
+        viewModelScope.launch {
+            highlights = highlights.toMutableList().filterNot { it.highlight.id == highlight.id }
+            deleteHighlightFromRepository(highlight)
+        }
+    }
+
     fun deleteComment(commentPoemCategoriesPoet: CommentPoemCategoriesPoet) {
         viewModelScope.launch {
             comments = comments.toMutableList().also {
@@ -57,6 +66,14 @@ class FavoritesViewModel @Inject constructor(
             }
             deleteCommentFromRepository(commentPoemCategoriesPoet.comment)
         }
+    }
+
+    fun saveMergeHighlightsToggleState(mergeHighlights: Boolean) {
+        sharedPrefManager.setHighlightMergeToggleState(mergeHighlights)
+    }
+
+    fun getMergeHighlightsToggleState(): Boolean {
+        return sharedPrefManager.getHighlightMergeToggleState()
     }
 
     private suspend fun deleteHighlightFromRepository(highlight: Highlight) {
