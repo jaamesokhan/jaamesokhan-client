@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,9 +10,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.outlined.Merge
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,11 +29,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
+import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.HighlightVersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.MergedHighlight
+import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.toMergedHighlight
+import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
 import ir.jaamebaade.jaamebaade_client.viewmodel.FavoritesViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
     val highlights = viewModel.highlights
@@ -60,32 +64,34 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
                 .fillMaxSize(),
         ) {
             Text(
-                text = "متنی را هایلایت نکرده‌اید!",
+                text = stringResource(R.string.NO_HIGHLIGHTS_FOUND),
                 style = MaterialTheme.typography.headlineMedium,
             )
         }
     } else {
         Column {
-            Row {
-                if (mergeHighlights) {
-                    Button(onClick = { mergeHighlights = !mergeHighlights }) {
-                        Text(text = stringResource(R.string.MERGE_HIGHLIGHTS))
-                    }
-                } else {
-                    OutlinedButton(onClick = { mergeHighlights = !mergeHighlights }) {
-                        Text(text = stringResource(R.string.MERGE_HIGHLIGHTS))
-                    }
-                }
+            Row(modifier = Modifier.padding(4.dp)) {
+                CustomToggleButton(
+                    icon = Icons.Outlined.Merge,
+                    iconDescription = stringResource(R.string.MERGE_HIGHLIGHTS),
+                    toggleState = mergeHighlights,
+                    onToggleChange = { mergeHighlights = !mergeHighlights })
             }
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 if (mergeHighlights) {
-                    items(newHighlights) { mergedHighlight ->
+                    items(
+                        items = newHighlights,
+                        key = { it.highlights.first().id }) { mergedHighlight ->
                         val bodyText = createMergedHighlightItemBody(
                             mergedHighlight,
                             MaterialTheme.colorScheme.tertiary
                         )
                         CardItem(
-                            headerText = "${mergedHighlight.categories.joinToString(" > ") { it.text }} > ${mergedHighlight.poem.title}",
+                            modifier = Modifier.animateItemPlacement(),
+                            headerText = createHeaderText(
+                                mergedHighlight.categories,
+                                mergedHighlight.poem
+                            ),
                             bodyText = bodyText,
                             icon = Icons.Outlined.Delete,
                             onClick = {
@@ -101,13 +107,14 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
                         )
                     }
                 } else {
-                    items(highlights) { highlight ->
+                    items(items = highlights, key = { it.highlight.id }) { highlight ->
                         val bodyText = createNormalHighlightItemBody(
                             highlight,
                             MaterialTheme.colorScheme.tertiary
                         )
                         CardItem(
-                            headerText = "${highlight.versePath.categories.joinToString(" > ") { it.text }} > ${highlight.versePath.poem.title}",
+                            modifier = Modifier.animateItemPlacement(),
+                            headerText = highlight.versePath.toPathHeaderText(),
                             bodyText = bodyText,
                             icon = Icons.Outlined.Delete,
                             onClick = {
@@ -121,6 +128,10 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
         }
     }
 }
+
+
+private fun createHeaderText(categories: List<Category>, poem: Poem) =
+    "${categories.joinToString(" > ") { it.text }} > ${poem.title}"
 
 private fun createNormalHighlightItemBody(
     highlightInfo: HighlightVersePoemCategoriesPoet,

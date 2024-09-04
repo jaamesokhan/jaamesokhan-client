@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,7 @@ import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
 import ir.jaamebaade.jaamebaade_client.viewmodel.FavoritesViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CommentsList(viewModel: FavoritesViewModel, navController: NavController) {
     val comments = viewModel.comments
@@ -37,8 +39,9 @@ fun CommentsList(viewModel: FavoritesViewModel, navController: NavController) {
         }
     } else {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(comments) { commentInfo ->
+            items(items = comments, key = { it.comment.id }) { commentInfo ->
                 CardItem(
+                    modifier = Modifier.animateItemPlacement(),
                     headerText = commentInfo.path.toPathHeaderText(),
                     bodyText = AnnotatedString(commentInfo.comment.text),
                     icon = Icons.Outlined.Delete,
