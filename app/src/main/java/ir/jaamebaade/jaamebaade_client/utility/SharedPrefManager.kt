@@ -72,4 +72,14 @@ class SharedPrefManager(
             } ?: AppThemeType.SYSTEM_AUTO
         return savedTheme
     }
+
+    fun setHighlightMergeToggleState(state: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("highlightMergeToggleState", state)
+        editor.apply()
+    }
+
+    fun getHighlightMergeToggleState(): Boolean {
+        return sharedPreferences.getBoolean("highlightMergeToggleState", false)
+    }
 }

@@ -41,7 +41,7 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.FavoritesViewModel
 @Composable
 fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
     val highlights = viewModel.highlights
-    var mergeHighlights by rememberSaveable { mutableStateOf(false) }
+    var mergeHighlights by rememberSaveable { mutableStateOf(viewModel.getMergeHighlightsToggleState()) }
 
     val newHighlights = mutableListOf(highlights[0].toMergedHighlight())
     if (mergeHighlights) {
@@ -75,7 +75,10 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
                     icon = Icons.Outlined.Merge,
                     iconDescription = stringResource(R.string.MERGE_HIGHLIGHTS),
                     toggleState = mergeHighlights,
-                    onToggleChange = { mergeHighlights = !mergeHighlights })
+                    onToggleChange = {
+                        mergeHighlights = !mergeHighlights
+                        viewModel.saveMergeHighlightsToggleState(mergeHighlights)
+                    })
             }
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 if (mergeHighlights) {
