@@ -39,4 +39,5 @@
     <string name="HIGHLIGHTS">هایلایت‌ها</string>
     <string name="COMMENTS">یادداشت‌ها</string>
     <string name="VERSE_NUMBER">شماره بیت</string>
+    <string name="MERGE_HIGHLIGHTS">ادغام هایلایت‌ها</string>
 </resources>

@@ -50,6 +50,13 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
+    fun deleteHighlight(highlight: Highlight) {
+        viewModelScope.launch {
+            highlights = highlights.toMutableList().filterNot { it.highlight.id == highlight.id }
+            deleteHighlightFromRepository(highlight)
+        }
+    }
+
     fun deleteComment(commentPoemCategoriesPoet: CommentPoemCategoriesPoet) {
         viewModelScope.launch {
             comments = comments.toMutableList().also {
