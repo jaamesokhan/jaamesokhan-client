@@ -16,11 +16,13 @@ import ir.jaamebaade.jaamebaade_client.api.AudioApiClient
 import ir.jaamebaade.jaamebaade_client.api.SyncAudioClient
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
 import ir.jaamebaade.jaamebaade_client.model.Highlight
+import ir.jaamebaade.jaamebaade_client.model.HistoryItem
 import ir.jaamebaade.jaamebaade_client.model.Pair
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 import ir.jaamebaade.jaamebaade_client.repository.BookmarkRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
+import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
@@ -42,7 +44,7 @@ class VersesViewModel @AssistedInject constructor(
     private val bookmarkRepository: BookmarkRepository,
     private val audioApiClient: AudioApiClient,
     private val syncAudioClient: SyncAudioClient,
-    private val sharedPrefManager: SharedPrefManager,
+    private val historyRepository: HistoryRepository,
     ) : ViewModel() {
 
     private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
@@ -209,13 +211,21 @@ class VersesViewModel @AssistedInject constructor(
         }
     }
 
-    fun onPoemVisited(poemId: Int, poetId: Int) {
+    suspend fun onPoemVisited(poemId: Int, poetId: Int, verseId: Int?) {
         // Check if the poem being visited is different from the last visited one
-        if (lastVisitedPoemId != poemId) {
-            // Save the poem visit to history
-            sharedPrefManager.savePoemToHistory(poetId, poemId)
-            lastVisitedPoemId = poemId
-        }
+       withContext(Dispatchers.IO) {
+           if (lastVisitedPoemId != poemId) {
+               // Save the poem visit to history
+               val historyItem = HistoryItem(
+                   poemId = poemId,
+                   poetId = poetId,
+                   verseId = verseId,
+                   timestamp = System.currentTimeMillis()
+               )
+               historyRepository.insertHistoryItem(historyItem)
+               lastVisitedPoemId = poemId
+           }
+       }
     }
 
 

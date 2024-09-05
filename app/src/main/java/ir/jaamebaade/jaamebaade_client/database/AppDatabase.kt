@@ -6,6 +6,7 @@ import ir.jaamebaade.jaamebaade_client.dao.BookmarkDao
 import ir.jaamebaade.jaamebaade_client.dao.CategoryDao
 import ir.jaamebaade.jaamebaade_client.dao.CommentDao
 import ir.jaamebaade.jaamebaade_client.dao.HighlightDao
+import ir.jaamebaade.jaamebaade_client.dao.HistoryItemDao
 import ir.jaamebaade.jaamebaade_client.dao.PoemDao
 import ir.jaamebaade.jaamebaade_client.dao.PoetDao
 import ir.jaamebaade.jaamebaade_client.dao.VerseDao
@@ -13,13 +14,14 @@ import ir.jaamebaade.jaamebaade_client.model.Bookmark
 import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.Comment
 import ir.jaamebaade.jaamebaade_client.model.Highlight
+import ir.jaamebaade.jaamebaade_client.model.HistoryItem
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Verse
 
 @Database(
     entities = [Poet::class, Category::class, Poem::class,
-        Verse::class, Highlight::class, Bookmark::class, Comment::class],
+        Verse::class, Highlight::class, Bookmark::class, Comment::class, HistoryItem::class],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -30,4 +32,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun highlightDao(): HighlightDao
     abstract fun bookmarkDao(): BookmarkDao
     abstract fun commentDao(): CommentDao
+    abstract fun historyDao(): HistoryItemDao
 }

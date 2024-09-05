@@ -23,6 +23,7 @@ fun CardItem(
     modifier: Modifier = Modifier,
     headerText: String? = null,
     bodyText: AnnotatedString,
+    footerText: String? = null,
     icon: ImageVector? = null,
     iconDescription: String? = null,
     onClick: () -> Unit,
@@ -71,6 +72,11 @@ fun CardItem(
                     Icon(imageVector = icon, contentDescription = iconDescription)
                 }
             }
+        }
+        if (footerText != null) {
+            CardFooter(
+                text = footerText
+            )
         }
     }
 }
