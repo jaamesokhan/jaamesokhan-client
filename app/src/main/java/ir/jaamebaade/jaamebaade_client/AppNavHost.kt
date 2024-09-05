@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
@@ -33,6 +34,7 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import ir.jaamebaade.jaamebaade_client.utility.animatedComposable
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
+import ir.jaamebaade.jaamebaade_client.view.AccountScreen
 import ir.jaamebaade.jaamebaade_client.view.ChangeFontScreen
 import ir.jaamebaade.jaamebaade_client.view.ChangeThemeScreen
 import ir.jaamebaade.jaamebaade_client.view.CommentsScreen
@@ -183,8 +185,6 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                         val verseId = backStackEntry.arguments?.getInt("verseId")
                             ?.let { if (it == -1) null else it }
 
-
-
                         VerseScreen(
                             navController,
                             poemId = poemId!!,
@@ -225,10 +225,8 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                             modifier = Modifier.padding(innerPadding),
                         )
                     }
-                    animatedComposable(AppRoutes.ABOUT_US_SCREEN.toString()) {
-                        AboutUsScreen(
-                            modifier = Modifier.padding(innerPadding),
-                        )
+                    dialog(AppRoutes.ACCOUNT_SCREEN.toString()) {
+                        AccountScreen(navController = navController)
                     }
                     animatedComposable(AppRoutes.HISTORY.toString()) {
                         HistoryScreen(Modifier.padding(innerPadding), navController)
