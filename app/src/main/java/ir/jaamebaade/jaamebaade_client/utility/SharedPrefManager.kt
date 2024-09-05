@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
 import dagger.hilt.android.qualifiers.ApplicationContext
+import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 
 class SharedPrefManager(
     @ApplicationContext private val context: Context
@@ -81,5 +82,25 @@ class SharedPrefManager(
 
     fun getHighlightMergeToggleState(): Boolean {
         return sharedPreferences.getBoolean("highlightMergeToggleState", false)
+    }
+    fun savePoemToHistory(poetId: Int, poemId: Int) {
+        val pathToSave = "${AppRoutes.POEM}/${poetId}/${poemId}/-1"
+        val sharedPreferences = context.getSharedPreferences("poem_history", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val timeId = System.currentTimeMillis().toString() // using timestamp as unique id
+        var keyToRemove: String? = null
+        sharedPreferences.all.forEach { entry ->
+            val path = entry.value as String
+            if (path == pathToSave) {
+                keyToRemove = entry.key
+            }
+        }
+
+        // If a matching entry exists, remove it
+        keyToRemove?.let {
+            sharedPreferences.edit().remove(it).apply()
+        }
+        editor.putString(timeId, pathToSave)
+        editor.apply()
     }
 }

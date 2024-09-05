@@ -187,8 +187,6 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                         val verseId = backStackEntry.arguments?.getInt("verseId")
                             ?.let { if (it == -1) null else it }
 
-                        Log.d("err", "$poetId/$poemId/$verseId")
-                        savePoemToHistory( LocalContext.current, "${AppRoutes.POEM}/${poetId}/${poemId}/${verseId}")
 
 
                         VerseScreen(
@@ -236,18 +234,11 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                             modifier = Modifier.padding(innerPadding),
                         )
                     }
-                    dialog(AppRoutes.HISTORY.toString()) {
-                        HistoryScreen(navController)
+                    animatedComposable(AppRoutes.HISTORY.toString()) {
+                        HistoryScreen(Modifier.padding(innerPadding), navController)
                     }
                 }
             }
         }
     }
-}
-fun savePoemToHistory(context: Context, path: String) {
-    val sharedPreferences = context.getSharedPreferences("poem_history", Context.MODE_PRIVATE)
-    val editor = sharedPreferences.edit()
-    val poemId = System.currentTimeMillis().toString() // using timestamp as unique id
-    editor.putString(poemId, path)
-    editor.apply()
 }

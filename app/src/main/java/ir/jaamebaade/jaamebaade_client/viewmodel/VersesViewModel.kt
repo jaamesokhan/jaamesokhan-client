@@ -24,6 +24,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
+import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,7 +43,8 @@ class VersesViewModel @AssistedInject constructor(
     private val bookmarkRepository: BookmarkRepository,
     private val audioApiClient: AudioApiClient,
     private val syncAudioClient: SyncAudioClient,
-) : ViewModel() {
+    private val sharedPrefManager: SharedPrefManager,
+    ) : ViewModel() {
 
     private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
     val verses: StateFlow<List<VerseWithHighlights>> = _verses
@@ -57,6 +60,9 @@ class VersesViewModel @AssistedInject constructor(
 
     var syncInfoFetchStatus by mutableStateOf(Status.NOT_STARTED)
         private set
+
+
+    private var lastVisitedPoemId: Int? = null
 
     fun share(verses: List<VerseWithHighlights>, context: Context) {
         val poemText = verses.joinToString("\n") { it.verse.text }
@@ -201,6 +207,15 @@ class VersesViewModel @AssistedInject constructor(
                     syncInfoFetchStatus = Status.FAILED
                     onFailure()
                 })
+        }
+    }
+
+    fun onPoemVisited(poemId: Int, poetId: Int) {
+        // Check if the poem being visited is different from the last visited one
+        if (lastVisitedPoemId != poemId) {
+            // Save the poem visit to history
+            sharedPrefManager.savePoemToHistory(poetId, poemId)
+            lastVisitedPoemId = poemId
         }
     }
 
