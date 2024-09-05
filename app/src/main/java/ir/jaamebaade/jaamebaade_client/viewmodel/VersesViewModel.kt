@@ -210,14 +210,13 @@ class VersesViewModel @AssistedInject constructor(
         }
     }
 
-    suspend fun onPoemVisited(poemId: Int, poetId: Int) {
+    suspend fun onPoemVisited(poemId: Int) {
         // Check if the poem being visited is different from the last visited one
         withContext(Dispatchers.IO) {
             if (lastVisitedPoemId != poemId) {
                 // Save the poem visit to history
                 val historyRecord = HistoryRecord(
                     poemId = poemId,
-                    poetId = poetId,
                     timestamp = System.currentTimeMillis()
                 )
                 historyRepository.insertHistoryItem(historyRecord)

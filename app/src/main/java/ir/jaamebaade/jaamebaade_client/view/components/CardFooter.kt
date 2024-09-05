@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,15 +16,14 @@ fun CardFooter(modifier: Modifier = Modifier, text: String) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.surfaceVariant)
+            .background(color = MaterialTheme.colorScheme.background.copy(alpha=0.4f))
     ) {
-        HorizontalDivider()
         Text(
             modifier = Modifier
-                .padding(2.dp)
+                .padding(horizontal = 8.dp, vertical = 2.dp)
                 .align(Alignment.CenterEnd),
             text = text,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.labelSmall,
         )
     }

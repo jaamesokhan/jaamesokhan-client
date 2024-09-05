@@ -9,12 +9,6 @@ import androidx.room.PrimaryKey
     tableName = "history",
     foreignKeys = [
         ForeignKey(
-            entity = Poet::class,
-            parentColumns = ["id"],
-            childColumns = ["poet_id"],
-            onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
             entity = Poem::class,
             parentColumns = ["id"],
             childColumns = ["poem_id"],
@@ -24,7 +18,6 @@ import androidx.room.PrimaryKey
 )
 data class HistoryRecord(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "poet_id") val poetId: Int,
     @ColumnInfo(name = "poem_id") val poemId: Int,
     val timestamp: Long,
 )
