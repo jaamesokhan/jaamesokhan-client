@@ -26,7 +26,6 @@ import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemHistoryViewModel
-import androidx.compose.runtime.collectAsState
 
 @Composable
 fun HistoryScreen(modifier: Modifier, navController: NavController, poemHistoryViewModel: PoemHistoryViewModel = hiltViewModel()) {
@@ -35,7 +34,7 @@ fun HistoryScreen(modifier: Modifier, navController: NavController, poemHistoryV
     if (poemHistory.isEmpty()) {
         EmptyHistoryView(modifier)
     } else {
-        PoemHistoryList(poemHistoryViewModel, navController, poemHistory, modifier)
+        PoemHistoryList(navController, poemHistory, modifier)
     }
 
 }
@@ -51,7 +50,11 @@ fun EmptyHistoryView(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun PoemHistoryList(poemHistoryViewModel: PoemHistoryViewModel,navController: NavController, poemHistory: List<PoemWithPoet>, modifier: Modifier = Modifier) {
+fun PoemHistoryList(
+    navController: NavController,
+    poemHistory: List<PoemWithPoet>,
+    modifier: Modifier = Modifier
+) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()

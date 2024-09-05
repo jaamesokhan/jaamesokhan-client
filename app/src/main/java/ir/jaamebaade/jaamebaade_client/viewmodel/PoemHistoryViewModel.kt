@@ -2,7 +2,6 @@ package ir.jaamebaade.jaamebaade_client.viewmodel
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,10 +14,8 @@ import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
+
 @HiltViewModel
 class PoemHistoryViewModel @Inject constructor(
     @ApplicationContext context: Context,
@@ -38,7 +35,7 @@ class PoemHistoryViewModel @Inject constructor(
     }
 
     // Fetch PoemWithPoet from the repository
-    private suspend fun fetchPoemWithPoet(poetId: String, poemId: String): PoemWithPoet? {
+    private suspend fun fetchPoemWithPoet(poemId: String): PoemWithPoet? {
         return withContext(Dispatchers.IO) {
             try {
                 poemRepository.getPoemWithPoet(poemId.toInt())
@@ -57,12 +54,12 @@ class PoemHistoryViewModel @Inject constructor(
                 val path = entry.value as String
                 val poemDetails = path.split("/")
 
-                val poetId = poemDetails.getOrNull(1) ?: ""
+                poemDetails.getOrNull(1) ?: ""
                 val poemId = poemDetails.getOrNull(2) ?: ""
-                val verseId = poemDetails.getOrNull(3)?.toIntOrNull()
+                poemDetails.getOrNull(3)?.toIntOrNull()
 
                 // Fetch the PoemWithPoet object using the parsed poemId
-                val poemWithPoet = fetchPoemWithPoet(poetId, poemId)
+                val poemWithPoet = fetchPoemWithPoet(poemId)
 
                 poemWithPoet?.let {
                     timestamp?.let {
@@ -79,9 +76,4 @@ class PoemHistoryViewModel @Inject constructor(
         }
     }
 
-    // Optional: Function to clear the history from SharedPreferences
-    fun clearPoemHistory() {
-        sharedPreferences.edit().clear().apply()
-        poemHistory = emptyList()
-    }
 }
