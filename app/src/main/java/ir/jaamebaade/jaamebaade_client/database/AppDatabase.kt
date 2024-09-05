@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.database
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import ir.jaamebaade.jaamebaade_client.dao.BookmarkDao
@@ -23,7 +24,10 @@ import ir.jaamebaade.jaamebaade_client.model.Verse
     entities = [Poet::class, Category::class, Poem::class,
         Verse::class, Highlight::class, Bookmark::class, Comment::class,
         HistoryRecord::class],
-    version = 2
+    version = 2,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ]
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun poetDao(): PoetDao
