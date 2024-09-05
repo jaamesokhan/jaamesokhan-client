@@ -30,6 +30,9 @@ class TopBarViewModel @Inject constructor(
     var showShuffleIcon by mutableStateOf(false)
         private set
 
+    var showHistoryIcon by mutableStateOf(false)
+        private set
+
     fun updateBreadCrumbs(path: NavBackStackEntry?) {
         viewModelScope.launch {
             breadCrumbs = createPathBreadCrumbs(path!!)
@@ -40,6 +43,14 @@ class TopBarViewModel @Inject constructor(
         val path = getPath(navStack)
         showShuffleIcon = when (path) {
             AppRoutes.DOWNLOADED_POETS_SCREEN, AppRoutes.POET_CATEGORY_SCREEN -> true
+            else -> false
+        }
+    }
+
+    fun shouldShowHistory(navStack: NavBackStackEntry?) {
+        val path = getPath(navStack)
+        showHistoryIcon = when (path) {
+            AppRoutes.DOWNLOADED_POETS_SCREEN -> true
             else -> false
         }
     }
@@ -89,6 +100,7 @@ class TopBarViewModel @Inject constructor(
             AppRoutes.ACCOUNT_SCREEN -> return "حساب کاربری"
             AppRoutes.CHANGE_THEME_SCREEN -> return "تغییر پوسته"
             AppRoutes.ABOUT_US_SCREEN -> return "درباره ما"
+            AppRoutes.HISTORY -> return "تاریخچه"
         }
     }
 

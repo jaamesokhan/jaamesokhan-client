@@ -8,22 +8,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.api.AudioApiClient
 import ir.jaamebaade.jaamebaade_client.api.SyncAudioClient
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
 import ir.jaamebaade.jaamebaade_client.model.Highlight
+import ir.jaamebaade.jaamebaade_client.model.HistoryRecord
 import ir.jaamebaade.jaamebaade_client.model.Pair
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 import ir.jaamebaade.jaamebaade_client.repository.BookmarkRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
+import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,6 +43,7 @@ class VersesViewModel @AssistedInject constructor(
     private val bookmarkRepository: BookmarkRepository,
     private val audioApiClient: AudioApiClient,
     private val syncAudioClient: SyncAudioClient,
+    private val historyRepository: HistoryRepository,
 ) : ViewModel() {
 
     private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
@@ -57,6 +60,9 @@ class VersesViewModel @AssistedInject constructor(
 
     var syncInfoFetchStatus by mutableStateOf(Status.NOT_STARTED)
         private set
+
+
+    private var lastVisitedPoemId: Int? = null
 
     fun share(verses: List<VerseWithHighlights>, context: Context) {
         val poemText = verses.joinToString("\n") { it.verse.text }
@@ -201,6 +207,21 @@ class VersesViewModel @AssistedInject constructor(
                     syncInfoFetchStatus = Status.FAILED
                     onFailure()
                 })
+        }
+    }
+
+    suspend fun onPoemVisited(poemId: Int) {
+        // Check if the poem being visited is different from the last visited one
+        withContext(Dispatchers.IO) {
+            if (lastVisitedPoemId != poemId) {
+                // Save the poem visit to history
+                val historyRecord = HistoryRecord(
+                    poemId = poemId,
+                    timestamp = System.currentTimeMillis()
+                )
+                historyRepository.insertHistoryItem(historyRecord)
+                lastVisitedPoemId = poemId
+            }
         }
     }
 

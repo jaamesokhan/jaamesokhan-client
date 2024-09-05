@@ -2,9 +2,9 @@ package ir.jaamebaade.jaamebaade_client.utility
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
-import dagger.hilt.android.qualifiers.ApplicationContext
 
 class SharedPrefManager(
     @ApplicationContext private val context: Context

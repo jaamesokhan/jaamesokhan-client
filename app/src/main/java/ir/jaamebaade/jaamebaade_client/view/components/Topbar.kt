@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -64,14 +65,15 @@ fun TopBar(
     LaunchedEffect(key1 = backStackEntry) {
         viewModel.updateBreadCrumbs(backStackEntry)
         viewModel.shouldShowShuffle(backStackEntry)
+        viewModel.shouldShowHistory(backStackEntry)
     }
 
     val breadCrumbs = viewModel.breadCrumbs
     val showShuffle = viewModel.showShuffleIcon
-
+    val showHistory = viewModel.showHistoryIcon
     val coroutineScope = rememberCoroutineScope()
 
-    BackHandler (enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
+    BackHandler(enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
         onBackButtonClicked(backStackEntry, navController)
     }
     Column {
@@ -122,29 +124,39 @@ fun TopBar(
                             maxLines = 1
                         )
                     }
-                    if (showShuffle) {
-                        IconButton(onClick = {
-                            coroutineScope.launch {
-                                val poemWithPoet = viewModel.findShuffledPoem(backStackEntry)
-                                if (poemWithPoet == null) {
-                                    Toast.makeText(
-                                        context,
-                                        context.getString(R.string.NO_POET_DOWNLOADED),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                } else {
-                                    navController.navigate(
-                                        "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
-                                    )
+                    Row() {
+                        if (showShuffle) {
+                            IconButton(onClick = {
+                                coroutineScope.launch {
+                                    val poemWithPoet = viewModel.findShuffledPoem(backStackEntry)
+                                    if (poemWithPoet == null) {
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.NO_POET_DOWNLOADED),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        navController.navigate(
+                                            "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
+                                        )
+                                    }
                                 }
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Shuffle,
+                                    contentDescription = "shuffle",
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                )
                             }
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.Shuffle,
-                                contentDescription = "shuffle",
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                            )
                         }
+                        if (showHistory)
+                            IconButton(onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
+                                Icon(
+                                    imageVector = Icons.Filled.History,
+                                    contentDescription = "History",
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                )
+                            }
                     }
                 }
             },

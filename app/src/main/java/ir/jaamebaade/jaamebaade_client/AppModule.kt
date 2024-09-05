@@ -28,6 +28,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -196,5 +197,11 @@ object AppModule {
     @Singleton
     fun provideCommentRepository(appDatabase: AppDatabase): CommentRepository {
         return CommentRepository(appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHistoryRepository(appDatabase: AppDatabase): HistoryRepository {
+        return HistoryRepository(appDatabase)
     }
 }

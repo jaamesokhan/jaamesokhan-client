@@ -41,6 +41,7 @@ import ir.jaamebaade.jaamebaade_client.view.CommentsScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadablePoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadedPoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.FavoritesScreen
+import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
 import ir.jaamebaade.jaamebaade_client.view.PoetCategoryPoemScreen
 import ir.jaamebaade.jaamebaade_client.view.SearchScreen
 import ir.jaamebaade.jaamebaade_client.view.SettingsScreen
@@ -226,6 +227,9 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
                     }
                     dialog(AppRoutes.ACCOUNT_SCREEN.toString()) {
                         AccountScreen(navController = navController)
+                    }
+                    animatedComposable(AppRoutes.HISTORY.toString()) {
+                        HistoryScreen(Modifier.padding(innerPadding), navController)
                     }
                 }
             }
