@@ -4,21 +4,22 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.time.LocalDateTime
 
 @Entity(
     tableName = "history",
-    foreignKeys = [ForeignKey(
-        entity = Poet::class,
-        parentColumns = ["id"],
-        childColumns = ["poet_id"],
-        onDelete = ForeignKey.CASCADE
-    ), ForeignKey(
-        entity = Poem::class,
-        parentColumns = ["id"],
-        childColumns = ["poem_id"],
-        onDelete = ForeignKey.CASCADE
-    ),
+    foreignKeys = [
+        ForeignKey(
+            entity = Poet::class,
+            parentColumns = ["id"],
+            childColumns = ["poet_id"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Poem::class,
+            parentColumns = ["id"],
+            childColumns = ["poem_id"],
+            onDelete = ForeignKey.CASCADE
+        ),
     ]
 )
 data class HistoryItem(
@@ -27,4 +28,4 @@ data class HistoryItem(
     @ColumnInfo(name = "poem_id") val poemId: Int,
     @ColumnInfo(name = "verse_id") val verseId: Int?,
     val timestamp: Long,
-    )
+)

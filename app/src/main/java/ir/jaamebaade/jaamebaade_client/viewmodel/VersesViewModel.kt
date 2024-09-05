@@ -26,7 +26,6 @@ import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
-import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,7 +44,7 @@ class VersesViewModel @AssistedInject constructor(
     private val audioApiClient: AudioApiClient,
     private val syncAudioClient: SyncAudioClient,
     private val historyRepository: HistoryRepository,
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
     val verses: StateFlow<List<VerseWithHighlights>> = _verses
@@ -213,19 +212,19 @@ class VersesViewModel @AssistedInject constructor(
 
     suspend fun onPoemVisited(poemId: Int, poetId: Int, verseId: Int?) {
         // Check if the poem being visited is different from the last visited one
-       withContext(Dispatchers.IO) {
-           if (lastVisitedPoemId != poemId) {
-               // Save the poem visit to history
-               val historyItem = HistoryItem(
-                   poemId = poemId,
-                   poetId = poetId,
-                   verseId = verseId,
-                   timestamp = System.currentTimeMillis()
-               )
-               historyRepository.insertHistoryItem(historyItem)
-               lastVisitedPoemId = poemId
-           }
-       }
+        withContext(Dispatchers.IO) {
+            if (lastVisitedPoemId != poemId) {
+                // Save the poem visit to history
+                val historyItem = HistoryItem(
+                    poemId = poemId,
+                    poetId = poetId,
+                    verseId = verseId,
+                    timestamp = System.currentTimeMillis()
+                )
+                historyRepository.insertHistoryItem(historyItem)
+                lastVisitedPoemId = poemId
+            }
+        }
     }
 
 

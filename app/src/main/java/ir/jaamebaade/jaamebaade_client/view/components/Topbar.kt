@@ -73,7 +73,7 @@ fun TopBar(
     val showHistory = viewModel.showHistoryIcon
     val coroutineScope = rememberCoroutineScope()
 
-    BackHandler (enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
+    BackHandler(enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
         onBackButtonClicked(backStackEntry, navController)
     }
     Column {
@@ -149,7 +149,7 @@ fun TopBar(
                                 )
                             }
                         }
-                        if(showHistory)
+                        if (showHistory)
                             IconButton(onClick = { navController.navigate("history") }) {
                                 Icon(
                                     imageVector = Icons.Filled.History,

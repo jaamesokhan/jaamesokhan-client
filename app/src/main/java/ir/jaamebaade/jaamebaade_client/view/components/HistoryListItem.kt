@@ -13,12 +13,12 @@ import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.VisitHistoryViewItem
 import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
 import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
-import ir.jaamebaade.jaamebaade_client.viewmodel.PoemHistoryViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.HistoryViewModel
 import java.sql.Date
 
 @Composable
 fun HistoryListItem(
-    historyViewModel: PoemHistoryViewModel,
+    historyViewModel: HistoryViewModel,
     navController: NavController,
     item: VisitHistoryViewItem,
 ) {

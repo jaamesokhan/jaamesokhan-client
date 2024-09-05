@@ -20,14 +20,13 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class PoemHistoryViewModel @Inject constructor(
+class HistoryViewModel @Inject constructor(
     private val poemRepository: PoemRepository,
     private val categoryRepository: CategoryRepository,
     private val historyRepository: HistoryRepository
 ) : ViewModel() {
 
 
-    // Map of timestamps to PoemPoetCategory objects
     var poemHistory by mutableStateOf<List<VisitHistoryViewItem>>(emptyList())
         private set
 
@@ -35,7 +34,6 @@ class PoemHistoryViewModel @Inject constructor(
         loadPoemHistory()
     }
 
-    // Fetch PoemWithPoet from the repository
     private suspend fun fetchPoemWithPoet(poemId: Int): PoemWithPoet? {
         return withContext(Dispatchers.IO) {
             try {
@@ -48,7 +46,7 @@ class PoemHistoryViewModel @Inject constructor(
 
     private suspend fun fetchAllCategories(poem: Poem): List<Category> {
         return withContext(Dispatchers.IO) {
-               categoryRepository.getAllParentsOfCategoryId(poem.categoryId)
+            categoryRepository.getAllParentsOfCategoryId(poem.categoryId)
         }
     }
 
@@ -61,7 +59,8 @@ class PoemHistoryViewModel @Inject constructor(
             val historyList = mutableListOf<VisitHistoryViewItem>()
 
             for (historyItem in historyItems) {
-                val timestamp = historyItem.timestamp // Assuming `timestamp` is a Long field in the history item
+                val timestamp =
+                    historyItem.timestamp // Assuming `timestamp` is a Long field in the history item
                 val poemId = historyItem.poemId
 
                 val poemWithPoet = fetchPoemWithPoet(poemId)
@@ -85,10 +84,11 @@ class PoemHistoryViewModel @Inject constructor(
         viewModelScope.launch {
             poemHistory = poemHistory.toMutableList().filterNot { it.id == id }
             deleteItemFromHistory(id)
-          }
+        }
     }
-    private suspend fun deleteItemFromHistory(id: Int){
-        withContext(Dispatchers.IO){
+
+    private suspend fun deleteItemFromHistory(id: Int) {
+        withContext(Dispatchers.IO) {
             historyRepository.deleteHistoryItem(id)
         }
     }

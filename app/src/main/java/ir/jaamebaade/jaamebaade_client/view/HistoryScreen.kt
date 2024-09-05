@@ -15,13 +15,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.model.VisitHistoryViewItem
 import ir.jaamebaade.jaamebaade_client.view.components.HistoryListItem
-import ir.jaamebaade.jaamebaade_client.viewmodel.PoemHistoryViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.HistoryViewModel
 
 @Composable
-fun HistoryScreen(modifier: Modifier, navController: NavController, poemHistoryViewModel: PoemHistoryViewModel = hiltViewModel()) {
+fun HistoryScreen(
+    modifier: Modifier,
+    navController: NavController,
+    poemHistoryViewModel: HistoryViewModel = hiltViewModel()
+) {
     val poemHistory = poemHistoryViewModel.poemHistory
 
-    if (poemHistory.isNullOrEmpty()) {
+    if (poemHistory.isEmpty()) {
         EmptyHistoryView(modifier)
     } else {
         HistoryList(historyViewModel = poemHistoryViewModel, navController, poemHistory, modifier)
@@ -35,13 +39,13 @@ fun EmptyHistoryView(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text("No poems visited yet", style = MaterialTheme.typography.bodyLarge)
+        Text("از شعری بازدید نکرده‌اید!", style = MaterialTheme.typography.bodyLarge)
     }
 }
 
 @Composable
 fun HistoryList(
-    historyViewModel: PoemHistoryViewModel,
+    historyViewModel: HistoryViewModel,
     navController: NavController,
     poemHistory: List<VisitHistoryViewItem>,
     modifier: Modifier = Modifier,
