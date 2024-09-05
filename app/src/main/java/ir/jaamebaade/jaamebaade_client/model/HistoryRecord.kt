@@ -22,10 +22,9 @@ import androidx.room.PrimaryKey
         ),
     ]
 )
-data class HistoryItem(
+data class HistoryRecord(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "poet_id") val poetId: Int,
     @ColumnInfo(name = "poem_id") val poemId: Int,
-    @ColumnInfo(name = "verse_id") val verseId: Int?,
     val timestamp: Long,
 )

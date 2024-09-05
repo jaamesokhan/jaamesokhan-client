@@ -16,7 +16,7 @@ import ir.jaamebaade.jaamebaade_client.api.AudioApiClient
 import ir.jaamebaade.jaamebaade_client.api.SyncAudioClient
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
 import ir.jaamebaade.jaamebaade_client.model.Highlight
-import ir.jaamebaade.jaamebaade_client.model.HistoryItem
+import ir.jaamebaade.jaamebaade_client.model.HistoryRecord
 import ir.jaamebaade.jaamebaade_client.model.Pair
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
@@ -210,18 +210,17 @@ class VersesViewModel @AssistedInject constructor(
         }
     }
 
-    suspend fun onPoemVisited(poemId: Int, poetId: Int, verseId: Int?) {
+    suspend fun onPoemVisited(poemId: Int, poetId: Int) {
         // Check if the poem being visited is different from the last visited one
         withContext(Dispatchers.IO) {
             if (lastVisitedPoemId != poemId) {
                 // Save the poem visit to history
-                val historyItem = HistoryItem(
+                val historyRecord = HistoryRecord(
                     poemId = poemId,
                     poetId = poetId,
-                    verseId = verseId,
                     timestamp = System.currentTimeMillis()
                 )
-                historyRepository.insertHistoryItem(historyItem)
+                historyRepository.insertHistoryItem(historyRecord)
                 lastVisitedPoemId = poemId
             }
         }

@@ -67,7 +67,7 @@ fun VerseScreen(
         }
 
     LaunchedEffect(poemId) {
-        versesViewModel.onPoemVisited(poemId, poetId, focusedVerseId)
+        versesViewModel.onPoemVisited(poemId, poetId)
     }
     var minId by remember { mutableIntStateOf(0) }
     var maxId by remember { mutableIntStateOf(0) }

@@ -150,7 +150,7 @@ fun TopBar(
                             }
                         }
                         if (showHistory)
-                            IconButton(onClick = { navController.navigate("history") }) {
+                            IconButton(onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
                                 Icon(
                                     imageVector = Icons.Filled.History,
                                     contentDescription = "History",

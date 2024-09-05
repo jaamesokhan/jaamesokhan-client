@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.Poem
-import ir.jaamebaade.jaamebaade_client.model.VisitHistoryViewItem
+import ir.jaamebaade.jaamebaade_client.model.HistoryRecordWithPath
 import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
@@ -27,7 +27,7 @@ class HistoryViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    var poemHistory by mutableStateOf<List<VisitHistoryViewItem>>(emptyList())
+    var poemHistory by mutableStateOf<List<HistoryRecordWithPath>>(emptyList())
         private set
 
     init {
@@ -53,14 +53,14 @@ class HistoryViewModel @Inject constructor(
     private fun loadPoemHistory() {
         viewModelScope.launch {
             val historyItems = withContext(Dispatchers.IO) {
-                historyRepository.getAllHistory() // Adjust this method based on your repository
+                historyRepository.getAllHistorySorted()
             }
 
-            val historyList = mutableListOf<VisitHistoryViewItem>()
+            val historyList = mutableListOf<HistoryRecordWithPath>()
 
             for (historyItem in historyItems) {
                 val timestamp =
-                    historyItem.timestamp // Assuming `timestamp` is a Long field in the history item
+                    historyItem.timestamp
                 val poemId = historyItem.poemId
 
                 val poemWithPoet = fetchPoemWithPoet(poemId)
@@ -72,7 +72,7 @@ class HistoryViewModel @Inject constructor(
                     categories = categories
                 )
 
-                historyList.add(VisitHistoryViewItem(historyItem.id, timestamp, poemPoetCategory))
+                historyList.add(HistoryRecordWithPath(historyItem.id, timestamp, poemPoetCategory))
             }
 
 
@@ -80,14 +80,14 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    fun onDeleteItemFromHistoryClicked(id: Int) {
+    fun deleteHistoryRecord(id: Int) {
         viewModelScope.launch {
             poemHistory = poemHistory.toMutableList().filterNot { it.id == id }
-            deleteItemFromHistory(id)
+            deleteHistoryRecordFromRepository(id)
         }
     }
 
-    private suspend fun deleteItemFromHistory(id: Int) {
+    private suspend fun deleteHistoryRecordFromRepository(id: Int) {
         withContext(Dispatchers.IO) {
             historyRepository.deleteHistoryItem(id)
         }

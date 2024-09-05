@@ -1,7 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.model
 
-data class VisitHistoryViewItem(
+data class HistoryRecordWithPath(
     val id: Int,
     val timestamp: Long,
-    val versePoemCategoriesPoet: VersePoemCategoriesPoet
+    val path: VersePoemCategoriesPoet
 )

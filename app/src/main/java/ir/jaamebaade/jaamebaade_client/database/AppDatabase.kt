@@ -14,15 +14,16 @@ import ir.jaamebaade.jaamebaade_client.model.Bookmark
 import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.Comment
 import ir.jaamebaade.jaamebaade_client.model.Highlight
-import ir.jaamebaade.jaamebaade_client.model.HistoryItem
+import ir.jaamebaade.jaamebaade_client.model.HistoryRecord
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Verse
 
 @Database(
     entities = [Poet::class, Category::class, Poem::class,
-        Verse::class, Highlight::class, Bookmark::class, Comment::class, HistoryItem::class],
-    version = 1
+        Verse::class, Highlight::class, Bookmark::class, Comment::class,
+        HistoryRecord::class],
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun poetDao(): PoetDao
