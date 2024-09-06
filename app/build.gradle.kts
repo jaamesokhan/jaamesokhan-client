@@ -4,6 +4,8 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     id("androidx.room")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 room {
@@ -100,4 +102,8 @@ dependencies {
     implementation(libs.simple.xml)
     implementation(libs.google.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.messaging)
 }
