@@ -41,4 +41,13 @@
     <string name="COMMENTS">یادداشت‌ها</string>
     <string name="VERSE_NUMBER">شماره بیت</string>
     <string name="MERGE_HIGHLIGHTS">ادغام هایلایت‌ها</string>
+
+    <!--  Icon Descriptions  -->
+    <string name="PREVIOUS">قبلی</string>
+    <string name="NEXT">بعدی</string>
+    <string name="COMMENT">یادداشت</string>
+    <string name="BOOKMARK">حذف از علاقه‌مندی</string>
+    <string name="UN_BOOKMARK">اضافه به علاقه‌مندی‌ها</string>
+    <string name="SHARE">اشتراک گذاری</string>
+    <string name="CANCEL">لغو</string>
 </resources>

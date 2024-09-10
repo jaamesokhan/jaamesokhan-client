@@ -76,12 +76,10 @@ class TopBarViewModel @Inject constructor(
             }
 
             AppRoutes.POEM -> {
-                val poetId = navStack.arguments?.getInt("poetId")
                 val poemId = navStack.arguments?.getInt("poemId")
 
-                val poetName = getPoetName(poetId!!)
                 val poemName = getPoemName(poemId!!)
-                return "$poetName > $poemName"
+                return poemName
             }
 
             AppRoutes.COMMENTS -> {

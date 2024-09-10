@@ -42,7 +42,7 @@ fun AudioMenu(viewModel: VersesViewModel, audioViewModel: AudioViewModel) {
 
     Box(
         modifier = Modifier
-            .size(28.dp)
+            .size(24.dp)
     ) {
         IconButton(onClick = {
             expanded = true
