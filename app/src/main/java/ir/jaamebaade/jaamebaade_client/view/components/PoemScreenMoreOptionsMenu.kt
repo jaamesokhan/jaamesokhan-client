@@ -1,14 +1,12 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.SelectAll
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.SelectAll
@@ -22,26 +20,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
-import ir.jaamebaade.jaamebaade_client.viewmodel.VersesViewModel
 
 @Composable
-fun VerseScreenMoreOptionsMenu(
+fun PoemScreenMoreOptionsMenu(
     expanded: Boolean,
     onToggleExpanded: () -> Unit,
     showVerseNumbers: Boolean,
     selectMode: Boolean,
     onToggleVerseNumbers: () -> Unit,
     onToggleSelectMode: () -> Unit,
-    bookmarkIconColor: Color,
-    versesViewModel: VersesViewModel,
-    context: Context
 ) {
     Box {
-        IconButton(onClick = onToggleExpanded) {
+        IconButton(onClick = onToggleExpanded, modifier = Modifier.size(28.dp)) {
             Icon(Icons.Default.MoreVert, contentDescription = "More Options")
         }
         DropdownMenu(
@@ -90,43 +83,6 @@ fun VerseScreenMoreOptionsMenu(
                     onToggleExpanded()
                 },
             )
-            HorizontalDivider()
-            DropdownMenuItem(text = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Favorite,
-                        contentDescription = "Bookmark",
-                        tint = bookmarkIconColor,
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Text(
-                        text = "علاقه‌مندی",
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-            }, onClick = {
-                versesViewModel.onBookmarkClicked()
-            })
-            HorizontalDivider()
-            DropdownMenuItem(text = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = "Share",
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Text(
-                        text = "اشتراک‌گذاری",
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-            }, onClick = {
-                versesViewModel.share(versesViewModel.verses.value, context)
-            })
         }
     }
 }

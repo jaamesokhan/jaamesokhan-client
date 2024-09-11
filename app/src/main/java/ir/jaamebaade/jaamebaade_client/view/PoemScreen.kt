@@ -7,9 +7,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -29,20 +27,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.model.Status
+import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 import ir.jaamebaade.jaamebaade_client.view.components.RoundButton
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
-import ir.jaamebaade.jaamebaade_client.view.components.VersePageHeader
+import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenHeader
+import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenPathHeader
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
-import ir.jaamebaade.jaamebaade_client.viewmodel.VersesViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun VerseScreen(
+fun PoemScreen(
     navController: NavController,
     poemId: Int,
     poetId: Int,
@@ -51,23 +50,23 @@ fun VerseScreen(
     audioViewModel: AudioViewModel = hiltViewModel()
 ) {
 
-    var poetName by remember(poetId) {
-        mutableStateOf("")
+    var path by remember(poemId) {
+        mutableStateOf<VersePoemCategoriesPoet?>(null)
     }
 
     var poemTitle by remember(poemId) {
         mutableStateOf("")
     }
 
-    val versesViewModel =
-        hiltViewModel<VersesViewModel, VersesViewModel.VerseViewModelFactory> { factory ->
+    val poemViewModel =
+        hiltViewModel<PoemViewModel, PoemViewModel.VerseViewModelFactory> { factory ->
             factory.create(
                 poemId, poetId
             )
         }
 
     LaunchedEffect(poemId) {
-        versesViewModel.onPoemVisited(poemId)
+        poemViewModel.onPoemVisited(poemId)
     }
     var minId by remember { mutableIntStateOf(0) }
     var maxId by remember { mutableIntStateOf(0) }
@@ -83,11 +82,11 @@ fun VerseScreen(
 
     val mediaPlayer = audioViewModel.mediaPlayer
     val playStatus = audioViewModel.playStatus
-    val syncInfoFetchStatus = versesViewModel.syncInfoFetchStatus
-    val audioSyncData = versesViewModel.audioSyncInfo.collectAsState().value
+    val syncInfoFetchStatus = poemViewModel.syncInfoFetchStatus
+    val audioSyncData = poemViewModel.audioSyncInfo.collectAsState().value
     var recitedVerseIndex by remember { mutableIntStateOf(0) }
 
-    val versesWithHighlights by versesViewModel.verses.collectAsState()
+    val versesWithHighlights by poemViewModel.verses.collectAsState()
 
     val focusedVerse = versesWithHighlights.find { it.verse.id == focusedVerseId }
 
@@ -102,15 +101,15 @@ fun VerseScreen(
     }
 
     LaunchedEffect(poetId) {
-        poetName = versesViewModel.getPoetName(poetId)
-        val categoryId = versesViewModel.getCategoryIdByPoemId(poemId)
-        val minMaxPair = versesViewModel.getFirstAndLastWithCategoryId(categoryId)
+        path = poemViewModel.getPoemPath(poemId)
+        val categoryId = poemViewModel.getCategoryIdByPoemId(poemId)
+        val minMaxPair = poemViewModel.getFirstAndLastWithCategoryId(categoryId)
         minId = minMaxPair.first
         maxId = minMaxPair.second
     }
 
     LaunchedEffect(poemId) {
-        poemTitle = versesViewModel.getPoemTitle(poemId)
+        poemTitle = poemViewModel.getPoemTitle(poemId)
     }
 
     if (focusedVerse != null) {
@@ -151,13 +150,20 @@ fun VerseScreen(
     Column(
         modifier = modifier
     ) {
-        VersePageHeader(
+        PoemScreenPathHeader(
             navController = navController,
             poetId = poetId,
             poemId = poemId,
             minId = minId,
             maxId = maxId,
-            versesViewModel = versesViewModel,
+            path = path,
+        )
+
+        PoemScreenHeader(
+            navController = navController,
+            poetId = poetId,
+            poemId = poemId,
+            poemViewModel = poemViewModel,
             showVerseNumbers = showVerseNumbers,
             selectMode = selectMode,
             audioViewModel = audioViewModel,
@@ -167,10 +173,6 @@ fun VerseScreen(
                 if (!selectMode) selectedVerses.clear()
             },
         )
-
-        Spacer(modifier = Modifier.width(200.dp))
-
-        Spacer(modifier = Modifier.width(200.dp))
 
         LazyColumn(state = lazyListState) {
             itemsIndexed(versesWithHighlights) { index, verseWithHighlights ->
@@ -198,7 +200,7 @@ fun VerseScreen(
                         if (selectMode) onClick(isSelected, verseWithHighlights)
                     },
                 ) { startIndex, endIndex ->
-                    versesViewModel.highlight(
+                    poemViewModel.highlight(
                         verseWithHighlights.verse.id,
                         startIndex,
                         endIndex
