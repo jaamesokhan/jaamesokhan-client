@@ -36,8 +36,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@HiltViewModel(assistedFactory = VersesViewModel.VerseViewModelFactory::class)
-class VersesViewModel @AssistedInject constructor(
+@HiltViewModel(assistedFactory = PoemViewModel.VerseViewModelFactory::class)
+class PoemViewModel @AssistedInject constructor(
     @Assisted("poemId") val poemId: Int,
     @Assisted("poetId") val poetId: Int,
     private val versesRepository: VerseRepository,
@@ -85,7 +85,7 @@ class VersesViewModel @AssistedInject constructor(
         fun create(
             @Assisted("poemId") poemId: Int,
             @Assisted("poetId") poetId: Int,
-        ): VersesViewModel
+        ): PoemViewModel
     }
 
 

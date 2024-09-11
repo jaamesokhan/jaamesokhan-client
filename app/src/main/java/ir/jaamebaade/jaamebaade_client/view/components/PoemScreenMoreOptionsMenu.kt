@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 
 @Composable
-fun VerseScreenMoreOptionsMenu(
+fun PoemScreenMoreOptionsMenu(
     expanded: Boolean,
     onToggleExpanded: () -> Unit,
     showVerseNumbers: Boolean,

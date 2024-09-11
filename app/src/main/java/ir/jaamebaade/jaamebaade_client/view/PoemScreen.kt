@@ -37,7 +37,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
 import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenHeader
 import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenPathHeader
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
-import ir.jaamebaade.jaamebaade_client.viewmodel.VersesViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 import kotlinx.coroutines.delay
 
 @Composable
@@ -58,15 +58,15 @@ fun PoemScreen(
         mutableStateOf("")
     }
 
-    val versesViewModel =
-        hiltViewModel<VersesViewModel, VersesViewModel.VerseViewModelFactory> { factory ->
+    val poemViewModel =
+        hiltViewModel<PoemViewModel, PoemViewModel.VerseViewModelFactory> { factory ->
             factory.create(
                 poemId, poetId
             )
         }
 
     LaunchedEffect(poemId) {
-        versesViewModel.onPoemVisited(poemId)
+        poemViewModel.onPoemVisited(poemId)
     }
     var minId by remember { mutableIntStateOf(0) }
     var maxId by remember { mutableIntStateOf(0) }
@@ -82,11 +82,11 @@ fun PoemScreen(
 
     val mediaPlayer = audioViewModel.mediaPlayer
     val playStatus = audioViewModel.playStatus
-    val syncInfoFetchStatus = versesViewModel.syncInfoFetchStatus
-    val audioSyncData = versesViewModel.audioSyncInfo.collectAsState().value
+    val syncInfoFetchStatus = poemViewModel.syncInfoFetchStatus
+    val audioSyncData = poemViewModel.audioSyncInfo.collectAsState().value
     var recitedVerseIndex by remember { mutableIntStateOf(0) }
 
-    val versesWithHighlights by versesViewModel.verses.collectAsState()
+    val versesWithHighlights by poemViewModel.verses.collectAsState()
 
     val focusedVerse = versesWithHighlights.find { it.verse.id == focusedVerseId }
 
@@ -101,15 +101,15 @@ fun PoemScreen(
     }
 
     LaunchedEffect(poetId) {
-        path = versesViewModel.getPoemPath(poemId)
-        val categoryId = versesViewModel.getCategoryIdByPoemId(poemId)
-        val minMaxPair = versesViewModel.getFirstAndLastWithCategoryId(categoryId)
+        path = poemViewModel.getPoemPath(poemId)
+        val categoryId = poemViewModel.getCategoryIdByPoemId(poemId)
+        val minMaxPair = poemViewModel.getFirstAndLastWithCategoryId(categoryId)
         minId = minMaxPair.first
         maxId = minMaxPair.second
     }
 
     LaunchedEffect(poemId) {
-        poemTitle = versesViewModel.getPoemTitle(poemId)
+        poemTitle = poemViewModel.getPoemTitle(poemId)
     }
 
     if (focusedVerse != null) {
@@ -163,7 +163,7 @@ fun PoemScreen(
             navController = navController,
             poetId = poetId,
             poemId = poemId,
-            versesViewModel = versesViewModel,
+            poemViewModel = poemViewModel,
             showVerseNumbers = showVerseNumbers,
             selectMode = selectMode,
             audioViewModel = audioViewModel,
@@ -200,7 +200,7 @@ fun PoemScreen(
                         if (selectMode) onClick(isSelected, verseWithHighlights)
                     },
                 ) { startIndex, endIndex ->
-                    versesViewModel.highlight(
+                    poemViewModel.highlight(
                         verseWithHighlights.verse.id,
                         startIndex,
                         endIndex

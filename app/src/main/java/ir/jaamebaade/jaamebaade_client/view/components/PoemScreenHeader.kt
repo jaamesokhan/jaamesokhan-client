@@ -1,8 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
@@ -38,7 +36,7 @@ import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
-import ir.jaamebaade.jaamebaade_client.viewmodel.VersesViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 
 @Composable
 fun PoemScreenHeader(
@@ -46,14 +44,14 @@ fun PoemScreenHeader(
     poetId: Int,
     poemId: Int,
     modifier: Modifier = Modifier,
-    versesViewModel: VersesViewModel,
+    poemViewModel: PoemViewModel,
     showVerseNumbers: Boolean,
     selectMode: Boolean,
     audioViewModel: AudioViewModel,
     onToggleVerseNumbers: () -> Unit,
     onToggleSelectMode: () -> Unit
 ) {
-    val isBookmarked by versesViewModel.isBookmarked.collectAsState()
+    val isBookmarked by poemViewModel.isBookmarked.collectAsState()
 
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
@@ -65,7 +63,7 @@ fun PoemScreenHeader(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 6.dp)
         ) {
-            AudioMenu(versesViewModel, audioViewModel = audioViewModel)
+            AudioMenu(poemViewModel, audioViewModel = audioViewModel)
             IconButton(
                 modifier = Modifier.size(24.dp),
                 onClick = { navController.navigate("${AppRoutes.COMMENTS}/$poetId/$poemId") }) {
@@ -77,7 +75,7 @@ fun PoemScreenHeader(
             }
             IconButton(
                 modifier = Modifier.size(24.dp),
-                onClick = { versesViewModel.onBookmarkClicked() }) {
+                onClick = { poemViewModel.onBookmarkClicked() }) {
                 if (isBookmarked) {
                     Icon(
                         imageVector = Icons.Filled.Favorite,
@@ -94,7 +92,7 @@ fun PoemScreenHeader(
 
             IconButton(
                 modifier = Modifier.size(24.dp),
-                onClick = { versesViewModel.share(versesViewModel.verses.value, context) }) {
+                onClick = { poemViewModel.share(poemViewModel.verses.value, context) }) {
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = stringResource(R.string.SHARE),
@@ -117,7 +115,7 @@ fun PoemScreenHeader(
                     Spacer(modifier = Modifier.weight(0.1f))
                 }
 
-                VerseScreenMoreOptionsMenu(
+                PoemScreenMoreOptionsMenu(
                     expanded = expanded,
                     onToggleExpanded = { expanded = !expanded },
                     showVerseNumbers = showVerseNumbers,
