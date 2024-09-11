@@ -7,11 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.Poet
+import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
+import ir.jaamebaade.jaamebaade_client.repository.SearchHistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -23,6 +26,7 @@ class SearchViewModel @Inject constructor(
     private val verseRepository: VerseRepository,
     private val poetRepository: PoetRepository,
     private val categoryRepository: CategoryRepository,
+    private val searchHistoryRepository: SearchHistoryRepository
 ) : ViewModel() {
     var query by mutableStateOf("")
 
@@ -33,6 +37,8 @@ class SearchViewModel @Inject constructor(
     private val _allPoets = MutableStateFlow<List<Poet>>(emptyList())
     val allPoets = _allPoets.asStateFlow()
 
+
+    val searchHistory: Flow<List<SearchHistoryRecord>> = searchHistoryRepository.getSearchHistory()
 
     init {
         viewModelScope.launch {
@@ -46,6 +52,7 @@ class SearchViewModel @Inject constructor(
                 callBack()
                 return@launch
             }
+            saveSearchHistory(query)
             runSearchOnDatabase(callBack)
         }
     }
@@ -69,9 +76,27 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    private suspend fun saveSearchHistory(searchQuery: String) {
+        val searchHistory = SearchHistoryRecord(
+            query = searchQuery,
+            timestamp = System.currentTimeMillis()
+        )
+        searchHistoryRepository.insertSearchHistory(searchHistory)
+    }
+
     private suspend fun getAllPoets() {
         withContext(Dispatchers.IO) {
             _allPoets.value = poetRepository.getAllPoets()
+        }
+
+    }
+
+    fun deleteHistoryItem(historyItem: SearchHistoryRecord) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                searchHistoryRepository.removeHistoryRecord(historyItem)
+            }
+
         }
 
     }
