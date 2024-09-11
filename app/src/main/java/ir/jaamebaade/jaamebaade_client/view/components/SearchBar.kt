@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
@@ -31,25 +34,36 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import ir.jaamebaade.jaamebaade_client.model.Poet
+import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
 
 @Composable
 fun SearchBar(
     modifier: Modifier,
     poets: List<Poet>,
+    searchHistory: List<SearchHistoryRecord>? = null,
     onSearchFilterChanged: (Poet?) -> Unit,
     onSearchQueryChanged: (String) -> Unit,
+    onSearchFocusChanged: (Boolean) -> Unit = {},
+    onHistoryItemClick: ((SearchHistoryRecord) -> Unit)? = null,
+    onHistoryItemDeleteClick: ((SearchHistoryRecord) -> Unit)? = null,
     onSearchQueryIconClicked: (String) -> Unit,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
     var selectedPoetIndex by rememberSaveable { mutableStateOf<Int?>(null) }
+    var showSearchHistory by remember { mutableStateOf(false) } // State to control history visibility
 
+    val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column {
@@ -58,10 +72,17 @@ fun SearchBar(
             onValueChange = {
                 query = it
                 onSearchQueryChanged(it)
+                showSearchHistory = searchHistory != null
             },
             modifier = modifier
                 .fillMaxWidth()
-                .background(Color.Transparent),
+                .background(Color.Transparent)
+                .focusRequester(focusRequester)
+                .onFocusChanged { focusState ->
+                    Log.d("focks", "${focusState.isFocused}")
+                    showSearchHistory = focusState.isFocused
+                    onSearchFocusChanged(focusState.isFocused) // Notify focus change
+                },
             trailingIcon = {
                 IconButton(onClick = {
                     onSearchQueryIconClicked(query)
@@ -87,7 +108,21 @@ fun SearchBar(
                 keyboardController?.hide()
             }),
         )
-
+        if (searchHistory != null) {
+            SearchHistoryDropdown(
+                expanded = showSearchHistory,
+                searchHistory = searchHistory,
+                onHistoryItemClick = { historyItem ->
+                    onHistoryItemClick?.invoke(historyItem)
+                    query = historyItem.query // Set query when history item is clicked
+                    showSearchHistory = false // Close history dropdown
+                },
+                onHistoryItemDelete = { historyItem ->
+                    onHistoryItemDeleteClick?.invoke(historyItem) // Trigger deletion
+                },
+                onDismissRequest = { showSearchHistory = false }
+            )
+        }
         Row(
             modifier = Modifier.padding(8.dp),
             horizontalArrangement = Arrangement.Center,
@@ -145,5 +180,50 @@ fun SearchBar(
                 }
             }
         }
+
     }
 }
+
+@Composable
+fun SearchHistoryDropdown(
+    expanded: Boolean,
+    searchHistory: List<SearchHistoryRecord>,
+    onHistoryItemClick: (SearchHistoryRecord) -> Unit,
+    onHistoryItemDelete: (SearchHistoryRecord) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        modifier = Modifier.fillMaxWidth(),
+        properties = PopupProperties(focusable = false),
+    ) {
+        searchHistory.forEach { historyItem ->
+            DropdownMenuItem(
+                text = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // History item text
+                        Text(historyItem.query)
+
+                        // Delete icon
+                        IconButton(onClick = {
+                            onHistoryItemDelete(historyItem) // Trigger deletion
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Delete history item"
+                            )
+                        }
+                    }
+                }, onClick = {
+                    onHistoryItemClick(historyItem)
+                }
+            )
+        }
+    }
+}
+

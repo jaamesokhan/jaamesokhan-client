@@ -29,6 +29,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
+import ir.jaamebaade.jaamebaade_client.repository.SearchHistoryRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -203,5 +204,11 @@ object AppModule {
     @Singleton
     fun provideHistoryRepository(appDatabase: AppDatabase): HistoryRepository {
         return HistoryRepository(appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchHistoryRepository(appDatabase: AppDatabase): SearchHistoryRepository {
+        return SearchHistoryRepository(appDatabase)
     }
 }
