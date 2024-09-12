@@ -5,7 +5,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -47,7 +46,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
 
@@ -122,89 +120,88 @@ fun SearchBar(
                 keyboardController?.hide()
             }),
         )
-        Box {
-            if (searchHistory != null && showSearchHistory) {
-                SearchHistoryColumn(
-                    searchHistory = searchHistory,
-                    onHistoryItemClick = { historyItem ->
-                        onHistoryItemClick?.invoke(historyItem)
-                        query = historyItem.query
-                        showSearchHistory = false
-                    },
-                    onHistoryItemDelete = { historyItem ->
-                        onHistoryItemDeleteClick?.invoke(historyItem)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .zIndex(1f) // Ensure it overlays other components
-                        .background(Color.White)
 
-                )
-
-            }
-
+        Row(
+            modifier = Modifier.padding(8.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("در: ", style = MaterialTheme.typography.labelSmall)
+            Spacer(modifier = Modifier.width(2.dp))
             Row(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier
+                    .clickable { expanded = true }
+                    .padding(2.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("در: ", style = MaterialTheme.typography.labelSmall)
-                Spacer(modifier = Modifier.width(2.dp))
-                Row(
-                    modifier = Modifier
-                        .clickable { expanded = true }
-                        .padding(2.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (selectedPoetIndex == null) {
-                        Text(
-                            text = "همه",
-                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                        )
-                    } else {
-                        Text(
-                            text = poets[selectedPoetIndex!!].name,
-                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(4.dp))
-
-                    Icon(imageVector = Icons.Outlined.ArrowDropDown, contentDescription = "more")
+                if (selectedPoetIndex == null) {
+                    Text(
+                        text = "همه",
+                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                    )
+                } else {
+                    Text(
+                        text = poets[selectedPoetIndex!!].name,
+                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                    )
                 }
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false },
-                    modifier = Modifier
-                        .height(200.dp)
-                        .padding(8.dp)
-                ) {
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Icon(imageVector = Icons.Outlined.ArrowDropDown, contentDescription = "more")
+            }
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+                    .height(200.dp)
+                    .padding(8.dp)
+            ) {
+                DropdownMenuItem(
+                    text = { Text("همه", style = MaterialTheme.typography.labelMedium) },
+                    onClick = {
+                        onSearchFilterChanged(null)
+                        selectedPoetIndex = null
+                        onSearchQueryIconClicked(query)
+                        expanded = false
+                    })
+                poets.forEachIndexed { index, poet ->
+                    HorizontalDivider()
                     DropdownMenuItem(
-                        text = { Text("همه", style = MaterialTheme.typography.labelMedium) },
+                        text = {
+                            Text(
+                                poet.name,
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        },
                         onClick = {
-                            onSearchFilterChanged(null)
-                            selectedPoetIndex = null
+                            onSearchFilterChanged(poet)
+                            selectedPoetIndex = index
                             onSearchQueryIconClicked(query)
                             expanded = false
                         })
-                    poets.forEachIndexed { index, poet ->
-                        HorizontalDivider()
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    poet.name,
-                                    style = MaterialTheme.typography.labelMedium
-                                )
-                            },
-                            onClick = {
-                                onSearchFilterChanged(poet)
-                                selectedPoetIndex = index
-                                onSearchQueryIconClicked(query)
-                                expanded = false
-                            })
-                    }
                 }
             }
+        }
+
+        if (!searchHistory.isNullOrEmpty() && showSearchHistory) {
+            SearchHistoryColumn(
+                searchHistory = searchHistory,
+                onHistoryItemClick = { historyItem ->
+                    onHistoryItemClick?.invoke(historyItem)
+                    query = historyItem.query
+                    showSearchHistory = false
+                },
+                onHistoryItemDelete = { historyItem ->
+                    onHistoryItemDeleteClick?.invoke(historyItem)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+//                        .zIndex(1f) // Ensure it overlays other components
+                    .background(Color.White)
+
+            )
+
         }
 
 
@@ -237,7 +234,7 @@ fun SearchHistoryColumn(
                 Text(historyItem.query, style = MaterialTheme.typography.labelMedium)
 
                 IconButton(onClick = {
-                    onHistoryItemDelete(historyItem) // Trigger deletion
+                    onHistoryItemDelete(historyItem)
                 }) {
                     Icon(
                         imageVector = Icons.Default.Close,
