@@ -44,16 +44,18 @@ fun SearchScreen(
     val results = searchViewModel.results
     val poets = searchViewModel.allPoets
 
-    val searchHistory = searchViewModel.searchHistory.collectAsState(initial = emptyList())
-
+    val showingSearchHistory = searchViewModel.showingSearchHistory.collectAsState(initial = emptyList())
     Column(modifier = modifier) {
         SearchBar(modifier = Modifier.fillMaxWidth(),
             poets = poets.collectAsState().value,
-            searchHistory = searchHistory.value,
+            searchHistory = showingSearchHistory.value,
             onSearchFilterChanged = {
                 searchViewModel.poetFilter = it
             },
-            onSearchQueryChanged = { searchViewModel.query = it },
+            onSearchQueryChanged = {
+                searchViewModel.query = it
+                searchViewModel.filterHistoryByQuery()
+            },
             onHistoryItemClick = { historyItem ->
                 searchViewModel.query = historyItem.query
                 searchStatus = Status.LOADING
@@ -64,7 +66,7 @@ fun SearchScreen(
             onHistoryItemDeleteClick = { historyItem ->
                 searchViewModel.deleteHistoryItem(historyItem)
             }
-            ) {
+        ) {
             if (it.length > 2) {
                 searchStatus = Status.LOADING
                 searchViewModel.search(callBack = { searchStatus = Status.SUCCESS })
