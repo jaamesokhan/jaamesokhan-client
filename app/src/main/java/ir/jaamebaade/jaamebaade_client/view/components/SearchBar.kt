@@ -1,20 +1,25 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
@@ -37,11 +42,12 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.PopupProperties
+import androidx.compose.ui.zIndex
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
 
@@ -60,10 +66,16 @@ fun SearchBar(
     var query by rememberSaveable { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
     var selectedPoetIndex by rememberSaveable { mutableStateOf<Int?>(null) }
-    var showSearchHistory by remember { mutableStateOf(false) } // State to control history visibility
+    var showSearchHistory by remember { mutableStateOf(false) }
 
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
+    // Handle back press when search history is visible
+    BackHandler(enabled = showSearchHistory) {
+        showSearchHistory = false // Hide search history on back press
+    }
 
     Column {
         TextField(
@@ -80,12 +92,14 @@ fun SearchBar(
                 .onFocusChanged { focusState ->
                     Log.d("focks", "${focusState.isFocused}")
                     showSearchHistory = focusState.isFocused
-                    onSearchFocusChanged(focusState.isFocused) // Notify focus change
+                    onSearchFocusChanged(focusState.isFocused)
                 },
             trailingIcon = {
                 IconButton(onClick = {
                     onSearchQueryIconClicked(query)
                     keyboardController?.hide()
+                    focusRequester.freeFocus()
+                    focusManager.clearFocus()
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -104,125 +118,134 @@ fun SearchBar(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
                 onSearchQueryIconClicked(query)
+                showSearchHistory = false
                 keyboardController?.hide()
             }),
         )
-        if (searchHistory != null) {
-            SearchHistoryDropdown(
-                expanded = showSearchHistory,
-                searchHistory = searchHistory,
-                onHistoryItemClick = { historyItem ->
-                    onHistoryItemClick?.invoke(historyItem)
-                    query = historyItem.query // Set query when history item is clicked
-                    showSearchHistory = false // Close history dropdown
-                },
-                onHistoryItemDelete = { historyItem ->
-                    onHistoryItemDeleteClick?.invoke(historyItem) // Trigger deletion
-                },
-                onDismissRequest = { showSearchHistory = false }
-            )
-        }
-        Row(
-            modifier = Modifier.padding(8.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("در: ", style = MaterialTheme.typography.labelSmall)
-            Spacer(modifier = Modifier.width(2.dp))
+        Box {
+            if (searchHistory != null && showSearchHistory) {
+                SearchHistoryColumn(
+                    searchHistory = searchHistory,
+                    onHistoryItemClick = { historyItem ->
+                        onHistoryItemClick?.invoke(historyItem)
+                        query = historyItem.query
+                        showSearchHistory = false
+                    },
+                    onHistoryItemDelete = { historyItem ->
+                        onHistoryItemDeleteClick?.invoke(historyItem)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .zIndex(1f) // Ensure it overlays other components
+                        .background(Color.White)
+
+                )
+
+            }
+
             Row(
-                modifier = Modifier
-                    .clickable { expanded = true }
-                    .padding(2.dp),
+                modifier = Modifier.padding(8.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (selectedPoetIndex == null) {
-                    Text(
-                        text = "همه",
-                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                    )
-                } else {
-                    Text(
-                        text = poets[selectedPoetIndex!!].name,
-                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                    )
-                }
-                Spacer(modifier = Modifier.width(4.dp))
+                Text("در: ", style = MaterialTheme.typography.labelSmall)
+                Spacer(modifier = Modifier.width(2.dp))
+                Row(
+                    modifier = Modifier
+                        .clickable { expanded = true }
+                        .padding(2.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (selectedPoetIndex == null) {
+                        Text(
+                            text = "همه",
+                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                        )
+                    } else {
+                        Text(
+                            text = poets[selectedPoetIndex!!].name,
+                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
 
-                Icon(imageVector = Icons.Outlined.ArrowDropDown, contentDescription = "more")
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier
-                    .height(200.dp)
-                    .padding(8.dp)
-            ) {
-                DropdownMenuItem(
-                    text = { Text("همه", style = MaterialTheme.typography.labelMedium) },
-                    onClick = {
-                        onSearchFilterChanged(null)
-                        selectedPoetIndex = null
-                        onSearchQueryIconClicked(query)
-                        expanded = false
-                    })
-                poets.forEachIndexed { index, poet ->
-                    HorizontalDivider()
+                    Icon(imageVector = Icons.Outlined.ArrowDropDown, contentDescription = "more")
+                }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier
+                        .height(200.dp)
+                        .padding(8.dp)
+                ) {
                     DropdownMenuItem(
-                        text = { Text(poet.name, style = MaterialTheme.typography.labelMedium) },
+                        text = { Text("همه", style = MaterialTheme.typography.labelMedium) },
                         onClick = {
-                            onSearchFilterChanged(poet)
-                            selectedPoetIndex = index
+                            onSearchFilterChanged(null)
+                            selectedPoetIndex = null
                             onSearchQueryIconClicked(query)
                             expanded = false
                         })
+                    poets.forEachIndexed { index, poet ->
+                        HorizontalDivider()
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    poet.name,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            },
+                            onClick = {
+                                onSearchFilterChanged(poet)
+                                selectedPoetIndex = index
+                                onSearchQueryIconClicked(query)
+                                expanded = false
+                            })
+                    }
                 }
             }
         }
+
 
     }
 }
 
 @Composable
-fun SearchHistoryDropdown(
-    expanded: Boolean,
+fun SearchHistoryColumn(
+    modifier: Modifier = Modifier,
     searchHistory: List<SearchHistoryRecord>,
     onHistoryItemClick: (SearchHistoryRecord) -> Unit,
-    onHistoryItemDelete: (SearchHistoryRecord) -> Unit,
-    onDismissRequest: () -> Unit
+    onHistoryItemDelete: (SearchHistoryRecord) -> Unit
 ) {
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = onDismissRequest,
-        modifier = Modifier.fillMaxWidth(),
-        properties = PopupProperties(focusable = false),
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .verticalScroll(rememberScrollState())
+
     ) {
         searchHistory.forEach { historyItem ->
-            DropdownMenuItem(
-                text = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        // History item text
-                        Text(historyItem.query)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onHistoryItemClick(historyItem) }
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(historyItem.query, style = MaterialTheme.typography.labelMedium)
 
-                        // Delete icon
-                        IconButton(onClick = {
-                            onHistoryItemDelete(historyItem) // Trigger deletion
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = "Delete history item"
-                            )
-                        }
-                    }
-                }, onClick = {
-                    onHistoryItemClick(historyItem)
+                IconButton(onClick = {
+                    onHistoryItemDelete(historyItem) // Trigger deletion
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Delete history item",
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
-            )
+            }
         }
     }
 }
-

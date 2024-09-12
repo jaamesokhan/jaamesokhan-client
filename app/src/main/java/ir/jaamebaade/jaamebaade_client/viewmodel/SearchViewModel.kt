@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -38,7 +39,8 @@ class SearchViewModel @Inject constructor(
     val allPoets = _allPoets.asStateFlow()
 
 
-    val searchHistory: Flow<List<SearchHistoryRecord>> = searchHistoryRepository.getSearchHistory()
+    private val searchHistory: Flow<List<SearchHistoryRecord>> = searchHistoryRepository.getSearchHistory()
+    var showingSearchHistory = searchHistory
 
     init {
         viewModelScope.launch {
@@ -100,4 +102,18 @@ class SearchViewModel @Inject constructor(
         }
 
     }
+
+    fun filterHistoryByQuery() {
+        viewModelScope.launch {
+            searchHistory.collect { historyRecords ->
+                showingSearchHistory = flow {
+                    val filteredHistory = historyRecords.filter {
+                        it.query.contains(query, ignoreCase = true)
+                    }
+                    emit(filteredHistory)
+                }
+            }
+        }
+    }
+
 }
