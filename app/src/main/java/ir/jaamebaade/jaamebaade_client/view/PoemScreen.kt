@@ -1,18 +1,10 @@
 package ir.jaamebaade.jaamebaade_client.view
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,19 +15,16 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.AnnotatedString
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
-import ir.jaamebaade.jaamebaade_client.view.components.RoundButton
-import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
+import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenBottomToolBar
 import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenHeader
 import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenPathHeader
+import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 import kotlinx.coroutines.delay
@@ -91,7 +80,6 @@ fun PoemScreen(
     val focusedVerse = versesWithHighlights.find { it.verse.id == focusedVerseId }
 
     val selectedVerses = remember { mutableStateListOf<VerseWithHighlights>() }
-    val clipboardManager = LocalClipboardManager.current
 
     fun onClick(boolean: Boolean, item: VerseWithHighlights) {
         if (boolean) selectedVerses.remove(item)
@@ -210,25 +198,9 @@ fun PoemScreen(
             }
         }
     }
-    AnimatedVisibility(
-        visible = selectedVerses.isNotEmpty(),
-        enter = slideInHorizontally(animationSpec = tween(durationMillis = 200)),
-        exit = slideOutHorizontally(animationSpec = tween(durationMillis = 200)),
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            RoundButton(
-                modifier = modifier.align(Alignment.BottomEnd),
-                icon = Icons.Filled.CopyAll,
-                contentDescription = "Copy selected verses"
-            ) {
-                selectedVerses.sortBy { it.verse.verseOrder }
-                val textToCopy = selectedVerses.joinToString(separator = "\n") { it.verse.text }
-                clipboardManager.setText(AnnotatedString(textToCopy))
-                selectedVerses.clear()
-                selectMode = false
-            }
-        }
 
+    PoemScreenBottomToolBar(selectMode, modifier, selectedVerses) {
+        selectMode = false
+        selectedVerses.clear()
     }
 }
-

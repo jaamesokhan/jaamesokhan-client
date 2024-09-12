@@ -1,12 +1,9 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,12 +11,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Comment
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -61,6 +56,7 @@ fun PoemScreenHeader(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = modifier
                 .fillMaxWidth()
+                .animateContentSize()
                 .padding(vertical = 8.dp, horizontal = 6.dp)
         ) {
             AudioMenu(poemViewModel, audioViewModel = audioViewModel)
@@ -99,31 +95,15 @@ fun PoemScreenHeader(
                 )
             }
 
-            Row {
-                AnimatedVisibility(
-                    visible = selectMode,
-                    enter = slideInHorizontally(),
-                    exit = slideOutHorizontally(),
-                ) {
-                    TextButton(onClick = onToggleSelectMode, modifier = Modifier.size(24.dp)) {
-                        Icon(
-                            imageVector = Icons.Outlined.Cancel,
-                            contentDescription = stringResource(R.string.CANCEL),
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(0.1f))
-                }
 
-                PoemScreenMoreOptionsMenu(
-                    expanded = expanded,
-                    onToggleExpanded = { expanded = !expanded },
-                    showVerseNumbers = showVerseNumbers,
-                    selectMode = selectMode,
-                    onToggleVerseNumbers = onToggleVerseNumbers,
-                    onToggleSelectMode = onToggleSelectMode,
-                )
-            }
+            PoemScreenMoreOptionsMenu(
+                expanded = expanded,
+                onToggleExpanded = { expanded = !expanded },
+                showVerseNumbers = showVerseNumbers,
+                selectMode = selectMode,
+                onToggleVerseNumbers = onToggleVerseNumbers,
+                onToggleSelectMode = onToggleSelectMode,
+            )
         }
         HorizontalDivider()
     }
