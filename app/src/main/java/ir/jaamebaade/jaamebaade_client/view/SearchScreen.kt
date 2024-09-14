@@ -46,7 +46,8 @@ fun SearchScreen(
 
     val showingSearchHistory = searchViewModel.showingSearchHistory.collectAsState(initial = emptyList())
     Column(modifier = modifier) {
-        SearchBar(modifier = Modifier.fillMaxWidth(),
+        SearchBar(
+            modifier = Modifier.fillMaxWidth(),
             poets = poets.collectAsState().value,
             searchHistory = showingSearchHistory.value,
             onSearchFilterChanged = {

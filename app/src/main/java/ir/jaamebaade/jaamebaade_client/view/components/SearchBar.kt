@@ -1,7 +1,5 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +16,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
@@ -37,11 +35,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -56,7 +50,6 @@ fun SearchBar(
     searchHistory: List<SearchHistoryRecord>? = null,
     onSearchFilterChanged: (Poet?) -> Unit,
     onSearchQueryChanged: (String) -> Unit,
-    onSearchFocusChanged: (Boolean) -> Unit = {},
     onHistoryItemClick: ((SearchHistoryRecord) -> Unit)? = null,
     onHistoryItemDeleteClick: ((SearchHistoryRecord) -> Unit)? = null,
     onSearchQueryIconClicked: (String) -> Unit,
@@ -64,16 +57,11 @@ fun SearchBar(
     var query by rememberSaveable { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
     var selectedPoetIndex by rememberSaveable { mutableStateOf<Int?>(null) }
-    var showSearchHistory by remember { mutableStateOf(false) }
+    var showSearchHistory by remember { mutableStateOf(true) }
+    var isSearchIconClicked by remember { mutableStateOf(false) }
 
-    val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val focusManager = LocalFocusManager.current
 
-    // Handle back press when search history is visible
-    BackHandler(enabled = showSearchHistory) {
-        showSearchHistory = false // Hide search history on back press
-    }
 
     Column {
         TextField(
@@ -81,23 +69,15 @@ fun SearchBar(
             onValueChange = {
                 query = it
                 onSearchQueryChanged(it)
-                showSearchHistory = searchHistory != null
             },
             modifier = modifier
                 .fillMaxWidth()
-                .background(Color.Transparent)
-                .focusRequester(focusRequester)
-                .onFocusChanged { focusState ->
-                    Log.d("focks", "${focusState.isFocused}")
-                    showSearchHistory = focusState.isFocused
-                    onSearchFocusChanged(focusState.isFocused)
-                },
+                .background(Color.Transparent),
             trailingIcon = {
                 IconButton(onClick = {
                     onSearchQueryIconClicked(query)
                     keyboardController?.hide()
-                    focusRequester.freeFocus()
-                    focusManager.clearFocus()
+                    isSearchIconClicked = true
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -116,7 +96,7 @@ fun SearchBar(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
                 onSearchQueryIconClicked(query)
-                showSearchHistory = false
+                isSearchIconClicked = true
                 keyboardController?.hide()
             }),
         )
@@ -184,7 +164,7 @@ fun SearchBar(
             }
         }
 
-        if (!searchHistory.isNullOrEmpty() && showSearchHistory) {
+        if (!searchHistory.isNullOrEmpty() && showSearchHistory && !isSearchIconClicked) {
             SearchHistoryColumn(
                 searchHistory = searchHistory,
                 onHistoryItemClick = { historyItem ->
@@ -197,7 +177,6 @@ fun SearchBar(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-//                        .zIndex(1f) // Ensure it overlays other components
                     .background(Color.White)
 
             )
@@ -222,6 +201,7 @@ fun SearchHistoryColumn(
             .verticalScroll(rememberScrollState())
 
     ) {
+        Text("جستجوهای اخیر شما", style = MaterialTheme.typography.titleMedium)
         searchHistory.forEach { historyItem ->
             Row(
                 modifier = Modifier
@@ -237,7 +217,7 @@ fun SearchHistoryColumn(
                     onHistoryItemDelete(historyItem)
                 }) {
                     Icon(
-                        imageVector = Icons.Default.Close,
+                        imageVector = Icons.Default.Clear,
                         contentDescription = "Delete history item",
                         modifier = Modifier.size(20.dp)
                     )
