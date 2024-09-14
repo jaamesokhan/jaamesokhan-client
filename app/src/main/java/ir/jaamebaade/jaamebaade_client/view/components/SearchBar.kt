@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
@@ -52,12 +54,12 @@ fun SearchBar(
     onSearchQueryChanged: (String) -> Unit,
     onHistoryItemClick: ((SearchHistoryRecord) -> Unit)? = null,
     onHistoryItemDeleteClick: ((SearchHistoryRecord) -> Unit)? = null,
+    onSearchClearClick: (String) -> Unit,
     onSearchQueryIconClicked: (String) -> Unit,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
     var selectedPoetIndex by rememberSaveable { mutableStateOf<Int?>(null) }
-    var showSearchHistory by remember { mutableStateOf(true) }
     var isSearchIconClicked by remember { mutableStateOf(false) }
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -68,21 +70,33 @@ fun SearchBar(
             value = query,
             onValueChange = {
                 query = it
+                Log.d("query", query)
                 onSearchQueryChanged(it)
+                Log.d("his", "${searchHistory?.size}")
             },
             modifier = modifier
                 .fillMaxWidth()
                 .background(Color.Transparent),
             trailingIcon = {
-                IconButton(onClick = {
-                    onSearchQueryIconClicked(query)
-                    keyboardController?.hide()
-                    isSearchIconClicked = true
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search"
-                    )
+                if (!isSearchIconClicked) {
+                    IconButton(onClick = {
+                        onSearchQueryIconClicked(query)
+                        keyboardController?.hide()
+                        isSearchIconClicked = true
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search"
+                        )
+                    }
+                } else {
+                    IconButton(onClick = {
+                        onSearchClearClick(query)
+                        query = ""
+                        isSearchIconClicked = false
+                    }) {
+                        Icon(imageVector = Icons.Default.Close, contentDescription = "Close")
+                    }
                 }
             },
             label = {
@@ -164,13 +178,13 @@ fun SearchBar(
             }
         }
 
-        if (!searchHistory.isNullOrEmpty() && showSearchHistory && !isSearchIconClicked) {
+        if (searchHistory != null && !isSearchIconClicked) {
             SearchHistoryColumn(
                 searchHistory = searchHistory,
                 onHistoryItemClick = { historyItem ->
                     onHistoryItemClick?.invoke(historyItem)
                     query = historyItem.query
-                    showSearchHistory = false
+                    isSearchIconClicked = true
                 },
                 onHistoryItemDelete = { historyItem ->
                     onHistoryItemDeleteClick?.invoke(historyItem)
@@ -178,6 +192,7 @@ fun SearchBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
+                    .padding(8.dp)
 
             )
 
