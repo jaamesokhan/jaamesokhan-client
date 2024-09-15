@@ -41,6 +41,8 @@
     <string name="COMMENTS">یادداشت‌ها</string>
     <string name="VERSE_NUMBER">شماره بیت</string>
     <string name="MERGE_HIGHLIGHTS">ادغام هایلایت‌ها</string>
+    <string name="RECENT_SEARCHES">جستجوهای اخیر شما</string>
+
 
     <!--  Icon Descriptions  -->
     <string name="PREVIOUS">قبلی</string>
@@ -51,4 +53,7 @@
     <string name="SHARE">اشتراک گذاری</string>
     <string name="CANCEL">لغو</string>
     <string name="COPY_SELECTED_VERSES">رونوشت</string>
+    <string name="DELETE">حذف</string>
+    <string name="SEARCH">جست‌وجو</string>
+    <string name="CLOSE">بستن</string>
 </resources>
