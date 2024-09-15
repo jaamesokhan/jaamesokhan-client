@@ -39,7 +39,7 @@ fun CategoryItem(category: Category, onClick: () -> Unit) {
                 contentDescription = "دسته‌بندی"
             )
             Spacer(modifier = Modifier.padding(8.dp))
-            Text(text = category.text, style = MaterialTheme.typography.headlineMedium)
+            Text(text = category.text, style = MaterialTheme.typography.titleMedium)
         }
     }
 }
