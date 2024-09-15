@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.view.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -213,6 +214,7 @@ fun SearchBar(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchHistoryList(
     modifier: Modifier = Modifier,
@@ -232,8 +234,9 @@ fun SearchHistoryList(
             )
         }
 
-        items(searchHistoryRecords) { historyItem ->
+        items(items = searchHistoryRecords, key = { it.id }) { historyItem ->
             SearchHistoryRecordItem(
+                modifier = Modifier.animateItemPlacement(),
                 historyItem = historyItem,
                 onSearchHistoryRecordClick = onSearchHistoryRecordClick,
                 onSearchHistoryRecordDelete = onSearchHistoryRecordDelete
@@ -245,12 +248,13 @@ fun SearchHistoryList(
 
 @Composable
 private fun SearchHistoryRecordItem(
+    modifier: Modifier,
     historyItem: SearchHistoryRecord,
     onSearchHistoryRecordClick: (SearchHistoryRecord) -> Unit,
     onSearchHistoryRecordDelete: (SearchHistoryRecord) -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onSearchHistoryRecordClick(historyItem) }
             .padding(8.dp),
