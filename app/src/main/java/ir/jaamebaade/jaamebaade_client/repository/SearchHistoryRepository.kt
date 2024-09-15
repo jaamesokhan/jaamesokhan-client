@@ -12,15 +12,15 @@ class SearchHistoryRepository @Inject constructor(
     private val db = appDatabase
     private val searchHistoryDao = db.searchHistoryDao()
 
-    suspend fun insertSearchHistory(searchHistoryRecord: SearchHistoryRecord) {
-        searchHistoryDao.insertSearchHistory(searchHistoryRecord)
+    suspend fun insertSearchHistoryRecord(searchHistoryRecord: SearchHistoryRecord) {
+        searchHistoryDao.insertSearchHistoryRecord(searchHistoryRecord)
     }
 
-    fun getSearchHistory(): Flow<List<SearchHistoryRecord>> {
-        return searchHistoryDao.getSearchHistory()
+    fun getSearchHistoryRecords(): Flow<List<SearchHistoryRecord>> {
+        return searchHistoryDao.getSearchHistoryRecords()
     }
 
-    fun removeHistoryRecord(historyRecord: SearchHistoryRecord) {
-        searchHistoryDao.removeHistoryRecord(historyRecord.id)
+    fun removeSearchHistoryRecord(historyRecord: SearchHistoryRecord) {
+        searchHistoryDao.removeSearchHistoryRecord(historyRecord.id)
     }
 }

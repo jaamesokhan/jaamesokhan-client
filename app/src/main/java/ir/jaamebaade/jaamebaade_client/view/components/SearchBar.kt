@@ -1,6 +1,8 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,10 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
@@ -39,9 +41,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
 
@@ -49,11 +53,11 @@ import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
 fun SearchBar(
     modifier: Modifier,
     poets: List<Poet>,
-    searchHistory: List<SearchHistoryRecord>? = null,
+    searchHistoryRecords: List<SearchHistoryRecord> = emptyList(),
     onSearchFilterChanged: (Poet?) -> Unit,
     onSearchQueryChanged: (String) -> Unit,
-    onHistoryItemClick: ((SearchHistoryRecord) -> Unit)? = null,
-    onHistoryItemDeleteClick: ((SearchHistoryRecord) -> Unit)? = null,
+    onSearchHistoryRecordClick: ((SearchHistoryRecord) -> Unit)? = null,
+    onSearchHistoryRecordDeleteClick: ((SearchHistoryRecord) -> Unit)? = null,
     onSearchClearClick: (String) -> Unit,
     onSearchQueryIconClicked: (String) -> Unit,
 ) {
@@ -70,9 +74,7 @@ fun SearchBar(
             value = query,
             onValueChange = {
                 query = it
-                Log.d("query", query)
                 onSearchQueryChanged(it)
-                Log.d("his", "${searchHistory?.size}")
             },
             modifier = modifier
                 .fillMaxWidth()
@@ -86,7 +88,7 @@ fun SearchBar(
                     }) {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = "Search"
+                            contentDescription = stringResource(R.string.SEARCH)
                         )
                     }
                 } else {
@@ -95,13 +97,17 @@ fun SearchBar(
                         query = ""
                         isSearchIconClicked = false
                     }) {
-                        Icon(imageVector = Icons.Default.Close, contentDescription = "Close")
+                        Icon(
+                            imageVector = Icons.Default.Close, contentDescription = stringResource(
+                                R.string.CLOSE
+                            )
+                        )
                     }
                 }
             },
             label = {
                 Text(
-                    "جست‌وجو",
+                    stringResource(R.string.SEARCH),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -178,23 +184,28 @@ fun SearchBar(
             }
         }
 
-        if (searchHistory != null && !isSearchIconClicked) {
-            SearchHistoryColumn(
-                searchHistory = searchHistory,
-                onHistoryItemClick = { historyItem ->
-                    onHistoryItemClick?.invoke(historyItem)
-                    query = historyItem.query
-                    isSearchIconClicked = true
-                },
-                onHistoryItemDelete = { historyItem ->
-                    onHistoryItemDeleteClick?.invoke(historyItem)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(8.dp)
+        AnimatedVisibility(
+            visible = !isSearchIconClicked,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+                SearchHistoryList(
+                    searchHistoryRecords = searchHistoryRecords,
+                    onSearchHistoryRecordClick = { historyItem ->
+                        onSearchHistoryRecordClick?.invoke(historyItem)
+                        query = historyItem.query
+                        isSearchIconClicked = true
+                    },
+                    onSearchHistoryRecordDelete = { historyItem ->
+                        onSearchHistoryRecordDeleteClick?.invoke(historyItem)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(8.dp)
 
-            )
+                )
+
 
         }
 
@@ -203,41 +214,59 @@ fun SearchBar(
 }
 
 @Composable
-fun SearchHistoryColumn(
+fun SearchHistoryList(
     modifier: Modifier = Modifier,
-    searchHistory: List<SearchHistoryRecord>,
-    onHistoryItemClick: (SearchHistoryRecord) -> Unit,
-    onHistoryItemDelete: (SearchHistoryRecord) -> Unit
+    searchHistoryRecords: List<SearchHistoryRecord>,
+    onSearchHistoryRecordClick: (SearchHistoryRecord) -> Unit,
+    onSearchHistoryRecordDelete: (SearchHistoryRecord) -> Unit
 ) {
-    Column(
+
+    LazyColumn(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .verticalScroll(rememberScrollState())
-
     ) {
-        Text("جستجوهای اخیر شما", style = MaterialTheme.typography.titleMedium)
-        searchHistory.forEach { historyItem ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onHistoryItemClick(historyItem) }
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(historyItem.query, style = MaterialTheme.typography.labelMedium)
+        item {
+            Text(
+                text = stringResource(R.string.RECENT_SEARCHES),
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
 
-                IconButton(onClick = {
-                    onHistoryItemDelete(historyItem)
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Clear,
-                        contentDescription = "Delete history item",
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-            }
+        items(searchHistoryRecords) { historyItem ->
+            SearchHistoryRecordItem(
+                historyItem = historyItem,
+                onSearchHistoryRecordClick = onSearchHistoryRecordClick,
+                onSearchHistoryRecordDelete = onSearchHistoryRecordDelete
+            )
+        }
+    }
+
+}
+
+@Composable
+private fun SearchHistoryRecordItem(
+    historyItem: SearchHistoryRecord,
+    onSearchHistoryRecordClick: (SearchHistoryRecord) -> Unit,
+    onSearchHistoryRecordDelete: (SearchHistoryRecord) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onSearchHistoryRecordClick(historyItem) }
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(historyItem.query, style = MaterialTheme.typography.labelMedium)
+
+        IconButton(onClick = {
+            onSearchHistoryRecordDelete(historyItem)
+        }) {
+            Icon(
+                imageVector = Icons.Default.Clear,
+                contentDescription = stringResource(R.string.DELETE),
+                modifier = Modifier.size(20.dp)
+            )
         }
     }
 }

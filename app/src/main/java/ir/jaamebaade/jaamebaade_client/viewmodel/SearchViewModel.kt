@@ -41,8 +41,8 @@ class SearchViewModel @Inject constructor(
     val allPoets = _allPoets.asStateFlow()
 
 
-    private val searchHistory: Flow<List<SearchHistoryRecord>> =
-        searchHistoryRepository.getSearchHistory()
+    private val searchHistoryList: Flow<List<SearchHistoryRecord>> =
+        searchHistoryRepository.getSearchHistoryRecords()
     private val _showingSearchHistory = MutableStateFlow<List<SearchHistoryRecord>>(emptyList())
     val showingSearchHistory = _showingSearchHistory.asStateFlow()
 
@@ -74,8 +74,27 @@ class SearchViewModel @Inject constructor(
             collectSearchHistory()
         }
     }
+
+    fun deleteHistoryItem(historyItem: SearchHistoryRecord) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                searchHistoryRepository.removeSearchHistoryRecord(historyItem)
+            }
+
+        }
+
+    }
+
+    fun onQueryChanged() {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(300L)
+            filterHistoryByQuery(query)
+        }
+    }
+
     private suspend fun collectSearchHistory() {
-        searchHistory.collectLatest { historyRecords ->
+        searchHistoryList.collectLatest { historyRecords ->
             _showingSearchHistory.value = historyRecords
         }
     }
@@ -104,7 +123,7 @@ class SearchViewModel @Inject constructor(
             query = searchQuery,
             timestamp = System.currentTimeMillis()
         )
-        searchHistoryRepository.insertSearchHistory(searchHistory)
+        searchHistoryRepository.insertSearchHistoryRecord(searchHistory)
     }
 
     private suspend fun getAllPoets() {
@@ -114,26 +133,9 @@ class SearchViewModel @Inject constructor(
 
     }
 
-    fun deleteHistoryItem(historyItem: SearchHistoryRecord) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                searchHistoryRepository.removeHistoryRecord(historyItem)
-            }
-
-        }
-
-    }
-
-    fun onQueryChanged() {
-        searchJob?.cancel() // Cancel any ongoing job
-        searchJob = viewModelScope.launch {
-            delay(300L) // Add delay for debouncing (300ms here)
-            filterHistoryByQuery(query)
-        }
-    }
 
     private suspend fun filterHistoryByQuery(query: String) {
-        searchHistory.collectLatest { historyRecords ->
+        searchHistoryList.collectLatest { historyRecords ->
             val filteredHistory = historyRecords.filter {
                 it.query.contains(query, ignoreCase = true)
             }

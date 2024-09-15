@@ -49,7 +49,7 @@ fun SearchScreen(
         SearchBar(
             modifier = Modifier.fillMaxWidth(),
             poets = poets.collectAsState().value,
-            searchHistory = showingSearchHistory.value,
+            searchHistoryRecords = showingSearchHistory.value,
             onSearchFilterChanged = {
                 searchViewModel.poetFilter = it
             },
@@ -57,14 +57,14 @@ fun SearchScreen(
                 searchViewModel.query = it
                 searchViewModel.onQueryChanged()
             },
-            onHistoryItemClick = { historyItem ->
+            onSearchHistoryRecordClick = { historyItem ->
                 searchViewModel.query = historyItem.query
                 searchStatus = Status.LOADING
                 searchViewModel.search {
                     searchStatus = Status.SUCCESS
                 }
             },
-            onHistoryItemDeleteClick = { historyItem ->
+            onSearchHistoryRecordDeleteClick = { historyItem ->
                 searchViewModel.deleteHistoryItem(historyItem)
             },
             onSearchClearClick = {
