@@ -74,7 +74,7 @@ fun AppNavHost(fontRepository: FontRepository, themeRepository: ThemeRepository)
 
         val typeBasedFontWeight = when (type) {
             "headline" -> FontWeight.Medium
-            "title" -> FontWeight.Bold
+            "title" -> FontWeight.SemiBold
             "label" -> FontWeight.Light
             else -> FontWeight.Normal
         }

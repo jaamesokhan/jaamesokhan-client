@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import ir.jaamebaade.jaamebaade_client.database.AppDatabase
 import ir.jaamebaade.jaamebaade_client.model.Pair
 import ir.jaamebaade.jaamebaade_client.model.Poem
+import ir.jaamebaade.jaamebaade_client.model.PoemWithFirstVerse
 import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 import javax.inject.Inject
 
@@ -13,7 +14,7 @@ class PoemRepository @Inject constructor(appDatabase: AppDatabase) {
 
     fun insertPoem(poem: Poem) = poemDao.insertAll(poem)
 
-    fun getPoemPagingSource(categoryId: Int): PagingSource<Int, Poem> {
+    fun getPoemPagingSource(categoryId: Int): PagingSource<Int, PoemWithFirstVerse> {
         return poemDao.getPoemPagingSource(categoryId)
     }
 
