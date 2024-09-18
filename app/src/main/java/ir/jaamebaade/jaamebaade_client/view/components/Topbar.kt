@@ -42,17 +42,17 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.canopas.lib.showcase.IntroShowcase
+import com.canopas.lib.showcase.IntroShowcaseScope
 import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
-import ir.jaamebaade.jaamebaade_client.view.ButtonIntro
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.TopBarViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
+fun IntroShowcaseScope.TopBar(
     navController: NavController,
     viewModel: TopBarViewModel = hiltViewModel(),
     audioViewModel: AudioViewModel
@@ -66,7 +66,6 @@ fun TopBar(
                 && backStackEntry?.destination?.route != AppRoutes.FAVORITE_SCREEN.toString())
 
     val context = LocalContext.current
-    val showAppIntro by viewModel.showAppIntro.collectAsState()
     LaunchedEffect(key1 = backStackEntry) {
         viewModel.updateBreadCrumbs(backStackEntry)
         viewModel.shouldShowShuffle(backStackEntry)
@@ -131,75 +130,69 @@ fun TopBar(
                         )
                     }
                     Row {
-                        IntroShowcase(
-                            showIntroShowCase = showAppIntro,
-                            dismissOnClickOutside = true,
-                            onShowCaseCompleted = {
-                                viewModel.setShowAppIntroState(false)
-                            },
-                        ) {
-                            if (showShuffle) {
-                                IconButton(modifier = Modifier.introShowCaseTarget(
-                                    index = 0,
-                                    style = ShowcaseStyle.Default.copy(
-                                        backgroundColor = MaterialTheme.colorScheme.primary,
-                                        backgroundAlpha = 0.98f,
-                                        targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                                    ),
-                                    content = {
-                                        ButtonIntro(
-                                            stringResource(R.string.INTRO_RANDOM_TITLE),
-                                            stringResource(R.string.INTRO_RANDOM_DESC)
-                                        )
-                                    }
-                                ), onClick = {
-                                    coroutineScope.launch {
-                                        val poemWithPoet =
-                                            viewModel.findShuffledPoem(backStackEntry)
-                                        if (poemWithPoet == null) {
-                                            Toast.makeText(
-                                                context,
-                                                context.getString(R.string.NO_POET_DOWNLOADED),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        } else {
-                                            navController.navigate(
-                                                "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
-                                            )
-                                        }
-                                    }
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Shuffle,
-                                        contentDescription = "shuffle",
-                                        tint = MaterialTheme.colorScheme.onPrimary,
+
+                        if (showShuffle) {
+                            IconButton(modifier = Modifier.introShowCaseTarget(
+                                index = 6,
+                                style = ShowcaseStyle.Default.copy(
+                                    backgroundColor = MaterialTheme.colorScheme.primary,
+                                    backgroundAlpha = 0.98f,
+                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                content = {
+                                    ButtonIntro(
+                                        stringResource(R.string.INTRO_RANDOM_TITLE),
+                                        stringResource(R.string.INTRO_RANDOM_DESC)
                                     )
                                 }
+                            ), onClick = {
+                                coroutineScope.launch {
+                                    val poemWithPoet =
+                                        viewModel.findShuffledPoem(backStackEntry)
+                                    if (poemWithPoet == null) {
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.NO_POET_DOWNLOADED),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        navController.navigate(
+                                            "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
+                                        )
+                                    }
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Shuffle,
+                                    contentDescription = "shuffle",
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                )
                             }
-                            if (showHistory)
-                                IconButton(modifier = Modifier.introShowCaseTarget(
-                                    index = 1,
-                                    style = ShowcaseStyle.Default.copy(
-                                        backgroundColor = MaterialTheme.colorScheme.primary, // specify color of background
-                                        backgroundAlpha = 0.98f, // specify transparency of background
-                                        targetCircleColor = MaterialTheme.colorScheme.onPrimary // specify color of target circle
-                                    ),
-                                    content = {
-                                        ButtonIntro(
-                                            stringResource(R.string.INTRO_HISTORY_TITLE),
-                                            stringResource(R.string.INTRO_HISTORY_DESC)
-                                        )
-                                    }
-                                ), onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.History,
-                                        contentDescription = "History",
-                                        tint = MaterialTheme.colorScheme.onPrimary,
+                        }
+                        if (showHistory)
+                            IconButton(modifier = Modifier.introShowCaseTarget(
+                                index = 5,
+                                style = ShowcaseStyle.Default.copy(
+                                    backgroundColor = MaterialTheme.colorScheme.primary,
+                                    backgroundAlpha = 0.98f,
+                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                content = {
+                                    ButtonIntro(
+                                        stringResource(R.string.INTRO_HISTORY_TITLE),
+                                        stringResource(R.string.INTRO_HISTORY_DESC)
                                     )
                                 }
-                        }
+                            ), onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
+                                Icon(
+                                    imageVector = Icons.Filled.History,
+                                    contentDescription = "History",
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                )
+                            }
                     }
                 }
+
             },
         )
         AudioControlBar(navController = navController, viewModel = audioViewModel)

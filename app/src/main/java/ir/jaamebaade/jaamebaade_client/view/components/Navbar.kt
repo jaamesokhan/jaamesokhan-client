@@ -1,6 +1,5 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,23 +22,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navOptions
-import com.canopas.lib.showcase.IntroShowcase
+import com.canopas.lib.showcase.IntroShowcaseScope
 import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
-import ir.jaamebaade.jaamebaade_client.view.ButtonIntro
-import ir.jaamebaade.jaamebaade_client.viewmodel.NavbarViewModel
 
 val routeMap = mapOf(
     "downloadedPoetsScreen" to "downloadedPoetsScreen",
@@ -55,9 +49,8 @@ val routeMap = mapOf(
 )
 
 @Composable
-fun Navbar(navController: NavController, viewModel: NavbarViewModel = hiltViewModel()) {
+fun IntroShowcaseScope.Navbar(navController: NavController) {
     val currentRoute = currentRoute(navController, routeMap)
-    val showAppIntro by viewModel.showAppIntro.collectAsState()
     Row(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.primary)
@@ -67,105 +60,99 @@ fun Navbar(navController: NavController, viewModel: NavbarViewModel = hiltViewMo
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IntroShowcase(
-            showIntroShowCase = showAppIntro,
-            dismissOnClickOutside = true,
-            onShowCaseCompleted = {
-                viewModel.setShowAppIntroState(false)
-            },
-        ) {
-            NavbarItem(
-                route = "downloadedPoetsScreen",
-                currentRoute = currentRoute,
-                idleIcon = Icons.Outlined.Home,
-                selectedIcon = Icons.Filled.Home,
-                contentDescription = "Home",
-                navController = navController,
-                modifier = Modifier.introShowCaseTarget(
-                    index = 0,
-                    style = ShowcaseStyle.Default.copy(
-                        backgroundColor = MaterialTheme.colorScheme.primary,
-                        backgroundAlpha = 0.98f,
-                        targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    content = {
-                        ButtonIntro(
-                            stringResource(R.string.INTRO_HOME_TITLE),
-                            stringResource(R.string.INTRO_HOME_DESC)
-                        )
-                    }
-                )
-            )
 
-            NavbarItem(
-                route = "favoriteScreen",
-                currentRoute = currentRoute,
-                idleIcon = Icons.Outlined.FavoriteBorder,
-                selectedIcon = Icons.Filled.Favorite,
-                contentDescription = "Favorites",
-                navController = navController,
-                modifier = Modifier.introShowCaseTarget(
-                    index = 1,
-                    style = ShowcaseStyle.Default.copy(
-                        backgroundColor = MaterialTheme.colorScheme.primary,
-                        backgroundAlpha = 0.98f,
-                        targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    content = {
-                        ButtonIntro(
-                            stringResource(R.string.INTRO_LIKE_TITLE),
-                            stringResource(R.string.INTRO_LIKE_DESC)
-                        )
-                    }
-                )
+        NavbarItem(
+            route = "downloadedPoetsScreen",
+            currentRoute = currentRoute,
+            idleIcon = Icons.Outlined.Home,
+            selectedIcon = Icons.Filled.Home,
+            contentDescription = "Home",
+            navController = navController,
+            modifier = Modifier.introShowCaseTarget(
+                index = 0,
+                style = ShowcaseStyle.Default.copy(
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    backgroundAlpha = 0.98f,
+                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                content = {
+                    ButtonIntro(
+                        stringResource(R.string.INTRO_HOME_TITLE),
+                        stringResource(R.string.INTRO_HOME_DESC)
+                    )
+                }
             )
+        )
 
-            NavbarItem(
-                route = "searchScreen",
-                currentRoute = currentRoute,
-                idleIcon = Icons.Outlined.Search,
-                selectedIcon = Icons.Filled.Search,
-                contentDescription = "Search",
-                navController = navController,
-                modifier = Modifier.introShowCaseTarget(
-                    index = 2,
-                    style = ShowcaseStyle.Default.copy(
-                        backgroundColor = MaterialTheme.colorScheme.primary,
-                        backgroundAlpha = 0.98f,
-                        targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    content = {
-                        ButtonIntro(
-                            stringResource(R.string.INTRO_SEARCH_TITLE),
-                            stringResource(R.string.INTRO_SEARCH_DESC)
-                        )
-                    }
-                )
+        NavbarItem(
+            route = "favoriteScreen",
+            currentRoute = currentRoute,
+            idleIcon = Icons.Outlined.FavoriteBorder,
+            selectedIcon = Icons.Filled.Favorite,
+            contentDescription = "Favorites",
+            navController = navController,
+            modifier = Modifier.introShowCaseTarget(
+                index = 1,
+                style = ShowcaseStyle.Default.copy(
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    backgroundAlpha = 0.98f,
+                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                content = {
+                    ButtonIntro(
+                        stringResource(R.string.INTRO_LIKE_TITLE),
+                        stringResource(R.string.INTRO_LIKE_DESC)
+                    )
+                }
             )
+        )
 
-            NavbarItem(
-                route = "settingsScreen",
-                currentRoute = currentRoute,
-                idleIcon = Icons.Outlined.Settings,
-                selectedIcon = Icons.Filled.Settings,
-                contentDescription = "Settings",
-                navController = navController,
-                modifier = Modifier.introShowCaseTarget(
-                    index = 3,
-                    style = ShowcaseStyle.Default.copy(
-                        backgroundColor = MaterialTheme.colorScheme.primary,
-                        backgroundAlpha = 0.98f,
-                        targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    content = {
-                        ButtonIntro(
-                            stringResource(R.string.INTRO_SETTING_TITLE),
-                            stringResource(R.string.INTRO_SETTING_DESC)
-                        )
-                    }
-                )
+        NavbarItem(
+            route = "searchScreen",
+            currentRoute = currentRoute,
+            idleIcon = Icons.Outlined.Search,
+            selectedIcon = Icons.Filled.Search,
+            contentDescription = "Search",
+            navController = navController,
+            modifier = Modifier.introShowCaseTarget(
+                index = 2,
+                style = ShowcaseStyle.Default.copy(
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    backgroundAlpha = 0.98f,
+                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                content = {
+                    ButtonIntro(
+                        stringResource(R.string.INTRO_SEARCH_TITLE),
+                        stringResource(R.string.INTRO_SEARCH_DESC)
+                    )
+                }
             )
-        }
+        )
+
+        NavbarItem(
+            route = "settingsScreen",
+            currentRoute = currentRoute,
+            idleIcon = Icons.Outlined.Settings,
+            selectedIcon = Icons.Filled.Settings,
+            contentDescription = "Settings",
+            navController = navController,
+            modifier = Modifier.introShowCaseTarget(
+                index = 3,
+                style = ShowcaseStyle.Default.copy(
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    backgroundAlpha = 0.98f,
+                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                content = {
+                    ButtonIntro(
+                        stringResource(R.string.INTRO_SETTING_TITLE),
+                        stringResource(R.string.INTRO_SETTING_DESC)
+                    )
+                }
+            )
+        )
+
     }
 }
 

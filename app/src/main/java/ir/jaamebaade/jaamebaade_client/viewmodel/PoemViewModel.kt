@@ -31,7 +31,6 @@ import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
-import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager.Companion.SHOW_APP_INTRO_POEM_KEY
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -115,14 +114,14 @@ class PoemViewModel @AssistedInject constructor(
 
     fun setShowAppIntroState(showIntro: Boolean) {
         viewModelScope.launch {
-            sharedPrefManager.setShowAppIntroMain(SHOW_APP_INTRO_POEM_KEY, showIntro)
+            sharedPrefManager.setShowAppIntroPoem(showIntro)
             _showAppIntro.value = showIntro
         }
     }
 
     private fun getShowAppIntroState() {
         viewModelScope.launch {
-            _showAppIntro.value = sharedPrefManager.getShowAppIntro(SHOW_APP_INTRO_POEM_KEY)
+            _showAppIntro.value = sharedPrefManager.getShowAppIntroPoem()
         }
     }
 

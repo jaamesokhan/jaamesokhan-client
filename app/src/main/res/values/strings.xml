@@ -67,9 +67,9 @@
     <string name="INTRO_NOTE_TITLE">یادداشت</string>
     <string name="INTRO_NOTE_DESC">امکان یادداشت گذاشتن روی اشعار برای شما فراهم است</string>
     <string name="INTRO_BOOKMARK_TITLE">علاقه‌مندی</string>
-    <string name="INTRO_BOOKMARK_DESC">می‌توانید شعرهایی که دوست دارید را به علاقه‌مندی‌هایتان اضافه کنید</string>
+    <string name="INTRO_BOOKMARK_DESC">می‌تونید شعرهایی که دوست دارید رو به علاقه‌مندی‌هاتون اضافه کنید</string>
     <string name="INTRO_SHARE_TITLE">اشتراک‌گذاری</string>
-    <string name="INTRO_SHARE_DESC">شعرها را از طریقی که دوست دارید به اشتراک بگذارید</string>
+    <string name="INTRO_SHARE_DESC">شعرها رو از طریقی که دوست دارید به اشتراک بگذارید</string>
     <string name="INTRO_ETC">و امکانات بیشتر</string>
     <string name="INTRO_DOWNLOAD_TITLE">دانلود</string>
     <string name="INTRO_DOWNLOAD_DESC">با کلیک روی این دکمه می‌توانید لیست شاعرها را برای دانلود ببینید</string>

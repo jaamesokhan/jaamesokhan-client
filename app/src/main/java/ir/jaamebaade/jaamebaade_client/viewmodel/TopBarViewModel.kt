@@ -6,19 +6,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
-import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
-import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager.Companion.SHOW_APP_INTRO_POEM_KEY
-import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager.Companion.SHOW_APP_INTRO_TOP_BAR_KEY
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -28,7 +23,6 @@ class TopBarViewModel @Inject constructor(
     private val poetRepository: PoetRepository,
     private val categoryRepository: CategoryRepository,
     private val poemRepository: PoemRepository,
-    private val sharedPrefManager: SharedPrefManager,
 ) : ViewModel() {
     var breadCrumbs by mutableStateOf("")
         private set
@@ -39,13 +33,8 @@ class TopBarViewModel @Inject constructor(
     var showHistoryIcon by mutableStateOf(false)
         private set
 
-    private val _showAppIntro = MutableStateFlow(true)
-    val showAppIntro = _showAppIntro.asStateFlow()
 
 
-    init {
-        getShowAppIntroState()
-    }
     fun updateBreadCrumbs(path: NavBackStackEntry?) {
         viewModelScope.launch {
             breadCrumbs = createPathBreadCrumbs(path!!)
@@ -65,19 +54,6 @@ class TopBarViewModel @Inject constructor(
         showHistoryIcon = when (path) {
             AppRoutes.DOWNLOADED_POETS_SCREEN -> true
             else -> false
-        }
-    }
-
-    fun setShowAppIntroState(showIntro: Boolean) {
-        viewModelScope.launch {
-            sharedPrefManager.setShowAppIntroMain(SHOW_APP_INTRO_TOP_BAR_KEY, showIntro)
-            _showAppIntro.value = showIntro
-        }
-    }
-
-    private fun getShowAppIntroState() {
-        viewModelScope.launch {
-            _showAppIntro.value = sharedPrefManager.getShowAppIntro(SHOW_APP_INTRO_TOP_BAR_KEY)
         }
     }
 
