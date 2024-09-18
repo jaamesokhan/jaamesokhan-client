@@ -32,9 +32,10 @@ fun PoemScreenMoreOptionsMenu(
     selectMode: Boolean,
     onToggleVerseNumbers: () -> Unit,
     onToggleSelectMode: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box {
-        IconButton(onClick = onToggleExpanded, modifier = Modifier.size(28.dp)) {
+        IconButton(onClick = onToggleExpanded, modifier = modifier.size(28.dp)) {
             Icon(Icons.Default.MoreVert, contentDescription = "More Options")
         }
         DropdownMenu(

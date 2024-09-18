@@ -6,6 +6,7 @@ googleHiltAndroid = "2.51.1"
 commonsCsv = "1.8"
 hiltCompiler = "1.2.0"
 hiltCompilerVersion = "2.51.1"
+introshowcaseviewVersion = "2.0.1"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -48,6 +49,7 @@ converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref
 google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist_version" }
 hilt-android-v2511 = { module = "com.google.dagger:hilt-android", version.ref = "googleHiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompilerVersion" }
+introshowcaseview = { module = "com.canopas.intro-showcase-view:introshowcaseview", version.ref = "introshowcaseviewVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
