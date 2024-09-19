@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ButtonIntro(title: String, desc: String) {
+fun ButtonIntro(title: String, description: String) {
     Column {
         Text(
             text = title,
@@ -21,7 +21,7 @@ fun ButtonIntro(title: String, desc: String) {
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = desc,
+            text = description,
             color = MaterialTheme.colorScheme.onPrimary,
             fontSize = 16.sp
         )

@@ -89,16 +89,16 @@ class SharedPrefManager(
         sharedPreferences.edit().putBoolean(SHOW_APP_INTRO_POEM_KEY, showIntro).apply()
     }
 
-
-
     fun getShowAppIntroPoem(): Boolean {
         return sharedPreferences.getBoolean(SHOW_APP_INTRO_POEM_KEY, true)
 
     }
-    fun getShowAppIntroMain():Boolean{
+
+    fun getShowAppIntroMain(): Boolean {
         return sharedPreferences.getBoolean(SHOW_APP_INTRO_MANI_KEY, true)
     }
-    fun setShowAppIntroMain(value: Boolean){
+
+    fun setShowAppIntroMain(value: Boolean) {
         sharedPreferences.edit().putBoolean(SHOW_APP_INTRO_MANI_KEY, value).apply()
     }
 }
