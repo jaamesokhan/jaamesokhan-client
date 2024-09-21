@@ -30,9 +30,11 @@ import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
 import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
+import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -47,7 +49,8 @@ class PoemViewModel @AssistedInject constructor(
     private val audioApiClient: AudioApiClient,
     private val syncAudioClient: SyncAudioClient,
     private val historyRepository: HistoryRepository,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val sharedPrefManager: SharedPrefManager
 ) : ViewModel() {
 
     private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
@@ -67,6 +70,10 @@ class PoemViewModel @AssistedInject constructor(
 
 
     private var lastVisitedPoemId: Int? = null
+
+
+    private val _showAppIntro = MutableStateFlow(true)
+    val showAppIntro = _showAppIntro.asStateFlow()
 
     fun share(verses: List<VerseWithHighlights>, context: Context) {
         val poemText = verses.joinToString("\n") { it.verse.text }
@@ -92,6 +99,7 @@ class PoemViewModel @AssistedInject constructor(
     init {
         fetchPoemVerses()
         fetchIsBookmarked()
+        getShowAppIntroState()
     }
 
     fun fetchRecitationsForPoem(onSuccess: () -> Unit, onFailure: () -> Unit) {
@@ -101,6 +109,19 @@ class PoemViewModel @AssistedInject constructor(
                 onSuccess = onSuccess,
                 onFailure = onFailure
             )
+        }
+    }
+
+    fun setShowAppIntroState(showIntro: Boolean) {
+        viewModelScope.launch {
+            sharedPrefManager.setShowAppIntroPoem(showIntro)
+            _showAppIntro.value = showIntro
+        }
+    }
+
+    private fun getShowAppIntroState() {
+        viewModelScope.launch {
+            _showAppIntro.value = sharedPrefManager.getShowAppIntroPoem()
         }
     }
 

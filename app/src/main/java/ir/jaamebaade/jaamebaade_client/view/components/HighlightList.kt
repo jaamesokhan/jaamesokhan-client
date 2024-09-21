@@ -43,19 +43,7 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
     val highlights = viewModel.highlights
     var mergeHighlights by rememberSaveable { mutableStateOf(viewModel.getMergeHighlightsToggleState()) }
 
-    val newHighlights = mutableListOf(highlights[0].toMergedHighlight())
-    if (mergeHighlights) {
-        for (i in 1 until highlights.size) {
-            if (highlights[i].versePath.verse!!.id == newHighlights.last().highlights.last().verseId + 1
-                && highlights[i].versePath.poem.id == newHighlights.last().poem.id
-            ) {
-                newHighlights.last().highlights.add(highlights[i].highlight)
-                newHighlights.last().verses.add(highlights[i].versePath.verse!!)
-            } else {
-                newHighlights.add(highlights[i].toMergedHighlight())
-            }
-        }
-    }
+
     if (highlights.isEmpty()) {
         Box(
             contentAlignment = Alignment.Center,
@@ -69,6 +57,19 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
             )
         }
     } else {
+        val newHighlights = mutableListOf(highlights[0].toMergedHighlight())
+        if (mergeHighlights) {
+            for (i in 1 until highlights.size) {
+                if (highlights[i].versePath.verse!!.id == newHighlights.last().highlights.last().verseId + 1
+                    && highlights[i].versePath.poem.id == newHighlights.last().poem.id
+                ) {
+                    newHighlights.last().highlights.add(highlights[i].highlight)
+                    newHighlights.last().verses.add(highlights[i].versePath.verse!!)
+                } else {
+                    newHighlights.add(highlights[i].toMergedHighlight())
+                }
+            }
+        }
         Column {
             Row(modifier = Modifier.padding(4.dp)) {
                 CustomToggleButton(

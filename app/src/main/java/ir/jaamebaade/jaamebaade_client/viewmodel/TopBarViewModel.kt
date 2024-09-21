@@ -6,13 +6,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,6 +32,8 @@ class TopBarViewModel @Inject constructor(
 
     var showHistoryIcon by mutableStateOf(false)
         private set
+
+
 
     fun updateBreadCrumbs(path: NavBackStackEntry?) {
         viewModelScope.launch {
@@ -54,7 +56,6 @@ class TopBarViewModel @Inject constructor(
             else -> false
         }
     }
-
 
     private suspend fun createPathBreadCrumbs(navStack: NavBackStackEntry): String {
         val path = getPath(navStack)

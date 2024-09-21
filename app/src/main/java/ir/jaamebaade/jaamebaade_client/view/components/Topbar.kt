@@ -24,6 +24,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -39,6 +41,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.canopas.lib.showcase.IntroShowcase
+import com.canopas.lib.showcase.IntroShowcaseScope
+import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
@@ -47,7 +52,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
+fun IntroShowcaseScope.TopBar(
     navController: NavController,
     viewModel: TopBarViewModel = hiltViewModel(),
     audioViewModel: AudioViewModel
@@ -61,7 +66,6 @@ fun TopBar(
                 && backStackEntry?.destination?.route != AppRoutes.FAVORITE_SCREEN.toString())
 
     val context = LocalContext.current
-
     LaunchedEffect(key1 = backStackEntry) {
         viewModel.updateBreadCrumbs(backStackEntry)
         viewModel.shouldShowShuffle(backStackEntry)
@@ -90,6 +94,7 @@ fun TopBar(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
+
                         if (canPop) {
                             IconButton(
                                 onClick = {
@@ -124,11 +129,26 @@ fun TopBar(
                             maxLines = 1
                         )
                     }
-                    Row() {
+                    Row {
+
                         if (showShuffle) {
-                            IconButton(onClick = {
+                            IconButton(modifier = Modifier.introShowCaseTarget(
+                                index = 6,
+                                style = ShowcaseStyle.Default.copy(
+                                    backgroundColor = MaterialTheme.colorScheme.primary,
+                                    backgroundAlpha = 0.98f,
+                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                content = {
+                                    ButtonIntro(
+                                        stringResource(R.string.INTRO_RANDOM_TITLE),
+                                        stringResource(R.string.INTRO_RANDOM_DESC)
+                                    )
+                                }
+                            ), onClick = {
                                 coroutineScope.launch {
-                                    val poemWithPoet = viewModel.findShuffledPoem(backStackEntry)
+                                    val poemWithPoet =
+                                        viewModel.findShuffledPoem(backStackEntry)
                                     if (poemWithPoet == null) {
                                         Toast.makeText(
                                             context,
@@ -150,7 +170,20 @@ fun TopBar(
                             }
                         }
                         if (showHistory)
-                            IconButton(onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
+                            IconButton(modifier = Modifier.introShowCaseTarget(
+                                index = 5,
+                                style = ShowcaseStyle.Default.copy(
+                                    backgroundColor = MaterialTheme.colorScheme.primary,
+                                    backgroundAlpha = 0.98f,
+                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                content = {
+                                    ButtonIntro(
+                                        stringResource(R.string.INTRO_HISTORY_TITLE),
+                                        stringResource(R.string.INTRO_HISTORY_DESC)
+                                    )
+                                }
+                            ), onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
                                 Icon(
                                     imageVector = Icons.Filled.History,
                                     contentDescription = "History",
@@ -159,6 +192,7 @@ fun TopBar(
                             }
                     }
                 }
+
             },
         )
         AudioControlBar(navController = navController, viewModel = audioViewModel)

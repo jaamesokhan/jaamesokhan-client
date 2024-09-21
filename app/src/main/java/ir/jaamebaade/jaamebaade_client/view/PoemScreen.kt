@@ -81,6 +81,7 @@ fun PoemScreen(
 
     val selectedVerses = remember { mutableStateListOf<VerseWithHighlights>() }
 
+
     fun onClick(boolean: Boolean, item: VerseWithHighlights) {
         if (boolean) selectedVerses.remove(item)
         else selectedVerses.add(item)

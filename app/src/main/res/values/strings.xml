@@ -56,4 +56,29 @@
     <string name="DELETE">حذف</string>
     <string name="SEARCH">جست‌وجو</string>
     <string name="CLOSE">بستن</string>
+
+    <!-- Intro Stuff    -->
+    <string name="INTRO_HISTORY_TITLE">تاریخچه</string>
+    <string name="INTRO_HISTORY_DESC">می‌تونید به تاریخچه شعرهایی که خوندین به راحتی دسترسی داشته باشین و اونو مدیریت کنین</string>
+    <string name="INTRO_RANDOM_TITLE">شعر تصادفی</string>
+    <string name="INTRO_RANDOM_DESC">هر وقت خواستید می‌تونید یه شعر تصادفی بخونید. با چند ثانیه نگه داشتن روی این دکمه، می‌تونید تنظیماتش رو هم تغییر بدید</string>
+    <string name="INTRO_RECITE_TITLE">پخش خوانش</string>
+    <string name="INTRO_RECITE_DESC">امکان دانلود و پخش خوانش اشعار برای شما فراهم است</string>
+    <string name="INTRO_NOTE_TITLE">یادداشت</string>
+    <string name="INTRO_NOTE_DESC">امکان یادداشت گذاشتن روی اشعار برای شما فراهم است</string>
+    <string name="INTRO_BOOKMARK_TITLE">علاقه‌مندی</string>
+    <string name="INTRO_BOOKMARK_DESC">می‌تونید شعرهایی که دوست دارید رو به علاقه‌مندی‌هاتون اضافه کنید</string>
+    <string name="INTRO_SHARE_TITLE">اشتراک‌گذاری</string>
+    <string name="INTRO_SHARE_DESC">شعرها رو از طریقی که دوست دارید به اشتراک بگذارید</string>
+    <string name="INTRO_ETC">و امکانات بیشتر</string>
+    <string name="INTRO_DOWNLOAD_TITLE">دانلود</string>
+    <string name="INTRO_DOWNLOAD_DESC">با کلیک روی این دکمه می‌توانید لیست شاعرها را برای دانلود ببینید</string>
+    <string name="INTRO_SETTING_TITLE">تنظیمات</string>
+    <string name="INTRO_SETTING_DESC">تنظیمات برنامه از جمله فونت و تم و ... رو اینجا میتونین تغییر بدین</string>
+    <string name="INTRO_SEARCH_TITLE">جست‌و‌جو</string>
+    <string name="INTRO_SEARCH_DESC">برای جست‌وجو در شعرهای مختلف از این صفحه استفاده کنید</string>
+    <string name="INTRO_LIKE_TITLE">علاقه‌مندی‌ها</string>
+    <string name="INTRO_LIKE_DESC">در این صفحه می‌تونید به شعرهای نشان شده، هایلایت‌ها و یادداشت‌ها دسترسی داشته باشین</string>
+    <string name="INTRO_HOME_TITLE">خانه</string>
+    <string name="INTRO_HOME_DESC">در این صفحه به شاعران دانلود شده دسترسی دارین</string>
 </resources>

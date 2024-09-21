@@ -5,12 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatusManager
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class DownloadedPoetViewModel @Inject constructor(
     private val poetRepository: PoetRepository,
     private val categoryRepository: CategoryRepository,
-    private val downloadStatusManager: DownloadStatusManager
+    private val downloadStatusManager: DownloadStatusManager,
 ) : ViewModel() {
     var poets by mutableStateOf<List<Poet>?>(null)
         private set
