@@ -57,4 +57,13 @@ interface CategoryDao {
     """
     )
     fun getAllParentsOfCategoryId(categoryId: Int): List<Category>
+
+    @Query(
+        """
+            UPDATE categories
+                SET random_selected = :randomSelected
+                    WHERE id = :categoryId
+        """
+    )
+    fun updateRandomSelectedFlag(categoryId: Int, randomSelected: Boolean)
 }

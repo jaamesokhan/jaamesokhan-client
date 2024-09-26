@@ -22,16 +22,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -61,16 +66,21 @@ fun TopBar(
                 && backStackEntry?.destination?.route != AppRoutes.FAVORITE_SCREEN.toString())
 
     val context = LocalContext.current
+    val sheetState = rememberModalBottomSheetState()
+    var showAdvancedRandomPoemOptions by remember { mutableStateOf(false) }
+
 
     LaunchedEffect(key1 = backStackEntry) {
         viewModel.updateBreadCrumbs(backStackEntry)
         viewModel.shouldShowShuffle(backStackEntry)
         viewModel.shouldShowHistory(backStackEntry)
+        viewModel.shouldShowRandomOptions(backStackEntry)
     }
 
     val breadCrumbs = viewModel.breadCrumbs
     val showShuffle = viewModel.showShuffleIcon
     val showHistory = viewModel.showHistoryIcon
+    val showRandomOptions = viewModel.showRandomOptions
     val coroutineScope = rememberCoroutineScope()
 
     BackHandler(enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
@@ -124,30 +134,32 @@ fun TopBar(
                             maxLines = 1
                         )
                     }
-                    Row() {
+                    Row {
                         if (showShuffle) {
-                            IconButton(onClick = {
-                                coroutineScope.launch {
-                                    val poemWithPoet = viewModel.findShuffledPoem(backStackEntry)
-                                    if (poemWithPoet == null) {
-                                        Toast.makeText(
-                                            context,
-                                            context.getString(R.string.NO_POET_DOWNLOADED),
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } else {
-                                        navController.navigate(
-                                            "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
-                                        )
+                            CustomIconButton(
+                                icon = Icons.Filled.Shuffle,
+                                description = stringResource(id = R.string.RANDOM_POEM),
+                                onClick = {
+                                    coroutineScope.launch {
+                                        val poemWithPoet =
+                                            viewModel.findShuffledPoem(backStackEntry)
+                                        if (poemWithPoet == null) {
+                                            Toast.makeText(
+                                                context,
+                                                context.getString(R.string.NO_POET_DOWNLOADED),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        } else {
+                                            navController.navigate(
+                                                "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
+                                            )
+                                        }
                                     }
+                                },
+                                onLongClick = {
+                                    showAdvancedRandomPoemOptions = true
                                 }
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Shuffle,
-                                    contentDescription = "shuffle",
-                                    tint = MaterialTheme.colorScheme.onPrimary,
-                                )
-                            }
+                            )
                         }
                         if (showHistory)
                             IconButton(onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
@@ -162,8 +174,14 @@ fun TopBar(
             },
         )
         AudioControlBar(navController = navController, viewModel = audioViewModel)
+        if (showRandomOptions && showAdvancedRandomPoemOptions) {
+            AdvancedRandomPoemOptions(sheetState = sheetState) {
+                showAdvancedRandomPoemOptions = false
+            }
+        }
     }
 }
+
 
 private fun onBackButtonClicked(
     backStackEntry: NavBackStackEntry?,
