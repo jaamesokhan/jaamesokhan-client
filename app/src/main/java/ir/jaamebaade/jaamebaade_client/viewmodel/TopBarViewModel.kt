@@ -65,7 +65,6 @@ class TopBarViewModel @Inject constructor(
         }
     }
 
-
     private suspend fun createPathBreadCrumbs(navStack: NavBackStackEntry): String {
         val path = getPath(navStack)
         when (path) {

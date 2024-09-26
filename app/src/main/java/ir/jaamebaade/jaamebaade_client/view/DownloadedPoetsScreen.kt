@@ -21,13 +21,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.canopas.lib.showcase.IntroShowcaseScope
+import com.canopas.lib.showcase.component.ShowcaseStyle
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
+import ir.jaamebaade.jaamebaade_client.view.components.ButtonIntro
 import ir.jaamebaade.jaamebaade_client.view.components.DownloadedPoet
 import ir.jaamebaade.jaamebaade_client.view.components.LoadingIndicator
 import ir.jaamebaade.jaamebaade_client.view.components.RoundButton
@@ -35,7 +40,7 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.DownloadedPoetViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun DownloadedPoetsScreen(
+fun IntroShowcaseScope.DownloadedPoetsScreen(
     modifier: Modifier = Modifier,
     downloadedPoetViewModel: DownloadedPoetViewModel = hiltViewModel(),
     navController: NavController
@@ -97,8 +102,24 @@ fun DownloadedPoetsScreen(
             LoadingIndicator()
         }
         if (selectedPoets.isEmpty()) {
+
             RoundButton(
-                modifier = Modifier.align(Alignment.BottomEnd),
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .introShowCaseTarget(
+                        index = 4,
+                        style = ShowcaseStyle.Default.copy(
+                            backgroundColor = MaterialTheme.colorScheme.primary,
+                            backgroundAlpha = 0.98f,
+                            targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        content = {
+                            ButtonIntro(
+                                stringResource(R.string.INTRO_DOWNLOAD_TITLE),
+                                stringResource(R.string.INTRO_DOWNLOAD_DESC)
+                            )
+                        }
+                    ),
                 icon = Icons.Filled.Download,
                 contentDescription = "Add Poet"
             ) {
@@ -108,7 +129,9 @@ fun DownloadedPoetsScreen(
                     }
                 }
             }
+
         } else if (fetchStatue == Status.SUCCESS) {
+
             RoundButton(
                 modifier = Modifier.align(Alignment.BottomEnd),
                 icon = Icons.Filled.Delete,
@@ -120,7 +143,9 @@ fun DownloadedPoetsScreen(
                     fetchStatue = Status.SUCCESS
                 }
             }
+
         }
     }
 }
+
 

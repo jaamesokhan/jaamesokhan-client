@@ -100,4 +100,5 @@ dependencies {
     implementation(libs.simple.xml)
     implementation(libs.google.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
+    implementation(libs.introshowcaseview)
 }

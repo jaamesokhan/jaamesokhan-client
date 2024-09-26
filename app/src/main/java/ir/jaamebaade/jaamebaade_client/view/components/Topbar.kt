@@ -25,6 +25,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +45,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.canopas.lib.showcase.IntroShowcase
+import com.canopas.lib.showcase.IntroShowcaseScope
+import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
@@ -52,7 +56,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
+fun IntroShowcaseScope.TopBar(
     navController: NavController,
     viewModel: TopBarViewModel = hiltViewModel(),
     audioViewModel: AudioViewModel
@@ -100,6 +104,7 @@ fun TopBar(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
+
                         if (canPop) {
                             IconButton(
                                 onClick = {
@@ -137,6 +142,19 @@ fun TopBar(
                     Row {
                         if (showShuffle) {
                             CustomIconButton(
+                                modifier = Modifier.introShowCaseTarget(
+                                    index = 6,
+                                    style = ShowcaseStyle.Default.copy(
+                                        backgroundColor = MaterialTheme.colorScheme.primary,
+                                        backgroundAlpha = 0.98f,
+                                        targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                    ),
+                                    content = {
+                                        ButtonIntro(
+                                            stringResource(R.string.INTRO_RANDOM_TITLE),
+                                            stringResource(R.string.INTRO_RANDOM_DESC)
+                                        )
+                                    }),
                                 icon = Icons.Filled.Shuffle,
                                 description = stringResource(id = R.string.RANDOM_POEM),
                                 onClick = {
@@ -162,7 +180,20 @@ fun TopBar(
                             )
                         }
                         if (showHistory)
-                            IconButton(onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
+                            IconButton(modifier = Modifier.introShowCaseTarget(
+                                index = 5,
+                                style = ShowcaseStyle.Default.copy(
+                                    backgroundColor = MaterialTheme.colorScheme.primary,
+                                    backgroundAlpha = 0.98f,
+                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                content = {
+                                    ButtonIntro(
+                                        stringResource(R.string.INTRO_HISTORY_TITLE),
+                                        stringResource(R.string.INTRO_HISTORY_DESC)
+                                    )
+                                }
+                            ), onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
                                 Icon(
                                     imageVector = Icons.Filled.History,
                                     contentDescription = "History",
@@ -171,6 +202,7 @@ fun TopBar(
                             }
                     }
                 }
+
             },
         )
         AudioControlBar(navController = navController, viewModel = audioViewModel)
