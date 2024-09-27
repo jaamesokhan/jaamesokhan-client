@@ -33,7 +33,7 @@ class TopBarViewModel @Inject constructor(
     var showHistoryIcon by mutableStateOf(false)
         private set
 
-
+    var showRandomOptions by mutableStateOf(false)
 
     fun updateBreadCrumbs(path: NavBackStackEntry?) {
         viewModelScope.launch {
@@ -52,6 +52,14 @@ class TopBarViewModel @Inject constructor(
     fun shouldShowHistory(navStack: NavBackStackEntry?) {
         val path = getPath(navStack)
         showHistoryIcon = when (path) {
+            AppRoutes.DOWNLOADED_POETS_SCREEN -> true
+            else -> false
+        }
+    }
+
+    fun shouldShowRandomOptions(navStack: NavBackStackEntry?) {
+        val path = getPath(navStack)
+        showRandomOptions = when (path) {
             AppRoutes.DOWNLOADED_POETS_SCREEN -> true
             else -> false
         }

@@ -82,7 +82,14 @@ interface PoemDao {
         FROM poems pm
         JOIN categories c ON c.id = pm.category_id
         JOIN poets pt ON pt.id = c.poet_id
-        WHERE (:categoryId IS NULL OR c.id IN category_tree)
+        WHERE 
+            (
+                (:categoryId IS NULL 
+                AND 
+                (c.random_selected = 1 OR c.random_selected IS NULL))
+            OR 
+                (c.id IN category_tree)
+            )
         ORDER BY RANDOM()
         LIMIT 1
     """
