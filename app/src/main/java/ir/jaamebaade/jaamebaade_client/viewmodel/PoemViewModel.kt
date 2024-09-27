@@ -75,11 +75,11 @@ class PoemViewModel @AssistedInject constructor(
     private val _showAppIntro = MutableStateFlow(true)
     val showAppIntro = _showAppIntro.asStateFlow()
 
-    fun share(verses: List<VerseWithHighlights>, context: Context) {
-        val poemText = verses.joinToString("\n") { it.verse.text }
+    fun share(verses: List<VerseWithHighlights>, poetName: String?, context: Context) {
+        val textToCopy = verses.joinToString("\n") { it.verse.text }.plus("\n\n$poetName")
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, poemText)
+            putExtra(Intent.EXTRA_TEXT, textToCopy)
             type = "text/plain"
         }
 
