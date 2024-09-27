@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -47,8 +48,9 @@ fun DownloadablePoetsScreen(
                 TextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    label = { Text("نام شاعر") },
-                    modifier = Modifier.fillMaxWidth()
+                    label = { Text("نام شاعر", style = MaterialTheme.typography.labelSmall) },
+                    modifier = Modifier.fillMaxWidth(),
+                    textStyle = MaterialTheme.typography.bodyMedium,
                 )
                 DownloadablePoetsList(poetViewModel, poets.filter { it.name.contains(searchQuery) })
             }

@@ -203,7 +203,7 @@ fun NavbarItem(
                 imageVector = if (isSelected) selectedIcon else idleIcon,
                 contentDescription = contentDescription,
                 modifier = Modifier.size(36.dp),
-                tint = MaterialTheme.colorScheme.inversePrimary
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
     }

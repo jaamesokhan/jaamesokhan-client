@@ -113,7 +113,7 @@ fun SearchBar(
                     color = MaterialTheme.colorScheme.onSurface
                 )
             },
-            textStyle = MaterialTheme.typography.headlineSmall,
+            textStyle = MaterialTheme.typography.bodyMedium,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
                 onSearchQueryIconClicked(query)
