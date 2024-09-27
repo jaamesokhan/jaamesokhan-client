@@ -27,6 +27,7 @@ interface VerseDao {
     @Query("SELECT * FROM verses WHERE poem_id = :poemId ORDER BY verse_order")
     fun getPoemVerses(poemId: Int): List<Verse>
 
+    @Transaction
     @Query("SELECT * FROM verses WHERE poem_id = :poemId ORDER BY verse_order")
     fun getPoemVersesWithHighlights(poemId: Int): List<VerseWithHighlights>
 
@@ -45,10 +46,11 @@ interface VerseDao {
                 c.text AS category_text, 
                 c.poet_id AS category_poet_id,
                 c.parent_id AS category_parent_id,
+                c.random_selected AS category_random_selected,
                 pt.id AS poet_id, 
                 pt.name AS poet_name,
                 pt.description AS poet_description,
-                pt.imageUrl AS poet_image_url
+                pt.imageUrl AS poet_imageUrl
             FROM verses v
             JOIN poems p ON v.poem_id = p.id
             JOIN categories c ON p.category_id = c.id

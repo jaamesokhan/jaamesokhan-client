@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
 
@@ -14,7 +15,8 @@ import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
         parentColumns = ["id"],
         childColumns = ["poet_id"],
         onDelete = ForeignKey.CASCADE
-    )]
+    )],
+    indices = [Index(value = ["poet_id"])]
 )
 data class Category(
     @PrimaryKey val id: Int,

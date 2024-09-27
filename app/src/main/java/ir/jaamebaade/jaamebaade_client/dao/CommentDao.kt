@@ -35,7 +35,7 @@ interface CommentDao {
                 pt.id AS poet_id, 
                 pt.name AS poet_name,
                 pt.description AS poet_description,
-                pt.imageUrl AS poet_image_url
+                pt.imageUrl AS poet_imageUrl
             FROM comments cm
             JOIN poems p ON cm.poem_id = p.id
             JOIN categories c ON p.category_id = c.id
