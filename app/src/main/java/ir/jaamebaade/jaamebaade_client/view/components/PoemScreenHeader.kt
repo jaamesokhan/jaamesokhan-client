@@ -41,6 +41,7 @@ fun PoemScreenHeader(
     navController: NavController,
     poetId: Int,
     poemId: Int,
+    poetName: String?,
     modifier: Modifier = Modifier,
     poemViewModel: PoemViewModel,
     showVerseNumbers: Boolean,
@@ -165,7 +166,7 @@ fun PoemScreenHeader(
                                 )
                             }
                         ),
-                    onClick = { poemViewModel.share(poemViewModel.verses.value, context) }) {
+                    onClick = { poemViewModel.share(poemViewModel.verses.value, poetName, context) }) {
                     Icon(
                         imageVector = Icons.Default.Share,
                         contentDescription = stringResource(R.string.SHARE),

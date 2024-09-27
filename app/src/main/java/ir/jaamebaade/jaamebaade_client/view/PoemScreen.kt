@@ -152,6 +152,7 @@ fun PoemScreen(
             navController = navController,
             poetId = poetId,
             poemId = poemId,
+            poetName = path?.poet?.name,
             poemViewModel = poemViewModel,
             showVerseNumbers = showVerseNumbers,
             selectMode = selectMode,
