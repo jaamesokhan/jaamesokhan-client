@@ -69,7 +69,7 @@ fun IntroShowcaseScope.TopBar(
 
     val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState()
-    var showAdvancedRandomPoemOptions by remember { mutableStateOf(false) }
+    var showRandomPoemOptions by remember { mutableStateOf(false) }
 
 
     LaunchedEffect(key1 = backStackEntry) {
@@ -173,7 +173,7 @@ fun IntroShowcaseScope.TopBar(
                                     }
                                 },
                                 onLongClick = {
-                                    showAdvancedRandomPoemOptions = true
+                                    showRandomPoemOptions = true
                                 }
                             )
                         }
@@ -204,9 +204,9 @@ fun IntroShowcaseScope.TopBar(
             },
         )
         AudioControlBar(navController = navController, viewModel = audioViewModel)
-        if (showRandomOptions && showAdvancedRandomPoemOptions) {
-            AdvancedRandomPoemOptions(sheetState = sheetState) {
-                showAdvancedRandomPoemOptions = false
+        if (showRandomOptions && showRandomPoemOptions) {
+            RandomPoemOptions(sheetState = sheetState) {
+                showRandomPoemOptions = false
             }
         }
     }

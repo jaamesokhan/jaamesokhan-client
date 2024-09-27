@@ -23,7 +23,7 @@ import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AdvancedRandomPoemOptions(
+fun RandomPoemOptions(
     modifier: Modifier = Modifier,
     downloadedPoetViewModel: DownloadedPoetViewModel = hiltViewModel(),
     sheetState: SheetState,
@@ -43,13 +43,13 @@ fun AdvancedRandomPoemOptions(
                 .verticalScroll(rememberScrollState())
         ) {
             Text(
-                text = stringResource(id = R.string.ADVANCED_RANDOM_POEM_OPTIONS),
+                text = stringResource(id = R.string.RANDOM_POEM_OPTIONS),
                 style = MaterialTheme.typography.titleMedium
             )
 
             Column {
                 poetsWithCategories?.let { categories ->
-                    RecursiveList(categories = categories)
+                    RecursiveCheckList(categories = categories)
                 }
             }
         }
@@ -57,7 +57,7 @@ fun AdvancedRandomPoemOptions(
 }
 
 @Composable
-private fun RecursiveList(
+private fun RecursiveCheckList(
     categories: List<CategoryGraphNode>,
 ) {
     categories.forEach { category ->
@@ -74,7 +74,7 @@ private fun RecursiveList(
             canExpand = canExpand
         ) {
             if (canExpand) {
-                RecursiveList(categories = category.subCategories)
+                RecursiveCheckList(categories = category.subCategories)
             }
         }
     }
