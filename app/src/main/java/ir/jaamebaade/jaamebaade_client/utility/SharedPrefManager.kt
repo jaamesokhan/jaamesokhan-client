@@ -17,6 +17,7 @@ class SharedPrefManager(
         const val APP_THEME_TYPE_KEY = "AppThemeType"
         const val SHOW_APP_INTRO_POEM_KEY = "ShowAppIntroPoem"
         const val SHOW_APP_INTRO_MANI_KEY = "ShowAppIntroMain"
+        const val NOTIFICATION_PERMISSION_KEY = "NotificationPermission"
     }
 
     private val sharedPreferences: SharedPreferences =
@@ -100,5 +101,13 @@ class SharedPrefManager(
 
     fun setShowAppIntroMain(value: Boolean) {
         sharedPreferences.edit().putBoolean(SHOW_APP_INTRO_MANI_KEY, value).apply()
+    }
+
+    fun setNotificationPermissionPreference(preference: Boolean) {
+        sharedPreferences.edit().putBoolean(NOTIFICATION_PERMISSION_KEY, preference).apply()
+    }
+
+    fun getNotificationPermissionPreference(): Boolean {
+        return sharedPreferences.getBoolean(NOTIFICATION_PERMISSION_KEY, true)
     }
 }

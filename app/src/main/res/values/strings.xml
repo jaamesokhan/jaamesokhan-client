@@ -32,6 +32,9 @@
     <!--  Messages  -->
     <string name="NO_POET_DOWNLOADED">هیچ شاعری دانلود نشده است!</string>
     <string name="NO_HIGHLIGHTS_FOUND">متنی را هایلایت نکرده‌اید!</string>
+    <string name="NOTIFICATION_ACCESS_BODY">اعلانبرای اطلاع از انتشار آخرین نسخه، لطفا به برنامه دسترسی ارسال اعلان بدهید.</string>
+    <string name="YES">بله مایلم</string>
+    <string name="NOT_NOW">الآن نه</string>
 
     <!--  Titles  -->
     <string name="FONT_FAMILY_TEXT">فونت برنامه:</string>
@@ -42,6 +45,7 @@
     <string name="VERSE_NUMBER">شماره بیت</string>
     <string name="MERGE_HIGHLIGHTS">ادغام هایلایت‌ها</string>
     <string name="RECENT_SEARCHES">جستجوهای اخیر شما</string>
+    <string name="NOTIFICATION_ACCESS_TITLE">دسترسی ارسال اعلان</string>
 
 
     <!--  Icon Descriptions  -->
