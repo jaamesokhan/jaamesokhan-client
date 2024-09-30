@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -12,7 +13,8 @@ import androidx.room.PrimaryKey
         parentColumns = ["id"],
         childColumns = ["verse_id"],
         onDelete = ForeignKey.CASCADE
-    )]
+    )],
+    indices = [Index(value = ["verse_id"])]
 )
 data class Highlight(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
