@@ -5,12 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatusManager
-import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,13 +27,20 @@ class DownloadedPoetViewModel @Inject constructor(
     var poets by mutableStateOf<List<Poet>?>(null)
         private set
 
+    var categories by mutableStateOf<List<CategoryGraphNode>?>(null)
+        private set
+
     init {
         getAllPoets()
+        getAllCategories()
     }
 
-    suspend fun getPoetCategoryId(poetId: Int): Int {
-        return withContext(Dispatchers.IO) {
-            categoryRepository.getPoetCategoryId(poetId)
+
+    fun saveSelectedCategoriesForRandomPoem() {
+        viewModelScope.launch {
+            categories?.let {
+                saveSelectedCategories(it)
+            }
         }
     }
 
@@ -53,9 +62,41 @@ class DownloadedPoetViewModel @Inject constructor(
         downloadStatusManager.saveDownloadStatus(poetId, DownloadStatus.NotDownloaded)
     }
 
+    private fun createCategoryGraph(
+        categories: List<Category>,
+        parentId: Int = 0,
+    ): List<CategoryGraphNode> {
+        val result = mutableListOf<CategoryGraphNode>()
+        categories.filter { it.parentId == parentId }.forEach { category ->
+            val node = category.toGraphNode()
+            val children = categories.filter { it.parentId == category.id }
+            val childrenGraph = children.map { it.toGraphNode() }
+            node.subCategories = childrenGraph
+            childrenGraph.forEach {
+                it.subCategories = createCategoryGraph(categories, it.category.id)
+            }
+            result.add(node)
+        }
+        return result
+    }
+
+    private fun getAllCategories() {
+        viewModelScope.launch {
+            val result = getAllCategoriesFromRepository()
+            categories = createCategoryGraph(result)
+        }
+    }
+
+
     private fun getAllPoets() {
         viewModelScope.launch {
             poets = getAllDownloadedPoets()
+        }
+    }
+
+    suspend fun getPoetCategoryId(poetId: Int): Int {
+        return withContext(Dispatchers.IO) {
+            categoryRepository.getPoetCategoryId(poetId)
         }
     }
 
@@ -64,5 +105,27 @@ class DownloadedPoetViewModel @Inject constructor(
             poetRepository.getAllPoets()
         }
         return res
+    }
+
+    private suspend fun getAllCategoriesFromRepository(): List<Category> {
+        val res = withContext(Dispatchers.IO) {
+            categoryRepository.getAllCategories()
+        }
+        return res
+    }
+
+
+    private suspend fun saveSelectedCategories(categories: List<CategoryGraphNode>) {
+        withContext(Dispatchers.IO) {
+            categories.forEach { category ->
+                saveSelectedCategoriesRecursively(category)
+            }
+        }
+    }
+
+    private fun saveSelectedCategoriesRecursively(category: CategoryGraphNode) {
+        category.category.randomSelected = category.isSelectedForRandom.value
+        categoryRepository.updateCategoryRandomSelectedFlag(category.category.id, category.isSelectedForRandom.value)
+        category.subCategories.forEach { saveSelectedCategoriesRecursively(it) }
     }
 }

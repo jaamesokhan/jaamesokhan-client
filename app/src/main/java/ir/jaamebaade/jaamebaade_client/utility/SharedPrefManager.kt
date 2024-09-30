@@ -15,6 +15,8 @@ class SharedPrefManager(
         const val USERNAME_KEY = "Username"
         const val AUTH_TOKEN_KEY = "AuthToken"
         const val APP_THEME_TYPE_KEY = "AppThemeType"
+        const val SHOW_APP_INTRO_POEM_KEY = "ShowAppIntroPoem"
+        const val SHOW_APP_INTRO_MANI_KEY = "ShowAppIntroMain"
     }
 
     private val sharedPreferences: SharedPreferences =
@@ -81,5 +83,22 @@ class SharedPrefManager(
 
     fun getHighlightMergeToggleState(): Boolean {
         return sharedPreferences.getBoolean("highlightMergeToggleState", false)
+    }
+
+    fun setShowAppIntroPoem(showIntro: Boolean) {
+        sharedPreferences.edit().putBoolean(SHOW_APP_INTRO_POEM_KEY, showIntro).apply()
+    }
+
+    fun getShowAppIntroPoem(): Boolean {
+        return sharedPreferences.getBoolean(SHOW_APP_INTRO_POEM_KEY, true)
+
+    }
+
+    fun getShowAppIntroMain(): Boolean {
+        return sharedPreferences.getBoolean(SHOW_APP_INTRO_MANI_KEY, true)
+    }
+
+    fun setShowAppIntroMain(value: Boolean) {
+        sharedPreferences.edit().putBoolean(SHOW_APP_INTRO_MANI_KEY, value).apply()
     }
 }

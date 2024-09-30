@@ -26,10 +26,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navOptions
+import com.canopas.lib.showcase.IntroShowcaseScope
+import com.canopas.lib.showcase.component.ShowcaseStyle
+import ir.jaamebaade.jaamebaade_client.R
 
 val routeMap = mapOf(
     "downloadedPoetsScreen" to "downloadedPoetsScreen",
@@ -45,9 +49,8 @@ val routeMap = mapOf(
 )
 
 @Composable
-fun Navbar(navController: NavController) {
+fun IntroShowcaseScope.Navbar(navController: NavController) {
     val currentRoute = currentRoute(navController, routeMap)
-
     Row(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.primary)
@@ -57,13 +60,28 @@ fun Navbar(navController: NavController) {
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
+
         NavbarItem(
             route = "downloadedPoetsScreen",
             currentRoute = currentRoute,
             idleIcon = Icons.Outlined.Home,
             selectedIcon = Icons.Filled.Home,
             contentDescription = "Home",
-            navController = navController
+            navController = navController,
+            modifier = Modifier.introShowCaseTarget(
+                index = 0,
+                style = ShowcaseStyle.Default.copy(
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    backgroundAlpha = 0.98f,
+                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                content = {
+                    ButtonIntro(
+                        stringResource(R.string.INTRO_HOME_TITLE),
+                        stringResource(R.string.INTRO_HOME_DESC)
+                    )
+                }
+            )
         )
 
         NavbarItem(
@@ -72,7 +90,21 @@ fun Navbar(navController: NavController) {
             idleIcon = Icons.Outlined.FavoriteBorder,
             selectedIcon = Icons.Filled.Favorite,
             contentDescription = "Favorites",
-            navController = navController
+            navController = navController,
+            modifier = Modifier.introShowCaseTarget(
+                index = 1,
+                style = ShowcaseStyle.Default.copy(
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    backgroundAlpha = 0.98f,
+                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                content = {
+                    ButtonIntro(
+                        stringResource(R.string.INTRO_LIKE_TITLE),
+                        stringResource(R.string.INTRO_LIKE_DESC)
+                    )
+                }
+            )
         )
 
         NavbarItem(
@@ -81,7 +113,21 @@ fun Navbar(navController: NavController) {
             idleIcon = Icons.Outlined.Search,
             selectedIcon = Icons.Filled.Search,
             contentDescription = "Search",
-            navController = navController
+            navController = navController,
+            modifier = Modifier.introShowCaseTarget(
+                index = 2,
+                style = ShowcaseStyle.Default.copy(
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    backgroundAlpha = 0.98f,
+                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                content = {
+                    ButtonIntro(
+                        stringResource(R.string.INTRO_SEARCH_TITLE),
+                        stringResource(R.string.INTRO_SEARCH_DESC)
+                    )
+                }
+            )
         )
 
         NavbarItem(
@@ -90,8 +136,23 @@ fun Navbar(navController: NavController) {
             idleIcon = Icons.Outlined.Settings,
             selectedIcon = Icons.Filled.Settings,
             contentDescription = "Settings",
-            navController = navController
+            navController = navController,
+            modifier = Modifier.introShowCaseTarget(
+                index = 3,
+                style = ShowcaseStyle.Default.copy(
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    backgroundAlpha = 0.98f,
+                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                content = {
+                    ButtonIntro(
+                        stringResource(R.string.INTRO_SETTING_TITLE),
+                        stringResource(R.string.INTRO_SETTING_DESC)
+                    )
+                }
+            )
         )
+
     }
 }
 
@@ -102,10 +163,12 @@ fun NavbarItem(
     idleIcon: ImageVector,
     selectedIcon: ImageVector,
     contentDescription: String,
-    navController: NavController
+    navController: NavController,
+    modifier: Modifier = Modifier
 ) {
     val isSelected = currentRoute == route
     IconButton(
+        modifier = modifier,
         onClick = {
             var myInclusive = false
             if (currentRoute != route) {
@@ -119,7 +182,6 @@ fun NavbarItem(
             }
 
         },
-        modifier = Modifier
     ) {
         Box(
             modifier = Modifier
@@ -141,7 +203,7 @@ fun NavbarItem(
                 imageVector = if (isSelected) selectedIcon else idleIcon,
                 contentDescription = contentDescription,
                 modifier = Modifier.size(36.dp),
-                tint = MaterialTheme.colorScheme.inversePrimary
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
     }

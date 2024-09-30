@@ -19,10 +19,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
-import ir.jaamebaade.jaamebaade_client.viewmodel.VersesViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 
 @Composable
-fun AudioMenu(viewModel: VersesViewModel, audioViewModel: AudioViewModel) {
+fun AudioMenu(viewModel: PoemViewModel, audioViewModel: AudioViewModel, modifier: Modifier = Modifier) {
     val audioUrls = viewModel.urls.collectAsState()
     var expanded by remember { mutableStateOf(false) }
     var fetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
@@ -41,8 +41,8 @@ fun AudioMenu(viewModel: VersesViewModel, audioViewModel: AudioViewModel) {
     }
 
     Box(
-        modifier = Modifier
-            .size(28.dp)
+        modifier = modifier
+            .size(24.dp)
     ) {
         IconButton(onClick = {
             expanded = true

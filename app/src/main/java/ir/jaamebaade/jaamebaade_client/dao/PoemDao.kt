@@ -9,6 +9,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import ir.jaamebaade.jaamebaade_client.model.Pair
 import ir.jaamebaade.jaamebaade_client.model.Poem
+import ir.jaamebaade.jaamebaade_client.model.PoemWithFirstVerse
 import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 
 @Dao
@@ -33,8 +34,24 @@ interface PoemDao {
     @Query("SELECT * FROM poems WHERE category_id = :categoryId")
     fun getPoemsByCategory(categoryId: Int): List<Poem>
 
-    @Query("SELECT * FROM poems WHERE category_id = :categoryId")
-    fun getPoemPagingSource(categoryId: Int): PagingSource<Int, Poem>
+    @Query(
+        """
+            SELECT
+                p.id AS poem_id,
+                p.title AS poem_title,
+                p.category_id AS poem_category_id,
+                v.id AS verse_id,
+                v.text AS verse_text,
+                v.verse_order AS verse_verse_order,
+                v.position AS verse_position,
+                v.poem_id AS verse_poem_id
+            FROM poems p
+            JOIN verses v ON v.poem_id = p.id
+            WHERE p.category_id = :categoryId 
+            AND v.verse_order = 1
+        """
+    )
+    fun getPoemPagingSource(categoryId: Int): PagingSource<Int, PoemWithFirstVerse>
 
     @Query("SELECT MIN(id) as first, MAX(id) as second FROM poems WHERE category_id = :categoryId")
     fun getFirstAndLastWithCategoryId(categoryId: Int): Pair
@@ -65,7 +82,14 @@ interface PoemDao {
         FROM poems pm
         JOIN categories c ON c.id = pm.category_id
         JOIN poets pt ON pt.id = c.poet_id
-        WHERE (:categoryId IS NULL OR c.id IN category_tree)
+        WHERE 
+            (
+                (:categoryId IS NULL 
+                AND 
+                (c.random_selected = 1 OR c.random_selected IS NULL))
+            OR 
+                (c.id IN category_tree)
+            )
         ORDER BY RANDOM()
         LIMIT 1
     """

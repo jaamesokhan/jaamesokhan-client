@@ -22,16 +22,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -39,6 +44,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.canopas.lib.showcase.IntroShowcaseScope
+import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
@@ -47,7 +54,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
+fun IntroShowcaseScope.TopBar(
     navController: NavController,
     viewModel: TopBarViewModel = hiltViewModel(),
     audioViewModel: AudioViewModel
@@ -61,16 +68,21 @@ fun TopBar(
                 && backStackEntry?.destination?.route != AppRoutes.FAVORITE_SCREEN.toString())
 
     val context = LocalContext.current
+    val sheetState = rememberModalBottomSheetState()
+    var showRandomPoemOptions by remember { mutableStateOf(false) }
+
 
     LaunchedEffect(key1 = backStackEntry) {
         viewModel.updateBreadCrumbs(backStackEntry)
         viewModel.shouldShowShuffle(backStackEntry)
         viewModel.shouldShowHistory(backStackEntry)
+        viewModel.shouldShowRandomOptions(backStackEntry)
     }
 
     val breadCrumbs = viewModel.breadCrumbs
     val showShuffle = viewModel.showShuffleIcon
     val showHistory = viewModel.showHistoryIcon
+    val showRandomOptions = viewModel.showRandomOptions
     val coroutineScope = rememberCoroutineScope()
 
     BackHandler(enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
@@ -90,6 +102,7 @@ fun TopBar(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
+
                         if (canPop) {
                             IconButton(
                                 onClick = {
@@ -124,33 +137,61 @@ fun TopBar(
                             maxLines = 1
                         )
                     }
-                    Row() {
+                    Row {
                         if (showShuffle) {
-                            IconButton(onClick = {
-                                coroutineScope.launch {
-                                    val poemWithPoet = viewModel.findShuffledPoem(backStackEntry)
-                                    if (poemWithPoet == null) {
-                                        Toast.makeText(
-                                            context,
-                                            context.getString(R.string.NO_POET_DOWNLOADED),
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } else {
-                                        navController.navigate(
-                                            "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
+                            CustomIconButton(
+                                modifier = Modifier.introShowCaseTarget(
+                                    index = 6,
+                                    style = ShowcaseStyle.Default.copy(
+                                        backgroundColor = MaterialTheme.colorScheme.primary,
+                                        backgroundAlpha = 0.98f,
+                                        targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                    ),
+                                    content = {
+                                        ButtonIntro(
+                                            stringResource(R.string.INTRO_RANDOM_TITLE),
+                                            stringResource(R.string.INTRO_RANDOM_DESC)
                                         )
+                                    }),
+                                icon = Icons.Filled.Shuffle,
+                                description = stringResource(id = R.string.RANDOM_POEM),
+                                onClick = {
+                                    coroutineScope.launch {
+                                        val poemWithPoet =
+                                            viewModel.findShuffledPoem(backStackEntry)
+                                        if (poemWithPoet == null) {
+                                            Toast.makeText(
+                                                context,
+                                                context.getString(R.string.NO_POET_DOWNLOADED),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        } else {
+                                            navController.navigate(
+                                                "${AppRoutes.POEM}/${poemWithPoet.poet.id}/${poemWithPoet.poem.id}/-1"
+                                            )
+                                        }
                                     }
+                                },
+                                onLongClick = {
+                                    showRandomPoemOptions = true
                                 }
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Shuffle,
-                                    contentDescription = "shuffle",
-                                    tint = MaterialTheme.colorScheme.onPrimary,
-                                )
-                            }
+                            )
                         }
                         if (showHistory)
-                            IconButton(onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
+                            IconButton(modifier = Modifier.introShowCaseTarget(
+                                index = 5,
+                                style = ShowcaseStyle.Default.copy(
+                                    backgroundColor = MaterialTheme.colorScheme.primary,
+                                    backgroundAlpha = 0.98f,
+                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                content = {
+                                    ButtonIntro(
+                                        stringResource(R.string.INTRO_HISTORY_TITLE),
+                                        stringResource(R.string.INTRO_HISTORY_DESC)
+                                    )
+                                }
+                            ), onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
                                 Icon(
                                     imageVector = Icons.Filled.History,
                                     contentDescription = "History",
@@ -159,11 +200,18 @@ fun TopBar(
                             }
                     }
                 }
+
             },
         )
         AudioControlBar(navController = navController, viewModel = audioViewModel)
+        if (showRandomOptions && showRandomPoemOptions) {
+            RandomPoemOptions(sheetState = sheetState) {
+                showRandomPoemOptions = false
+            }
+        }
     }
 }
+
 
 private fun onBackButtonClicked(
     backStackEntry: NavBackStackEntry?,

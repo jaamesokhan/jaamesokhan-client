@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun RoundButton(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     icon: ImageVector,
     contentDescription: String,
     onClick: () -> Unit

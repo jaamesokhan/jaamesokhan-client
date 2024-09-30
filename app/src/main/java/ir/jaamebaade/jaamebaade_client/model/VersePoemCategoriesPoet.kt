@@ -10,6 +10,11 @@ data class VersePoemCategoriesPoet(
     val poet: Poet
 )
 
-fun VersePoemCategoriesPoet.toPathHeaderText() = "${
-    categories.joinToString(separator = " > ") { it.text }
-} > ${poem.title}"
+fun VersePoemCategoriesPoet.toPathHeaderText(includePoemTitle: Boolean = true): String {
+    val categoryPath = categories.joinToString(separator = " > ") { it.text }
+    return if (includePoemTitle) {
+        "$categoryPath > ${poem.title}"
+    } else {
+        categoryPath
+    }
+}

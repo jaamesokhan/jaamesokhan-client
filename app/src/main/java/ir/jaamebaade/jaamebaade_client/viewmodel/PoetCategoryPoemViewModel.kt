@@ -9,14 +9,14 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import ir.jaamebaade.jaamebaade_client.model.Category
-import ir.jaamebaade.jaamebaade_client.model.Poem
-import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
-import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.model.Category
+import ir.jaamebaade.jaamebaade_client.model.PoemWithFirstVerse
+import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
+import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -33,7 +33,7 @@ class PoetCategoryPoemViewModel @AssistedInject constructor(
     var categories by mutableStateOf<List<Category>>(emptyList())
         private set
 
-    val poemsPageData: Flow<PagingData<Poem>> = Pager(
+    val poemsPageData: Flow<PagingData<PoemWithFirstVerse>> = Pager(
         config = PagingConfig(
             pageSize = 20,
             enablePlaceholders = false

@@ -15,35 +15,42 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.api.AudioApiClient
 import ir.jaamebaade.jaamebaade_client.api.SyncAudioClient
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
+import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.Highlight
 import ir.jaamebaade.jaamebaade_client.model.HistoryRecord
 import ir.jaamebaade.jaamebaade_client.model.Pair
+import ir.jaamebaade.jaamebaade_client.model.Poem
+import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 import ir.jaamebaade.jaamebaade_client.model.Status
+import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 import ir.jaamebaade.jaamebaade_client.repository.BookmarkRepository
+import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
 import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
-import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
+import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@HiltViewModel(assistedFactory = VersesViewModel.VerseViewModelFactory::class)
-class VersesViewModel @AssistedInject constructor(
+@HiltViewModel(assistedFactory = PoemViewModel.VerseViewModelFactory::class)
+class PoemViewModel @AssistedInject constructor(
     @Assisted("poemId") val poemId: Int,
     @Assisted("poetId") val poetId: Int,
     private val versesRepository: VerseRepository,
     private val highlightRepository: HighlightRepository,
-    private val poetRepository: PoetRepository,
     private val poemRepository: PoemRepository,
     private val bookmarkRepository: BookmarkRepository,
     private val audioApiClient: AudioApiClient,
     private val syncAudioClient: SyncAudioClient,
     private val historyRepository: HistoryRepository,
+    private val categoryRepository: CategoryRepository,
+    private val sharedPrefManager: SharedPrefManager
 ) : ViewModel() {
 
     private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
@@ -64,11 +71,15 @@ class VersesViewModel @AssistedInject constructor(
 
     private var lastVisitedPoemId: Int? = null
 
-    fun share(verses: List<VerseWithHighlights>, context: Context) {
-        val poemText = verses.joinToString("\n") { it.verse.text }
+
+    private val _showAppIntro = MutableStateFlow(true)
+    val showAppIntro = _showAppIntro.asStateFlow()
+
+    fun share(verses: List<VerseWithHighlights>, poetName: String?, context: Context) {
+        val textToCopy = verses.joinToString("\n") { it.verse.text }.plus("\n\n$poetName")
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, poemText)
+            putExtra(Intent.EXTRA_TEXT, textToCopy)
             type = "text/plain"
         }
 
@@ -81,13 +92,14 @@ class VersesViewModel @AssistedInject constructor(
         fun create(
             @Assisted("poemId") poemId: Int,
             @Assisted("poetId") poetId: Int,
-        ): VersesViewModel
+        ): PoemViewModel
     }
 
 
     init {
         fetchPoemVerses()
         fetchIsBookmarked()
+        getShowAppIntroState()
     }
 
     fun fetchRecitationsForPoem(onSuccess: () -> Unit, onFailure: () -> Unit) {
@@ -97,6 +109,19 @@ class VersesViewModel @AssistedInject constructor(
                 onSuccess = onSuccess,
                 onFailure = onFailure
             )
+        }
+    }
+
+    fun setShowAppIntroState(showIntro: Boolean) {
+        viewModelScope.launch {
+            sharedPrefManager.setShowAppIntroPoem(showIntro)
+            _showAppIntro.value = showIntro
+        }
+    }
+
+    private fun getShowAppIntroState() {
+        viewModelScope.launch {
+            _showAppIntro.value = sharedPrefManager.getShowAppIntroPoem()
         }
     }
 
@@ -145,13 +170,6 @@ class VersesViewModel @AssistedInject constructor(
             highlightRepository.insertHighlight(highlight)
         }
         return highlight
-    }
-
-    suspend fun getPoetName(id: Int): String {
-        val res = withContext(Dispatchers.IO) {
-            poetRepository.getPoetById(id).name
-        }
-        return res
     }
 
     fun onBookmarkClicked() {
@@ -225,5 +243,36 @@ class VersesViewModel @AssistedInject constructor(
         }
     }
 
+    suspend fun getPoemPath(poemId: Int): VersePoemCategoriesPoet {
+        val res = withContext(Dispatchers.IO) {
+
+            val poemWithPoet = fetchPoemWithPoet(poemId)!!
+            VersePoemCategoriesPoet(
+                verse = null,
+                poem = poemWithPoet.poem,
+                poet = poemWithPoet.poet,
+                categories = fetchAllCategories(poemWithPoet.poem),
+            )
+        }
+
+
+        return res
+    }
+
+    private suspend fun fetchAllCategories(poem: Poem): List<Category> {
+        return withContext(Dispatchers.IO) {
+            categoryRepository.getAllParentsOfCategoryId(poem.categoryId)
+        }
+    }
+
+    private suspend fun fetchPoemWithPoet(poemId: Int): PoemWithPoet? {
+        return withContext(Dispatchers.IO) {
+            try {
+                poemRepository.getPoemWithPoet(poemId)
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
 
 }
