@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.model.Bookmark
 import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.Comment
 import ir.jaamebaade.jaamebaade_client.model.CommentPoemCategoriesPoet
@@ -41,6 +42,15 @@ class FavoritesViewModel @Inject constructor(
         getAllBookmarks()
         getAllHighlights()
         getAllComments()
+    }
+
+    fun deleteBookmark(bookmarkPoemCategoriesPoet: BookmarkPoemCategoriesPoet) {
+        viewModelScope.launch {
+            bookmarks = bookmarks.toMutableList().also {
+                it.remove(bookmarkPoemCategoriesPoet)
+            }
+            deleteBookmarkFromRepository(bookmarkPoemCategoriesPoet.bookmark)
+        }
     }
 
     fun deleteHighlight(highlightVersePoemPoet: HighlightVersePoemCategoriesPoet) {
@@ -85,6 +95,12 @@ class FavoritesViewModel @Inject constructor(
     private suspend fun deleteCommentFromRepository(comment: Comment) {
         withContext(Dispatchers.IO) {
             commentRepository.deleteComment(comment)
+        }
+    }
+
+    private suspend fun deleteBookmarkFromRepository(bookmark: Bookmark) {
+        withContext(Dispatchers.IO) {
+            bookmarkRepository.deleteBookmark(bookmark)
         }
     }
 
