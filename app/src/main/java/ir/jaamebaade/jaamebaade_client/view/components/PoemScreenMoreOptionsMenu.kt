@@ -2,8 +2,9 @@ package ir.jaamebaade.jaamebaade_client.view.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.SelectAll
@@ -50,11 +51,11 @@ fun PoemScreenMoreOptionsMenu(
                         Icon(
                             imageVector = if (showVerseNumbers) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                             contentDescription = if (showVerseNumbers) "Hide Verse Numbers" else "Show Verse Numbers",
-                            modifier = Modifier.padding(end = 8.dp)
                         )
+                        Spacer(modifier = Modifier.width(10.dp))
                         Text(
                             text = stringResource(R.string.VERSE_NUMBER),
-                            style = MaterialTheme.typography.headlineSmall
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 },
@@ -71,11 +72,13 @@ fun PoemScreenMoreOptionsMenu(
                         Icon(
                             imageVector = if (selectMode) Icons.Outlined.SelectAll else Icons.Filled.SelectAll,
                             contentDescription = if (selectMode) "Disable Select Mode" else "Enable Select Mode",
-                            modifier = Modifier.padding(end = 8.dp)
                         )
+                        Spacer(modifier = Modifier.width(10.dp))
                         Text(
-                            text = if (selectMode) "حالت عادی" else "حالت انتخاب مصرع",
-                            style = MaterialTheme.typography.headlineSmall
+                            text = if (selectMode) stringResource(R.string.NORMAL_MODE) else stringResource(
+                                R.string.SELECT_VERSES
+                            ),
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 },

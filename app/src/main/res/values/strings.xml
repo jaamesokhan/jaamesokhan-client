@@ -46,6 +46,8 @@
     <string name="MERGE_HIGHLIGHTS">ادغام هایلایت‌ها</string>
     <string name="RECENT_SEARCHES">جستجوهای اخیر شما</string>
     <string name="NOTIFICATION_ACCESS_TITLE">دسترسی ارسال اعلان</string>
+    <string name="SELECT_VERSES">انتخاب مصرع</string>
+    <string name="NORMAL_MODE">حالت عادی</string>
 
 
     <!--  Icon Descriptions  -->

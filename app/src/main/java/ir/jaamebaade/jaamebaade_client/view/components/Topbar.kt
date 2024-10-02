@@ -138,6 +138,28 @@ fun IntroShowcaseScope.TopBar(
                         )
                     }
                     Row {
+                        if (showHistory) {
+                            IconButton(modifier = Modifier.introShowCaseTarget(
+                                index = 5,
+                                style = ShowcaseStyle.Default.copy(
+                                    backgroundColor = MaterialTheme.colorScheme.primary,
+                                    backgroundAlpha = 0.98f,
+                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                content = {
+                                    ButtonIntro(
+                                        stringResource(R.string.INTRO_HISTORY_TITLE),
+                                        stringResource(R.string.INTRO_HISTORY_DESC)
+                                    )
+                                }
+                            ), onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
+                                Icon(
+                                    imageVector = Icons.Filled.History,
+                                    contentDescription = "History",
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                )
+                            }
+                        }
                         if (showShuffle) {
                             CustomIconButton(
                                 modifier = Modifier.introShowCaseTarget(
@@ -177,27 +199,6 @@ fun IntroShowcaseScope.TopBar(
                                 }
                             )
                         }
-                        if (showHistory)
-                            IconButton(modifier = Modifier.introShowCaseTarget(
-                                index = 5,
-                                style = ShowcaseStyle.Default.copy(
-                                    backgroundColor = MaterialTheme.colorScheme.primary,
-                                    backgroundAlpha = 0.98f,
-                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                                ),
-                                content = {
-                                    ButtonIntro(
-                                        stringResource(R.string.INTRO_HISTORY_TITLE),
-                                        stringResource(R.string.INTRO_HISTORY_DESC)
-                                    )
-                                }
-                            ), onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
-                                Icon(
-                                    imageVector = Icons.Filled.History,
-                                    contentDescription = "History",
-                                    tint = MaterialTheme.colorScheme.onPrimary,
-                                )
-                            }
                     }
                 }
 

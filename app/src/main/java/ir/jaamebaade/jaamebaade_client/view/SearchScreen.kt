@@ -40,6 +40,7 @@ fun SearchScreen(
     searchViewModel: SearchViewModel = hiltViewModel(),
 ) {
     var searchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
+    var finalSearchQuery by remember { mutableStateOf("") }
 
     val results = searchViewModel.results
     val poets = searchViewModel.allPoets
@@ -53,7 +54,7 @@ fun SearchScreen(
             onSearchFilterChanged = {
                 searchViewModel.poetFilter = it
             },
-            onSearchQueryChanged = { it ->
+            onSearchQueryChanged = {
                 searchViewModel.query = it
                 searchViewModel.onQueryChanged()
             },
@@ -75,13 +76,14 @@ fun SearchScreen(
         ) {
             if (it.length > 2) {
                 searchStatus = Status.LOADING
+                finalSearchQuery = it
                 searchViewModel.search(callBack = { searchStatus = Status.SUCCESS })
             }
         }
 
         SearchResults(
             results = results,
-            searchQuery = searchViewModel.query,
+            searchQuery = finalSearchQuery,
             searchStatus = searchStatus,
             navController = navController
         )
