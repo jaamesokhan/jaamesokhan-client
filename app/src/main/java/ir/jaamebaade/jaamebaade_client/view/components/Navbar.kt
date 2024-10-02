@@ -34,6 +34,7 @@ import androidx.navigation.navOptions
 import com.canopas.lib.showcase.IntroShowcaseScope
 import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
+import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 
 val routeMap = mapOf(
     "downloadedPoetsScreen" to "downloadedPoetsScreen",
@@ -55,14 +56,14 @@ fun IntroShowcaseScope.Navbar(navController: NavController) {
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.primary)
             .fillMaxWidth()
-            .padding(4.dp)
+            .padding(vertical = 4.dp)
             .navigationBarsPadding(),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         NavbarItem(
-            route = "downloadedPoetsScreen",
+            route = AppRoutes.DOWNLOADED_POETS_SCREEN,
             currentRoute = currentRoute,
             idleIcon = Icons.Outlined.Home,
             selectedIcon = Icons.Filled.Home,
@@ -85,7 +86,7 @@ fun IntroShowcaseScope.Navbar(navController: NavController) {
         )
 
         NavbarItem(
-            route = "favoriteScreen",
+            route = AppRoutes.FAVORITE_SCREEN,
             currentRoute = currentRoute,
             idleIcon = Icons.Outlined.FavoriteBorder,
             selectedIcon = Icons.Filled.Favorite,
@@ -108,7 +109,7 @@ fun IntroShowcaseScope.Navbar(navController: NavController) {
         )
 
         NavbarItem(
-            route = "searchScreen",
+            route = AppRoutes.SEARCH_SCREEN,
             currentRoute = currentRoute,
             idleIcon = Icons.Outlined.Search,
             selectedIcon = Icons.Filled.Search,
@@ -131,7 +132,7 @@ fun IntroShowcaseScope.Navbar(navController: NavController) {
         )
 
         NavbarItem(
-            route = "settingsScreen",
+            route = AppRoutes.SETTINGS_SCREEN,
             currentRoute = currentRoute,
             idleIcon = Icons.Outlined.Settings,
             selectedIcon = Icons.Filled.Settings,
@@ -158,7 +159,7 @@ fun IntroShowcaseScope.Navbar(navController: NavController) {
 
 @Composable
 fun NavbarItem(
-    route: String,
+    route: AppRoutes,
     currentRoute: String?,
     idleIcon: ImageVector,
     selectedIcon: ImageVector,
@@ -166,15 +167,15 @@ fun NavbarItem(
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    val isSelected = currentRoute == route
+    val isSelected = currentRoute == route.toString()
     IconButton(
         modifier = modifier,
         onClick = {
             var myInclusive = false
-            if (currentRoute != route) {
-                if (route == "downloadedPoetsScreen")
+            if (currentRoute != route.toString()) {
+                if (route == AppRoutes.DOWNLOADABLE_POETS_SCREEN)
                     myInclusive = true
-                navController.navigate(route, navOptions {
+                navController.navigate(route.toString(), navOptions {
                     popUpTo("downloadedPoetsScreen") {
                         inclusive = myInclusive
                     }

@@ -21,8 +21,8 @@ import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
+import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenActionHeader
 import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenBottomToolBar
-import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenHeader
 import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenPathHeader
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
@@ -148,7 +148,7 @@ fun PoemScreen(
             path = path,
         )
 
-        PoemScreenHeader(
+        PoemScreenActionHeader(
             navController = navController,
             poetId = poetId,
             poemId = poemId,

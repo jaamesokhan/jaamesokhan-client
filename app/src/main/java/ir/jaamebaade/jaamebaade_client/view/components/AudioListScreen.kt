@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AudioFile
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -95,15 +95,17 @@ fun AudioListScreen(
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
-                                    .padding(8.dp)
                                     .fillMaxWidth()
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.AudioFile,
+                                    imageVector = Icons.Default.Person,
                                     contentDescription = "audio for ${audioData.artist}"
                                 )
                                 Spacer(modifier = Modifier.width(10.dp))
-                                Text(text = audioData.artist)
+                                Text(
+                                    text = audioData.artist,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                         }
                     )

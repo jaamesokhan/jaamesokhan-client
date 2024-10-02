@@ -42,7 +42,7 @@ fun PoemScreenPathHeader(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.secondaryContainer)
             .fillMaxWidth()
-            .padding(4.dp),
+            .padding(vertical = 4.dp, horizontal = 10.dp),
     ) {
 
         IconButton(

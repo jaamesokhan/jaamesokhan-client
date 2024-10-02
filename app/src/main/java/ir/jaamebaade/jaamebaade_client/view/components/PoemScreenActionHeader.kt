@@ -37,7 +37,7 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 
 @Composable
-fun PoemScreenHeader(
+fun PoemScreenActionHeader(
     navController: NavController,
     poetId: Int,
     poemId: Int,
@@ -64,7 +64,7 @@ fun PoemScreenHeader(
             modifier = modifier
                 .fillMaxWidth()
                 .animateContentSize()
-                .padding(vertical = 8.dp, horizontal = 6.dp)
+                .padding(vertical = 8.dp, horizontal = 20.dp)
         ) {
             IntroShowcase(
                 showIntroShowCase = showAppIntro,
@@ -166,7 +166,13 @@ fun PoemScreenHeader(
                                 )
                             }
                         ),
-                    onClick = { poemViewModel.share(poemViewModel.verses.value, poetName, context) }) {
+                    onClick = {
+                        poemViewModel.share(
+                            poemViewModel.verses.value,
+                            poetName,
+                            context
+                        )
+                    }) {
                     Icon(
                         imageVector = Icons.Default.Share,
                         contentDescription = stringResource(R.string.SHARE),
