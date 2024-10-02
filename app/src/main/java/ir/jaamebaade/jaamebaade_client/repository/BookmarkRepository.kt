@@ -29,4 +29,8 @@ class BookmarkRepository @Inject constructor(appDatabase: AppDatabase) {
     fun getAllBookmarksWithPoemAndPoet(): List<BookmarkPoemPoet> {
         return bookmarkDao.getAllBookMarksWithPoemAndPoet()
     }
+
+    fun deleteBookmark(bookmark: Bookmark) {
+        bookmarkDao.removeBookmark(bookmark.poemId)
+    }
 }
