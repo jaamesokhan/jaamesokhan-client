@@ -1,6 +1,7 @@
 package ir.jaamebaade.jaamebaade_client
 
-import ir.jaamebaade.jaamebaade_client.viewmodel.MainIntroViewModel
+import android.Manifest
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextStyle
@@ -34,6 +37,7 @@ import ir.jaamebaade.jaamebaade_client.repository.FontRepository
 import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.JaamebaadeclientTheme
+import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import ir.jaamebaade.jaamebaade_client.utility.animatedComposable
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
 import ir.jaamebaade.jaamebaade_client.view.AccountScreen
@@ -50,13 +54,17 @@ import ir.jaamebaade.jaamebaade_client.view.SearchScreen
 import ir.jaamebaade.jaamebaade_client.view.SettingsScreen
 import ir.jaamebaade.jaamebaade_client.view.components.AboutUsScreen
 import ir.jaamebaade.jaamebaade_client.view.components.Navbar
+import ir.jaamebaade.jaamebaade_client.view.components.PermissionRationaleDialog
 import ir.jaamebaade.jaamebaade_client.view.components.TopBar
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.MainIntroViewModel
 
 @Composable
 fun AppNavHost(
     fontRepository: FontRepository,
     themeRepository: ThemeRepository,
+    sharedPrefManager: SharedPrefManager,
+    requestPermissionLauncher: (String) -> Unit,
     mainIntroViewModel: MainIntroViewModel = hiltViewModel()
 ) {
     val audioViewModel: AudioViewModel = hiltViewModel()
@@ -110,6 +118,8 @@ fun AppNavHost(
 
     val appTheme by themeRepository.appTheme.collectAsState()
 
+    var showPermissionRationale by remember { mutableStateOf(sharedPrefManager.getNotificationPermissionPreference()) }
+
     JaamebaadeclientTheme(
         darkTheme = when (appTheme) {
             AppThemeType.LIGHT -> false
@@ -118,6 +128,21 @@ fun AppNavHost(
         }, typography = typography
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            if (showPermissionRationale) {
+                PermissionRationaleDialog(
+                    onDismiss = {
+                        showPermissionRationale = false
+                        sharedPrefManager.setNotificationPermissionPreference(false)
+                    },
+                    onConfirm = {
+                        showPermissionRationale = false
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            requestPermissionLauncher(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                        sharedPrefManager.setNotificationPermissionPreference(false)
+                    }
+                )
+            }
             IntroShowcase(
                 showIntroShowCase = showIntroShowcase,
                 dismissOnClickOutside = true,
@@ -252,3 +277,4 @@ fun AppNavHost(
         }
     }
 }
+
