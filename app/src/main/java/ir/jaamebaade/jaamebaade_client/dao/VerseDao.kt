@@ -12,6 +12,7 @@ import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 
 @Dao
 interface VerseDao {
+    @Transaction
     @Insert
     fun insertAll(verses: List<Verse>)
 

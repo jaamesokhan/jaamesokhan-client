@@ -14,12 +14,13 @@ fun importCategoryData(csvFilePath: String, categoryRepository: CategoryReposito
     val reader = FileReader(csvFilePath)
     val csvParser = CSVParser(reader, CSVFormat.DEFAULT.withHeader())
 
+    val categoryList = mutableListOf<Category>()
     for (record in csvParser) {
         val id = record["id"].toInt()
         val text = record["text"]
         val parentId = record["parent_id"].toInt()
         val poetId = record["poet_id"].toInt()
-        categoryRepository.insertCategory(
+        categoryList.add(
             Category(
                 id = id,
                 text = text,
@@ -30,26 +31,29 @@ fun importCategoryData(csvFilePath: String, categoryRepository: CategoryReposito
     }
     csvParser.close()
     reader.close()
+    categoryRepository.insertCategories(categoryList)
 }
 
 fun importPoemData(csvFilePath: String, poemRepository: PoemRepository) {
     val reader = FileReader(csvFilePath)
     val csvParser = CSVParser(reader, CSVFormat.DEFAULT.withHeader())
 
+    val poemList = mutableListOf<Poem>()
     for (record in csvParser) {
         val id = record["id"].toInt()
         val text = record["title"]
         val categoryId = record["category_id"].toInt()
-        poemRepository.insertPoem(
+        poemList.add(
             Poem(
                 id = id,
                 title = text,
-                categoryId = categoryId,
+                categoryId = categoryId
             )
         )
     }
     csvParser.close()
     reader.close()
+    poemRepository.insertPoem(poemList)
 }
 
 fun importVerseData(csvFilePath: String, verseRepository: VerseRepository) {
@@ -73,7 +77,7 @@ fun importVerseData(csvFilePath: String, verseRepository: VerseRepository) {
             )
         )
     }
-    verseRepository.insertVerses(versesList)
     csvParser.close()
     reader.close()
+    verseRepository.insertVerses(versesList)
 }
