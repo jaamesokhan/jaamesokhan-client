@@ -12,7 +12,7 @@ class PoemRepository @Inject constructor(appDatabase: AppDatabase) {
     private val db = appDatabase
     private val poemDao = db.poemDao()
 
-    fun insertPoem(poem: Poem) = poemDao.insertAll(poem)
+    fun insertPoem(poemList: List<Poem>) = poemDao.insertAll(poemList)
 
     fun getPoemPagingSource(categoryId: Int): PagingSource<Int, PoemWithFirstVerse> {
         return poemDao.getPoemPagingSource(categoryId)

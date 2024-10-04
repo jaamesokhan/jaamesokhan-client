@@ -4,13 +4,15 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import ir.jaamebaade.jaamebaade_client.model.Category
 
 @Dao
 interface CategoryDao {
+    @Transaction
     @Insert
-    fun insertAll(vararg category: Category)
+    fun insertAll(categories: List<Category>)
 
     @Query("SELECT * FROM categories")
     fun getAll(): List<Category>

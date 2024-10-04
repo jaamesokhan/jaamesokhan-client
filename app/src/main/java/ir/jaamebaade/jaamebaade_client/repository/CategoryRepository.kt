@@ -19,7 +19,7 @@ class CategoryRepository @Inject constructor(appDatabase: AppDatabase) {
 
     fun getAllParentsOfCategoryId(poemId: Int) = categoryDao.getAllParentsOfCategoryId(poemId)
 
-    fun insertCategory(category: Category) = categoryDao.insertAll(category)
+    fun insertCategories(categories: List<Category>) = categoryDao.insertAll(categories)
 
     fun getAllCategories(): List<Category> = categoryDao.getAll()
 

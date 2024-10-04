@@ -17,7 +17,7 @@ interface PoemDao {
 
     @Transaction
     @Insert
-    fun insertAll(vararg poem: Poem)
+    fun insertAll(poem: List<Poem>)
 
     @Transaction
     @Query("SELECT * FROM poems")
