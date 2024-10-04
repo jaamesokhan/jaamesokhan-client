@@ -190,22 +190,22 @@ fun SearchBar(
             enter = fadeIn(),
             exit = fadeOut()
         ) {
-                SearchHistoryList(
-                    searchHistoryRecords = searchHistoryRecords,
-                    onSearchHistoryRecordClick = { historyItem ->
-                        onSearchHistoryRecordClick?.invoke(historyItem)
-                        query = historyItem.query
-                        isSearchIconClicked = true
-                    },
-                    onSearchHistoryRecordDelete = { historyItem ->
-                        onSearchHistoryRecordDeleteClick?.invoke(historyItem)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surface)
-                        .padding(8.dp)
+            SearchHistoryList(
+                searchHistoryRecords = searchHistoryRecords,
+                onSearchHistoryRecordClick = { historyItem ->
+                    onSearchHistoryRecordClick?.invoke(historyItem)
+                    query = historyItem.query
+                    isSearchIconClicked = true
+                },
+                onSearchHistoryRecordDelete = { historyItem ->
+                    onSearchHistoryRecordDeleteClick?.invoke(historyItem)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(8.dp)
 
-                )
+            )
 
 
         }
@@ -228,10 +228,12 @@ fun SearchHistoryList(
             .fillMaxWidth()
     ) {
         item {
-            Text(
-                text = stringResource(R.string.RECENT_SEARCHES),
-                style = MaterialTheme.typography.titleMedium
-            )
+            AnimatedVisibility(searchHistoryRecords.isNotEmpty()) {
+                Text(
+                    text = stringResource(R.string.RECENT_SEARCHES),
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
         }
 
         items(items = searchHistoryRecords, key = { it.id }) { historyItem ->

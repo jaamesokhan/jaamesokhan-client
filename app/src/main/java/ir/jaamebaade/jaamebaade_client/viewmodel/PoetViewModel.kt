@@ -24,6 +24,7 @@ import ir.jaamebaade.jaamebaade_client.utility.importPoemData
 import ir.jaamebaade.jaamebaade_client.utility.importVerseData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import ir.jaamebaade.jaamebaade_client.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -89,7 +90,8 @@ class PoetViewModel @Inject constructor(
         onFailure: () -> Unit
     ) {
         if (downloadStatus[id] == DownloadStatus.Downloaded) {
-            Toast.makeText(context, "Already downloaded!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,
+                context.getString(R.string.ALREADY_DOWNLOADED), Toast.LENGTH_SHORT).show()
             return
         }
         // Set status to downloading

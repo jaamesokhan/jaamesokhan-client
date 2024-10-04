@@ -12,5 +12,9 @@ fun PersianDate.toLocalFormat(): String {
 }
 
 fun PersianDate.toLocalFormatWithHour(): String {
-    return "${hour.toPersianNumber()}:${minute.toPersianNumber()} ${shYear.toPersianNumber()}/${shMonth.toPersianNumber()}/${shDay.toPersianNumber()}"
+    return "${hour.toPersianNumber().toZeroPaddedString()}:${minute.toPersianNumber().toZeroPaddedString()} ${shYear.toPersianNumber()}/${shMonth.toPersianNumber().toZeroPaddedString()}/${shDay.toPersianNumber().toZeroPaddedString()}"
+}
+
+fun String.toZeroPaddedString(): String {
+    return this.padStart(2, '۰')
 }
