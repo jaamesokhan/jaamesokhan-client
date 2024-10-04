@@ -8,7 +8,7 @@ fun Date.convertToJalali(): PersianDate {
 }
 
 fun PersianDate.toLocalFormat(): String {
-    return "${shYear.toPersianNumber()}/${shMonth.toPersianNumber()}/${shDay.toPersianNumber()}"
+    return "${shYear.toPersianNumber()}/${shMonth.toPersianNumber().toZeroPaddedString()}/${shDay.toPersianNumber().toZeroPaddedString()}"
 }
 
 fun PersianDate.toLocalFormatWithHour(): String {
