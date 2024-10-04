@@ -8,9 +8,13 @@ fun Date.convertToJalali(): PersianDate {
 }
 
 fun PersianDate.toLocalFormat(): String {
-    return "${shYear.toPersianNumber()}/${shMonth.toPersianNumber()}/${shDay.toPersianNumber()}"
+    return "${shYear.toPersianNumber()}/${shMonth.toPersianNumber().toZeroPaddedString()}/${shDay.toPersianNumber().toZeroPaddedString()}"
 }
 
 fun PersianDate.toLocalFormatWithHour(): String {
-    return "${hour.toPersianNumber()}:${minute.toPersianNumber()} ${shYear.toPersianNumber()}/${shMonth.toPersianNumber()}/${shDay.toPersianNumber()}"
+    return "${hour.toPersianNumber().toZeroPaddedString()}:${minute.toPersianNumber().toZeroPaddedString()} ${shYear.toPersianNumber()}/${shMonth.toPersianNumber().toZeroPaddedString()}/${shDay.toPersianNumber().toZeroPaddedString()}"
+}
+
+fun String.toZeroPaddedString(): String {
+    return this.padStart(2, '۰')
 }
