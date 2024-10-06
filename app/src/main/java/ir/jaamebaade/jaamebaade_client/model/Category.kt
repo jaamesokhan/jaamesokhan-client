@@ -28,7 +28,7 @@ data class Category(
 ) {
     fun toGraphNode(parent: CategoryGraphNode?) = CategoryGraphNode(
         category = this, parent = parent, selectedForRandomState = mutableStateOf(
-            if (randomSelected == true) ToggleableState.On else ToggleableState.Off
+            if (randomSelected == false) ToggleableState.Off else ToggleableState.On
         )
     )
 }
