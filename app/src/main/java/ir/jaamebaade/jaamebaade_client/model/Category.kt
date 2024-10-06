@@ -1,6 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.model
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.state.ToggleableState
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -25,5 +26,9 @@ data class Category(
     @ColumnInfo(name = "poet_id") val poetId: Int,
     @ColumnInfo(name = "random_selected") var randomSelected: Boolean? = true,
 ) {
-    fun toGraphNode() = CategoryGraphNode(category = this, isSelectedForRandom =  mutableStateOf(this.randomSelected ?: true))
+    fun toGraphNode(parent: CategoryGraphNode?) = CategoryGraphNode(
+        category = this, parent = parent, selectedForRandomState = mutableStateOf(
+            if (randomSelected == true) ToggleableState.On else ToggleableState.Off
+        )
+    )
 }
