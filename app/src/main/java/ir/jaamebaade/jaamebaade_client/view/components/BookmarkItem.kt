@@ -44,10 +44,14 @@ fun BookmarkItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
+                modifier = Modifier.weight(0.9f),
                 text = "${categories.joinToString(separator = " > ") { it.text }} > ${poem.title}",
                 style = MaterialTheme.typography.titleMedium
             )
-            IconButton(onClick = onDeleteClick) {
+            IconButton(
+                modifier = Modifier.weight(0.1f),
+                onClick = onDeleteClick
+            ) {
                 Icon(
                     imageVector = Icons.Outlined.Delete,
                     contentDescription = "Delete Bookmark",
