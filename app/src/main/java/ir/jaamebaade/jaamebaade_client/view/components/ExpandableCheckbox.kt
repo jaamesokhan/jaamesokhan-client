@@ -33,7 +33,7 @@ fun ExpandableCheckbox(
     var isExpanded by remember { mutableStateOf(false) }
     val rotation by animateFloatAsState(if (isExpanded) 180f else 0f, label = "rotation")
 
-    Column(modifier = Modifier.animateContentSize()) {
+    Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
             TriStateCheckbox(
                 state = state,
@@ -51,8 +51,12 @@ fun ExpandableCheckbox(
                 }
             }
         }
-        if (canExpand && isExpanded) {
-            Column(modifier = Modifier.padding(start = 20.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(start = 20.dp)
+                .animateContentSize()
+        ) {
+            if (canExpand && isExpanded) {
                 content()
             }
         }

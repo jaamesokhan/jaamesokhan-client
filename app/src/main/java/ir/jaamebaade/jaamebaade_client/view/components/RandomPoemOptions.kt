@@ -101,7 +101,7 @@ private fun updateParentCheckStatus(category: CategoryGraphNode) {
     val allSelected =
         parent.subCategories.all { it.selectedForRandomState.value == ToggleableState.On }
     val noneSelected =
-        parent.subCategories.none { it.selectedForRandomState.value == ToggleableState.On }
+        parent.subCategories.all { it.selectedForRandomState.value == ToggleableState.Off }
     if (allSelected) {
         parent.selectedForRandomState.value = ToggleableState.On
     } else if (noneSelected) {
