@@ -136,11 +136,11 @@ class DownloadedPoetViewModel @Inject constructor(
     }
 
     private fun saveSelectedCategoriesRecursively(category: CategoryGraphNode) {
-        category.category.randomSelected =
-            category.selectedForRandomState.value == ToggleableState.On
+        val randomSelected = category.selectedForRandomState.value != ToggleableState.Off
+        category.category.randomSelected = randomSelected
         categoryRepository.updateCategoryRandomSelectedFlag(
             category.category.id,
-            category.selectedForRandomState.value == ToggleableState.On
+            randomSelected
         )
         category.subCategories.forEach { saveSelectedCategoriesRecursively(it) }
     }

@@ -184,7 +184,7 @@ fun IntroShowcaseScope.TopBar(
                                         if (poemWithPoet == null) {
                                             Toast.makeText(
                                                 context,
-                                                context.getString(R.string.NO_POET_DOWNLOADED),
+                                                context.getString(R.string.NO_POEM_AVAILABLE_FOR_RANDOM),
                                                 Toast.LENGTH_SHORT
                                             ).show()
                                         } else {
