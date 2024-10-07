@@ -2,30 +2,32 @@ package ir.jaamebaade.jaamebaade_client.viewmodel
 
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import ir.jaamebaade.jaamebaade_client.datamanager.PoetDataManager
-import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
-import kotlinx.coroutines.launch
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import ir.jaamebaade.jaamebaade_client.model.Poet
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.api.PoetApiClient
+import ir.jaamebaade.jaamebaade_client.datamanager.PoetDataManager
+import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
+import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.utility.importCategoryData
 import ir.jaamebaade.jaamebaade_client.utility.importPoemData
 import ir.jaamebaade.jaamebaade_client.utility.importVerseData
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
-import ir.jaamebaade.jaamebaade_client.R
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
@@ -47,6 +49,14 @@ class PoetViewModel @Inject constructor(
     var isLoading by mutableStateOf(false)
         private set
 
+    var currentPage by mutableStateOf(0)
+        private set
+
+    private val pageSize = 20
+
+    var searchQuery by mutableStateOf("")
+
+    private var searchJob: Job? = null
 
     // Map to hold the download status for each poet
     val downloadStatus = mutableStateMapOf<String, DownloadStatus>()
@@ -67,20 +77,52 @@ class PoetViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 isLoading = true
-                val response = poetApiClient.getPoets()
+                val response = poetApiClient.getPoets(currentPage, pageSize, searchQuery)
                 if (response != null) {
-                    poets = response
+                    poets = poets + response
+                    currentPage++
                     isLoading = false
                 }
-
-
             } catch (e: Exception) {
                 e.printStackTrace()
                 isLoading = false
-
             }
-
         }
+    }
+
+    fun loadMorePoets() {
+        if (!isLoading) {
+            fetchPoets()
+        }
+    }
+
+    fun updateSearchQuery(query: String) {
+        searchQuery = query
+        currentPage = 0
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(500) // debounce time
+            poets = emptyList()
+            fetchPoets()
+        }
+    }
+
+    fun importPoetData(id: String, targetDir: File) {
+
+        downloadAndExtractPoet(id, targetDir, {
+            try {
+                if (downloadStatus[id] == DownloadStatus.Downloaded) {
+                    var dir = targetDir.path + "/poet_$id" + "/category_$id.csv"
+                    importCategoryData(dir, categoryRepository)
+                    dir = targetDir.path + "/poet_$id" + "/poems_$id.csv"
+                    importPoemData(dir, poemRepository)
+                    dir = targetDir.path + "/poet_$id" + "/verses_$id.csv"
+                    importVerseData(dir, verseRepository)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }, {})
     }
 
     private fun downloadAndExtractPoet(
@@ -90,8 +132,10 @@ class PoetViewModel @Inject constructor(
         onFailure: () -> Unit
     ) {
         if (downloadStatus[id] == DownloadStatus.Downloaded) {
-            Toast.makeText(context,
-                context.getString(R.string.ALREADY_DOWNLOADED), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.ALREADY_DOWNLOADED), Toast.LENGTH_SHORT
+            ).show()
             return
         }
         // Set status to downloading
@@ -129,23 +173,6 @@ class PoetViewModel @Inject constructor(
         }
     }
 
-    fun importPoetData(id: String, targetDir: File) {
-
-        downloadAndExtractPoet(id, targetDir, {
-            try {
-                if (downloadStatus[id] == DownloadStatus.Downloaded) {
-                    var dir = targetDir.path + "/poet_$id" + "/category_$id.csv"
-                    importCategoryData(dir, categoryRepository)
-                    dir = targetDir.path + "/poet_$id" + "/poems_$id.csv"
-                    importPoemData(dir, poemRepository)
-                    dir = targetDir.path + "/poet_$id" + "/verses_$id.csv"
-                    importVerseData(dir, verseRepository)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }, {})
-    }
 
     private suspend fun insertDownloadedPoet(poet: Poet) {
         withContext(Dispatchers.IO) {

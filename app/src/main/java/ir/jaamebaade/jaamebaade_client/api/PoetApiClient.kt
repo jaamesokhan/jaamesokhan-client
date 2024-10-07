@@ -8,13 +8,12 @@ import javax.inject.Inject
 class PoetApiClient @Inject constructor(
     private val poetApiService: PoetApiService
 ) {
-    suspend fun getPoets(): List<Poet>? {
-        val res = poetApiService.getPoets().body()
+    suspend fun getPoets(page: Int, size: Int, name: String? = null): List<Poet>? {
+        val res = poetApiService.getPoets(page, size, name).body()
         return res?.content
     }
 
     fun downloadPoet(id: String): Response<ResponseBody> {
-        return poetApiService.downloadPoet(id).execute() // .awaitResponse() for coroutines
+        return poetApiService.downloadPoet(id).execute()
     }
-
 }

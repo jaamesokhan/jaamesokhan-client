@@ -2,17 +2,19 @@ package ir.jaamebaade.jaamebaade_client.view
 
 
 import android.content.Context
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,21 +40,24 @@ fun DownloadablePoetsScreen(
     val isLoading = poetViewModel.isLoading
     var searchQuery by remember { mutableStateOf("") }
 
-    Box(modifier = modifier) {
-        if (isLoading) {
+    Column(modifier = modifier) {
+        TextField(
+            value = searchQuery,
+            onValueChange = {
+                searchQuery = it
+                poetViewModel.updateSearchQuery(it)
+            },
+            label = { Text("نام شاعر", style = MaterialTheme.typography.labelSmall) },
+            modifier = Modifier.fillMaxWidth(),
+            textStyle = MaterialTheme.typography.bodyMedium,
+        )
+        if (poets.isEmpty() && isLoading) {
             LoadingIndicator()
         } else if (poets.isEmpty()) {
             ServerFailure()
         } else {
             Column {
-                TextField(
-                    value = searchQuery,
-                    onValueChange = { searchQuery = it },
-                    label = { Text("نام شاعر", style = MaterialTheme.typography.labelSmall) },
-                    modifier = Modifier.fillMaxWidth(),
-                    textStyle = MaterialTheme.typography.bodyMedium,
-                )
-                DownloadablePoetsList(poetViewModel, poets.filter { it.name.contains(searchQuery) })
+                DownloadablePoetsList(poetViewModel, poets, isLoading)
             }
         }
     }
@@ -62,9 +67,12 @@ fun DownloadablePoetsScreen(
 fun DownloadablePoetsList(
     poetViewModel: PoetViewModel,
     poets: List<Poet>,
+    isLoading: Boolean,
 ) {
     val context = LocalContext.current
-    LazyColumn(userScrollEnabled = true, modifier = Modifier.padding(8.dp)) {
+    val listState = rememberLazyListState()
+
+    LazyColumn(userScrollEnabled = true, modifier = Modifier.padding(8.dp), state = listState) {
         itemsIndexed(poets) { index, poet ->
             PoetItem(
                 poet = poet,
@@ -76,6 +84,23 @@ fun DownloadablePoetsList(
             if (index != poets.size - 1) {
                 HorizontalDivider()
             }
+        }
+        item {
+            if (isLoading) {
+                LoadingIndicator()
+            }
+        }
+    }
+    val shouldLoadMore = remember {
+        derivedStateOf {
+            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
+            lastVisibleItem != null && lastVisibleItem.index == poets.size - 1
+        }
+    }
+
+    LaunchedEffect(shouldLoadMore.value) {
+        if (shouldLoadMore.value) {
+            poetViewModel.loadMorePoets()
         }
     }
 }
