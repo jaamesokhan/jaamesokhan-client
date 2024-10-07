@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TriStateCheckbox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,12 +19,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun ExpandableCheckbox(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
+    state: ToggleableState,
+    onCheckedChange: () -> Unit,
     canExpand: Boolean = false,
     text: String,
     content: @Composable () -> Unit = {}
@@ -32,9 +33,13 @@ fun ExpandableCheckbox(
     var isExpanded by remember { mutableStateOf(false) }
     val rotation by animateFloatAsState(if (isExpanded) 180f else 0f, label = "rotation")
 
-    Column(modifier = Modifier.animateContentSize()) {
+    Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(checked = checked, onCheckedChange = onCheckedChange)
+            TriStateCheckbox(
+                state = state,
+                onClick = onCheckedChange,
+                modifier = Modifier.padding(end = 8.dp)
+            )
             Text(text = text)
             if (canExpand) {
                 IconButton(onClick = { isExpanded = !isExpanded }) {
@@ -46,9 +51,12 @@ fun ExpandableCheckbox(
                 }
             }
         }
-        if (canExpand && isExpanded) {
-            Column(modifier = Modifier.padding(start = 20.dp)) {
-
+        Column(
+            modifier = Modifier
+                .padding(start = 20.dp)
+                .animateContentSize()
+        ) {
+            if (canExpand && isExpanded) {
                 content()
             }
         }

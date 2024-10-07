@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.state.ToggleableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -64,16 +65,27 @@ class DownloadedPoetViewModel @Inject constructor(
 
     private fun createCategoryGraph(
         categories: List<Category>,
-        parentId: Int = 0,
+        parent: CategoryGraphNode? = null,
     ): List<CategoryGraphNode> {
         val result = mutableListOf<CategoryGraphNode>()
-        categories.filter { it.parentId == parentId }.forEach { category ->
-            val node = category.toGraphNode()
+        categories.filter { it.parentId == (parent?.category?.id ?: 0) }.forEach { category ->
+            val node = category.toGraphNode(parent = parent)
             val children = categories.filter { it.parentId == category.id }
-            val childrenGraph = children.map { it.toGraphNode() }
+            val childrenGraph = children.map { it.toGraphNode(parent = node) }
             node.subCategories = childrenGraph
-            childrenGraph.forEach {
-                it.subCategories = createCategoryGraph(categories, it.category.id)
+            childrenGraph.forEach { child ->
+                child.subCategories = createCategoryGraph(categories, child)
+            }
+            val allSelected =
+                node.subCategories.all { it.selectedForRandomState.value == ToggleableState.On }
+            val noneSelected =
+                node.subCategories.none { it.selectedForRandomState.value == ToggleableState.On }
+            node.selectedForRandomState.value = if (allSelected) {
+                ToggleableState.On
+            } else if (noneSelected) {
+                ToggleableState.Off
+            } else {
+                ToggleableState.Indeterminate
             }
             result.add(node)
         }
@@ -124,8 +136,12 @@ class DownloadedPoetViewModel @Inject constructor(
     }
 
     private fun saveSelectedCategoriesRecursively(category: CategoryGraphNode) {
-        category.category.randomSelected = category.isSelectedForRandom.value
-        categoryRepository.updateCategoryRandomSelectedFlag(category.category.id, category.isSelectedForRandom.value)
+        val randomSelected = category.selectedForRandomState.value != ToggleableState.Off
+        category.category.randomSelected = randomSelected
+        categoryRepository.updateCategoryRandomSelectedFlag(
+            category.category.id,
+            randomSelected
+        )
         category.subCategories.forEach { saveSelectedCategoriesRecursively(it) }
     }
 }

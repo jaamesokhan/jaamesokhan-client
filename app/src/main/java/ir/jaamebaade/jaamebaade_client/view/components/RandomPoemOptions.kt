@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.jaamebaade.jaamebaade_client.R
@@ -62,13 +63,18 @@ private fun RecursiveCheckList(
 ) {
     categories.forEach { category ->
         val canExpand = category.subCategories.isNotEmpty()
-        var isSelectedForRandom by remember { category.isSelectedForRandom }
+        var selectedForRandomState by remember { category.selectedForRandomState }
 
         ExpandableCheckbox(
-            checked = isSelectedForRandom,
+            state = selectedForRandomState,
             onCheckedChange = {
-                isSelectedForRandom = it
-                changeCheckRecursively(category, it)
+                selectedForRandomState = if (selectedForRandomState == ToggleableState.On) {
+                    ToggleableState.Off
+                } else {
+                    ToggleableState.On
+                }
+                changeCheckRecursively(category, selectedForRandomState)
+                updateParentCheckStatus(category)
             },
             text = category.category.text,
             canExpand = canExpand
@@ -82,12 +88,26 @@ private fun RecursiveCheckList(
 
 private fun changeCheckRecursively(
     category: CategoryGraphNode,
-    isSelected: Boolean
+    selectedState: ToggleableState
 ) {
-    category.isSelectedForRandom.value = isSelected
+    category.selectedForRandomState.value = selectedState
     category.subCategories.forEach { subCategory ->
-        changeCheckRecursively(subCategory, isSelected)
+        changeCheckRecursively(subCategory, selectedState)
     }
 }
 
-
+private fun updateParentCheckStatus(category: CategoryGraphNode) {
+    val parent = category.parent ?: return
+    val allSelected =
+        parent.subCategories.all { it.selectedForRandomState.value == ToggleableState.On }
+    val noneSelected =
+        parent.subCategories.all { it.selectedForRandomState.value == ToggleableState.Off }
+    if (allSelected) {
+        parent.selectedForRandomState.value = ToggleableState.On
+    } else if (noneSelected) {
+        parent.selectedForRandomState.value = ToggleableState.Off
+    } else {
+        parent.selectedForRandomState.value = ToggleableState.Indeterminate
+    }
+    updateParentCheckStatus(parent)
+}
