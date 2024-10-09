@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -49,7 +50,7 @@ class PoetViewModel @Inject constructor(
     var isLoading by mutableStateOf(false)
         private set
 
-    var currentPage by mutableStateOf(0)
+    var currentPage by mutableIntStateOf(0)
         private set
 
     private val pageSize = 20
