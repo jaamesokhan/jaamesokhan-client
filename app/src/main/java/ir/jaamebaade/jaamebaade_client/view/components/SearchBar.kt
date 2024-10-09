@@ -60,7 +60,7 @@ fun SearchBar(
     onSearchHistoryRecordClick: ((SearchHistoryRecord) -> Unit)? = null,
     onSearchHistoryRecordDeleteClick: ((SearchHistoryRecord) -> Unit)? = null,
     onSearchClearClick: (String) -> Unit,
-    onSearchQueryIconClicked: (String) -> Unit,
+    onSearchQueryIconClicked: (String, () -> Unit) -> Unit,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
@@ -83,9 +83,10 @@ fun SearchBar(
             trailingIcon = {
                 if (!isSearchIconClicked) {
                     IconButton(onClick = {
-                        onSearchQueryIconClicked(query)
+                        onSearchQueryIconClicked(query) {
+                            isSearchIconClicked = true
+                        }
                         keyboardController?.hide()
-                        isSearchIconClicked = true
                     }) {
                         Icon(
                             imageVector = Icons.Default.Search,
@@ -116,8 +117,9 @@ fun SearchBar(
             textStyle = MaterialTheme.typography.bodyMedium,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
-                onSearchQueryIconClicked(query)
-                isSearchIconClicked = true
+                onSearchQueryIconClicked(query) {
+                    isSearchIconClicked = true
+                }
                 keyboardController?.hide()
             }),
         )
@@ -163,8 +165,9 @@ fun SearchBar(
                     onClick = {
                         onSearchFilterChanged(null)
                         selectedPoetIndex = null
-                        onSearchQueryIconClicked(query)
-                        isSearchIconClicked = true
+                        onSearchQueryIconClicked(query) {
+                            isSearchIconClicked = true
+                        }
                         expanded = false
                     })
                 poets.forEachIndexed { index, poet ->
@@ -179,8 +182,9 @@ fun SearchBar(
                         onClick = {
                             onSearchFilterChanged(poet)
                             selectedPoetIndex = index
-                            onSearchQueryIconClicked(query)
-                            isSearchIconClicked = true
+                            onSearchQueryIconClicked(query) {
+                                isSearchIconClicked = true
+                            }
                             expanded = false
                         })
                 }

@@ -73,11 +73,12 @@ fun SearchScreen(
                 searchStatus = Status.NOT_STARTED
             }
 
-        ) {
-            if (it.length > 2) {
+        ) { query, callback ->
+            if (query.length > 2) {
                 searchStatus = Status.LOADING
-                finalSearchQuery = it
+                finalSearchQuery = query
                 searchViewModel.search(callBack = { searchStatus = Status.SUCCESS })
+                callback()
             }
         }
 
