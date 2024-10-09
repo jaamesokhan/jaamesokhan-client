@@ -94,7 +94,7 @@ fun DownloadablePoetsList(
     val shouldLoadMore = remember {
         derivedStateOf {
             val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
-            lastVisibleItem != null && lastVisibleItem.index == poets.size - 1
+            lastVisibleItem != null && lastVisibleItem.index == poetViewModel.poets.size - 1
         }
     }
 
