@@ -91,7 +91,7 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
                             MaterialTheme.colorScheme.tertiary
                         )
                         CardItem(
-                            modifier = Modifier.animateItemPlacement(),
+                            modifier = Modifier.animateItem(),
                             headerText = createHeaderText(
                                 mergedHighlight.categories,
                                 mergedHighlight.poem
@@ -117,7 +117,7 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
                             MaterialTheme.colorScheme.tertiary
                         )
                         CardItem(
-                            modifier = Modifier.animateItemPlacement(),
+                            modifier = Modifier.animateItem(),
                             headerText = highlight.versePath.toPathHeaderText(),
                             bodyText = bodyText,
                             icon = Icons.Outlined.Delete,

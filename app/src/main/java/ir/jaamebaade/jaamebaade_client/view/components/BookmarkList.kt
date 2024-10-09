@@ -35,7 +35,7 @@ fun BookmarkList(viewModel: FavoritesViewModel, navController: NavController) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(bookmarks, key = { it.bookmark.id }) { bookmark ->
                 BookmarkItem(
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier.animateItem(),
                     poem = bookmark.poem,
                     poet = bookmark.poet,
                     categories = bookmark.categories,

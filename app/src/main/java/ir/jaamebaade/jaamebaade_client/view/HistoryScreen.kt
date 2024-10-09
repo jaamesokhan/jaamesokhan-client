@@ -68,7 +68,7 @@ fun HistoryList(
     ) {
         items(items = poemHistory, key = { it.id }) { item ->
             CardItem(
-                modifier = Modifier.animateItemPlacement(),
+                modifier = Modifier.animateItem(),
                 bodyText = AnnotatedString(item.path.toPathHeaderText()),
                 footerText = Date(item.timestamp).convertToJalali().toLocalFormatWithHour(),
                 onClick = { navController.navigate("${AppRoutes.POEM}/${item.path.poet.id}/${item.path.poem.id}/-1") },

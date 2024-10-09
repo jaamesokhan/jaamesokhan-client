@@ -164,6 +164,7 @@ fun SearchBar(
                         onSearchFilterChanged(null)
                         selectedPoetIndex = null
                         onSearchQueryIconClicked(query)
+                        isSearchIconClicked = true
                         expanded = false
                     })
                 poets.forEachIndexed { index, poet ->
@@ -179,6 +180,7 @@ fun SearchBar(
                             onSearchFilterChanged(poet)
                             selectedPoetIndex = index
                             onSearchQueryIconClicked(query)
+                            isSearchIconClicked = true
                             expanded = false
                         })
                 }
@@ -238,7 +240,7 @@ fun SearchHistoryList(
 
         items(items = searchHistoryRecords, key = { it.id }) { historyItem ->
             SearchHistoryRecordItem(
-                modifier = Modifier.animateItemPlacement(),
+                modifier = Modifier.animateItem(),
                 historyItem = historyItem,
                 onSearchHistoryRecordClick = onSearchHistoryRecordClick,
                 onSearchHistoryRecordDelete = onSearchHistoryRecordDelete
