@@ -41,7 +41,7 @@ fun CommentsList(viewModel: FavoritesViewModel, navController: NavController) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(items = comments, key = { it.comment.id }) { commentInfo ->
                 CardItem(
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier.animateItem(),
                     headerText = commentInfo.path.toPathHeaderText(),
                     bodyText = AnnotatedString(commentInfo.comment.text),
                     icon = Icons.Outlined.Delete,
