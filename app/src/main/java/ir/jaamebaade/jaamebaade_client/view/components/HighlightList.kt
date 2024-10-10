@@ -57,18 +57,20 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
             )
         }
     } else {
-        val newHighlights = mutableListOf(highlights[0].toMergedHighlight())
+        val highlightsSortedByVerseId = highlights.sortedBy { it.versePath.verse!!.id }
+        var newHighlights = mutableListOf(highlightsSortedByVerseId[0].toMergedHighlight())
         if (mergeHighlights) {
-            for (i in 1 until highlights.size) {
-                if (highlights[i].versePath.verse!!.id == newHighlights.last().highlights.last().verseId + 1
-                    && highlights[i].versePath.poem.id == newHighlights.last().poem.id
+            for (i in 1 until highlightsSortedByVerseId.size) {
+                if (highlightsSortedByVerseId[i].versePath.verse!!.id == newHighlights.last().highlights.last().verseId + 1
+                    && highlightsSortedByVerseId[i].versePath.poem.id == newHighlights.last().poem.id
                 ) {
-                    newHighlights.last().highlights.add(highlights[i].highlight)
-                    newHighlights.last().verses.add(highlights[i].versePath.verse!!)
+                    newHighlights.last().highlights.add(highlightsSortedByVerseId[i].highlight)
+                    newHighlights.last().verses.add(highlightsSortedByVerseId[i].versePath.verse!!)
                 } else {
-                    newHighlights.add(highlights[i].toMergedHighlight())
+                    newHighlights.add(highlightsSortedByVerseId[i].toMergedHighlight())
                 }
             }
+            newHighlights = newHighlights.sortedBy { it.highlights.first().createdAt }.toMutableList()
         }
         Column {
             Row(modifier = Modifier.padding(4.dp)) {
