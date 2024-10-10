@@ -43,7 +43,7 @@ fun VerseTextField(
     var job by remember { mutableStateOf<Job?>(null) }
 
     val interactionSource = remember { MutableInteractionSource() }
-    val textStyle = MaterialTheme.typography.bodyLarge.copy(
+    val textStyle = MaterialTheme.typography.bodyMedium.copy(
         textAlign = TextAlign.Center,
         color = MaterialTheme.colorScheme.onSurface
     )
