@@ -14,9 +14,10 @@ import androidx.room.PrimaryKey
         childColumns = ["poem_id"],
         onDelete = ForeignKey.CASCADE
     )],
-    indices = [Index(value = ["poem_id"])]
+    indices = [Index(value = ["poem_id", "created_at"])]
 )
 data class Bookmark(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "poem_id") val poemId: Int,
+    @ColumnInfo(name = "created_at", defaultValue = "0") val createdAt: Long = System.currentTimeMillis(),
 )

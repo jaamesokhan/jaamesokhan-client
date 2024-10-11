@@ -29,6 +29,7 @@ interface HighlightDao {
                 hg.start_index AS highlight_start_index,
                 hg.end_index AS highlight_end_index,
                 hg.verse_id  AS highlight_verse_id,
+                hg.created_at AS highlight_created_at,
                 v.id AS verse_id, 
                 v.text AS verse_text, 
                 v.poem_id AS verse_poem_id, 
@@ -46,7 +47,7 @@ interface HighlightDao {
             JOIN poems p ON v.poem_id = p.id
             JOIN categories c ON p.category_id = c.id
             JOIN poets pt ON c.poet_id = pt.id
-            ORDER BY hg.verse_id
+            ORDER BY highlight_created_at ASC
         """
     )
     fun getHighlightsWithVersePoemPoet(): List<HighlightVersePoemPoet>

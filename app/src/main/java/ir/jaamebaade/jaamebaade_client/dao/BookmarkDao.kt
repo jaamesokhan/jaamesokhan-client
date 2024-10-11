@@ -26,6 +26,7 @@ interface BookmarkDao {
         SELECT
             bookmarks.id AS bookmark_id, 
             bookmarks.poem_id AS bookmark_poem_id,
+            bookmarks.created_at AS bookmark_created_at,
             poems.id AS poem_id, 
             poems.title AS poem_title, 
             poems.category_id AS poem_category_id, 
@@ -37,6 +38,7 @@ interface BookmarkDao {
         INNER JOIN poems ON bookmarks.poem_id = poems.id
         INNER JOIN categories on poems.category_id = categories.id
         INNER JOIN poets ON categories.poet_id = poets.id
+        ORDER BY bookmark_created_at ASC
     """
     )
     fun getAllBookMarksWithPoemAndPoet(): List<BookmarkPoemPoet>

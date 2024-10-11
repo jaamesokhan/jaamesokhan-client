@@ -77,10 +77,13 @@ fun CommentsScreen(poemId: Int, modifier: Modifier) {
             modifier = Modifier
                 .fillMaxWidth(),
             trailingIcon = {
-                IconButton(onClick = {
-                    viewModel.addComment(poemId, commentText)
-                    commentText = ""
-                }) {
+                IconButton(
+                    onClick = {
+                        viewModel.addComment(poemId, commentText)
+                        commentText = ""
+                    },
+                    enabled = commentText.isNotEmpty()
+                ) {
                     Icon(
                         modifier = Modifier.size(24.dp),
                         imageVector = Icons.AutoMirrored.Outlined.Send,
