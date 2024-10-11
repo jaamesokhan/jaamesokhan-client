@@ -70,26 +70,31 @@ class DownloadedPoetViewModel @Inject constructor(
         val result = mutableListOf<CategoryGraphNode>()
         categories.filter { it.parentId == (parent?.category?.id ?: 0) }.forEach { category ->
             val node = category.toGraphNode(parent = parent)
-            val children = categories.filter { it.parentId == category.id }
-            val childrenGraph = children.map { it.toGraphNode(parent = node) }
-            node.subCategories = childrenGraph
-            childrenGraph.forEach { child ->
-                child.subCategories = createCategoryGraph(categories, child)
-            }
-            val allSelected =
-                node.subCategories.all { it.selectedForRandomState.value == ToggleableState.On }
-            val noneSelected =
-                node.subCategories.none { it.selectedForRandomState.value == ToggleableState.On }
-            node.selectedForRandomState.value = if (allSelected) {
-                ToggleableState.On
-            } else if (noneSelected) {
-                ToggleableState.Off
-            } else {
-                ToggleableState.Indeterminate
-            }
+            node.subCategories = createCategoryGraph(categories, node)
+            updateSelectedForRandomState(node)
             result.add(node)
         }
         return result
+    }
+
+    private fun updateSelectedForRandomState(node: CategoryGraphNode) {
+        if (node.subCategories.isNotEmpty()) {
+            val allSelected =
+                node.subCategories.all { it.selectedForRandomState.value == ToggleableState.On }
+            val noneSelected =
+                node.subCategories.all { it.selectedForRandomState.value == ToggleableState.Off }
+            node.selectedForRandomState.value = when {
+                allSelected -> ToggleableState.On
+                noneSelected -> ToggleableState.Off
+                else -> ToggleableState.Indeterminate
+            }
+        } else {
+            node.selectedForRandomState.value = if (node.category.randomSelected != false) {
+                ToggleableState.On
+            } else {
+                ToggleableState.Off
+            }
+        }
     }
 
     private fun getAllCategories() {
