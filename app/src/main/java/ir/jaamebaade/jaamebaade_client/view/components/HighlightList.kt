@@ -14,6 +14,7 @@ import androidx.compose.material.icons.outlined.Merge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -27,6 +28,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.canopas.lib.showcase.IntroShowcase
+import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Category
@@ -42,6 +45,7 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.FavoritesViewModel
 fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
     val highlights = viewModel.highlights
     var mergeHighlights by rememberSaveable { mutableStateOf(viewModel.getMergeHighlightsToggleState()) }
+    val showAppIntro by viewModel.showAppIntro.collectAsState()
 
 
     if (highlights.isEmpty()) {
@@ -71,15 +75,37 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
             }
         }
         Column {
-            Row(modifier = Modifier.padding(4.dp)) {
-                CustomToggleButton(
-                    icon = Icons.Outlined.Merge,
-                    iconDescription = stringResource(R.string.MERGE_HIGHLIGHTS),
-                    toggleState = mergeHighlights,
-                    onToggleChange = {
-                        mergeHighlights = !mergeHighlights
-                        viewModel.saveMergeHighlightsToggleState(mergeHighlights)
-                    })
+            IntroShowcase(
+                showIntroShowCase = showAppIntro,
+                dismissOnClickOutside = true,
+                onShowCaseCompleted = {
+                    viewModel.setShowAppIntroState(false)
+                },
+            ) {
+                Row(modifier = Modifier.padding(4.dp)) {
+                    CustomToggleButton(
+                        modifier = Modifier.introShowCaseTarget(
+                            index = 0,
+                            style = ShowcaseStyle.Default.copy(
+                                backgroundColor = MaterialTheme.colorScheme.primary,
+                                backgroundAlpha = 0.98f,
+                                targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                            ),
+                            content = {
+                                ButtonIntro(
+                                    stringResource(R.string.INTRO_MERGE_HIGHLIGHT_TITLE),
+                                    stringResource(R.string.INTRO_MERGE_HIGHLIGHT_DESC)
+                                )
+                            }
+                        ),
+                        icon = Icons.Outlined.Merge,
+                        iconDescription = stringResource(R.string.MERGE_HIGHLIGHTS),
+                        toggleState = mergeHighlights,
+                        onToggleChange = {
+                            mergeHighlights = !mergeHighlights
+                            viewModel.saveMergeHighlightsToggleState(mergeHighlights)
+                        })
+                }
             }
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 if (mergeHighlights) {
