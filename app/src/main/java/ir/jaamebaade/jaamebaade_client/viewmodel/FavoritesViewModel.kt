@@ -19,6 +19,8 @@ import ir.jaamebaade.jaamebaade_client.repository.CommentRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -37,6 +39,8 @@ class FavoritesViewModel @Inject constructor(
         private set
     var comments by mutableStateOf<List<CommentPoemCategoriesPoet>>(emptyList())
         private set
+    private val _showAppIntro = MutableStateFlow(true)
+    val showAppIntro = _showAppIntro.asStateFlow()
 
     init {
         getAllBookmarks()
@@ -91,7 +95,18 @@ class FavoritesViewModel @Inject constructor(
             highlightRepository.deleteHighlight(highlight)
         }
     }
+    fun setShowAppIntroState(showIntro: Boolean) {
+        viewModelScope.launch {
+            sharedPrefManager.setShowAppIntroPoem(showIntro)
+            _showAppIntro.value = showIntro
+        }
+    }
 
+    private fun getShowAppIntroState() {
+        viewModelScope.launch {
+            _showAppIntro.value = sharedPrefManager.getShowAppIntroPoem()
+        }
+    }
     private suspend fun deleteCommentFromRepository(comment: Comment) {
         withContext(Dispatchers.IO) {
             commentRepository.deleteComment(comment)
