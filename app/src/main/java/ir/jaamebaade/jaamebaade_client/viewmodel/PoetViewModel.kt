@@ -17,6 +17,7 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.api.PoetApiClient
 import ir.jaamebaade.jaamebaade_client.datamanager.PoetDataManager
 import ir.jaamebaade.jaamebaade_client.model.Poet
+import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
@@ -47,7 +48,7 @@ class PoetViewModel @Inject constructor(
     var poets by mutableStateOf<List<Poet>>(emptyList())
         private set
 
-    var isLoading by mutableStateOf(false)
+    var poetFetchStatus by mutableStateOf(Status.NOT_STARTED)
         private set
 
     var currentPage by mutableIntStateOf(0)
@@ -77,22 +78,22 @@ class PoetViewModel @Inject constructor(
     private fun fetchPoets() {
         viewModelScope.launch {
             try {
-                isLoading = true
+                poetFetchStatus = Status.LOADING
                 val response = poetApiClient.getPoets(currentPage, pageSize, searchQuery)
                 if (response != null) {
                     poets = poets + response
                     currentPage++
-                    isLoading = false
+                    poetFetchStatus = Status.SUCCESS
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                isLoading = false
+                poetFetchStatus = Status.FAILED
             }
         }
     }
 
     fun loadMorePoets() {
-        if (!isLoading) {
+        if (poetFetchStatus != Status.LOADING) {
             fetchPoets()
         }
     }

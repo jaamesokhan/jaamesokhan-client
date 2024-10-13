@@ -32,7 +32,8 @@
     <!--  Messages  -->
     <string name="ALREADY_DOWNLOADED">از قبل دانلود شده است!</string>
     <string name="NO_POET_DOWNLOADED">هیچ شاعری دانلود نشده است!</string>
-    <string name="NO_POEM_AVAILABLE_FOR_RANDOM">هیچ شعری پیدا نشد!</string>
+    <string name="NO_POEM_AVAILABLE_FOR_RANDOM">هیچ شعری یافت نشد!</string>
+    <string name="NO_POET_FOUND">شاعری یافت نشد!</string>
     <string name="NO_HIGHLIGHTS_FOUND">متنی را هایلایت نکرده‌اید!</string>
     <string name="NOTIFICATION_ACCESS_BODY">برای اطلاع از انتشار آخرین نسخه، لطفا به برنامه دسترسی ارسال اعلان بدهید.</string>
     <string name="YES">بله مایلم</string>
