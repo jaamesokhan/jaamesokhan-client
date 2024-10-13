@@ -46,6 +46,7 @@ class FavoritesViewModel @Inject constructor(
         getAllBookmarks()
         getAllHighlights()
         getAllComments()
+        getShowAppIntroState()
     }
 
     fun deleteBookmark(bookmarkPoemCategoriesPoet: BookmarkPoemCategoriesPoet) {
@@ -97,14 +98,14 @@ class FavoritesViewModel @Inject constructor(
     }
     fun setShowAppIntroState(showIntro: Boolean) {
         viewModelScope.launch {
-            sharedPrefManager.setShowAppIntroPoem(showIntro)
+            sharedPrefManager.setShowAppIntroHighlight(showIntro)
             _showAppIntro.value = showIntro
         }
     }
 
     private fun getShowAppIntroState() {
         viewModelScope.launch {
-            _showAppIntro.value = sharedPrefManager.getShowAppIntroPoem()
+            _showAppIntro.value = sharedPrefManager.getShowAppIntroHighlight()
         }
     }
     private suspend fun deleteCommentFromRepository(comment: Comment) {

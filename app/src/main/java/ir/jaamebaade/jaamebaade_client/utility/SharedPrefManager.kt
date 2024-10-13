@@ -17,6 +17,8 @@ class SharedPrefManager(
         const val APP_THEME_TYPE_KEY = "AppThemeType"
         const val SHOW_APP_INTRO_POEM_KEY = "ShowAppIntroPoem"
         const val SHOW_APP_INTRO_MANI_KEY = "ShowAppIntroMain"
+        const val SHOW_APP_INTRO_HIGHLIGHT_KEY = "ShowAppIntroHighlight"
+
         const val NOTIFICATION_PERMISSION_KEY = "NotificationPermission"
     }
 
@@ -92,6 +94,14 @@ class SharedPrefManager(
 
     fun getShowAppIntroPoem(): Boolean {
         return sharedPreferences.getBoolean(SHOW_APP_INTRO_POEM_KEY, true)
+    }
+
+    fun setShowAppIntroHighlight(showIntro: Boolean) {
+        sharedPreferences.edit().putBoolean(SHOW_APP_INTRO_HIGHLIGHT_KEY, showIntro).apply()
+    }
+
+    fun getShowAppIntroHighlight(): Boolean {
+        return sharedPreferences.getBoolean(SHOW_APP_INTRO_HIGHLIGHT_KEY, true)
 
     }
 
