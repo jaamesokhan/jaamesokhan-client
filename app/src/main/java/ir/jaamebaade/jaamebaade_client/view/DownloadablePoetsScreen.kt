@@ -57,7 +57,7 @@ fun DownloadablePoetsScreen(
             modifier = Modifier.fillMaxWidth(),
             textStyle = MaterialTheme.typography.bodyMedium,
         )
-        if (fetchStatus == Status.LOADING) {
+        if (fetchStatus == Status.LOADING && poets.isEmpty()) {
             LoadingIndicator()
         } else if (fetchStatus == Status.FAILED) {
             ServerFailure()

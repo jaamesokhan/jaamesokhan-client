@@ -13,8 +13,12 @@ class ThemeRepository @Inject constructor(
     private val _appTheme = MutableStateFlow(AppThemeType.SYSTEM_AUTO)
     val appTheme: StateFlow<AppThemeType> = _appTheme
 
+    private val _appColor = MutableStateFlow(false)
+    val appColor: StateFlow<Boolean> = _appColor
+
     init {
         getAppThemePreference()
+        getAppColorPreference()
     }
 
     private fun getAppThemePreference() {
@@ -30,5 +34,21 @@ class ThemeRepository @Inject constructor(
     fun setAppThemePreference(appThemeType: AppThemeType) {
         sharedPrefManager.setThemePreference(appThemeType)
         _appTheme.value = appThemeType
+    }
+
+
+    private fun getAppColorPreference() {
+        val currentApiVersion = Build.VERSION.SDK_INT
+        val currentAppColor = sharedPrefManager.getColorPreference()
+        if (currentApiVersion < 13 && !currentAppColor) {
+            setAppColorPreference(false)
+        } else {
+            _appColor.value = currentAppColor
+        }
+    }
+
+    fun setAppColorPreference(appColor: Boolean) {
+        sharedPrefManager.setColorPreference(appColor)
+        _appColor.value = appColor
     }
 }
