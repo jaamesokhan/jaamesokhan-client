@@ -15,6 +15,7 @@ class SharedPrefManager(
         const val USERNAME_KEY = "Username"
         const val AUTH_TOKEN_KEY = "AuthToken"
         const val APP_THEME_TYPE_KEY = "AppThemeType"
+        const val DYNAMIC_COLOR_Status_KEY = "DynamicColorStatus"
         const val SHOW_APP_INTRO_POEM_KEY = "ShowAppIntroPoem"
         const val SHOW_APP_INTRO_MANI_KEY = "ShowAppIntroMain"
         const val SHOW_APP_INTRO_HIGHLIGHT_KEY = "ShowAppIntroHighlight"
@@ -76,6 +77,18 @@ class SharedPrefManager(
                 AppThemeType.valueOf(it)
             } ?: AppThemeType.SYSTEM_AUTO
         return savedTheme
+    }
+
+    fun setColorPreference(color: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(DYNAMIC_COLOR_Status_KEY, color)
+        editor.apply()
+    }
+
+    fun getColorPreference(): Boolean {
+        val savedColor =
+            sharedPreferences.getBoolean(DYNAMIC_COLOR_Status_KEY, false)
+        return savedColor
     }
 
     fun setHighlightMergeToggleState(state: Boolean) {

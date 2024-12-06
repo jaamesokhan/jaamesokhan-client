@@ -14,10 +14,14 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -63,9 +67,29 @@ fun ChangeThemeScreen(
                     )
                 }
             }
+
             if (index != AppThemeType.entries.size - 1) {
                 HorizontalDivider()
             }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val appColor by themeRepository.appColor.collectAsState()
+            var checked by remember { mutableStateOf(appColor) }
+            Text("رنگ‌های پویا", style = MaterialTheme.typography.bodyMedium)
+            Switch(
+                checked = checked,
+                onCheckedChange = {
+                    themeRepository.setAppColorPreference(it)
+                    checked = it
+                }
+            )
         }
     }
 }
