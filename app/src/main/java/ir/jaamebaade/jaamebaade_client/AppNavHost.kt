@@ -117,6 +117,7 @@ fun AppNavHost(
     }
 
     val appTheme by themeRepository.appTheme.collectAsState()
+    val appColor by themeRepository.appColor.collectAsState()
 
     var showPermissionRationale by remember { mutableStateOf(sharedPrefManager.getNotificationPermissionPreference()) }
 
@@ -125,7 +126,10 @@ fun AppNavHost(
             AppThemeType.LIGHT -> false
             AppThemeType.DARK -> true
             AppThemeType.SYSTEM_AUTO -> isSystemInDarkTheme()
-        }, typography = typography
+
+        },
+        typography = typography,
+        dynamicColor = appColor,
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             if (showPermissionRationale) {

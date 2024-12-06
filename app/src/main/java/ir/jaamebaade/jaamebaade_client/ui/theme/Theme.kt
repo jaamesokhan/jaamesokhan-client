@@ -80,13 +80,12 @@ private val darkScheme = darkColorScheme(
 
 
 
-
 @Composable
 fun JaamebaadeclientTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     typography: Typography = Typography,
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = false,
+    dynamicColor: Boolean,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

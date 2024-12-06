@@ -14,12 +14,17 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
@@ -34,6 +39,7 @@ fun ChangeThemeScreen(
         modifier = modifier
             .fillMaxWidth()
     ) {
+        Text("پوسته‌ها",style = MaterialTheme.typography.titleMedium ,fontWeight = FontWeight.Bold, modifier = Modifier.padding(8.dp,2.dp))
         AppThemeType.entries.forEachIndexed { index, item ->
             val currentapiVersion = Build.VERSION.SDK_INT
 
@@ -63,9 +69,30 @@ fun ChangeThemeScreen(
                     )
                 }
             }
+
             if (index != AppThemeType.entries.size - 1) {
                 HorizontalDivider()
             }
+        }
+        Text("رنگ‌ها",style = MaterialTheme.typography.titleMedium ,fontWeight = FontWeight.Bold, modifier = Modifier.padding(8.dp,1.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val appColor by themeRepository.appColor.collectAsState()
+            var checked by remember { mutableStateOf(appColor) }
+            Column { Text("رنگ‌های پویا", style = MaterialTheme.typography.bodyMedium)
+                Text("برای اندروید ۱۳ یا بالاتر", style = MaterialTheme.typography.labelSmall)}
+            Switch(
+                checked = checked,
+                onCheckedChange = {
+                    themeRepository.setAppColorPreference(it)
+                    checked = it
+                }
+            )
         }
     }
 }
