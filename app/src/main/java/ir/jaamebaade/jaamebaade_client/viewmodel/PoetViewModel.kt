@@ -109,22 +109,35 @@ class PoetViewModel @Inject constructor(
         }
     }
 
-    fun importPoetData(id: String, targetDir: File) {
-
-        downloadAndExtractPoet(id, targetDir, {
-            try {
-                if (downloadStatus[id] == DownloadStatus.Downloaded) {
+    suspend fun importPoetData(id: String, targetDir: File) {
+        if (downloadStatus[id] == DownloadStatus.Downloaded) {
+            Toast.makeText(
+                context,
+                context.getString(R.string.ALREADY_DOWNLOADED), Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        withContext(Dispatchers.IO) {
+            downloadAndExtractPoet(id, targetDir, {
+                val poet = poets.find { it.id.toString() == id }!!
+                try {
+                    insertDownloadedPoet(poet.also { it.downloadStatus = DownloadStatus.Downloading })
                     var dir = targetDir.path + "/poet_$id" + "/category_$id.csv"
                     importCategoryData(dir, categoryRepository)
                     dir = targetDir.path + "/poet_$id" + "/poems_$id.csv"
                     importPoemData(dir, poemRepository)
                     dir = targetDir.path + "/poet_$id" + "/verses_$id.csv"
                     importVerseData(dir, verseRepository)
+                    poetRepository.updatePoetDownloadStatus(poet.also { it.downloadStatus = DownloadStatus.Downloaded })
+                    downloadStatus[id] = DownloadStatus.Downloaded
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    deletePoet(poets.find { it.id.toString() == id }!!)
+                    downloadStatus[id] = DownloadStatus.Failed
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }, {})
+                poetDataManager.saveDownloadStatus(id, downloadStatus[id]!!)
+            }, {})
+        }
     }
 
     private fun downloadAndExtractPoet(
@@ -133,54 +146,43 @@ class PoetViewModel @Inject constructor(
         onSuccess: () -> Unit,
         onFailure: () -> Unit
     ) {
-        if (downloadStatus[id] == DownloadStatus.Downloaded) {
-            Toast.makeText(
-                context,
-                context.getString(R.string.ALREADY_DOWNLOADED), Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
         // Set status to downloading
         downloadStatus[id] = DownloadStatus.Downloading
 
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = poetApiClient.downloadPoet(id)
-                if (response.isSuccessful) {
-                    response.body()?.let { body ->
-                        val zipFile = File(targetDirectory, "poet_$id.zip")
-                        poetDataManager.saveFile(body, zipFile)
-                        val extractDir = File(targetDirectory, "poet_$id")
-                        poetDataManager.extractZipFile(zipFile, extractDir)
-                        zipFile.delete() // Clean up ZIP file after extraction
-                        downloadStatus[id] = DownloadStatus.Downloaded
-                        poetDataManager.saveDownloadStatus(id, DownloadStatus.Downloaded)
-                        insertDownloadedPoet(poets.find { it.id.toString() == id }!!)
-                        onSuccess()
-                    }
-                } else {
-                    // Handle the error
-                    Log.e(
-                        PoetViewModel::class.simpleName,
-                        "download poet failed with ${response.body()}",
-                    )
-                    downloadStatus[id] = DownloadStatus.Failed
+        try {
+            val response = poetApiClient.downloadPoet(id)
+            if (response.isSuccessful) {
+                response.body()?.let { body ->
+                    val zipFile = File(targetDirectory, "poet_$id.zip")
+                    poetDataManager.saveFile(body, zipFile)
+                    val extractDir = File(targetDirectory, "poet_$id")
+                    poetDataManager.extractZipFile(zipFile, extractDir)
+                    zipFile.delete() // Clean up ZIP file after extraction
+                    onSuccess()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                // Handle exception
+            } else {
+                // Handle the error
+                Log.e(
+                    PoetViewModel::class.simpleName,
+                    "download poet failed with ${response.body()}",
+                )
                 downloadStatus[id] = DownloadStatus.Failed
-                onFailure()
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Handle exception
+            downloadStatus[id] = DownloadStatus.Failed
+            onFailure()
         }
     }
 
 
-    private suspend fun insertDownloadedPoet(poet: Poet) {
-        withContext(Dispatchers.IO) {
-            poetRepository.insertPoet(poet)
-        }
+    private fun insertDownloadedPoet(poet: Poet) {
+        poetRepository.insertPoet(poet)
+    }
 
+    private fun deletePoet(poet: Poet) {
+        poetRepository.deletePoets(listOf(poet))
     }
 
 }

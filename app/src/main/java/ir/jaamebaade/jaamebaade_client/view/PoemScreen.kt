@@ -36,7 +36,7 @@ fun PoemScreen(
     navController: NavController,
     poemId: Int,
     poetId: Int,
-    focusedVerseId: Int?,
+    focusedVerseId: Long?,
     modifier: Modifier,
     audioViewModel: AudioViewModel = hiltViewModel()
 ) {

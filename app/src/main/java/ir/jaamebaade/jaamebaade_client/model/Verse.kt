@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
     indices = [Index("poem_id")]
 )
 data class Verse(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     @ColumnInfo(name = "text") val text: String,
     @ColumnInfo(name = "verse_order") val verseOrder: Int,
     @ColumnInfo(name = "position") val position: Int,

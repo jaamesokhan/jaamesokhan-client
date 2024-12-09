@@ -143,7 +143,7 @@ class PoemViewModel @AssistedInject constructor(
         }
     }
 
-    fun highlight(verseId: Int, startIndex: Int, endIndex: Int) {
+    fun highlight(verseId: Long, startIndex: Int, endIndex: Int) {
         viewModelScope.launch {
             val highlight = addHighlightToRepository(verseId, startIndex, endIndex)
             _verses.value = _verses.value.map {
@@ -157,7 +157,7 @@ class PoemViewModel @AssistedInject constructor(
     }
 
     private suspend fun addHighlightToRepository(
-        verseId: Int,
+        verseId: Long,
         startIndex: Int,
         endIndex: Int
     ): Highlight {

@@ -1,6 +1,5 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -127,11 +126,6 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                             }
 
                             DownloadStatus.Failed -> {
-                                Toast.makeText(
-                                    LocalContext.current,
-                                    " دانلود اشعار ${poet.name} با مشکل مواجه شد!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                                 Icon(
                                     modifier = Modifier.size(iconSize),
                                     imageVector = Icons.Outlined.FileDownloadOff,

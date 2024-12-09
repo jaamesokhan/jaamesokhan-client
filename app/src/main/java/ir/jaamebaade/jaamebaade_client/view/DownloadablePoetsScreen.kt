@@ -20,6 +20,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +36,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.LoadingIndicator
 import ir.jaamebaade.jaamebaade_client.view.components.PoetItem
 import ir.jaamebaade.jaamebaade_client.view.components.ServerFailure
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoetViewModel
+import kotlinx.coroutines.launch
 import java.io.File
 
 @Composable
@@ -79,6 +81,7 @@ private fun DownloadablePoetsList(
 ) {
     val context = LocalContext.current
     val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     LazyColumn(userScrollEnabled = true, modifier = Modifier.padding(8.dp), state = listState) {
         itemsIndexed(poets) { index, poet ->
@@ -86,8 +89,10 @@ private fun DownloadablePoetsList(
                 poet = poet,
                 poetViewModel.downloadStatus[poet.id.toString()] ?: DownloadStatus.NotDownloaded
             ) {
-                val targetDir = getInternalStorageDir(context)
-                poetViewModel.importPoetData(poet.id.toString(), targetDir)
+                coroutineScope.launch {
+                    val targetDir = getInternalStorageDir(context)
+                    poetViewModel.importPoetData(poet.id.toString(), targetDir)
+                }
             }
             if (index != poets.size - 1) {
                 HorizontalDivider()
