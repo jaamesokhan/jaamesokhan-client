@@ -2,6 +2,8 @@ package ir.jaamebaade.jaamebaade_client.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
@@ -15,6 +17,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import ir.jaamebaade.jaamebaade_client.R
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -95,7 +98,7 @@ fun JaamebaadeclientTheme(
         }
 
         darkTheme -> darkScheme
-        else -> lightScheme
+        else -> {Toast.makeText( LocalContext.current, R.string.DYNAMIC_COLORS_NOT_SUPPORTED, LENGTH_SHORT).show(); lightScheme}
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
