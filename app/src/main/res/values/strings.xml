@@ -51,7 +51,10 @@
     <string name="NOTIFICATION_ACCESS_TITLE">دسترسی ارسال اعلان</string>
     <string name="SELECT_VERSES">انتخاب مصرع</string>
     <string name="NORMAL_MODE">حالت عادی</string>
-
+    <string name="THEMES">پوسته‌ها</string>
+    <string name="COLORS">رنگ‌ها</string>
+    <string name="DYNAMIC_COLORS">رنگ‌های پویا</string>
+    <string name="DYNAMIC_COLORS_REQUIREMENTS">برای اندروید ۱۳ یا بالاتر</string>
 
     <!--  Icon Descriptions  -->
     <string name="PREVIOUS">قبلی</string>

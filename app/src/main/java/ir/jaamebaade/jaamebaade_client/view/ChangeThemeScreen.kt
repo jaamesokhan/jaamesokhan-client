@@ -24,10 +24,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
+import ir.jaamebaade.jaamebaade_client.R
 
 @Composable
 fun ChangeThemeScreen(
@@ -39,7 +41,7 @@ fun ChangeThemeScreen(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        Text("پوسته‌ها",style = MaterialTheme.typography.titleMedium ,fontWeight = FontWeight.Bold, modifier = Modifier.padding(8.dp,2.dp))
+        Text(text = stringResource(R.string.THEMES),style = MaterialTheme.typography.titleMedium ,fontWeight = FontWeight.Bold, modifier = Modifier.padding(8.dp,2.dp))
         AppThemeType.entries.forEachIndexed { index, item ->
             val currentapiVersion = Build.VERSION.SDK_INT
 
@@ -74,7 +76,7 @@ fun ChangeThemeScreen(
                 HorizontalDivider()
             }
         }
-        Text("رنگ‌ها",style = MaterialTheme.typography.titleMedium ,fontWeight = FontWeight.Bold, modifier = Modifier.padding(8.dp,1.dp))
+        Text(text = stringResource(R.string.COLORS),style = MaterialTheme.typography.titleMedium ,fontWeight = FontWeight.Bold, modifier = Modifier.padding(8.dp,1.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -84,8 +86,8 @@ fun ChangeThemeScreen(
         ) {
             val appColor by themeRepository.appColor.collectAsState()
             var checked by remember { mutableStateOf(appColor) }
-            Column { Text("رنگ‌های پویا", style = MaterialTheme.typography.bodyMedium)
-                Text("برای اندروید ۱۳ یا بالاتر", style = MaterialTheme.typography.labelSmall)}
+            Column { Text(text = stringResource(R.string.DYNAMIC_COLORS), style = MaterialTheme.typography.bodyMedium)
+                Text(text = stringResource(R.string.DYNAMIC_COLORS_REQUIREMENTS), style = MaterialTheme.typography.labelSmall)}
             Switch(
                 checked = checked,
                 onCheckedChange = {
