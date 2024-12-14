@@ -78,7 +78,8 @@
     <string name="INTRO_RECITE_DESC">امکان دانلود و پخش خوانش اشعار رو دارید</string>
     <string name="INTRO_NOTE_TITLE">یادداشت</string>
     <string name="INTRO_NOTE_DESC">روی هر شعری که دوست داشتید یادداشت بذارید</string>
-    <string name="INTRO_BOOKMARK_TITLE">علاقه‌مندی</string>
+    <string name="INTRO_BOOKMARK_TITLE">ذخیره‌ها</string>
+    <string name="INTRO_HIGHLIGHT_TITLE">هایلایت‌ها</string>
     <string name="INTRO_BOOKMARK_DESC">شعرهایی که دوست دارید رو به علاقه‌مندی‌هاتون اضافه کنید</string>
     <string name="INTRO_SHARE_TITLE">اشتراک‌گذاری</string>
     <string name="INTRO_SHARE_DESC">شعرها رو از هر طریقی که دوست دارید به اشتراک بگذارید</string>
@@ -91,7 +92,7 @@
     <string name="INTRO_SEARCH_DESC">برای جست‌وجو در شعرهای مختلف از این صفحه استفاده کنید</string>
     <string name="INTRO_LIKE_TITLE">علاقه‌مندی‌ها</string>
     <string name="INTRO_LIKE_DESC">در این صفحه به شعرهای نشان شده، هایلایت‌ها و یادداشت‌هاتون دسترسی داشته باشین</string>
-    <string name="INTRO_HOME_TITLE">خانه</string>
+    <string name="INTRO_MY_POETS_TITLE">اشعار من</string>
     <string name="INTRO_HOME_DESC">در این صفحه به شاعران دانلود شده دسترسی دارین</string>
     <string name="INTRO_MERGE_HIGHLIGHT_TITLE">ادغام هایلایت‌ها</string>
     <string name="INTRO_MERGE_HIGHLIGHT_DESC">هایلایت‌هاتون رو جداگانه یا به صورت ادغام شده مشاهده کنید</string>
