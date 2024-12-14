@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -21,6 +22,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import ir.jaamebaade.jaamebaade_client.model.Poet
+import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.utility.shake
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -35,7 +37,13 @@ fun DownloadedPoet(poet: Poet, isSelected: Boolean, onLongClick: () -> Unit, onC
         }
             .padding(8.dp)
             .shake(isSelected)
-            .combinedClickable(onClick = onClick, onLongClick = onLongClick),
+            .then(
+                if (poet.downloadStatus == DownloadStatus.Downloaded) {
+                    Modifier.combinedClickable(onClick = onClick, onLongClick = onLongClick)
+                } else {
+                    Modifier.alpha(0.5f)
+                }
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(

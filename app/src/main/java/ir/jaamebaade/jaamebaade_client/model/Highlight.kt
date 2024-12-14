@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
 )
 data class Highlight(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "verse_id") val verseId: Int,
+    @ColumnInfo(name = "verse_id") val verseId: Long,
     @ColumnInfo(name = "start_index") val startIndex: Int,
     @ColumnInfo(name = "end_index") val endIndex: Int,
     @ColumnInfo(name = "created_at", defaultValue = "0") val createdAt: Long = System.currentTimeMillis(),

@@ -62,7 +62,7 @@ fun importVerseData(csvFilePath: String, verseRepository: VerseRepository) {
 
     val versesList = mutableListOf<Verse>()
     for (record in csvParser) {
-        val id = record["id"].toInt()
+        val id = record["id"].toLong()
         val text = record["text"]
         val verseOrder = record["verse_order"].toInt()
         val position = record["position"].toInt()

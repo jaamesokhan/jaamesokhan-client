@@ -222,8 +222,8 @@ fun AppNavHost(
                         ) { backStackEntry ->
                             val poetId = backStackEntry.arguments?.getInt("poetId")
                             val poemId = backStackEntry.arguments?.getInt("poemId")
-                            val verseId = backStackEntry.arguments?.getInt("verseId")
-                                ?.let { if (it == -1) null else it }
+                            val verseId = backStackEntry.arguments?.getLong("verseId")
+                                ?.let { if (it == -1L) null else it }
 
                             PoemScreen(
                                 navController,

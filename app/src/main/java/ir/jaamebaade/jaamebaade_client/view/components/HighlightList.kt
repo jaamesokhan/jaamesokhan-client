@@ -65,7 +65,7 @@ fun HighlightList(viewModel: FavoritesViewModel, navController: NavController) {
         var newHighlights = mutableListOf(highlightsSortedByVerseId[0].toMergedHighlight())
         if (mergeHighlights) {
             for (i in 1 until highlightsSortedByVerseId.size) {
-                if (highlightsSortedByVerseId[i].versePath.verse!!.id == newHighlights.last().highlights.last().verseId + 1
+                if (highlightsSortedByVerseId[i].versePath.verse!!.id == newHighlights.last().highlights.last().verseId + 1L
                     && highlightsSortedByVerseId[i].versePath.poem.id == newHighlights.last().poem.id
                 ) {
                     newHighlights.last().highlights.add(highlightsSortedByVerseId[i].highlight)

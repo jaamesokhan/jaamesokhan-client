@@ -31,6 +31,8 @@
 
     <!--  Messages  -->
     <string name="ALREADY_DOWNLOADED">از قبل دانلود شده است!</string>
+    <string name="DOWNLOAD_SUCCESSFUL">دانلود با موفقیت انجام شد.</string>
+    <string name="DOWNLOAD_FAILED">دانلود با مشکل مواجه شد!</string>
     <string name="NO_POET_DOWNLOADED">هیچ شاعری دانلود نشده است!</string>
     <string name="NO_POEM_AVAILABLE_FOR_RANDOM">هیچ شعری یافت نشد!</string>
     <string name="NO_POET_FOUND">شاعری یافت نشد!</string>
