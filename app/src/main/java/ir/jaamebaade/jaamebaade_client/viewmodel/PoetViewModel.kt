@@ -2,7 +2,6 @@ package ir.jaamebaade.jaamebaade_client.viewmodel
 
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -121,14 +120,18 @@ class PoetViewModel @Inject constructor(
             downloadAndExtractPoet(id, targetDir, {
                 val poet = poets.find { it.id.toString() == id }!!
                 try {
-                    insertDownloadedPoet(poet.also { it.downloadStatus = DownloadStatus.Downloading })
+                    insertDownloadedPoet(poet.also {
+                        it.downloadStatus = DownloadStatus.Downloading
+                    })
                     var dir = targetDir.path + "/poet_$id" + "/category_$id.csv"
                     importCategoryData(dir, categoryRepository)
                     dir = targetDir.path + "/poet_$id" + "/poems_$id.csv"
                     importPoemData(dir, poemRepository)
                     dir = targetDir.path + "/poet_$id" + "/verses_$id.csv"
                     importVerseData(dir, verseRepository)
-                    poetRepository.updatePoetDownloadStatus(poet.also { it.downloadStatus = DownloadStatus.Downloaded })
+                    poetRepository.updatePoetDownloadStatus(poet.also { 
+                      it.downloadStatus = DownloadStatus.Downloaded 
+                    })
                     downloadStatus[id] = DownloadStatus.Downloaded
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -137,6 +140,16 @@ class PoetViewModel @Inject constructor(
                 }
                 poetDataManager.saveDownloadStatus(id, downloadStatus[id]!!)
             }, {})
+        }
+
+        // FIXME this toast will only be shown if the user stays in the download-screen
+        withContext(Dispatchers.Main) {
+            if (downloadStatus[id] == DownloadStatus.Failed) {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.DOWNLOAD_FAILED), Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -161,16 +174,10 @@ class PoetViewModel @Inject constructor(
                     onSuccess()
                 }
             } else {
-                // Handle the error
-                Log.e(
-                    PoetViewModel::class.simpleName,
-                    "download poet failed with ${response.body()}",
-                )
                 downloadStatus[id] = DownloadStatus.Failed
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            // Handle exception
             downloadStatus[id] = DownloadStatus.Failed
             onFailure()
         }
