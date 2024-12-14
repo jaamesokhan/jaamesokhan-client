@@ -129,8 +129,8 @@ class PoetViewModel @Inject constructor(
                     importPoemData(dir, poemRepository)
                     dir = targetDir.path + "/poet_$id" + "/verses_$id.csv"
                     importVerseData(dir, verseRepository)
-                    poetRepository.updatePoetDownloadStatus(poet.also {
-                        it.downloadStatus = DownloadStatus.Downloaded
+                    poetRepository.updatePoetDownloadStatus(poet.also { 
+                      it.downloadStatus = DownloadStatus.Downloaded 
                     })
                     downloadStatus[id] = DownloadStatus.Downloaded
                 } catch (e: Exception) {
@@ -141,6 +141,7 @@ class PoetViewModel @Inject constructor(
                 poetDataManager.saveDownloadStatus(id, downloadStatus[id]!!)
             }, {})
         }
+
         // FIXME this toast will only be shown if the user stays in the download-screen
         withContext(Dispatchers.Main) {
             if (downloadStatus[id] == DownloadStatus.Failed) {
@@ -174,7 +175,6 @@ class PoetViewModel @Inject constructor(
                 }
             } else {
                 downloadStatus[id] = DownloadStatus.Failed
-                onFailure()
             }
         } catch (e: Exception) {
             e.printStackTrace()

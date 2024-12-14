@@ -108,6 +108,7 @@ class TopBarViewModel @Inject constructor(
             AppRoutes.CHANGE_THEME_SCREEN -> return "تغییر پوسته"
             AppRoutes.ABOUT_US_SCREEN -> return "درباره ما"
             AppRoutes.HISTORY -> return "تاریخچه"
+            else -> return "جام سخن" // TODO change this later
         }
     }
 
