@@ -42,6 +42,7 @@
     <string name="NOT_NOW">الآن نه</string>
 
     <!--  Titles  -->
+    <string name="ADD_NEW_POET">شاعر جدید</string>
     <string name="FONT_FAMILY_TEXT">فونت برنامه:</string>
     <string name="FONT_SIZE_TEXT">اندازه فونت:</string>
     <string name="BOOKMARKS">علاقه‌مندی‌ها</string>
