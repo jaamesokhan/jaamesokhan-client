@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
@@ -11,6 +12,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -78,14 +80,27 @@ private val darkScheme = darkColorScheme(
     inversePrimary = inversePrimaryDark,
 )
 
+val ColorScheme.secondaryS90: Color
+    @Composable
+    get() = if (isSystemInDarkTheme()) secondaryS90Dark else secondaryS90Light
 
+val ColorScheme.neutralN70: Color
+    @Composable
+    get() = if (isSystemInDarkTheme()) neutralN70Dark else neutralN70Light
+
+val ColorScheme.neutralN90: Color
+    @Composable
+    get() = if (isSystemInDarkTheme()) neutralN90Dark else neutralN90Light
+
+val ColorScheme.neutralN100: Color
+    @Composable
+    get() = if (isSystemInDarkTheme()) neutralN100Dark else neutralN100Light
 
 
 @Composable
 fun JaamebaadeclientTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     typography: Typography = Typography,
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
