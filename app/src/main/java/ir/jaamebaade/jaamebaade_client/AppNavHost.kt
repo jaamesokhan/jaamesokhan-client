@@ -205,7 +205,21 @@ fun AppNavHost(
                                 navController = navController
                             )
                         }
-                        animatedComposable(AppRoutes.FAVORITE_SCREEN.toString()) {
+                        animatedComposable(AppRoutes.BOOKMARKS_SCREEN.toString()) {
+                            FavoritesScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                navController = navController
+                            )
+                        }
+                        animatedComposable(AppRoutes.HIGHLIGHTS_SCREEN.toString()) {
+                            // TODO this is temporary
+                            FavoritesScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                navController = navController
+                            )
+                        }
+                        animatedComposable(AppRoutes.NOTES_SCREEN.toString()) {
+                            // TODO this is temporary
                             FavoritesScreen(
                                 modifier = Modifier.padding(innerPadding),
                                 navController = navController
