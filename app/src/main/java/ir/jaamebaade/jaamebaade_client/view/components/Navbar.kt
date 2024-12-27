@@ -36,6 +36,7 @@ import com.canopas.lib.showcase.IntroShowcaseScope
 import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
+import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN70
 import ir.jaamebaade.jaamebaade_client.utility.bottomBorder
 
 val routeMap = mapOf(
@@ -49,6 +50,59 @@ val routeMap = mapOf(
     "settingsScreen" to "settingsScreen",
     "searchScreen" to "searchScreen",
     "favoriteScreen" to "favoriteScreen",
+    "bookmarkScreen" to "bookmarkScreen",
+    "highlightScreen" to "highlightScreen",
+    "noteScreen" to "noteScreen",
+)
+
+data class NavbarItemData(
+    val route: AppRoutes,
+    private val idleIconId: Int,
+    private val selectedIconId: Int,
+    val contentDescriptionResId: Int,
+    val introTitleResId: Int,
+    val introDescResId: Int,
+) {
+    fun getIcon(isSelected: Boolean): Int {
+        return if (isSelected) selectedIconId else idleIconId
+    }
+}
+
+
+// TODO change intro texts accordingly
+val navbarItems = listOf(
+    NavbarItemData(
+        route = AppRoutes.DOWNLOADED_POETS_SCREEN,
+        idleIconId = R.drawable.my_poets,
+        selectedIconId = R.drawable.my_poets_selected,
+        contentDescriptionResId = R.string.INTRO_MY_POETS_TITLE,
+        introTitleResId = R.string.INTRO_MY_POETS_TITLE,
+        introDescResId = R.string.INTRO_HOME_DESC,
+    ),
+    NavbarItemData(
+        route = AppRoutes.BOOKMARKS_SCREEN,
+        idleIconId = R.drawable.bookmark,
+        selectedIconId = R.drawable.bookmark_selected,
+        contentDescriptionResId = R.string.INTRO_BOOKMARK_TITLE,
+        introTitleResId = R.string.INTRO_LIKE_TITLE,
+        introDescResId = R.string.INTRO_LIKE_DESC,
+    ),
+    NavbarItemData(
+        route = AppRoutes.HIGHLIGHTS_SCREEN,
+        idleIconId = R.drawable.highlight,
+        selectedIconId = R.drawable.highlight_selected,
+        contentDescriptionResId = R.string.INTRO_HIGHLIGHT_TITLE,
+        introTitleResId = R.string.INTRO_SEARCH_TITLE,
+        introDescResId = R.string.INTRO_SEARCH_DESC,
+    ),
+    NavbarItemData(
+        route = AppRoutes.NOTES_SCREEN,
+        idleIconId = R.drawable.note,
+        selectedIconId = R.drawable.note_selected,
+        contentDescriptionResId = R.string.INTRO_NOTE_TITLE,
+        introTitleResId = R.string.INTRO_SETTING_TITLE,
+        introDescResId = R.string.INTRO_SETTING_DESC,
+    )
 )
 
 data class NavbarItemData(
@@ -198,14 +252,13 @@ fun NavbarItem(
                 painter = painterResource(id = iconId),
                 contentDescription = contentDescription,
                 modifier = Modifier.size(32.dp),
-                tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.neutralN70
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = contentDescription,
                 style = MaterialTheme.typography.headlineMedium,
-                // TODO change color
-                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.neutralN70
             )
 
         }
