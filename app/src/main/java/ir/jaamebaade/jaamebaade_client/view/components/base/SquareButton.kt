@@ -32,7 +32,7 @@ fun SquareButton(
     tint: Color,
     contentDescription: String,
     backgroundColor: Color,
-    size: Int,
+    size: Int = 89,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
@@ -41,7 +41,7 @@ fun SquareButton(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(25.dp))
-            .padding(8.dp)
+            .padding(horizontal = 12.dp)
             .combinedClickable(
                 onClick = onClick,
                 onLongClick = onLongClick

@@ -1,7 +1,8 @@
 package ir.jaamebaade.jaamebaade_client.view
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -16,9 +17,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.canopas.lib.showcase.IntroShowcaseScope
@@ -32,6 +33,7 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN90
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
 import ir.jaamebaade.jaamebaade_client.view.components.ButtonIntro
 import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
+import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemBox
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
 import ir.jaamebaade.jaamebaade_client.viewmodel.DownloadedPoetViewModel
 import kotlinx.coroutines.launch
@@ -51,10 +53,13 @@ fun IntroShowcaseScope.DownloadedPoetsScreen(
         if (poets != null) fetchStatue = Status.SUCCESS
     }
     if (fetchStatue == Status.SUCCESS) {
-        Box(
+        Column(
             modifier = modifier
                 .fillMaxSize()
+                .padding(horizontal = 16.dp),
         ) {
+            RandomPoemBox()
+
             LazyVerticalGrid(columns = GridCells.Fixed(3)) {
                 if (poets!!.isNotEmpty()) {
                     items(poets) { poet ->
@@ -88,7 +93,6 @@ fun IntroShowcaseScope.DownloadedPoetsScreen(
                 item {
                     SquareButton(
                         modifier = Modifier
-                            .align(Alignment.BottomEnd)
                             .introShowCaseTarget(
                                 index = 4,
                                 style = ShowcaseStyle.Default.copy(
@@ -105,7 +109,6 @@ fun IntroShowcaseScope.DownloadedPoetsScreen(
                             ),
                         icon = Icons.Filled.Add,
                         tint = MaterialTheme.colorScheme.neutralN100,
-                        size = 89,
                         backgroundColor = MaterialTheme.colorScheme.neutralN90,
                         contentDescription = stringResource(R.string.ADD_NEW_POET)
                     ) {

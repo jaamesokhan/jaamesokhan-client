@@ -22,7 +22,6 @@ fun PoetIconButton(poet: Poet, onLongClick: () -> Unit, onClick: () -> Unit) {
         tint = Color.White,
         contentDescription = poet.name,
         backgroundColor = Color.Transparent,
-        size = 89,
         onClick = onClick,
         onLongClick = onLongClick
     )
