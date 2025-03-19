@@ -15,4 +15,6 @@ class VerseRepository @Inject constructor(appDatabase: AppDatabase) {
         verseDao.searchVerses("%${query}%", poetId)
 
     fun insertVerses(verses: List<Verse>) = verseDao.insertAll(verses)
+
+    fun getFirst4VersesByPoemId(poemId: Int) = verseDao.getFirst4VersesByPoemId(poemId)
 }

@@ -35,19 +35,20 @@ import ir.jaamebaade.jaamebaade_client.view.components.ButtonIntro
 import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemBox
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
-import ir.jaamebaade.jaamebaade_client.viewmodel.DownloadedPoetViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoemsViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun IntroShowcaseScope.DownloadedPoetsScreen(
+fun IntroShowcaseScope.MyPoetsScreen(
     modifier: Modifier = Modifier,
-    downloadedPoetViewModel: DownloadedPoetViewModel = hiltViewModel(),
+    myPoemsViewModel: MyPoemsViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val poets = downloadedPoetViewModel.poets
+    val poets = myPoemsViewModel.poets
     var fetchStatue by remember { mutableStateOf(Status.LOADING) }
     val coroutineScope = rememberCoroutineScope()
     val selectedPoets = remember { mutableStateListOf<Poet>() }
+    val randomPoemPreview = myPoemsViewModel.randomPoemPreview
 
     LaunchedEffect(key1 = poets) {
         if (poets != null) fetchStatue = Status.SUCCESS
@@ -58,7 +59,9 @@ fun IntroShowcaseScope.DownloadedPoetsScreen(
                 .fillMaxSize()
                 .padding(horizontal = 16.dp),
         ) {
-            RandomPoemBox()
+            randomPoemPreview?.let {
+                RandomPoemBox(randomPoemPreview = it, navController = navController)
+            }
 
             LazyVerticalGrid(columns = GridCells.Fixed(3)) {
                 if (poets!!.isNotEmpty()) {
@@ -71,7 +74,7 @@ fun IntroShowcaseScope.DownloadedPoetsScreen(
                             if (selectedPoets.isEmpty()) {
                                 coroutineScope.launch {
                                     val poetCategoryId =
-                                        downloadedPoetViewModel.getPoetCategoryId(poet.id)
+                                        myPoemsViewModel.getPoetCategoryId(poet.id)
                                     navController.navigate(
                                         "${AppRoutes.POET_CATEGORY_SCREEN}/${poet.id}/${
                                             intArrayOf(

@@ -68,4 +68,7 @@ interface VerseDao {
     @Transaction
     @Query("SELECT * FROM verses WHERE id = :verseId")
     fun getVerseWithHighlights(verseId: Int): VerseWithHighlights
+
+    @Query("SELECT * FROM verses WHERE poem_id = :poemId AND verse_order <= 4 ORDER BY verse_order")
+    fun getFirst4VersesByPoemId(poemId: Int): List<Verse>
 }

@@ -31,8 +31,10 @@ fun SquareButton(
     image: AsyncImagePainter? = null,
     tint: Color,
     contentDescription: String,
+    text: String? = contentDescription,
     backgroundColor: Color,
     size: Int = 89,
+    roundedCornerShapeSize: Int = 25,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
@@ -40,7 +42,7 @@ fun SquareButton(
 
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(25.dp))
+            .clip(RoundedCornerShape(roundedCornerShapeSize.dp))
             .padding(horizontal = 12.dp)
             .combinedClickable(
                 onClick = onClick,
@@ -51,7 +53,7 @@ fun SquareButton(
     ) {
         Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(25.dp))
+                .clip(RoundedCornerShape(roundedCornerShapeSize.dp))
                 .background(backgroundColor)
                 .padding(4.dp)
                 .size(size.dp)
@@ -73,10 +75,12 @@ fun SquareButton(
                 )
             }
         }
-        Text(
-            text = contentDescription,
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center,
-        )
+        text?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }

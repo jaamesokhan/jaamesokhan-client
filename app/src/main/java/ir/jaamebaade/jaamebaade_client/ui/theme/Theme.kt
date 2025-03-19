@@ -92,6 +92,10 @@ val ColorScheme.neutralN90: Color
     @Composable
     get() = if (isSystemInDarkTheme()) neutralN90Dark else neutralN90Light
 
+val ColorScheme.neutralN95: Color
+    @Composable
+    get() = if (isSystemInDarkTheme()) neutralN95Dark else neutralN95Light
+
 val ColorScheme.neutralN100: Color
     @Composable
     get() = if (isSystemInDarkTheme()) neutralN100Dark else neutralN100Light
