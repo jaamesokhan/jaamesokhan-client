@@ -1,7 +1,8 @@
-package ir.jaamebaade.jaamebaade_client.view.components
+package ir.jaamebaade.jaamebaade_client.view.components.base
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,22 +21,31 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImagePainter
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SquareButton(
     modifier: Modifier = Modifier,
-    icon: ImageVector,
+    icon: ImageVector? = null,
+    image: AsyncImagePainter? = null,
     tint: Color,
     contentDescription: String,
     backgroundColor: Color,
     size: Int,
-    onClick: () -> Unit
+    onLongClick: (() -> Unit)? = null,
+    onClick: () -> Unit,
 ) {
+    assert(icon != null || image != null) { "Icon and image can't be null at the same time" }
+
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(25.dp))
             .padding(8.dp)
-            .clickable { onClick() },
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -46,13 +56,22 @@ fun SquareButton(
                 .padding(4.dp)
                 .size(size.dp)
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = contentDescription,
-                modifier = Modifier
-                    .fillMaxSize(),
-                tint = tint,
-            )
+            icon?.let {
+                Icon(
+                    imageVector = it,
+                    contentDescription = contentDescription,
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    tint = tint,
+                )
+            }
+            image?.let {
+                SquareImage(
+                    image = it,
+                    contentDescription = contentDescription,
+                    size = size
+                )
+            }
         }
         Text(
             text = contentDescription,

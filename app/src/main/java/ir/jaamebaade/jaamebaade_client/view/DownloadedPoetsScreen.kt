@@ -31,8 +31,8 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN100
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN90
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
 import ir.jaamebaade.jaamebaade_client.view.components.ButtonIntro
-import ir.jaamebaade.jaamebaade_client.view.components.DownloadedPoet
-import ir.jaamebaade.jaamebaade_client.view.components.SquareButton
+import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
+import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
 import ir.jaamebaade.jaamebaade_client.viewmodel.DownloadedPoetViewModel
 import kotlinx.coroutines.launch
 
@@ -59,7 +59,8 @@ fun IntroShowcaseScope.DownloadedPoetsScreen(
                 if (poets!!.isNotEmpty()) {
                     items(poets) { poet ->
                         val isSelected = selectedPoets.contains(poet)
-                        DownloadedPoet(poet = poet, isSelected = isSelected, onLongClick = {
+                        PoetIconButton(poet = poet, onLongClick = {
+                            // TODO : Implement onLongClick
                             selectedPoets.add(poet)
                         }) {
                             if (selectedPoets.isEmpty()) {
