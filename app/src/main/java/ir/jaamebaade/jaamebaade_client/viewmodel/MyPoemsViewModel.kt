@@ -71,7 +71,7 @@ class MyPoemsViewModel @Inject constructor(
         }
     }
 
-    private fun getRandomPoem() {
+    fun getRandomPoem() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val poemWithPoet = poemRepository.getRandomPoem()

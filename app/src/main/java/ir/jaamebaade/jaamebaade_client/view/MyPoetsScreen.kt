@@ -41,14 +41,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun IntroShowcaseScope.MyPoetsScreen(
     modifier: Modifier = Modifier,
-    myPoemsViewModel: MyPoemsViewModel = hiltViewModel(),
+    viewModel: MyPoemsViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val poets = myPoemsViewModel.poets
+    val poets = viewModel.poets
     var fetchStatue by remember { mutableStateOf(Status.LOADING) }
     val coroutineScope = rememberCoroutineScope()
     val selectedPoets = remember { mutableStateListOf<Poet>() }
-    val randomPoemPreview = myPoemsViewModel.randomPoemPreview
+    val randomPoemPreview = viewModel.randomPoemPreview
 
     LaunchedEffect(key1 = poets) {
         if (poets != null) fetchStatue = Status.SUCCESS
@@ -60,7 +60,11 @@ fun IntroShowcaseScope.MyPoetsScreen(
                 .padding(horizontal = 16.dp),
         ) {
             randomPoemPreview?.let {
-                RandomPoemBox(randomPoemPreview = it, navController = navController)
+                RandomPoemBox(randomPoemPreview = it, onCardClick = {
+                    navController.navigate("${AppRoutes.POEM}/${randomPoemPreview.poemPath.poem.id}/${randomPoemPreview.poemPath.poem.id}/-1")
+                }) {
+                    viewModel.getRandomPoem()
+                }
             }
 
             LazyVerticalGrid(columns = GridCells.Fixed(3)) {
@@ -74,7 +78,7 @@ fun IntroShowcaseScope.MyPoetsScreen(
                             if (selectedPoets.isEmpty()) {
                                 coroutineScope.launch {
                                     val poetCategoryId =
-                                        myPoemsViewModel.getPoetCategoryId(poet.id)
+                                        viewModel.getPoetCategoryId(poet.id)
                                     navController.navigate(
                                         "${AppRoutes.POET_CATEGORY_SCREEN}/${poet.id}/${
                                             intArrayOf(
