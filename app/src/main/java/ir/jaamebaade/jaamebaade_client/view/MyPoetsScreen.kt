@@ -1,6 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -8,9 +8,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,55 +32,67 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN100
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN90
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
 import ir.jaamebaade.jaamebaade_client.view.components.ButtonIntro
-import ir.jaamebaade.jaamebaade_client.view.components.DownloadedPoet
-import ir.jaamebaade.jaamebaade_client.view.components.LoadingIndicator
-import ir.jaamebaade.jaamebaade_client.view.components.RoundButton
-import ir.jaamebaade.jaamebaade_client.view.components.SquareButton
-import ir.jaamebaade.jaamebaade_client.viewmodel.DownloadedPoetViewModel
+import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
+import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemBox
+import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
+import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoemsViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun IntroShowcaseScope.DownloadedPoetsScreen(
+fun IntroShowcaseScope.MyPoetsScreen(
     modifier: Modifier = Modifier,
-    downloadedPoetViewModel: DownloadedPoetViewModel = hiltViewModel(),
+    viewModel: MyPoemsViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val poets = downloadedPoetViewModel.poets
+    val poets = viewModel.poets
     var fetchStatue by remember { mutableStateOf(Status.LOADING) }
     val coroutineScope = rememberCoroutineScope()
     val selectedPoets = remember { mutableStateListOf<Poet>() }
+    val randomPoemPreview = viewModel.randomPoemPreview
 
     LaunchedEffect(key1 = poets) {
         if (poets != null) fetchStatue = Status.SUCCESS
     }
-    if (fetchStatue == Status.SUCCESS && poets!!.isNotEmpty()) {
-        Box(
+    if (fetchStatue == Status.SUCCESS) {
+        Column(
             modifier = modifier
                 .fillMaxSize()
+                .padding(horizontal = 16.dp),
         ) {
+            randomPoemPreview?.let {
+                RandomPoemBox(randomPoemPreview = it, onCardClick = {
+                    navController.navigate("${AppRoutes.POEM}/${randomPoemPreview.poemPath.poem.id}/${randomPoemPreview.poemPath.poem.id}/-1")
+                }) {
+                    viewModel.getRandomPoem()
+                }
+            }
+
             LazyVerticalGrid(columns = GridCells.Fixed(3)) {
-                items(poets) { poet ->
-                    val isSelected = selectedPoets.contains(poet)
-                    DownloadedPoet(poet = poet, isSelected = isSelected, onLongClick = {
-                        selectedPoets.add(poet)
-                    }) {
-                        if (selectedPoets.isEmpty()) {
-                            coroutineScope.launch {
-                                val poetCategoryId =
-                                    downloadedPoetViewModel.getPoetCategoryId(poet.id)
-                                navController.navigate(
-                                    "${AppRoutes.POET_CATEGORY_SCREEN}/${poet.id}/${
-                                        intArrayOf(
-                                            poetCategoryId
-                                        ).toNavArgs()
-                                    }"
-                                )
-                            }
-                        } else {
-                            if (isSelected) {
-                                selectedPoets.remove(poet)
+                if (poets!!.isNotEmpty()) {
+                    items(poets) { poet ->
+                        val isSelected = selectedPoets.contains(poet)
+                        PoetIconButton(poet = poet, onLongClick = {
+                            // TODO : Implement onLongClick
+                            selectedPoets.add(poet)
+                        }) {
+                            if (selectedPoets.isEmpty()) {
+                                coroutineScope.launch {
+                                    val poetCategoryId =
+                                        viewModel.getPoetCategoryId(poet.id)
+                                    navController.navigate(
+                                        "${AppRoutes.POET_CATEGORY_SCREEN}/${poet.id}/${
+                                            intArrayOf(
+                                                poetCategoryId
+                                            ).toNavArgs()
+                                        }"
+                                    )
+                                }
                             } else {
-                                selectedPoets.add(poet)
+                                if (isSelected) {
+                                    selectedPoets.remove(poet)
+                                } else {
+                                    selectedPoets.add(poet)
+                                }
                             }
                         }
                     }
@@ -91,7 +100,6 @@ fun IntroShowcaseScope.DownloadedPoetsScreen(
                 item {
                     SquareButton(
                         modifier = Modifier
-                            .align(Alignment.BottomEnd)
                             .introShowCaseTarget(
                                 index = 4,
                                 style = ShowcaseStyle.Default.copy(
@@ -108,7 +116,6 @@ fun IntroShowcaseScope.DownloadedPoetsScreen(
                             ),
                         icon = Icons.Filled.Add,
                         tint = MaterialTheme.colorScheme.neutralN100,
-                        size = 89,
                         backgroundColor = MaterialTheme.colorScheme.neutralN90,
                         contentDescription = stringResource(R.string.ADD_NEW_POET)
                     ) {
@@ -120,35 +127,6 @@ fun IntroShowcaseScope.DownloadedPoetsScreen(
                     }
                 }
             }
-        }
-    }
-    Box(
-        modifier = modifier
-            .fillMaxSize(), contentAlignment = Alignment.Center
-    ) {
-        if (fetchStatue == Status.SUCCESS && poets!!.isEmpty()) {
-            Text(
-                text = "هیچ شاعری را دانلود نکرده‌ای!",
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = modifier.padding(8.dp)
-            )
-        } else if (fetchStatue == Status.LOADING) {
-            LoadingIndicator()
-        }
-        if (selectedPoets.isNotEmpty() && fetchStatue == Status.SUCCESS) {
-
-            RoundButton(
-                modifier = Modifier.align(Alignment.BottomEnd),
-                icon = Icons.Filled.Delete,
-                contentDescription = "Delete Poet"
-            ) {
-                fetchStatue = Status.LOADING
-                downloadedPoetViewModel.deletePoets(selectedPoets) {
-                    selectedPoets.clear()
-                    fetchStatue = Status.SUCCESS
-                }
-            }
-
         }
     }
 }

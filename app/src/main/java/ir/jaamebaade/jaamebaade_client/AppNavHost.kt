@@ -45,7 +45,7 @@ import ir.jaamebaade.jaamebaade_client.view.ChangeFontScreen
 import ir.jaamebaade.jaamebaade_client.view.ChangeThemeScreen
 import ir.jaamebaade.jaamebaade_client.view.CommentsScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadablePoetsScreen
-import ir.jaamebaade.jaamebaade_client.view.DownloadedPoetsScreen
+import ir.jaamebaade.jaamebaade_client.view.MyPoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.FavoritesScreen
 import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
 import ir.jaamebaade.jaamebaade_client.view.PoemScreen
@@ -167,7 +167,7 @@ fun AppNavHost(
                         startDestination = AppRoutes.DOWNLOADED_POETS_SCREEN.toString()
                     ) {
                         animatedComposable(route = AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
-                            DownloadedPoetsScreen(
+                            MyPoetsScreen(
                                 modifier = Modifier.padding(
                                     innerPadding
                                 ), navController = navController

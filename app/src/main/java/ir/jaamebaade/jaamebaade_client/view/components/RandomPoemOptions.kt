@@ -19,23 +19,23 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.jaamebaade.jaamebaade_client.R
-import ir.jaamebaade.jaamebaade_client.viewmodel.DownloadedPoetViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoemsViewModel
 import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun RandomPoemOptions(
     modifier: Modifier = Modifier,
-    downloadedPoetViewModel: DownloadedPoetViewModel = hiltViewModel(),
+    myPoemsViewModel: MyPoemsViewModel = hiltViewModel(),
     sheetState: SheetState,
     onDismiss: () -> Unit
 ) {
-    val poetsWithCategories = downloadedPoetViewModel.categories
+    val poetsWithCategories = myPoemsViewModel.categories
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = {
             onDismiss()
-            downloadedPoetViewModel.saveSelectedCategoriesForRandomPoem()
+            myPoemsViewModel.saveSelectedCategoriesForRandomPoem()
         }
     ) {
         Column(

@@ -8,9 +8,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.Category
+import ir.jaamebaade.jaamebaade_client.model.Poem
+import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 import ir.jaamebaade.jaamebaade_client.model.Poet
+import ir.jaamebaade.jaamebaade_client.model.RandomPoemPreview
+import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
+import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
+import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatusManager
 import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
@@ -20,9 +26,11 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class DownloadedPoetViewModel @Inject constructor(
+class MyPoemsViewModel @Inject constructor(
     private val poetRepository: PoetRepository,
     private val categoryRepository: CategoryRepository,
+    private val poemRepository: PoemRepository,
+    private val verseRepository: VerseRepository,
     private val downloadStatusManager: DownloadStatusManager
 ) : ViewModel() {
     var poets by mutableStateOf<List<Poet>?>(null)
@@ -31,9 +39,13 @@ class DownloadedPoetViewModel @Inject constructor(
     var categories by mutableStateOf<List<CategoryGraphNode>?>(null)
         private set
 
+    var randomPoemPreview by mutableStateOf<RandomPoemPreview?>(null)
+        private set
+
     init {
         getAllPoets()
         getAllCategories()
+        getRandomPoem()
     }
 
 
@@ -55,6 +67,52 @@ class DownloadedPoetViewModel @Inject constructor(
                 selectedPoets.forEach { changeDownloadStatusToNotDownloaded(it.id.toString()) }
                 poets = poets!!.toMutableList().also { it.removeAll(selectedPoets) }
                 onSuccess()
+            }
+        }
+    }
+
+    fun getRandomPoem() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val poemWithPoet = poemRepository.getRandomPoem()
+                poemWithPoet?.let {
+                    val poemPath = getPoemPath(it.poem.id)
+                    val first4Verses = verseRepository.getFirst4VersesByPoemId(it.poem.id)
+                    randomPoemPreview = RandomPoemPreview(
+                        poemPath = poemPath,
+                        verses = first4Verses
+                    )
+                }
+            }
+        }
+    }
+
+    suspend fun getPoemPath(poemId: Int): VersePoemCategoriesPoet {
+        val res = withContext(Dispatchers.IO) {
+
+            val poemWithPoet = fetchPoemWithPoet(poemId)!!
+            VersePoemCategoriesPoet(
+                verse = null,
+                poem = poemWithPoet.poem,
+                poet = poemWithPoet.poet,
+                categories = fetchAllCategoriesOfPoem(poemWithPoet.poem),
+            )
+        }
+        return res
+    }
+
+    private suspend fun fetchAllCategoriesOfPoem(poem: Poem): List<Category> {
+        return withContext(Dispatchers.IO) {
+            categoryRepository.getAllParentsOfCategoryId(poem.categoryId)
+        }
+    }
+
+    private suspend fun fetchPoemWithPoet(poemId: Int): PoemWithPoet? {
+        return withContext(Dispatchers.IO) {
+            try {
+                poemRepository.getPoemWithPoet(poemId)
+            } catch (_: Exception) {
+                null
             }
         }
     }
