@@ -95,13 +95,13 @@ class MyPoemsViewModel @Inject constructor(
                 verse = null,
                 poem = poemWithPoet.poem,
                 poet = poemWithPoet.poet,
-                categories = fetchAllCategories(poemWithPoet.poem),
+                categories = fetchAllCategoriesOfPoem(poemWithPoet.poem),
             )
         }
         return res
     }
 
-    private suspend fun fetchAllCategories(poem: Poem): List<Category> {
+    private suspend fun fetchAllCategoriesOfPoem(poem: Poem): List<Category> {
         return withContext(Dispatchers.IO) {
             categoryRepository.getAllParentsOfCategoryId(poem.categoryId)
         }

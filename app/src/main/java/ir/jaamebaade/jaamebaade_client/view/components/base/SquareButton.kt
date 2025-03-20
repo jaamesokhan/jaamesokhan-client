@@ -39,6 +39,7 @@ fun SquareButton(
     onClick: () -> Unit,
 ) {
     assert(icon != null || image != null) { "Icon and image can't be null at the same time" }
+    assert(icon != null && image != null) { "Icon and image can't be set at the same time" }
 
     Column(
         modifier = modifier
