@@ -6,7 +6,6 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
@@ -32,6 +32,7 @@ fun SquareButton(
     tint: Color,
     contentDescription: String,
     text: String? = contentDescription,
+    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     backgroundColor: Color,
     size: Int = 89,
     roundedCornerShapeSize: Int = 25,
@@ -39,7 +40,7 @@ fun SquareButton(
     onClick: () -> Unit,
 ) {
     assert(icon != null || image != null) { "Icon and image can't be null at the same time" }
-    assert(icon != null && image != null) { "Icon and image can't be set at the same time" }
+    assert(icon == null || image == null) { "Icon and image can't be set at the same time" }
 
     Column(
         modifier = modifier
@@ -63,8 +64,7 @@ fun SquareButton(
                 Icon(
                     imageVector = it,
                     contentDescription = contentDescription,
-                    modifier = Modifier
-                        .fillMaxSize(),
+                    modifier = Modifier.size(size.dp),
                     tint = tint,
                 )
             }
@@ -79,7 +79,8 @@ fun SquareButton(
         text?.let {
             Text(
                 text = it,
-                style = MaterialTheme.typography.titleMedium,
+                style = textStyle,
+                modifier = Modifier.padding(top = 4.dp),
                 textAlign = TextAlign.Center,
             )
         }

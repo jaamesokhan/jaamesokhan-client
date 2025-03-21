@@ -28,20 +28,19 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Status
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN100
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN90
+import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
 import ir.jaamebaade.jaamebaade_client.view.components.ButtonIntro
 import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemBox
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
-import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoemsViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun IntroShowcaseScope.MyPoetsScreen(
     modifier: Modifier = Modifier,
-    viewModel: MyPoemsViewModel = hiltViewModel(),
+    viewModel: MyPoetsViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val poets = viewModel.poets
@@ -115,9 +114,10 @@ fun IntroShowcaseScope.MyPoetsScreen(
                                 }
                             ),
                         icon = Icons.Filled.Add,
-                        tint = MaterialTheme.colorScheme.neutralN100,
-                        backgroundColor = MaterialTheme.colorScheme.neutralN90,
-                        contentDescription = stringResource(R.string.ADD_NEW_POET)
+                        tint = MaterialTheme.colorScheme.neutralN95,
+                        backgroundColor = MaterialTheme.colorScheme.outline,
+                        contentDescription = stringResource(R.string.ADD_NEW_POET),
+                        textStyle = MaterialTheme.typography.headlineMedium,
                     ) {
                         navController.navigate(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
                             popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {

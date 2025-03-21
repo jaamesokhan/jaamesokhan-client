@@ -2,9 +2,11 @@ package ir.jaamebaade.jaamebaade_client.utility
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
+import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
 
 class SharedPrefManager(
     @ApplicationContext private val context: Context
@@ -26,10 +28,10 @@ class SharedPrefManager(
         context.getSharedPreferences("JaameBaadePrefs", Context.MODE_PRIVATE)
 
     fun saveAuthCredentials(username: String?, token: String?) {
-        val editor = sharedPreferences.edit()
-        editor.putString(USERNAME_KEY, username)
-        editor.putString(AUTH_TOKEN_KEY, token)
-        editor.apply()
+        sharedPreferences.edit {
+            putString(USERNAME_KEY, username)
+            putString(AUTH_TOKEN_KEY, token)
+        }
     }
 
     fun getUsername(): String? {
@@ -41,22 +43,21 @@ class SharedPrefManager(
     }
 
     fun saveFont(font: CustomFont) {
-        val editor = sharedPreferences.edit()
-        editor.putString(FONT_KEY, font.name)
-        editor.apply()
+        sharedPreferences.edit {
+            putString(FONT_KEY, font.name)
+        }
     }
 
     fun saveFontSizeIndex(fontSizeIndex: Int) {
-        val editor = sharedPreferences.edit()
-        editor.putInt(FONT_SIZE_INDEX_KEY, fontSizeIndex)
-        editor.apply()
+        sharedPreferences.edit {
+            putInt(FONT_SIZE_INDEX_KEY, fontSizeIndex)
+        }
     }
 
     fun getFont(): CustomFont {
-        val savedFont = sharedPreferences.getString(FONT_KEY, CustomFont.VAZIRMATN.name)?.let {
-            CustomFont.valueOf(it).name
-        } ?: CustomFont.VAZIRMATN.name
-        return CustomFont.valueOf(savedFont)
+        val savedFontName = sharedPreferences.getString(FONT_KEY, CustomFonts.Vazirmatn.name)
+        return CustomFonts.getAllFonts().find { it.name == savedFontName }
+            ?: CustomFonts.getDefaultFont()
 
     }
 
@@ -65,9 +66,9 @@ class SharedPrefManager(
     }
 
     fun setThemePreference(appThemeType: AppThemeType) {
-        val editor = sharedPreferences.edit()
-        editor.putString(APP_THEME_TYPE_KEY, appThemeType.name)
-        editor.apply()
+        sharedPreferences.edit {
+            putString(APP_THEME_TYPE_KEY, appThemeType.name)
+        }
     }
 
     fun getThemePreference(): AppThemeType {
@@ -79,9 +80,9 @@ class SharedPrefManager(
     }
 
     fun setHighlightMergeToggleState(state: Boolean) {
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("highlightMergeToggleState", state)
-        editor.apply()
+        sharedPreferences.edit {
+            putBoolean("highlightMergeToggleState", state)
+        }
     }
 
     fun getHighlightMergeToggleState(): Boolean {
@@ -89,7 +90,7 @@ class SharedPrefManager(
     }
 
     fun setShowAppIntroPoem(showIntro: Boolean) {
-        sharedPreferences.edit().putBoolean(SHOW_APP_INTRO_POEM_KEY, showIntro).apply()
+        sharedPreferences.edit { putBoolean(SHOW_APP_INTRO_POEM_KEY, showIntro) }
     }
 
     fun getShowAppIntroPoem(): Boolean {
@@ -97,7 +98,7 @@ class SharedPrefManager(
     }
 
     fun setShowAppIntroHighlight(showIntro: Boolean) {
-        sharedPreferences.edit().putBoolean(SHOW_APP_INTRO_HIGHLIGHT_KEY, showIntro).apply()
+        sharedPreferences.edit { putBoolean(SHOW_APP_INTRO_HIGHLIGHT_KEY, showIntro) }
     }
 
     fun getShowAppIntroHighlight(): Boolean {
@@ -110,11 +111,11 @@ class SharedPrefManager(
     }
 
     fun setShowAppIntroMain(value: Boolean) {
-        sharedPreferences.edit().putBoolean(SHOW_APP_INTRO_MANI_KEY, value).apply()
+        sharedPreferences.edit { putBoolean(SHOW_APP_INTRO_MANI_KEY, value) }
     }
 
     fun setNotificationPermissionPreference(preference: Boolean) {
-        sharedPreferences.edit().putBoolean(NOTIFICATION_PERMISSION_KEY, preference).apply()
+        sharedPreferences.edit { putBoolean(NOTIFICATION_PERMISSION_KEY, preference) }
     }
 
     fun getNotificationPermissionPreference(): Boolean {

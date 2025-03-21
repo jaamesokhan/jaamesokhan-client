@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -20,11 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -37,6 +32,7 @@ import ir.jaamebaade.jaamebaade_client.repository.FontRepository
 import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.JaamebaadeclientTheme
+import ir.jaamebaade.jaamebaade_client.ui.theme.Typography
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import ir.jaamebaade.jaamebaade_client.utility.animatedComposable
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
@@ -45,9 +41,9 @@ import ir.jaamebaade.jaamebaade_client.view.ChangeFontScreen
 import ir.jaamebaade.jaamebaade_client.view.ChangeThemeScreen
 import ir.jaamebaade.jaamebaade_client.view.CommentsScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadablePoetsScreen
-import ir.jaamebaade.jaamebaade_client.view.MyPoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.FavoritesScreen
 import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
+import ir.jaamebaade.jaamebaade_client.view.MyPoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.PoemScreen
 import ir.jaamebaade.jaamebaade_client.view.PoetCategoryPoemScreen
 import ir.jaamebaade.jaamebaade_client.view.SearchScreen
@@ -71,50 +67,7 @@ fun AppNavHost(
 
     val navController =
         rememberNavController()
-    val fontSize by fontRepository.fontSizeIndex.collectAsState()
-    val fontFamily by fontRepository.fontFamily.collectAsState()
     val showIntroShowcase by mainIntroViewModel.showAppIntro.collectAsState()
-    fun createTextStyle(size: String, type: String): TextStyle {
-        val selectedFontFamily = fontFamily
-        val selectedSize = fontFamily.getFontSizes()[fontSize]
-        val sizeBasedFontSize: TextUnit = when (size) {
-            "small" -> (selectedSize - 3.5).sp
-
-            "large" -> (selectedSize + 3.5).sp
-
-            else ->
-                (selectedSize).sp
-        }
-
-        val typeBasedFontWeight = when (type) {
-            "headline" -> FontWeight.Medium
-            "title" -> FontWeight.SemiBold
-            "label" -> FontWeight.Light
-            else -> FontWeight.Normal
-        }
-        return TextStyle(
-            fontFamily = selectedFontFamily.getFontFamily(),
-            fontSize = sizeBasedFontSize,
-            fontWeight = typeBasedFontWeight
-        )
-    }
-
-    val typography = remember {
-        Typography(
-            bodyLarge = createTextStyle("large", "body"),
-            bodyMedium = createTextStyle("medium", "body"),
-            bodySmall = createTextStyle("small", "body"),
-            headlineLarge = createTextStyle("large", "headline"),
-            headlineMedium = createTextStyle("medium", "headline"),
-            headlineSmall = createTextStyle("small", "headline"),
-            titleLarge = createTextStyle("large", "title"),
-            titleMedium = createTextStyle("medium", "title"),
-            titleSmall = createTextStyle("small", "title"),
-            labelLarge = createTextStyle("large", "label"),
-            labelMedium = createTextStyle("medium", "label"),
-            labelSmall = createTextStyle("small", "label"),
-        )
-    }
 
     val appTheme by themeRepository.appTheme.collectAsState()
 
@@ -125,7 +78,7 @@ fun AppNavHost(
             AppThemeType.LIGHT -> false
             AppThemeType.DARK -> true
             AppThemeType.SYSTEM_AUTO -> isSystemInDarkTheme()
-        }, typography = typography
+        }, typography = Typography
     ) {
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             if (showPermissionRationale) {
@@ -150,11 +103,12 @@ fun AppNavHost(
                     mainIntroViewModel.setIntroShown()
                 },
             ) {
-                Scaffold(modifier = Modifier
-                    .fillMaxSize()
-                    .systemBarsPadding()
-                    .imePadding()
-                    .background(MaterialTheme.colorScheme.background),
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .systemBarsPadding()
+                        .imePadding()
+                        .background(MaterialTheme.colorScheme.background),
                     bottomBar = { Navbar(navController = navController) },
                     topBar = {
                         TopBar(

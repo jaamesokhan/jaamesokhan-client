@@ -26,7 +26,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class MyPoemsViewModel @Inject constructor(
+class MyPoetsViewModel @Inject constructor(
     private val poetRepository: PoetRepository,
     private val categoryRepository: CategoryRepository,
     private val poemRepository: PoemRepository,
