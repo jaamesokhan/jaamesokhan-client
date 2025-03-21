@@ -66,7 +66,7 @@ fun RandomPoemBox(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(12.dp)
+                    .padding(16.dp)
                     .weight(1f)
                     .width(0.dp),
             ) {

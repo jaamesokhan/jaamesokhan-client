@@ -18,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -71,56 +72,83 @@ fun IntroShowcaseScope.TopBar(
     BackHandler(enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
         onBackButtonClicked(backStackEntry, navController)
     }
-    Column {
-        TopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-            ),
-            title = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
+    Surface(
+        shadowElevation = 4.dp
+    ) {
+        Column {
+            TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
+                title = {
                     Row(
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
 
-                        if (canPop) {
-                            IconButton(
-                                onClick = {
-                                    onBackButtonClicked(backStackEntry, navController)
-                                }) {
+                            if (canPop) {
+                                IconButton(
+                                    onClick = {
+                                        onBackButtonClicked(backStackEntry, navController)
+                                    }) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        tint = MaterialTheme.colorScheme.onSurface,
+                                        contentDescription = "Back",
+                                        modifier = Modifier
+                                            .size(32.dp),
+                                    )
+                                }
+                            } else {
                                 Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    tint = MaterialTheme.colorScheme.onSurface,
-                                    contentDescription = "Back",
-                                    modifier = Modifier
-                                        .size(24.dp),
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = "Place Holder!",
+                                    modifier = Modifier.size(32.dp),
                                 )
                             }
-                        } else {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = "Place Holder!",
-                                modifier = Modifier.size(24.dp),
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = breadCrumbs,
+                                style = MaterialTheme.typography.titleLarge,
+                                color = Color.White,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.sizeIn(
+                                    maxWidth = 260.dp
+                                ),
+                                maxLines = 1
                             )
                         }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = breadCrumbs,
-                            style = MaterialTheme.typography.titleLarge,
-                            color = Color.White,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.sizeIn(
-                                maxWidth = 260.dp
-                            ),
-                            maxLines = 1
-                        )
-                    }
-                    Row {
-                        if (showHistory) {
+                        Row {
+                            if (showHistory) {
+                                IconButton(
+                                    modifier = Modifier.introShowCaseTarget(
+                                        index = 5,
+                                        style = ShowcaseStyle.Default.copy(
+                                            backgroundColor = MaterialTheme.colorScheme.primary,
+                                            backgroundAlpha = 0.98f,
+                                            targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                        ),
+                                        content = {
+                                            ButtonIntro(
+                                                stringResource(R.string.INTRO_HISTORY_TITLE),
+                                                stringResource(R.string.INTRO_HISTORY_DESC)
+                                            )
+                                        }
+                                    ),
+                                    onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
+                                    Icon(
+                                        imageVector = Icons.Filled.History,
+                                        contentDescription = "History",
+                                        tint = MaterialTheme.colorScheme.onSurface,
+                                        modifier = Modifier.size(32.dp),
+                                    )
+                                }
+                            }
                             IconButton(
                                 modifier = Modifier.introShowCaseTarget(
                                     index = 5,
@@ -131,45 +159,26 @@ fun IntroShowcaseScope.TopBar(
                                     ),
                                     content = {
                                         ButtonIntro(
-                                            stringResource(R.string.INTRO_HISTORY_TITLE),
-                                            stringResource(R.string.INTRO_HISTORY_DESC)
+                                            stringResource(R.string.INTRO_SEARCH_TITLE),
+                                            stringResource(R.string.INTRO_SHARE_DESC),
                                         )
                                     }
-                                ), onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
+                                ),
+                                onClick = { navController.navigate("${AppRoutes.SEARCH_SCREEN}") }) {
                                 Icon(
-                                    imageVector = Icons.Filled.History,
-                                    contentDescription = "History",
-                                    tint = MaterialTheme.colorScheme.onSurface
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = stringResource(R.string.SEARCH),
+                                    tint = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.size(32.dp),
                                 )
                             }
                         }
-                        IconButton(
-                            modifier = Modifier.introShowCaseTarget(
-                                index = 5,
-                                style = ShowcaseStyle.Default.copy(
-                                    backgroundColor = MaterialTheme.colorScheme.primary,
-                                    backgroundAlpha = 0.98f,
-                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                                ),
-                                content = {
-                                    ButtonIntro(
-                                        stringResource(R.string.INTRO_SEARCH_TITLE),
-                                        stringResource(R.string.INTRO_SHARE_DESC),
-                                    )
-                                }
-                            ), onClick = { navController.navigate("${AppRoutes.SEARCH_SCREEN}") }) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = stringResource(R.string.SEARCH),
-                                tint = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
                     }
-                }
 
-            },
-        )
-        AudioControlBar(navController = navController, viewModel = audioViewModel)
+                },
+            )
+            AudioControlBar(navController = navController, viewModel = audioViewModel)
+        }
     }
 }
 

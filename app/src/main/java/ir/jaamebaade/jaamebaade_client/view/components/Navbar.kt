@@ -18,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -111,46 +112,53 @@ fun IntroShowcaseScope.Navbar(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 10.dp)
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 24.dp)
             .clip(RoundedCornerShape(16.dp))
             .navigationBarsPadding(),
-        horizontalArrangement = Arrangement.Center
     ) {
-        Row(
+        // FIXME : this shadow does not work
+        Surface (
+            shadowElevation = 20.dp,
             modifier = Modifier
-                // TODO change color
-                .fillMaxWidth()
-                .height(106.dp)
-                .background(color = MaterialTheme.colorScheme.surface)
-                .padding(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth(),
         ) {
-            navbarItems.forEachIndexed { index, item ->
-                val isSelected = currentRoute == item.route.toString()
-                NavbarItem(
-                    route = item.route,
-                    currentRoute = currentRoute,
-                    iconId = item.getIcon(isSelected = isSelected),
-                    contentDescription = stringResource(item.contentDescriptionResId),
-                    isSelected = isSelected,
-                    navController = navController,
-                    modifier = Modifier.introShowCaseTarget(
-                        index = index,
-                        style = ShowcaseStyle.Default.copy(
-                            backgroundColor = MaterialTheme.colorScheme.primary,
-                            backgroundAlpha = 0.98f,
-                            targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        content = {
-                            ButtonIntro(
-                                stringResource(item.introTitleResId),
-                                stringResource(item.introDescResId)
-                            )
-                        }
+            Row(
+                modifier = Modifier
+                    // TODO change color
+                    .fillMaxWidth()
+                    .height(106.dp)
+                    .background(color = MaterialTheme.colorScheme.surface)
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                navbarItems.forEachIndexed { index, item ->
+                    val isSelected = currentRoute == item.route.toString()
+                    NavbarItem(
+                        route = item.route,
+                        currentRoute = currentRoute,
+                        iconId = item.getIcon(isSelected = isSelected),
+                        contentDescription = stringResource(item.contentDescriptionResId),
+                        isSelected = isSelected,
+                        navController = navController,
+                        modifier = Modifier.introShowCaseTarget(
+                            index = index,
+                            style = ShowcaseStyle.Default.copy(
+                                backgroundColor = MaterialTheme.colorScheme.primary,
+                                backgroundAlpha = 0.98f,
+                                targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                            ),
+                            content = {
+                                ButtonIntro(
+                                    stringResource(item.introTitleResId),
+                                    stringResource(item.introDescResId)
+                                )
+                            }
+                        )
                     )
-                )
 
+                }
             }
         }
     }
@@ -192,7 +200,7 @@ fun NavbarItem(
                 .fillMaxHeight()
                 .wrapContentWidth()
                 .bottomBorder(
-                    strokeWidth = 8.dp,
+                    strokeWidth = 12.dp,
                     color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
