@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.RandomPoemPreview
@@ -60,42 +61,50 @@ fun RandomPoemBox(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            AnimatedContent(
-                targetState = randomPoemPreview,
-                modifier = Modifier.weight(1f).width(0.dp)
-            ) { targetRandomPoemPreview ->
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(12.dp)
-                ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(12.dp)
+                    .weight(1f)
+                    .width(0.dp),
+            ) {
+                AnimatedContent(
+                    targetState = randomPoemPreview,
+                    modifier = Modifier.weight(1f),
+                ) { targetRandomPoemPreview ->
                     Column {
-                        targetRandomPoemPreview.verses.forEach {
-                            Text(
-                                text = it.text,
-                                color = MaterialTheme.colorScheme.neutralN95,
-                                style = MaterialTheme.typography.bodyMedium,
-                            )
-                        }
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        SquareButton(
-                            icon = Icons.Default.Autorenew,
-                            tint = MaterialTheme.colorScheme.neutralN95,
-                            contentDescription = stringResource(R.string.RANDOM_POEM),
-                            text = null,
-                            backgroundColor = MaterialTheme.colorScheme.primary,
-                            roundedCornerShapeSize = 10,
-                            size = 40,
-                            onClick = onRefreshClick
+                        Text(
+                            text = targetRandomPoemPreview.verses.joinToString(separator = "\n") { it.text },
+                            color = MaterialTheme.colorScheme.neutralN95,
+                            style = MaterialTheme.typography.bodyLarge,
+                            overflow = TextOverflow.Ellipsis
                         )
+                    }
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .weight(0.4f),
+                ) {
+                    SquareButton(
+                        icon = Icons.Default.Autorenew,
+                        tint = MaterialTheme.colorScheme.neutralN95,
+                        contentDescription = stringResource(R.string.RANDOM_POEM),
+                        text = null,
+                        backgroundColor = MaterialTheme.colorScheme.primary,
+                        roundedCornerShapeSize = 10,
+                        size = 40,
+                        onClick = onRefreshClick
+                    )
+                    AnimatedContent(
+                        targetState = randomPoemPreview,
+                    ) { targetRandomPoemPreview ->
                         Text(
                             text = targetRandomPoemPreview.poemPath.toPathHeaderText(),
                             color = MaterialTheme.colorScheme.neutralN95,
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodySmall,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }

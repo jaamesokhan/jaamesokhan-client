@@ -207,7 +207,7 @@ fun NavbarItem(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = contentDescription,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.labelMedium,
                 color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.neutralN70
             )
 

@@ -1,8 +1,12 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
@@ -18,9 +22,11 @@ fun PoetIconButton(poet: Poet, onLongClick: () -> Unit, onClick: () -> Unit) {
             .build()
     )
     SquareButton(
+        modifier = Modifier.padding(bottom = 16.dp),
         image = painter,
         tint = Color.White,
         contentDescription = poet.name,
+        textStyle = MaterialTheme.typography.headlineMedium,
         backgroundColor = Color.Transparent,
         onClick = onClick,
         onLongClick = onLongClick

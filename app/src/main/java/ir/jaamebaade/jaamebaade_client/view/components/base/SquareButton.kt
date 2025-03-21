@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
@@ -32,6 +33,7 @@ fun SquareButton(
     tint: Color,
     contentDescription: String,
     text: String? = contentDescription,
+    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     backgroundColor: Color,
     size: Int = 89,
     roundedCornerShapeSize: Int = 25,
@@ -39,7 +41,7 @@ fun SquareButton(
     onClick: () -> Unit,
 ) {
     assert(icon != null || image != null) { "Icon and image can't be null at the same time" }
-    assert(icon != null && image != null) { "Icon and image can't be set at the same time" }
+    assert(icon == null || image == null) { "Icon and image can't be set at the same time" }
 
     Column(
         modifier = modifier
@@ -79,7 +81,7 @@ fun SquareButton(
         text?.let {
             Text(
                 text = it,
-                style = MaterialTheme.typography.titleMedium,
+                style = textStyle,
                 textAlign = TextAlign.Center,
             )
         }

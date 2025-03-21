@@ -35,13 +35,13 @@ import ir.jaamebaade.jaamebaade_client.view.components.ButtonIntro
 import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemBox
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
-import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoemsViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun IntroShowcaseScope.MyPoetsScreen(
     modifier: Modifier = Modifier,
-    viewModel: MyPoemsViewModel = hiltViewModel(),
+    viewModel: MyPoetsViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val poets = viewModel.poets

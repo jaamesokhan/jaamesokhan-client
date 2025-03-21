@@ -41,18 +41,19 @@ fun FontSizeTileMenu(fontRepository: FontRepository) {
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        options.forEachIndexed { index, option ->
-            FontSizeTile(
-                option = option,
-                fontSize = fontRepository.fontFamily.value.getFontSizes()[index],
-                isSelected = selectedOption == index,
-                onClick = {
-                    selectedOption = index
-                    fontRepository.setFontSize(index)
-                    showDialog = true
-                }
-            )
-        }
+        // TODO : as we have to rewrite these parts, I am commenting this
+//        options.forEachIndexed { index, option ->
+//            FontSizeTile(
+//                option = option,
+//                fontSize = fontRepository.fontFamily.value.specs.getFontSize(index),
+//                isSelected = selectedOption == index,
+//                onClick = {
+//                    selectedOption = index
+//                    fontRepository.setFontSize(index)
+//                    showDialog = true
+//                }
+//            )
+//        }
     }
     if (showDialog) {
         val context = LocalContext.current

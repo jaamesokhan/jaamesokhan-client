@@ -26,7 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
-import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
+import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
 import ir.jaamebaade.jaamebaade_client.utility.restartApp
 
 @Composable
@@ -56,13 +56,13 @@ fun FontFamilyMenu(fontRepository: FontRepository) {
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                CustomFont.entries.forEachIndexed { index, customFont ->
+                CustomFonts.getAllFonts().forEachIndexed { index, customFont ->
                     DropdownMenuItem(
                         text = {
                             Text(
                                 text = customFont.displayName,
                                 style = TextStyle(
-                                    fontFamily = customFont.getFontFamily(),
+                                    fontFamily = customFont.fontFamily,
                                     fontSize = 20.sp
                                 )
                             )
@@ -73,7 +73,7 @@ fun FontFamilyMenu(fontRepository: FontRepository) {
                             showDialog = true
                             expanded = false
                         })
-                    if (index != CustomFont.entries.lastIndex)
+                    if (index != CustomFonts.getAllFonts().lastIndex)
                         HorizontalDivider()
                 }
             }
