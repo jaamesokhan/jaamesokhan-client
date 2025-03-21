@@ -57,15 +57,12 @@ class MyPoetsViewModel @Inject constructor(
         }
     }
 
-    fun deletePoets(selectedPoets: List<Poet>, onSuccess: () -> Unit) {
-        if (selectedPoets.isEmpty()) {
-            return
-        }
+    fun deletePoets(selectedPoet: Poet, onSuccess: () -> Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                poetRepository.deletePoets(selectedPoets)
-                selectedPoets.forEach { changeDownloadStatusToNotDownloaded(it.id.toString()) }
-                poets = poets!!.toMutableList().also { it.removeAll(selectedPoets) }
+                poetRepository.deletePoet(selectedPoet)
+                changeDownloadStatusToNotDownloaded(selectedPoet.id.toString())
+                poets = poets!!.toMutableList().also { it.remove(selectedPoet) }
                 onSuccess()
             }
         }

@@ -34,7 +34,7 @@
     <string name="DOWNLOAD_SUCCESSFUL">دانلود با موفقیت انجام شد.</string>
     <string name="DOWNLOAD_FAILED">دانلود با مشکل مواجه شد!</string>
     <string name="NO_POET_DOWNLOADED">هیچ شاعری دانلود نشده است!</string>
-    <string name="NO_POEM_AVAILABLE_FOR_RANDOM">هیچ شعری یافت نشد!</string>
+    <string name="POEM_NOT_AVAILABLE"> شعر یافت نشد!</string>
     <string name="NO_POET_FOUND">شاعری یافت نشد!</string>
     <string name="NO_HIGHLIGHTS_FOUND">متنی را هایلایت نکرده‌اید!</string>
     <string name="NOTIFICATION_ACCESS_BODY">برای اطلاع از انتشار آخرین نسخه، لطفا به برنامه دسترسی ارسال اعلان بدهید.</string>
@@ -54,6 +54,7 @@
     <string name="NOTIFICATION_ACCESS_TITLE">دسترسی ارسال اعلان</string>
     <string name="SELECT_VERSES">انتخاب مصرع</string>
     <string name="NORMAL_MODE">حالت عادی</string>
+    <string name="DELETE_POET">حذف شاعر</string>
 
 
     <!--  Icon Descriptions  -->
