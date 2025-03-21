@@ -95,7 +95,7 @@ fun RandomPoemBox(
                         text = null,
                         backgroundColor = MaterialTheme.colorScheme.primary,
                         roundedCornerShapeSize = 10,
-                        size = 40,
+                        size = 32,
                         onClick = onRefreshClick
                     )
                     AnimatedContent(
