@@ -65,8 +65,7 @@ fun SquareButton(
                 Icon(
                     imageVector = it,
                     contentDescription = contentDescription,
-                    modifier = Modifier
-                        .fillMaxSize(),
+                    modifier = Modifier.size(size.dp),
                     tint = tint,
                 )
             }
@@ -82,6 +81,7 @@ fun SquareButton(
             Text(
                 text = it,
                 style = textStyle,
+                modifier = Modifier.padding(top = 4.dp),
                 textAlign = TextAlign.Center,
             )
         }

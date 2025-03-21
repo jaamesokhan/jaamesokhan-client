@@ -28,8 +28,7 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Status
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN100
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN90
+import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
 import ir.jaamebaade.jaamebaade_client.view.components.ButtonIntro
 import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
@@ -115,8 +114,8 @@ fun IntroShowcaseScope.MyPoetsScreen(
                                 }
                             ),
                         icon = Icons.Filled.Add,
-                        tint = MaterialTheme.colorScheme.neutralN100,
-                        backgroundColor = MaterialTheme.colorScheme.neutralN90,
+                        tint = MaterialTheme.colorScheme.neutralN95,
+                        backgroundColor = MaterialTheme.colorScheme.outline,
                         contentDescription = stringResource(R.string.ADD_NEW_POET)
                     ) {
                         navController.navigate(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
