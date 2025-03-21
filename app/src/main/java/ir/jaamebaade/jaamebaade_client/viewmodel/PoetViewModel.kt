@@ -189,7 +189,7 @@ class PoetViewModel @Inject constructor(
     }
 
     private fun deletePoet(poet: Poet) {
-        poetRepository.deletePoets(listOf(poet))
+        poetRepository.deletePoet(poet)
     }
 
 }
