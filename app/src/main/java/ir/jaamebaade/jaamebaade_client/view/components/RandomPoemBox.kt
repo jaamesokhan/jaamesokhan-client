@@ -43,6 +43,7 @@ fun RandomPoemBox(
         modifier = Modifier
             .padding(vertical = 32.dp)
             .height(228.dp)
+            .clip(RoundedCornerShape(25.dp))
             .fillMaxWidth(),
         onClick = onCardClick
     ) {
