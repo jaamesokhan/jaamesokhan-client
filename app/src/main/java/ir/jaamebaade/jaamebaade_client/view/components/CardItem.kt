@@ -3,10 +3,13 @@ package ir.jaamebaade.jaamebaade_client.view.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImagePainter
+import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
 @Composable
 fun CardItem(
@@ -79,4 +84,84 @@ fun CardItem(
             )
         }
     }
+}
+@Composable
+fun NewCardItem(
+    modifier: Modifier = Modifier,
+    headerText: String? = null,
+    bodyText: AnnotatedString,
+    footerText: String? = null,
+    image: AsyncImagePainter,
+    icon: ImageVector? = null,
+    iconDescription: String? = null,
+    onClick: () -> Unit,
+    onIconClick: () -> Unit = {},
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+        )
+    ) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            SquareImage(
+                image = image,
+                contentDescription = "",
+                size = 75
+            )
+            Column {
+                Row {
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(vertical = 8.dp)
+                    ) {
+                        if (headerText != null) {
+                            Text(
+                                text = headerText,
+                                style = MaterialTheme.typography.headlineMedium
+                            )
+                        }
+                        Text(
+                            text = bodyText,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier
+                                .padding(horizontal = 2.dp)
+                        )
+                        if (footerText != null) {
+                            Text(
+                                text = footerText,
+                                style = MaterialTheme.typography.headlineMedium
+                            )
+                        }
+                    }
+
+
+                    if (icon != null) {
+                        IconButton(
+                            onClick = {
+                                onIconClick()
+                            },
+                            modifier = Modifier.padding(start = 8.dp)
+                        ) {
+                            Icon(imageVector = icon, contentDescription = iconDescription)
+                        }
+                    }
+                }
+                HorizontalDivider()
+            }
+        }
+
+    }
+
 }
