@@ -105,6 +105,9 @@ val ColorScheme.neutralN100: Color
     @Composable
     get() = if (isSystemInDarkTheme()) neutralN100Dark else neutralN100Light
 
+val ColorScheme.secondaryText: Color
+    @Composable
+    get()  = if(isSystemInDarkTheme()) secondaryTextDark else secondaryTextLight
 
 @Composable
 fun JaamebaadeclientTheme(

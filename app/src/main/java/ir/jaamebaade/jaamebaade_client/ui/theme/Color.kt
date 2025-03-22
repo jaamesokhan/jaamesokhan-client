@@ -59,6 +59,7 @@ val neutralN70Light = Color(0xFFB3B3B3)
 val neutralN90Light = Color(0xFFE6E6E6)
 val neutralN95Light = Color(0xFFF7F7F7)
 val neutralN100Light = Color(0xFFFFFFFF)
+val secondaryTextLight = Color(0xFF999999)
 
 val primaryDark = Color(0xFF889963)
 val onPrimaryDark = Color(0xFF889963)
@@ -68,6 +69,7 @@ val secondaryDark = Color(0xFF46660A)
 val onSecondaryDark = Color(0xFFF7F7F7)
 val secondaryContainerDark = Color(0xFFA5CC5C)
 val onSecondaryContainerDark = Color(0xFF334D04)
+val secondaryTextDark = Color(0xFFCCCCCC)
 
 /**
  * This is mapped to Gradient/Light in the design system
