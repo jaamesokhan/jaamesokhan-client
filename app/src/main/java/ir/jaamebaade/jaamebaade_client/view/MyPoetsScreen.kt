@@ -1,6 +1,5 @@
 package ir.jaamebaade.jaamebaade_client.view
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,7 +36,9 @@ import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
 import ir.jaamebaade.jaamebaade_client.view.components.PoetOptionsBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemBox
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
+import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,8 +56,6 @@ fun IntroShowcaseScope.MyPoetsScreen(
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedPoet by remember { mutableStateOf<Poet?>(null) }
-
-    val context = LocalContext.current
 
     LaunchedEffect(key1 = poets) {
         if (poets != null) fetchStatue = Status.SUCCESS
@@ -85,16 +83,14 @@ fun IntroShowcaseScope.MyPoetsScreen(
                 .padding(horizontal = 16.dp),
         ) {
             randomPoemPreview?.let {
-                val onPoemOpenErrorText = stringResource(R.string.POEM_NOT_AVAILABLE)
                 RandomPoemBox(randomPoemPreview = it, onCardClick = {
                     if (viewModel.poets?.find { randomPoemPreview.poemPath.poet.id == it.id } != null) {
                         navController.navigate("${AppRoutes.POEM}/${randomPoemPreview.poemPath.poet.id}/${randomPoemPreview.poemPath.poem.id}/-1")
                     } else {
-                        // TODO : we have to customize toast later. https://medium.com/@mahbooberezaee68/custom-toast-in-jetpack-compose-7608b541fd5f
-                        Toast.makeText(context, onPoemOpenErrorText, Toast.LENGTH_SHORT).show()
+                        ToastManager.showToast(R.string.POEM_NOT_AVAILABLE, ToastType.ERROR)
                     }
                 }) {
-                    viewModel.getRandomPoem()
+                    viewModel.getRandomPoem(refresh = true)
                 }
             }
 
