@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -19,8 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
+import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryText
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
 @Composable
@@ -100,7 +101,7 @@ fun NewCardItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(horizontal = 6.dp, vertical = 10.dp)
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,
@@ -109,56 +110,62 @@ fun NewCardItem(
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             SquareImage(
                 image = image,
                 contentDescription = "",
-                size = 75
+                size = 70
             )
-            Column {
-                Row {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(vertical = 8.dp)
-                    ) {
-                        if (headerText != null) {
-                            Text(
-                                text = headerText,
-                                style = MaterialTheme.typography.headlineMedium
-                            )
-                        }
+            // Texts columns
+            Column(
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 0.dp)
+                    .weight(1f)
+            ) {
+                // Header and Icon Row
+                Row(modifier = Modifier
+                    .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically) {
+                    if (headerText != null) {
                         Text(
-                            text = bodyText,
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier
-                                .padding(horizontal = 2.dp)
+                            text = headerText,
+                            style = MaterialTheme.typography.headlineMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
-                        if (footerText != null) {
-                            Text(
-                                text = footerText,
-                                style = MaterialTheme.typography.headlineMedium
-                            )
-                        }
                     }
-
-
                     if (icon != null) {
                         IconButton(
                             onClick = {
                                 onIconClick()
                             },
-                            modifier = Modifier.padding(start = 8.dp)
+                            modifier = Modifier.padding(start = 4.dp)
                         ) {
                             Icon(imageVector = icon, contentDescription = iconDescription)
                         }
                     }
                 }
-                HorizontalDivider()
+
+                Text(
+                    modifier = Modifier.padding(2.dp),
+                    text = bodyText,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.secondaryText,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (footerText != null) {
+                    Text(
+                        text = footerText,
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.secondaryText,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,)
+                }
             }
         }
 
