@@ -2,6 +2,7 @@ package ir.jaamebaade.jaamebaade_client.view.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +41,8 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN70
 import ir.jaamebaade.jaamebaade_client.utility.bottomBorder
+import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastMessage
+import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
 
 val routeMap = mapOf(
     "downloadedPoetsScreen" to "downloadedPoetsScreen",
@@ -109,57 +113,64 @@ val navbarItems = listOf(
 @Composable
 fun IntroShowcaseScope.Navbar(navController: NavController) {
     val currentRoute = currentRoute(navController, routeMap)
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 24.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .navigationBarsPadding(),
-    ) {
-        // FIXME : this shadow does not work
-        Surface (
-            shadowElevation = 20.dp,
-            modifier = Modifier
-                .fillMaxWidth(),
-        ) {
-            Row(
-                modifier = Modifier
-                    // TODO change color
-                    .fillMaxWidth()
-                    .height(106.dp)
-                    .background(color = MaterialTheme.colorScheme.surface)
-                    .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                navbarItems.forEachIndexed { index, item ->
-                    val isSelected = currentRoute == item.route.toString()
-                    NavbarItem(
-                        route = item.route,
-                        currentRoute = currentRoute,
-                        iconId = item.getIcon(isSelected = isSelected),
-                        contentDescription = stringResource(item.contentDescriptionResId),
-                        isSelected = isSelected,
-                        navController = navController,
-                        modifier = Modifier.introShowCaseTarget(
-                            index = index,
-                            style = ShowcaseStyle.Default.copy(
-                                backgroundColor = MaterialTheme.colorScheme.primary,
-                                backgroundAlpha = 0.98f,
-                                targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            content = {
-                                ButtonIntro(
-                                    stringResource(item.introTitleResId),
-                                    stringResource(item.introDescResId)
-                                )
-                            }
-                        )
-                    )
+    val showMessage by ToastManager.showMessage.collectAsState()
 
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 24.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .navigationBarsPadding(),
+        ) {
+            Surface(
+                shadowElevation = 20.dp,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(106.dp)
+                        .background(color = MaterialTheme.colorScheme.surface)
+                        .padding(horizontal = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    navbarItems.forEachIndexed { index, item ->
+                        val isSelected = currentRoute == item.route.toString()
+                        NavbarItem(
+                            route = item.route,
+                            currentRoute = currentRoute,
+                            iconId = item.getIcon(isSelected = isSelected),
+                            contentDescription = stringResource(item.contentDescriptionResId),
+                            isSelected = isSelected,
+                            navController = navController,
+                            modifier = Modifier.introShowCaseTarget(
+                                index = index,
+                                style = ShowcaseStyle.Default.copy(
+                                    backgroundColor = MaterialTheme.colorScheme.primary,
+                                    backgroundAlpha = 0.98f,
+                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                content = {
+                                    ButtonIntro(
+                                        stringResource(item.introTitleResId),
+                                        stringResource(item.introDescResId)
+                                    )
+                                }
+                            )
+                        )
+                    }
                 }
             }
+        }
+
+        if (showMessage) {
+            ToastMessage()
         }
     }
 }

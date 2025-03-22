@@ -7,6 +7,7 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
@@ -19,6 +20,7 @@ import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatusManager
+import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -68,18 +70,25 @@ class MyPoetsViewModel @Inject constructor(
         }
     }
 
-    fun getRandomPoem() {
+    fun getRandomPoem(refresh: Boolean = false) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val poemWithPoet = poemRepository.getRandomPoem()
-                poemWithPoet?.let {
-                    val poemPath = getPoemPath(it.poem.id)
-                    val first4Verses = verseRepository.getFirst4VersesByPoemId(it.poem.id)
-                    randomPoemPreview = RandomPoemPreview(
-                        poemPath = poemPath,
-                        verses = first4Verses
-                    )
+                if (poemWithPoet != null) {
+                    poemWithPoet.let {
+                        val poemPath = getPoemPath(it.poem.id)
+                        val first4Verses = verseRepository.getFirst4VersesByPoemId(it.poem.id)
+                        randomPoemPreview = RandomPoemPreview(
+                            poemPath = poemPath,
+                            verses = first4Verses
+                        )
+                    }
+                } else {
+                    if (refresh) {
+                        ToastManager.showToast(R.string.NO_POET_DOWNLOADED, ToastType.ERROR)
+                    }
                 }
+
             }
         }
     }
