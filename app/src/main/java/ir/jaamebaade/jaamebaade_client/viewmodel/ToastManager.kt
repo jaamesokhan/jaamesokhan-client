@@ -15,9 +15,9 @@ object ToastManager {
     private val _type = MutableStateFlow(ToastType.SUCCESS)
     val type: StateFlow<ToastType> = _type
 
-    fun showToast(messageId: Int, isSuccess: ToastType) {
+    fun showToast(messageId: Int, toastType: ToastType) {
         _toastMessage.update { messageId }
-        _type.update { isSuccess }
+        _type.update { toastType }
         _showMessage.update { true }
     }
 
