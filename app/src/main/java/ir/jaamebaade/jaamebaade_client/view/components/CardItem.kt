@@ -101,7 +101,6 @@ fun NewCardItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 6.dp, vertical = 10.dp)
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,
@@ -110,20 +109,24 @@ fun NewCardItem(
 
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth().padding(vertical = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            SquareImage(
-                image = image,
-                contentDescription = "",
-                size = 70
-            )
+
+                SquareImage(
+                    image = image,
+                    contentDescription = "",
+                    size = 66,
+                    roundedCornerShapeSize = 20,
+                    modifier = Modifier.padding(start = 15.dp, end = 0.dp)
+                )
+
             // Texts columns
             Column(
                 modifier = Modifier
-                    .padding(start = 8.dp, end = 0.dp)
-                    .weight(1f)
+                    .padding(start = 8.dp, end = 0.dp, bottom = 0.dp, top = 0.dp)
+                    .weight(1f),
             ) {
                 // Header and Icon Row
                 Row(modifier = Modifier
@@ -139,19 +142,20 @@ fun NewCardItem(
                         )
                     }
                     if (icon != null) {
-                        IconButton(
-                            onClick = {
-                                onIconClick()
-                            },
-                            modifier = Modifier.padding(start = 4.dp)
-                        ) {
-                            Icon(imageVector = icon, contentDescription = iconDescription)
-                        }
+                        Icon(imageVector = icon,
+                            contentDescription = iconDescription,
+                            modifier = Modifier.padding(end = 6.dp).clickable { onIconClick() })
+                        // using only icon to remove default padding
+//                        IconButton(
+//                            onClick = {
+//                                onIconClick()
+//                            },) {
+//                            Icon(imageVector = icon, contentDescription = iconDescription, modifier = Modifier.padding(0.dp))
+//                        }
                     }
                 }
 
                 Text(
-                    modifier = Modifier.padding(2.dp),
                     text = bodyText,
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.secondaryText,
