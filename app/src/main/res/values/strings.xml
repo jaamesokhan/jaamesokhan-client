@@ -74,6 +74,8 @@
     <string name="CLOSE">بستن</string>
     <string name="RANDOM_POEM">شعر رندم</string>
     <string name="RANDOM_POEM_OPTIONS">تنظیمات شعر تصادفی</string>
+    <string name="CATEGORY">دسته‌بندی</string>
+    <string name="POEM">شعر</string>
 
     <!-- Intro Stuff    -->
     <string name="INTRO_HISTORY_TITLE">تاریخچه</string>

@@ -27,7 +27,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,6 +39,7 @@ import com.canopas.lib.showcase.IntroShowcaseScope
 import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
+import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.TopBarViewModel
 
@@ -61,13 +61,14 @@ fun IntroShowcaseScope.TopBar(
 
     LaunchedEffect(key1 = backStackEntry) {
         viewModel.updateBreadCrumbs(backStackEntry)
-        viewModel.shouldShowShuffle(backStackEntry)
         viewModel.shouldShowHistory(backStackEntry)
-        viewModel.shouldShowRandomOptions(backStackEntry)
+        viewModel.shouldShowSearch(backStackEntry)
     }
 
     val breadCrumbs = viewModel.breadCrumbs
+    val poet = viewModel.poet
     val showHistory = viewModel.showHistoryIcon
+    val showSearch = viewModel.showSearchIcon
 
     BackHandler(enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
         onBackButtonClicked(backStackEntry, navController)
@@ -114,7 +115,7 @@ fun IntroShowcaseScope.TopBar(
                             Text(
                                 text = breadCrumbs,
                                 style = MaterialTheme.typography.titleLarge,
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.neutralN50,
                                 overflow = TextOverflow.Ellipsis,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.sizeIn(
@@ -149,34 +150,37 @@ fun IntroShowcaseScope.TopBar(
                                     )
                                 }
                             }
-                            IconButton(
-                                modifier = Modifier.introShowCaseTarget(
-                                    index = 5,
-                                    style = ShowcaseStyle.Default.copy(
-                                        backgroundColor = MaterialTheme.colorScheme.primary,
-                                        backgroundAlpha = 0.98f,
-                                        targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                            if (showSearch) {
+                                IconButton(
+                                    modifier = Modifier.introShowCaseTarget(
+                                        index = 5,
+                                        style = ShowcaseStyle.Default.copy(
+                                            backgroundColor = MaterialTheme.colorScheme.primary,
+                                            backgroundAlpha = 0.98f,
+                                            targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                        ),
+                                        content = {
+                                            ButtonIntro(
+                                                stringResource(R.string.INTRO_SEARCH_TITLE),
+                                                stringResource(R.string.INTRO_SHARE_DESC),
+                                            )
+                                        }
                                     ),
-                                    content = {
-                                        ButtonIntro(
-                                            stringResource(R.string.INTRO_SEARCH_TITLE),
-                                            stringResource(R.string.INTRO_SHARE_DESC),
-                                        )
-                                    }
-                                ),
-                                onClick = { navController.navigate("${AppRoutes.SEARCH_SCREEN}") }) {
-                                Icon(
-                                    imageVector = Icons.Default.Search,
-                                    contentDescription = stringResource(R.string.SEARCH),
-                                    tint = MaterialTheme.colorScheme.onSurface,
-                                    modifier = Modifier.size(32.dp),
-                                )
+                                    onClick = { navController.navigate("${AppRoutes.SEARCH_SCREEN}") }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Search,
+                                        contentDescription = stringResource(R.string.SEARCH),
+                                        tint = MaterialTheme.colorScheme.onSurface,
+                                        modifier = Modifier.size(32.dp),
+                                    )
+                                }
                             }
                         }
                     }
 
                 },
             )
+            poet?.let { PoetInformationBox(poet = it) }
             AudioControlBar(navController = navController, viewModel = audioViewModel)
         }
     }
