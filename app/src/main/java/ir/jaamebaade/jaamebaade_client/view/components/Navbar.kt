@@ -47,17 +47,18 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
 val routeMap = mapOf(
     "downloadedPoetsScreen" to "downloadedPoetsScreen",
     "downloadablePoetsScreen" to "downloadablePoetsScreen",
-    "poetCategoryScreen/{poetId}/{parentId}" to "downloadedPoetsScreen",
+    "poetCategoryScreen/{poetId}/{parentIds}" to "downloadedPoetsScreen",
     "poemsListScreen/{poetId}/{categoryId}" to "downloadedPoetsScreen",
     "poem/{poetId}/{poemId}" to "downloadedPoetsScreen",
+    "poem/{poetId}/{poemId}/{verseId}" to "downloadedPoetsScreen",
     "changeFontScreen" to "settingsScreen",
     "accountScreen" to "settingsScreen",
     "settingsScreen" to "settingsScreen",
     "searchScreen" to "searchScreen",
     "favoriteScreen" to "favoriteScreen",
-    "bookmarkScreen" to "bookmarkScreen",
-    "highlightScreen" to "highlightScreen",
-    "noteScreen" to "noteScreen",
+    "bookmarksScreen" to "bookmarksScreen",
+    "highlightsScreen" to "highlightsScreen",
+    "notesScreen" to "notesScreen",
 )
 
 data class NavbarItemData(
