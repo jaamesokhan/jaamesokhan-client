@@ -60,7 +60,7 @@ fun ListItem(
                 Row(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .padding(end = 14.dp)
+                        .padding(end = 24.dp)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
@@ -88,7 +88,7 @@ fun ListItem(
                             imageVector = Icons.Filled.ArrowBackIosNew,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(16.dp)
                         )
                     }
                 }

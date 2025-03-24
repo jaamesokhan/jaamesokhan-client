@@ -15,6 +15,7 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.CategoryWithPoemCount
 import ir.jaamebaade.jaamebaade_client.model.PoemWithFirstVerse
+import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import kotlinx.coroutines.Dispatchers
@@ -55,6 +56,15 @@ class PoetDetailViewModel @AssistedInject constructor(
             @Assisted("poetId") poetId: Int,
             @Assisted("parentIds") parentIds: IntArray
         ): PoetDetailViewModel
+    }
+
+
+    suspend fun findShuffledPoem(): PoemWithPoet? {
+        return withContext(Dispatchers.IO) {
+            var randomPoem: PoemWithPoet? = null
+            randomPoem = poemRepository.getRandomPoem(parentIds.last())
+            return@withContext randomPoem
+        }
     }
 
     private fun fetchPoetCategoriesWithParentId(poetId: Int, parentIds: IntArray) {
