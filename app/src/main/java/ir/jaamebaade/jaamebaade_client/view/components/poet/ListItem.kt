@@ -24,10 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
+/**
+ * This component is used in poet detail screen to show a list of items (category or poem).
+ */
 @Composable
 fun ListItem(
     title: String,
-    subtitle: String? = null,
+    subtitle: String,
     showDivider: Boolean,
     leadingIcon: @Composable () -> Unit,
     showTrailingArrow: Boolean = true,
@@ -35,7 +38,7 @@ fun ListItem(
 ) {
     Surface(
         modifier = Modifier
-            .height(64.dp)
+            .height(91.dp)
             .fillMaxWidth()
             .clickable { onClick() },
         color = MaterialTheme.colorScheme.background
@@ -62,22 +65,23 @@ fun ListItem(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Column {
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
                         Text(
                             text = title,
                             style = MaterialTheme.typography.headlineMedium,
                             color = MaterialTheme.colorScheme.onBackground
                         )
-                        if (subtitle != null) {
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = subtitle,
-                                style = MaterialTheme.typography.bodyMedium,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = subtitle,
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = MaterialTheme.colorScheme.outlineVariant,
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
                     }
                     if (showTrailingArrow) {
                         Icon(
@@ -89,7 +93,10 @@ fun ListItem(
                     }
                 }
                 if (showDivider) {
-                    HorizontalDivider(modifier = Modifier.align(Alignment.BottomEnd))
+                    HorizontalDivider(
+                        modifier = Modifier.align(Alignment.BottomEnd),
+                        color = MaterialTheme.colorScheme.outline
+                    )
                 }
             }
         }

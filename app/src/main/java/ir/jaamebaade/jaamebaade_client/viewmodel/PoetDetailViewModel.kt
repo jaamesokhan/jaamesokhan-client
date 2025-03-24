@@ -13,7 +13,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.jaamebaade.jaamebaade_client.model.Category
+import ir.jaamebaade.jaamebaade_client.model.CategoryWithPoemCount
 import ir.jaamebaade.jaamebaade_client.model.PoemWithFirstVerse
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
@@ -22,15 +22,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@HiltViewModel(assistedFactory = PoetCategoryPoemViewModel.PoetCategoryPoemViewModelFactory::class)
-class PoetCategoryPoemViewModel @AssistedInject constructor(
+@HiltViewModel(assistedFactory = PoetDetailViewModel.PoetDetailViewModelFactory::class)
+class PoetDetailViewModel @AssistedInject constructor(
     @Assisted("poetId") private val poetId: Int,
     @Assisted("parentIds") private val parentIds: IntArray,
     private val categoryRepository: CategoryRepository,
     private val poemRepository: PoemRepository,
 ) : ViewModel() {
 
-    var categories by mutableStateOf<List<Category>>(emptyList())
+    var categories by mutableStateOf<List<CategoryWithPoemCount>>(emptyList())
         private set
 
     val poemsPageData: Flow<PagingData<PoemWithFirstVerse>> = Pager(
@@ -50,11 +50,11 @@ class PoetCategoryPoemViewModel @AssistedInject constructor(
     }
 
     @AssistedFactory
-    interface PoetCategoryPoemViewModelFactory {
+    interface PoetDetailViewModelFactory {
         fun create(
             @Assisted("poetId") poetId: Int,
             @Assisted("parentIds") parentIds: IntArray
-        ): PoetCategoryPoemViewModel
+        ): PoetDetailViewModel
     }
 
     private fun fetchPoetCategoriesWithParentId(poetId: Int, parentIds: IntArray) {
@@ -66,9 +66,9 @@ class PoetCategoryPoemViewModel @AssistedInject constructor(
     private suspend fun getPoetCategoriesFromRepository(
         poetId: Int,
         parentId: Int
-    ): List<Category> {
+    ): List<CategoryWithPoemCount> {
         val res = withContext(Dispatchers.IO) {
-            categoryRepository.getCategoriesByPoetIdFilteredByParentId(
+            categoryRepository.getCategoriesByPoetIdFilteredByParentIdWithPoemCount(
                 poetId,
                 parentId
             )

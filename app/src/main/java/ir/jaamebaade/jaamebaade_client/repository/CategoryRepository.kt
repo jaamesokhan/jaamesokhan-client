@@ -11,17 +11,18 @@ class CategoryRepository @Inject constructor(appDatabase: AppDatabase) {
 
     fun getCategoryById(id: Int) = categoryDao.getCategoryById(id)
 
-    fun getCategoriesByPoetIdFilteredByParentId(poetId: Int, parentId: Int) =
-        categoryDao.getCategoriesByPoetIdFilteredByParentId(poetId, parentId)
-
     fun getPoetCategoryId(poetId: Int) =
         categoryDao.getPoetCategoryId(poetId)
 
     fun getAllParentsOfCategoryId(poemId: Int) = categoryDao.getAllParentsOfCategoryId(poemId)
 
+    fun getCategoriesByPoetIdFilteredByParentIdWithPoemCount(poetId: Int, parentId: Int) =
+        categoryDao.getCategoriesByPoetIdFilteredByParentIdWithPoemCount(poetId, parentId)
+
     fun insertCategories(categories: List<Category>) = categoryDao.insertAll(categories)
 
     fun getAllCategories(): List<Category> = categoryDao.getAll()
 
-    fun updateCategoryRandomSelectedFlag(categoryId: Int, randomSelected: Boolean) = categoryDao.updateRandomSelectedFlag(categoryId, randomSelected)
+    fun updateCategoryRandomSelectedFlag(categoryId: Int, randomSelected: Boolean) =
+        categoryDao.updateRandomSelectedFlag(categoryId, randomSelected)
 }

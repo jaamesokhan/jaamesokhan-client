@@ -18,8 +18,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
+import ir.jaamebaade.jaamebaade_client.utility.toPersianNumber
 import ir.jaamebaade.jaamebaade_client.view.components.poet.ListItem
-import ir.jaamebaade.jaamebaade_client.viewmodel.PoetCategoryPoemViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.PoetDetailViewModel
 
 @Composable
 fun PoetDetailScreen(
@@ -28,18 +29,19 @@ fun PoetDetailScreen(
     parentIds: IntArray = intArrayOf(),
     navController: NavController
 ) {
-    val poetCategoryPoemViewModel =
-        hiltViewModel<PoetCategoryPoemViewModel, PoetCategoryPoemViewModel.PoetCategoryPoemViewModelFactory> { factory ->
+    val viewModel =
+        hiltViewModel<PoetDetailViewModel, PoetDetailViewModel.PoetDetailViewModelFactory> { factory ->
             factory.create(poetId, parentIds)
         }
 
-    val categories = poetCategoryPoemViewModel.categories
-    val poems = poetCategoryPoemViewModel.poemsPageData.collectAsLazyPagingItems()
+    val categories = viewModel.categories
+    val poems = viewModel.poemsPageData.collectAsLazyPagingItems()
 
     LazyColumn(modifier = modifier.padding(top = 8.dp)) {
-        itemsIndexed(categories) { index, category ->
+        itemsIndexed(categories) { index, categoryWithCount ->
             ListItem(
-                title = category.text,
+                title = categoryWithCount.category.text,
+                subtitle = categoryWithCount.poemCount.toPersianNumber() + " " + stringResource(R.string.POEM),
                 showDivider = index != categories.size - 1,
                 leadingIcon = {
                     Icon(
@@ -53,7 +55,7 @@ fun PoetDetailScreen(
                     navController.navigate(
                         "${AppRoutes.POET_CATEGORY_SCREEN}/$poetId/${
                             parentIds.plus(
-                                category.id
+                                categoryWithCount.category.id
                             ).toNavArgs()
                         }"
                     )
@@ -62,7 +64,7 @@ fun PoetDetailScreen(
         }
         if (categories.isNotEmpty() && poems.itemCount > 0) {
             item {
-                HorizontalDivider(thickness = 2.dp)
+                HorizontalDivider()
             }
         }
         items(poems.itemCount) { index ->
