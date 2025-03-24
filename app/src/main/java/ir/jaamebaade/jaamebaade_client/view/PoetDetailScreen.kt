@@ -64,7 +64,7 @@ fun PoetDetailScreen(
         }
         if (categories.isNotEmpty() && poems.itemCount > 0) {
             item {
-                HorizontalDivider()
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline)
             }
         }
         items(poems.itemCount) { index ->
