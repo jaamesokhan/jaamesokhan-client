@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -86,6 +88,7 @@ fun CardItem(
         }
     }
 }
+
 @Composable
 fun NewCardItem(
     modifier: Modifier = Modifier,
@@ -114,18 +117,18 @@ fun NewCardItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-                SquareImage(
-                    image = image,
-                    contentDescription = "",
-                    size = 66,
-                    roundedCornerShapeSize = 20,
-                    modifier = Modifier.padding(start = 15.dp, end = 0.dp)
-                )
+            SquareImage(
+                image = image,
+                contentDescription = "",
+                size = 66,
+                roundedCornerShapeSize = 20,
+                modifier = Modifier.padding(start = 20.dp, end = 0.dp)
+            )
 
+            Spacer(modifier = Modifier.width(8.dp))
             // Texts columns
             Column(
                 modifier = Modifier
-                    .padding(start = 8.dp, end = 0.dp, bottom = 0.dp, top = 0.dp)
                     .weight(1f),
             ) {
                 // Header and Icon Row
@@ -144,7 +147,7 @@ fun NewCardItem(
                     if (icon != null) {
                         Icon(imageVector = icon,
                             contentDescription = iconDescription,
-                            modifier = Modifier.padding(end = 6.dp).clickable { onIconClick() })
+                            modifier = Modifier.padding(end = 5.dp).clickable { onIconClick() })
                         // using only icon to remove default padding
 //                        IconButton(
 //                            onClick = {

@@ -40,6 +40,7 @@
     <string name="NOTIFICATION_ACCESS_BODY">برای اطلاع از انتشار آخرین نسخه، لطفا به برنامه دسترسی ارسال اعلان بدهید.</string>
     <string name="YES">بله مایلم</string>
     <string name="NOT_NOW">الآن نه</string>
+    <string name="UNBOOKMARK_SUCCESS">"با موفقیت حذف شد."</string>
 
     <!--  Titles  -->
     <string name="ADD_NEW_POET">شاعر جدید</string>
