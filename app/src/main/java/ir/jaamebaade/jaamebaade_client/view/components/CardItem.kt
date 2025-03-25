@@ -148,13 +148,6 @@ fun NewCardItem(
                         Icon(imageVector = icon,
                             contentDescription = iconDescription,
                             modifier = Modifier.padding(end = 5.dp).clickable { onIconClick() })
-                        // using only icon to remove default padding
-//                        IconButton(
-//                            onClick = {
-//                                onIconClick()
-//                            },) {
-//                            Icon(imageVector = icon, contentDescription = iconDescription, modifier = Modifier.padding(0.dp))
-//                        }
                     }
                 }
 

@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Info
@@ -80,7 +80,7 @@ fun MyBookmarkScreen(
         }
     } else {
         LazyColumn(modifier = modifier.fillMaxSize()) {
-            items(items = bookmarks, key = { it.bookmark.id }) { bookmark ->
+            itemsIndexed(items = bookmarks, key = {_, item -> item.bookmark.id }) { index, bookmark ->
                 val painter = rememberAsyncImagePainter(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(bookmark.poet.imageUrl ?: "https://ganjoor.net/image/gdap.png")
@@ -88,6 +88,7 @@ fun MyBookmarkScreen(
                         .build()
                 )
                 NewCardItem(
+                    modifier = Modifier.animateItem(),
                     headerText = bookmark.poem.title,
                     bodyText = AnnotatedString(bookmark.firstVerse.text),
                     image = painter,
@@ -98,15 +99,16 @@ fun MyBookmarkScreen(
                         showBottomSheet = true
                     }
                 )
-                HorizontalDivider(
-                    modifier = Modifier.padding(
-                        start = 90.dp,
-                        end = 0.dp,
-                        top = 5.dp,
-                        bottom = 5.dp
-                    ),
-                    color = MaterialTheme.colorScheme.outline
-                )
+                if(index != bookmarks.size - 1)
+                    HorizontalDivider(
+                        modifier = Modifier.padding(
+                            start = 90.dp,
+                            end = 0.dp,
+                            top = 5.dp,
+                            bottom = 5.dp
+                        ),
+                        color = MaterialTheme.colorScheme.outline
+                    )
 
             }
         }
