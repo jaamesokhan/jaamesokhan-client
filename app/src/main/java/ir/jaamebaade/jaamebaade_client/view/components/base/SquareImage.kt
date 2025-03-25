@@ -13,17 +13,18 @@ import coil.compose.AsyncImagePainter
 
 @Composable
 fun SquareImage(
+    modifier: Modifier = Modifier,
     image: AsyncImagePainter,
-    contentDescription: String,
+    contentDescription: String?,
     size: Int,
     scale: Float = 1.1f,
-    roundedCornerShapeSize: Int = 25
+    roundedCornerShapeSize: Int = 25,
 ) {
     Image(
         painter = image,
         contentDescription = contentDescription,
         contentScale = ContentScale.Crop,
-        modifier = Modifier
+        modifier = modifier
             .size(size.dp)
             .clip(RoundedCornerShape(roundedCornerShapeSize.dp))
             .scale(scale)

@@ -11,6 +11,7 @@ import ir.jaamebaade.jaamebaade_client.model.Pair
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.PoemWithFirstVerse
 import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
+import ir.jaamebaade.jaamebaade_client.model.Verse
 
 @Dao
 interface PoemDao {
@@ -113,4 +114,21 @@ interface PoemDao {
     """
     )
     fun getPoemWithPoet(poemId: Int): PoemWithPoet
+
+
+    @Query(
+        """
+            SELECT
+                v.id AS id,
+                v.text AS text,
+                v.verse_order AS verse_order,
+                v.position AS position,
+                v.poem_id AS poem_id
+            FROM poems p
+            JOIN verses v ON v.poem_id = p.id
+            WHERE p.id = :poemId 
+            AND v.verse_order = 1
+        """
+    )
+    fun getPoemFirstVerse(poemId: Int): Verse
 }

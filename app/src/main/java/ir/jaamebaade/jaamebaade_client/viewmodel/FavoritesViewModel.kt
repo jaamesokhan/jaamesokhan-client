@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.Bookmark
-import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemCategoriesPoet
+import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemCategoriesPoetFirstVerse
 import ir.jaamebaade.jaamebaade_client.model.Comment
 import ir.jaamebaade.jaamebaade_client.model.CommentPoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.Highlight
@@ -17,6 +17,7 @@ import ir.jaamebaade.jaamebaade_client.repository.BookmarkRepository
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.CommentRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
+import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,9 +32,10 @@ class FavoritesViewModel @Inject constructor(
     private val highlightRepository: HighlightRepository,
     private val commentRepository: CommentRepository,
     private val categoryRepository: CategoryRepository,
+    private val poemRepository: PoemRepository,
     private val sharedPrefManager: SharedPrefManager,
 ) : ViewModel() {
-    var bookmarks by mutableStateOf<List<BookmarkPoemCategoriesPoet>>(emptyList())
+    var bookmarks by mutableStateOf<List<BookmarkPoemCategoriesPoetFirstVerse>>(emptyList())
         private set
     var highlights by mutableStateOf<List<HighlightVersePoemCategoriesPoet>>(emptyList())
         private set
@@ -49,7 +51,7 @@ class FavoritesViewModel @Inject constructor(
         getShowAppIntroState()
     }
 
-    fun deleteBookmark(bookmarkPoemCategoriesPoet: BookmarkPoemCategoriesPoet) {
+    fun deleteBookmark(bookmarkPoemCategoriesPoet: BookmarkPoemCategoriesPoetFirstVerse) {
         viewModelScope.launch {
             bookmarks = bookmarks.toMutableList().also {
                 it.remove(bookmarkPoemCategoriesPoet)
@@ -138,15 +140,16 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getBookmarksFromRepository(): List<BookmarkPoemCategoriesPoet> {
+    private suspend fun getBookmarksFromRepository(): List<BookmarkPoemCategoriesPoetFirstVerse> {
         val res = withContext(Dispatchers.IO) {
             bookmarkRepository.getAllBookmarksWithPoemAndPoet().map {
-                BookmarkPoemCategoriesPoet(
+                BookmarkPoemCategoriesPoetFirstVerse(
                     bookmark = it.bookmark,
                     poem = it.poem,
                     poet = it.poet,
                     categories = categoryRepository.getAllParentsOfCategoryId(it.poem.categoryId),
-                )
+                    firstVerse = poemRepository.getPoemFirstVerse(it.poem.id)
+                    )
             }
         }
         return res

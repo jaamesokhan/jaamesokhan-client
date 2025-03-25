@@ -44,6 +44,7 @@ import ir.jaamebaade.jaamebaade_client.view.DownloadablePoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.FavoritesScreen
 import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
 import ir.jaamebaade.jaamebaade_client.view.MyPoetsScreen
+import ir.jaamebaade.jaamebaade_client.view.MyBookmarkScreen
 import ir.jaamebaade.jaamebaade_client.view.PoemScreen
 import ir.jaamebaade.jaamebaade_client.view.PoetCategoryPoemScreen
 import ir.jaamebaade.jaamebaade_client.view.SearchScreen
@@ -160,7 +161,7 @@ fun AppNavHost(
                             )
                         }
                         animatedComposable(AppRoutes.BOOKMARKS_SCREEN.toString()) {
-                            FavoritesScreen(
+                            MyBookmarkScreen(
                                 modifier = Modifier.padding(innerPadding),
                                 navController = navController
                             )
