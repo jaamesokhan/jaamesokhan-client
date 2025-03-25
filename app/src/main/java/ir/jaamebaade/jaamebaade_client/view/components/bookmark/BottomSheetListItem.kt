@@ -25,7 +25,7 @@ fun BottomSheetListItem(
     onClick:  () -> Unit
 ) {
     Surface(
-        modifier = Modifier.clickable { onClick() },
+        onClick = onClick,
         contentColor = contentColor
     ) {
         Row(
@@ -34,7 +34,7 @@ fun BottomSheetListItem(
                 .padding(horizontal = 30.dp, vertical = 15.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(imageVector = icon, contentDescription = "icon")
+            Icon(imageVector = icon, contentDescription = null)
             Spacer(modifier = Modifier.width(10.dp))
             Text(
                 text = text,

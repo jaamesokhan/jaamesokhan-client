@@ -15,7 +15,7 @@ import coil.compose.AsyncImagePainter
 fun SquareImage(
     modifier: Modifier = Modifier,
     image: AsyncImagePainter,
-    contentDescription: String,
+    contentDescription: String?,
     size: Int,
     scale: Float = 1.1f,
     roundedCornerShapeSize: Int = 25,

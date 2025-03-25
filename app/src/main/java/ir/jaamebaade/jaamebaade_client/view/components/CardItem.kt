@@ -23,7 +23,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
-import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryText
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
 @Composable
@@ -119,7 +118,7 @@ fun NewCardItem(
 
             SquareImage(
                 image = image,
-                contentDescription = "",
+                contentDescription = null,
                 size = 66,
                 roundedCornerShapeSize = 20,
                 modifier = Modifier.padding(start = 20.dp, end = 0.dp)
@@ -136,7 +135,7 @@ fun NewCardItem(
                     .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically) {
-                    if (headerText != null) {
+                    headerText?.let { headerText ->
                         Text(
                             text = headerText,
                             style = MaterialTheme.typography.headlineMedium,
@@ -144,27 +143,30 @@ fun NewCardItem(
                             overflow = TextOverflow.Ellipsis,
                         )
                     }
-                    if (icon != null) {
+
+                    icon?.let { icon ->
                         Icon(imageVector = icon,
                             contentDescription = iconDescription,
                             modifier = Modifier.padding(end = 5.dp).clickable { onIconClick() })
                     }
+
                 }
 
                 Text(
                     text = bodyText,
                     style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.secondaryText,
+                    color = MaterialTheme.colorScheme.outlineVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                if (footerText != null) {
+                footerText?.let { footerText ->
                     Text(
                         text = footerText,
                         style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.secondaryText,
+                        color = MaterialTheme.colorScheme.outlineVariant,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,)
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
             }
         }

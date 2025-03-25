@@ -39,7 +39,6 @@ import coil.size.Size
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemCategoriesPoetFirstVerse
-import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryText
 import ir.jaamebaade.jaamebaade_client.view.components.NewCardItem
 import ir.jaamebaade.jaamebaade_client.view.components.bookmark.BottomSheetListItem
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
@@ -69,13 +68,13 @@ fun MyBookmarkScreen(
         ) {
             Icon(
                 imageVector = Icons.Outlined.Info,
-                tint = MaterialTheme.colorScheme.secondaryText,
+                tint = MaterialTheme.colorScheme.outlineVariant,
                 contentDescription = "",
             )
             Text(
                 text = stringResource(R.string.NO_BOOKMARK),
                 style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.secondaryText
+                color = MaterialTheme.colorScheme.outlineVariant
             )
         }
     } else {
