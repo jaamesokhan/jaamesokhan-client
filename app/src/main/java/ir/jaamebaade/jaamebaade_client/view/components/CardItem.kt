@@ -144,8 +144,8 @@ fun NewCardItem(
                         )
                     }
 
-                    icon?.let { icon ->
-                        Icon(imageVector = icon,
+                    icon?.let {
+                        Icon(imageVector = it,
                             contentDescription = iconDescription,
                             modifier = Modifier.padding(end = 5.dp).clickable { onIconClick() })
                     }
@@ -159,9 +159,9 @@ fun NewCardItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                footerText?.let { footerText ->
+                footerText?.let {
                     Text(
-                        text = footerText,
+                        text = it,
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.outlineVariant,
                         maxLines = 1,
