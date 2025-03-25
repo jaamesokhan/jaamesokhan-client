@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -62,6 +63,7 @@ fun IntroShowcaseScope.TopBar(
     LaunchedEffect(key1 = backStackEntry) {
         viewModel.updateBreadCrumbs(backStackEntry)
         viewModel.shouldShowHistory(backStackEntry)
+        viewModel.shouldShowOptions(backStackEntry)
         viewModel.shouldShowSearch(backStackEntry)
     }
 
@@ -69,6 +71,16 @@ fun IntroShowcaseScope.TopBar(
     val poet = viewModel.poet
     val showHistory = viewModel.showHistoryIcon
     val showSearch = viewModel.showSearchIcon
+    val showOptions = viewModel.showOptionsIcon
+
+    if (showOptions) {
+//        PoemHistoryBottomSheet(
+//            onDismiss = { showPoemHistoryModal = false },
+//            sheetState = sheetState,
+//        )
+    }
+
+
 
     BackHandler(enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
         onBackButtonClicked(backStackEntry, navController)
@@ -174,6 +186,19 @@ fun IntroShowcaseScope.TopBar(
                                         modifier = Modifier.size(32.dp),
                                     )
                                 }
+                            }
+                            if (showOptions) {
+                            IconButton(
+                                // TODO this might need an intro
+                                onClick = {  }) {
+                                Icon(
+                                    imageVector = Icons.Default.MoreVert,
+                                    contentDescription = stringResource(R.string.SEARCH),
+                                    tint = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.size(32.dp),
+                                )
+                            }
+
                             }
                         }
                     }
