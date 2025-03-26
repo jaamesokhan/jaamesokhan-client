@@ -23,13 +23,13 @@ fun RectangularButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.padding(horizontal = 32.dp, vertical = 2.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor
         ),
         shape = RoundedCornerShape(15.dp)
     ) {
         Text(
+            modifier = modifier.padding(horizontal = 32.dp, vertical = 2.dp),
             text = text,
             style = textStyle,
             color = textColor,

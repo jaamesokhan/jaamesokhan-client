@@ -1,6 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.view
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -47,7 +48,7 @@ fun PoetDetailScreen(
     val coroutineScope = rememberCoroutineScope()
 
 
-    Box {
+    Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = modifier.padding(top = 8.dp)) {
             itemsIndexed(categories) { index, categoryWithCount ->
                 ListItem(

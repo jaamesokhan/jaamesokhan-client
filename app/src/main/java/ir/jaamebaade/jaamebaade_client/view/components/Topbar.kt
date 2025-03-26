@@ -23,9 +23,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -42,21 +47,21 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.TopBarViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IntroShowcaseScope.TopBar(
     navController: NavController,
     viewModel: TopBarViewModel = hiltViewModel(),
+    myPoetsViewModel: MyPoetsViewModel = hiltViewModel(),
     audioViewModel: AudioViewModel
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
-        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString()
-                && backStackEntry?.destination?.route != AppRoutes.SETTINGS_SCREEN.toString()
-                && backStackEntry?.destination?.route != AppRoutes.SEARCH_SCREEN.toString()
-                && backStackEntry?.destination?.route != AppRoutes.FAVORITE_SCREEN.toString())
+        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.SETTINGS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.SEARCH_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.FAVORITE_SCREEN.toString())
 
 
 
@@ -73,11 +78,26 @@ fun IntroShowcaseScope.TopBar(
     val showSearch = viewModel.showSearchIcon
     val showOptions = viewModel.showOptionsIcon
 
-    if (showOptions) {
-//        PoemHistoryBottomSheet(
-//            onDismiss = { showPoemHistoryModal = false },
-//            sheetState = sheetState,
-//        )
+    val sheetState = rememberModalBottomSheetState()
+    var showPoetOptionModal by remember { mutableStateOf(false) }
+
+    val coroutineScope = rememberCoroutineScope()
+
+    if (showPoetOptionModal) {
+        PoetOptionsBottomSheet(
+            poet = poet!!,
+            onDismiss = { showPoetOptionModal = false },
+            sheetState = sheetState,
+            showHeader = false,
+            showDescription = false
+        ) {
+            myPoetsViewModel.deletePoet(poet, onSuccess = {
+                coroutineScope.launch {
+                    showPoetOptionModal = false
+                    navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString())
+                }
+            })
+        }
     }
 
 
@@ -112,8 +132,7 @@ fun IntroShowcaseScope.TopBar(
                                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                         tint = MaterialTheme.colorScheme.onSurface,
                                         contentDescription = "Back",
-                                        modifier = Modifier
-                                            .size(32.dp),
+                                        modifier = Modifier.size(32.dp),
                                     )
                                 }
                             } else {
@@ -140,19 +159,16 @@ fun IntroShowcaseScope.TopBar(
                             if (showHistory) {
                                 IconButton(
                                     modifier = Modifier.introShowCaseTarget(
-                                        index = 5,
-                                        style = ShowcaseStyle.Default.copy(
+                                        index = 5, style = ShowcaseStyle.Default.copy(
                                             backgroundColor = MaterialTheme.colorScheme.primary,
                                             backgroundAlpha = 0.98f,
                                             targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                                        ),
-                                        content = {
+                                        ), content = {
                                             ButtonIntro(
                                                 stringResource(R.string.INTRO_HISTORY_TITLE),
                                                 stringResource(R.string.INTRO_HISTORY_DESC)
                                             )
-                                        }
-                                    ),
+                                        }),
                                     onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
                                     Icon(
                                         imageVector = Icons.Filled.History,
@@ -165,19 +181,16 @@ fun IntroShowcaseScope.TopBar(
                             if (showSearch) {
                                 IconButton(
                                     modifier = Modifier.introShowCaseTarget(
-                                        index = 5,
-                                        style = ShowcaseStyle.Default.copy(
+                                        index = 5, style = ShowcaseStyle.Default.copy(
                                             backgroundColor = MaterialTheme.colorScheme.primary,
                                             backgroundAlpha = 0.98f,
                                             targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                                        ),
-                                        content = {
+                                        ), content = {
                                             ButtonIntro(
                                                 stringResource(R.string.INTRO_SEARCH_TITLE),
                                                 stringResource(R.string.INTRO_SHARE_DESC),
                                             )
-                                        }
-                                    ),
+                                        }),
                                     onClick = { navController.navigate("${AppRoutes.SEARCH_SCREEN}") }) {
                                     Icon(
                                         imageVector = Icons.Default.Search,
@@ -188,16 +201,16 @@ fun IntroShowcaseScope.TopBar(
                                 }
                             }
                             if (showOptions) {
-                            IconButton(
-                                // TODO this might need an intro
-                                onClick = {  }) {
-                                Icon(
-                                    imageVector = Icons.Default.MoreVert,
-                                    contentDescription = stringResource(R.string.SEARCH),
-                                    tint = MaterialTheme.colorScheme.onSurface,
-                                    modifier = Modifier.size(32.dp),
-                                )
-                            }
+                                IconButton(
+                                    // TODO this might need an intro
+                                    onClick = { showPoetOptionModal = true }) {
+                                    Icon(
+                                        imageVector = Icons.Default.MoreVert,
+                                        contentDescription = stringResource(R.string.SEARCH),
+                                        tint = MaterialTheme.colorScheme.onSurface,
+                                        modifier = Modifier.size(32.dp),
+                                    )
+                                }
 
                             }
                         }
@@ -213,8 +226,7 @@ fun IntroShowcaseScope.TopBar(
 
 
 private fun onBackButtonClicked(
-    backStackEntry: NavBackStackEntry?,
-    navController: NavController
+    backStackEntry: NavBackStackEntry?, navController: NavController
 ) {
     if (backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
         navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
