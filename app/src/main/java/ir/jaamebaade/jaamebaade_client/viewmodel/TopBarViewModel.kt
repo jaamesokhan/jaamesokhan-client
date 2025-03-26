@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
-import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
+import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
@@ -27,25 +27,21 @@ class TopBarViewModel @Inject constructor(
     var breadCrumbs by mutableStateOf("")
         private set
 
-    var showShuffleIcon by mutableStateOf(false)
+    var poet by mutableStateOf<Poet?>(null)
         private set
 
     var showHistoryIcon by mutableStateOf(false)
         private set
 
-    var showRandomOptions by mutableStateOf(false)
+    var showSearchIcon by mutableStateOf(false)
+        private set
+
+    var showOptionsIcon by mutableStateOf(false)
+        private set
 
     fun updateBreadCrumbs(path: NavBackStackEntry?) {
         viewModelScope.launch {
             breadCrumbs = createPathBreadCrumbs(path!!)
-        }
-    }
-
-    fun shouldShowShuffle(navStack: NavBackStackEntry?) {
-        val path = getPath(navStack)
-        showShuffleIcon = when (path) {
-            AppRoutes.DOWNLOADED_POETS_SCREEN, AppRoutes.POET_CATEGORY_SCREEN -> true
-            else -> false
         }
     }
 
@@ -57,24 +53,34 @@ class TopBarViewModel @Inject constructor(
         }
     }
 
-    fun shouldShowRandomOptions(navStack: NavBackStackEntry?) {
+    fun shouldShowOptions(navStack: NavBackStackEntry?) {
         val path = getPath(navStack)
-        showRandomOptions = when (path) {
+        showOptionsIcon = when (path) {
+            AppRoutes.POET_CATEGORY_SCREEN -> true
+            else -> false
+        }
+    }
+
+    fun shouldShowSearch(navStack: NavBackStackEntry?) {
+        val path = getPath(navStack)
+        showSearchIcon = when (path) {
             AppRoutes.DOWNLOADED_POETS_SCREEN -> true
             else -> false
         }
     }
 
     private suspend fun createPathBreadCrumbs(navStack: NavBackStackEntry): String {
+        poet = null
         val path = getPath(navStack)
         when (path) {
-            null, AppRoutes.DOWNLOADED_POETS_SCREEN -> return "جام سخن"
+            null, AppRoutes.DOWNLOADED_POETS_SCREEN -> return ""
             AppRoutes.DOWNLOADABLE_POETS_SCREEN -> return "دانلود شاعر جدید"
             AppRoutes.POET_CATEGORY_SCREEN -> {
                 val poetId = navStack.arguments?.getInt("poetId")
                 val parentIds = navStack.arguments?.getString("parentIds")?.toIntArray()
 
-                val poetName = getPoetName(poetId!!)
+                val poet = getPoet(poetId!!)
+                val poetName = poet.name
                 val lastCategoryText = getCategoryText(parentIds!!.last())
                 if (parentIds.size > 2) {
                     return "$poetName > ... > $lastCategoryText"
@@ -95,7 +101,7 @@ class TopBarViewModel @Inject constructor(
                 val poetId = navStack.arguments?.getInt("poetId")
                 val poemId = navStack.arguments?.getInt("poemId")
 
-                val poetName = getPoetName(poetId!!)
+                val poetName = getPoet(poetId!!)
                 val poemName = getPoemName(poemId!!)
                 return "$poetName > $poemName"
             }
@@ -117,9 +123,10 @@ class TopBarViewModel @Inject constructor(
         return path?.let { AppRoutes.fromString(it) }
     }
 
-    private suspend fun getPoetName(poetId: Int): String {
+    private suspend fun getPoet(poetId: Int): Poet {
         return withContext(Dispatchers.IO) {
-            poetRepository.getPoetById(poetId).name
+            poet = poetRepository.getPoetById(poetId)
+            poet!!
         }
     }
 
@@ -132,27 +139,6 @@ class TopBarViewModel @Inject constructor(
     private suspend fun getPoemName(poemId: Int): String {
         return withContext(Dispatchers.IO) {
             poemRepository.getPoemById(poemId).title
-        }
-    }
-
-    suspend fun findShuffledPoem(navStack: NavBackStackEntry?): PoemWithPoet? {
-        return withContext(Dispatchers.IO) {
-            val path = getPath(navStack)
-            var randomPoem: PoemWithPoet? = null
-            @Suppress("UNUSED_EXPRESSION")
-            when (path) {
-                AppRoutes.DOWNLOADED_POETS_SCREEN -> {
-                    randomPoem = poemRepository.getRandomPoem()
-                }
-
-                AppRoutes.POET_CATEGORY_SCREEN -> {
-                    val parentIds = navStack!!.arguments?.getString("parentIds")?.toIntArray()
-                    randomPoem = poemRepository.getRandomPoem(parentIds?.last())
-                }
-                // This is unreachable
-                else -> null
-            }
-            return@withContext randomPoem
         }
     }
 }

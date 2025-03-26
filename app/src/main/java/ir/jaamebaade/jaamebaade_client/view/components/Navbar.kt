@@ -47,7 +47,7 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
 val routeMap = mapOf(
     "downloadedPoetsScreen" to "downloadedPoetsScreen",
     "downloadablePoetsScreen" to "downloadablePoetsScreen",
-    "poetCategoryScreen/{poetId}/{parentIds}" to "downloadedPoetsScreen",
+//    "poetCategoryScreen/{poetId}/{parentIds}" to "downloadedPoetsScreen",
     "poemsListScreen/{poetId}/{categoryId}" to "downloadedPoetsScreen",
     "poem/{poetId}/{poemId}" to "downloadedPoetsScreen",
     "poem/{poetId}/{poemId}/{verseId}" to "downloadedPoetsScreen",
@@ -114,66 +114,70 @@ val navbarItems = listOf(
 @Composable
 fun IntroShowcaseScope.Navbar(navController: NavController) {
     val currentRoute = currentRoute(navController, routeMap)
-    val showMessage by ToastManager.showMessage.collectAsState()
+    // TODO : this may not be the best practice to handle this kind of situation
+    if (currentRoute in navbarItems.map { it.route.toString() }) {
+        val showMessage by ToastManager.showMessage.collectAsState()
 
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 24.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .navigationBarsPadding(),
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
         ) {
-            Surface(
-                shadowElevation = 20.dp,
-                modifier = Modifier.fillMaxWidth(),
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 24.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .navigationBarsPadding(),
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(106.dp)
-                        .background(color = MaterialTheme.colorScheme.surface)
-                        .padding(horizontal = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
+                Surface(
+                    shadowElevation = 20.dp,
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
-                    navbarItems.forEachIndexed { index, item ->
-                        val isSelected = currentRoute == item.route.toString()
-                        NavbarItem(
-                            route = item.route,
-                            currentRoute = currentRoute,
-                            iconId = item.getIcon(isSelected = isSelected),
-                            contentDescription = stringResource(item.contentDescriptionResId),
-                            isSelected = isSelected,
-                            navController = navController,
-                            modifier = Modifier.introShowCaseTarget(
-                                index = index,
-                                style = ShowcaseStyle.Default.copy(
-                                    backgroundColor = MaterialTheme.colorScheme.primary,
-                                    backgroundAlpha = 0.98f,
-                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                                ),
-                                content = {
-                                    ButtonIntro(
-                                        stringResource(item.introTitleResId),
-                                        stringResource(item.introDescResId)
-                                    )
-                                }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(106.dp)
+                            .background(color = MaterialTheme.colorScheme.surface)
+                            .padding(horizontal = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        navbarItems.forEachIndexed { index, item ->
+                            val isSelected = currentRoute == item.route.toString()
+                            NavbarItem(
+                                route = item.route,
+                                currentRoute = currentRoute,
+                                iconId = item.getIcon(isSelected = isSelected),
+                                contentDescription = stringResource(item.contentDescriptionResId),
+                                isSelected = isSelected,
+                                navController = navController,
+                                modifier = Modifier.introShowCaseTarget(
+                                    index = index,
+                                    style = ShowcaseStyle.Default.copy(
+                                        backgroundColor = MaterialTheme.colorScheme.primary,
+                                        backgroundAlpha = 0.98f,
+                                        targetCircleColor = MaterialTheme.colorScheme.onPrimary
+                                    ),
+                                    content = {
+                                        ButtonIntro(
+                                            stringResource(item.introTitleResId),
+                                            stringResource(item.introDescResId)
+                                        )
+                                    }
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }
-        }
 
-        if (showMessage) {
-            ToastMessage()
+            if (showMessage) {
+                ToastMessage()
+            }
         }
     }
+
 }
 
 @Composable

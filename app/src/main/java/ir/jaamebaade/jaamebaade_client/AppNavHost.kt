@@ -46,7 +46,7 @@ import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
 import ir.jaamebaade.jaamebaade_client.view.MyPoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.MyBookmarkScreen
 import ir.jaamebaade.jaamebaade_client.view.PoemScreen
-import ir.jaamebaade.jaamebaade_client.view.PoetCategoryPoemScreen
+import ir.jaamebaade.jaamebaade_client.view.PoetDetailScreen
 import ir.jaamebaade.jaamebaade_client.view.SearchScreen
 import ir.jaamebaade.jaamebaade_client.view.SettingsScreen
 import ir.jaamebaade.jaamebaade_client.view.components.AboutUsScreen
@@ -141,7 +141,7 @@ fun AppNavHost(
                             val poetId = backStackEntry.arguments?.getInt("poetId")
                             val parentIds =
                                 backStackEntry.arguments?.getString("parentIds")?.toIntArray()
-                            PoetCategoryPoemScreen(
+                            PoetDetailScreen(
                                 modifier = Modifier.padding(innerPadding),
                                 poetId = poetId!!,
                                 parentIds = parentIds ?: intArrayOf(),

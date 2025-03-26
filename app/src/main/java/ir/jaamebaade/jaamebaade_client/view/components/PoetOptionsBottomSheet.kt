@@ -38,6 +38,8 @@ fun PoetOptionsBottomSheet(
     poet: Poet,
     onDismiss: () -> Unit,
     sheetState: SheetState,
+    showHeader: Boolean = true,
+    showDescription: Boolean = true,
     onDeleteClick: () -> Unit
 ) {
     val painter = rememberAsyncImagePainter(
@@ -53,7 +55,7 @@ fun PoetOptionsBottomSheet(
 
     ModalBottomSheet(
         dragHandle = { BottomSheetDefaults.DragHandle(color = MaterialTheme.colorScheme.neutralN70) },
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = if (showHeader) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background,
         onDismissRequest = onDismiss, sheetState = sheetState
     ) {
         Column(
@@ -61,29 +63,31 @@ fun PoetOptionsBottomSheet(
                 .fillMaxWidth()
         ) {
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 12.dp)
-                    .background(color = MaterialTheme.colorScheme.surface),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                IconButton(
-                    onClick = onDismiss
+            if (showHeader) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 12.dp)
+                        .background(color = MaterialTheme.colorScheme.surface),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = stringResource(R.string.CLOSE),
-                        tint = MaterialTheme.colorScheme.neutralN50
+                    IconButton(
+                        onClick = onDismiss
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            contentDescription = stringResource(R.string.CLOSE),
+                            tint = MaterialTheme.colorScheme.neutralN50
+                        )
+                    }
+                    Text(
+                        text = stringResource(R.string.DELETE_POET),
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = MaterialTheme.colorScheme.neutralN50,
                     )
                 }
-                Text(
-                    text = stringResource(R.string.DELETE_POET),
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.neutralN50,
-                )
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline)
             }
-            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
             Column(
                 modifier = Modifier
                     .background(color = MaterialTheme.colorScheme.background)
@@ -114,12 +118,14 @@ fun PoetOptionsBottomSheet(
                     )
                 }
 
-                Text(
-                    text = poet.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(horizontal = 26.dp, vertical = 16.dp),
-                )
+                if (showDescription) {
+                    Text(
+                        text = poet.description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(horizontal = 26.dp, vertical = 16.dp),
+                    )
+                }
             }
         }
     }

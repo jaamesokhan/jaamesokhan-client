@@ -59,7 +59,7 @@ class MyPoetsViewModel @Inject constructor(
         }
     }
 
-    fun deletePoets(selectedPoet: Poet, onSuccess: () -> Unit) {
+    fun deletePoet(selectedPoet: Poet, onSuccess: () -> Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 poetRepository.deletePoet(selectedPoet)

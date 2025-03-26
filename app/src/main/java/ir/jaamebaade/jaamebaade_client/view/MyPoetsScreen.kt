@@ -65,15 +65,14 @@ fun IntroShowcaseScope.MyPoetsScreen(
         PoetOptionsBottomSheet(
             poet = selectedPoet!!,
             onDismiss = { showBottomSheet = false },
-            sheetState = sheetState,
-            onDeleteClick = {
-                viewModel.deletePoets(
-                    selectedPoet!!
-                ) {
-                    showBottomSheet = false
-                }
+            sheetState = sheetState
+        ) {
+            viewModel.deletePoet(
+                selectedPoet!!
+            ) {
+                showBottomSheet = false
             }
-        )
+        }
     }
 
     if (fetchStatue == Status.SUCCESS) {

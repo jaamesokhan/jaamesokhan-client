@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.constants
 
+// TODO change these names
 enum class AppRoutes(private val route: String) {
     DOWNLOADED_POETS_SCREEN("downloadedPoetsScreen"),
     DOWNLOADABLE_POETS_SCREEN("downloadablePoetsScreen"),

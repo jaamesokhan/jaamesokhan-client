@@ -35,6 +35,7 @@ fun SquareButton(
     textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     backgroundColor: Color,
     size: Int = 89,
+    iconSize: Int = size,
     roundedCornerShapeSize: Int = 25,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
@@ -64,7 +65,7 @@ fun SquareButton(
                 Icon(
                     imageVector = it,
                     contentDescription = contentDescription,
-                    modifier = Modifier.size(size.dp),
+                    modifier = Modifier.size(iconSize.dp).align(Alignment.Center),
                     tint = tint,
                 )
             }

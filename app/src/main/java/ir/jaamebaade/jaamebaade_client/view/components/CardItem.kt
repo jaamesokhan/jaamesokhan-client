@@ -111,7 +111,8 @@ fun NewCardItem(
 
         Row(
             modifier = Modifier
-                .fillMaxWidth().padding(vertical = 10.dp),
+                .fillMaxWidth()
+                .padding(vertical = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -131,10 +132,12 @@ fun NewCardItem(
                     .weight(1f),
             ) {
                 // Header and Icon Row
-                Row(modifier = Modifier
-                    .fillMaxWidth(),
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically) {
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     headerText?.let { headerText ->
                         Text(
                             text = headerText,
@@ -145,9 +148,16 @@ fun NewCardItem(
                     }
 
                     icon?.let {
-                        Icon(imageVector = it,
-                            contentDescription = iconDescription,
-                            modifier = Modifier.padding(end = 5.dp).clickable { onIconClick() })
+                        IconButton(
+                            modifier = Modifier.padding(end = 5.dp),
+                            onClick = onIconClick
+                        ) {
+                            Icon(
+                                imageVector = it,
+                                contentDescription = iconDescription,
+                            )
+
+                        }
                     }
 
                 }
