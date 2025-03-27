@@ -4,7 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Audiotrack
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -16,13 +16,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 
 @Composable
-fun AudioMenu(viewModel: PoemViewModel, audioViewModel: AudioViewModel, modifier: Modifier = Modifier) {
+fun AudioMenu(
+    viewModel: PoemViewModel,
+    audioViewModel: AudioViewModel,
+    modifier: Modifier = Modifier
+) {
+    // TODO it is not good to pass view models to inner components
     val audioUrls = viewModel.urls.collectAsState()
     var expanded by remember { mutableStateOf(false) }
     var fetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
@@ -52,7 +59,9 @@ fun AudioMenu(viewModel: PoemViewModel, audioViewModel: AudioViewModel, modifier
                 { fetchStatus = Status.FAILED })
         }) {
             Icon(
-                imageVector = Icons.Default.Audiotrack, contentDescription = "Audio",
+                // TODO : Auto-Mirroring is no good
+                imageVector = Icons.Filled.VolumeUp,
+                contentDescription = stringResource(R.string.RECITE),
             )
         }
 

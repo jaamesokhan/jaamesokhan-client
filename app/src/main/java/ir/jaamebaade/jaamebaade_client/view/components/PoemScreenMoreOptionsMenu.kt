@@ -36,8 +36,11 @@ fun PoemScreenMoreOptionsMenu(
     modifier: Modifier = Modifier
 ) {
     Box {
-        IconButton(onClick = onToggleExpanded, modifier = modifier.size(28.dp)) {
-            Icon(Icons.Default.MoreVert, contentDescription = "More Options")
+        IconButton(onClick = onToggleExpanded, modifier = modifier.size(36.dp)) {
+            Icon(
+                Icons.Default.MoreVert, contentDescription = "More Options",
+                modifier = Modifier.size(24.dp)
+            )
         }
         DropdownMenu(
             expanded = expanded,

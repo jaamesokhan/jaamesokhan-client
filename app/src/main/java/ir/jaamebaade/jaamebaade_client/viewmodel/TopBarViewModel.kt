@@ -8,7 +8,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
+import ir.jaamebaade.jaamebaade_client.model.Category
+import ir.jaamebaade.jaamebaade_client.model.Poem
+import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 import ir.jaamebaade.jaamebaade_client.model.Poet
+import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
+import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
@@ -102,10 +107,9 @@ class TopBarViewModel @Inject constructor(
             }
 
             AppRoutes.POEM -> {
-                val poemId = navStack.arguments?.getInt("poemId")
-
-                val poemName = getPoemName(poemId!!)
-                return poemName
+                val poemId = navStack.arguments?.getInt("poemId")!!
+                val poemPath = getPoemPath(poemId)
+                return poemPath.toPathHeaderText(includePoemTitle = false)
             }
 
             AppRoutes.COMMENTS -> {
@@ -150,6 +154,38 @@ class TopBarViewModel @Inject constructor(
     private suspend fun getPoemName(poemId: Int): String {
         return withContext(Dispatchers.IO) {
             poemRepository.getPoemById(poemId).title
+        }
+    }
+
+    private suspend fun getPoemPath(poemId: Int): VersePoemCategoriesPoet {
+        val res = withContext(Dispatchers.IO) {
+
+            val poemWithPoet = fetchPoemWithPoet(poemId)!!
+            VersePoemCategoriesPoet(
+                verse = null,
+                poem = poemWithPoet.poem,
+                poet = poemWithPoet.poet,
+                categories = fetchAllCategories(poemWithPoet.poem),
+            )
+        }
+
+
+        return res
+    }
+
+    private suspend fun fetchAllCategories(poem: Poem): List<Category> {
+        return withContext(Dispatchers.IO) {
+            categoryRepository.getAllParentsOfCategoryId(poem.categoryId)
+        }
+    }
+
+    private suspend fun fetchPoemWithPoet(poemId: Int): PoemWithPoet? {
+        return withContext(Dispatchers.IO) {
+            try {
+                poemRepository.getPoemWithPoet(poemId)
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 }
