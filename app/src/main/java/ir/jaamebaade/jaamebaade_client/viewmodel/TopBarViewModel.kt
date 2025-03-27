@@ -39,6 +39,9 @@ class TopBarViewModel @Inject constructor(
     var showOptionsIcon by mutableStateOf(false)
         private set
 
+    var topBarIsExtended by mutableStateOf(false)
+        private set
+
     fun updateBreadCrumbs(path: NavBackStackEntry?) {
         viewModelScope.launch {
             breadCrumbs = createPathBreadCrumbs(path!!)
@@ -65,6 +68,14 @@ class TopBarViewModel @Inject constructor(
         val path = getPath(navStack)
         showSearchIcon = when (path) {
             AppRoutes.DOWNLOADED_POETS_SCREEN -> true
+            else -> false
+        }
+    }
+
+    fun shouldExtendTopBar(navStack: NavBackStackEntry?) {
+        val path = getPath(navStack)
+        topBarIsExtended = when (path) {
+            AppRoutes.POEM -> true
             else -> false
         }
     }

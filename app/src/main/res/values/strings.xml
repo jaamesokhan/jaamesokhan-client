@@ -2,6 +2,7 @@
     <string name="app_name">جام سخن</string>
     <string name="SERVER_BASE_URL">https://jaamesokhan.ir/</string>
     <string name="GANJOOR_BASE_URL">https://api.ganjoor.net/</string>
+    <string name="FALLBACK_IMAGE_URL">https://ganjoor.net/image/gdap.png</string>
 
     <!--  About Us  -->
     <string name="ABOUT_US_BASE">

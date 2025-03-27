@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -141,32 +142,38 @@ fun PoemScreen(
     Column(
         modifier = modifier
     ) {
-        PoemScreenPathHeader(
-            navController = navController,
-            poetId = poetId,
-            poemId = poemId,
-            minId = minId,
-            maxId = maxId,
-            path = path,
-        )
+        Surface(
+            shadowElevation = 4.dp
+        ) {
+            Column {
+                path?.let {
+                    PoemScreenPathHeader(
+                        navController = navController,
+                        minId = minId,
+                        maxId = maxId,
+                        poemPath = it,
+                    )
+                }
 
-        PoemScreenActionHeader(
-            navController = navController,
-            poetId = poetId,
-            poemId = poemId,
-            poetName = path?.poet?.name,
-            poemViewModel = poemViewModel,
-            showVerseNumbers = showVerseNumbers,
-            selectMode = selectMode,
-            audioViewModel = audioViewModel,
-            onToggleVerseNumbers = { showVerseNumbers = !showVerseNumbers },
-            onToggleSelectMode = {
-                selectMode = !selectMode
-                if (!selectMode) selectedVerses.clear()
-            },
-        )
+                PoemScreenActionHeader(
+                    navController = navController,
+                    poetId = poetId,
+                    poemId = poemId,
+                    poetName = path?.poet?.name,
+                    poemViewModel = poemViewModel,
+                    showVerseNumbers = showVerseNumbers,
+                    selectMode = selectMode,
+                    audioViewModel = audioViewModel,
+                    onToggleVerseNumbers = { showVerseNumbers = !showVerseNumbers },
+                    onToggleSelectMode = {
+                        selectMode = !selectMode
+                        if (!selectMode) selectedVerses.clear()
+                    },
+                )
+            }
+        }
 
-        LazyColumn(modifier = Modifier.padding(10.dp),state = lazyListState) {
+        LazyColumn(modifier = Modifier.padding(10.dp), state = lazyListState) {
             itemsIndexed(versesWithHighlights) { index, verseWithHighlights ->
                 val isSelected = selectedVerses.contains(verseWithHighlights)
                 val itemModifier =

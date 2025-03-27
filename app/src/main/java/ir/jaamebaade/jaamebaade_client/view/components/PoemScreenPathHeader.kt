@@ -2,10 +2,12 @@ package ir.jaamebaade.jaamebaade_client.view.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -25,79 +27,97 @@ import androidx.navigation.navOptions
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
-import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
+import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
 @Composable
 fun PoemScreenPathHeader(
     navController: NavController,
-    poetId: Int,
-    poemId: Int,
+    poemPath: VersePoemCategoriesPoet,
     minId: Int,
     maxId: Int,
-    path: VersePoemCategoriesPoet?,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+    val poetId = poemPath.poet.id
+    val poemId = poemPath.poem.id
+
+    Column(
         modifier = Modifier
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
             .fillMaxWidth()
-            .padding(vertical = 4.dp, horizontal = 10.dp),
+            .padding(horizontal = 14.dp, vertical = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
-        IconButton(
-            modifier = Modifier
-                .weight(0.1f)
-                .size(32.dp),
-            onClick = {
-                navController.navigate(
-                    "${AppRoutes.POEM}/${poetId}/${poemId - 1}/-1",
-                    navOptions {
-                        popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
-                            inclusive = true
-                        }
-                    }
-                )
-            },
-            enabled = poemId - 1 >= minId
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = stringResource(R.string.PREVIOUS)
-            )
-        }
-
-        Text(
-            modifier = Modifier.weight(0.8f),
-            text = path?.toPathHeaderText(includePoemTitle = false) ?: "",
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center,
-            maxLines = 4,
-            overflow = TextOverflow.Ellipsis
+        SquareImage(
+            modifier = Modifier.padding(bottom = 8.dp),
+            imageUrl = poemPath.poet.imageUrl ?: stringResource(R.string.FALLBACK_IMAGE_URL),
+            contentDescription = poemPath.poet.name,
+            size = 88,
         )
-
-        IconButton(
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .weight(0.1f)
-                .size(32.dp),
-            onClick = {
-                navController.navigate(
-                    "${AppRoutes.POEM}/${poetId}/${poemId + 1}/-1",
-                    navOptions {
-                        popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
-                            inclusive = true
-                        }
-                    }
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = RoundedCornerShape(15.dp)
                 )
-            },
-            enabled = poemId + 1 <= maxId
+                .fillMaxWidth()
+                .padding(vertical = 4.dp, horizontal = 10.dp),
         ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = stringResource(R.string.NEXT),
 
+            IconButton(
+                modifier = Modifier
+                    .weight(0.1f)
+                    .size(32.dp),
+                onClick = {
+                    navController.navigate(
+                        "${AppRoutes.POEM}/${poetId}/${poemId - 1}/-1",
+                        navOptions {
+                            popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
+                                inclusive = true
+                            }
+                        }
+                    )
+                },
+                enabled = poemId - 1 >= minId
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    contentDescription = stringResource(R.string.PREVIOUS),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-        }
+            }
 
+            Text(
+                modifier = Modifier.weight(0.8f),
+                text = poemPath.poem.title,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center,
+                maxLines = 4,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            IconButton(
+                modifier = Modifier
+                    .weight(0.1f)
+                    .size(32.dp),
+                onClick = {
+                    navController.navigate(
+                        "${AppRoutes.POEM}/${poetId}/${poemId + 1}/-1",
+                        navOptions {
+                            popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
+                                inclusive = true
+                            }
+                        }
+                    )
+                },
+                enabled = poemId + 1 <= maxId
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = stringResource(R.string.NEXT),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
     }
 }

@@ -56,7 +56,7 @@ fun PoemScreenActionHeader(
     var expanded by remember { mutableStateOf(false) }
     val showAppIntro by poemViewModel.showAppIntro.collectAsState()
 
-    Column {
+    Row {
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -75,40 +75,14 @@ fun PoemScreenActionHeader(
             ) {
                 AudioMenu(
                     poemViewModel, audioViewModel = audioViewModel,
-                    Modifier.introShowCaseTarget(
-                        index = 0,
-                        style = ShowcaseStyle.Default.copy(
-                            backgroundColor = MaterialTheme.colorScheme.primary,
-                            backgroundAlpha = 0.98f,
-                            targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        content = {
-                            ButtonIntro(
-                                stringResource(R.string.INTRO_RECITE_TITLE),
-                                stringResource(R.string.INTRO_RECITE_DESC)
-                            )
-                        }
-                    ),
+                    Modifier,
                 )
 
 
                 IconButton(
                     modifier = Modifier
                         .size(24.dp)
-                        .introShowCaseTarget(
-                            index = 1,
-                            style = ShowcaseStyle.Default.copy(
-                                backgroundColor = MaterialTheme.colorScheme.primary,
-                                backgroundAlpha = 0.98f,
-                                targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            content = {
-                                ButtonIntro(
-                                    stringResource(R.string.INTRO_NOTE_TITLE),
-                                    stringResource(R.string.INTRO_NOTE_DESC)
-                                )
-                            }
-                        ),
+                        ,
                     onClick = { navController.navigate("${AppRoutes.COMMENTS}/$poetId/$poemId") }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Outlined.Comment,
@@ -120,20 +94,7 @@ fun PoemScreenActionHeader(
                 IconButton(
                     modifier = Modifier
                         .size(24.dp)
-                        .introShowCaseTarget(
-                            index = 2,
-                            style = ShowcaseStyle.Default.copy(
-                                backgroundColor = MaterialTheme.colorScheme.primary,
-                                backgroundAlpha = 0.98f,
-                                targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            content = {
-                                ButtonIntro(
-                                    stringResource(R.string.INTRO_BOOKMARK_TITLE),
-                                    stringResource(R.string.INTRO_BOOKMARK_DESC)
-                                )
-                            }
-                        ),
+                        ,
                     onClick = { poemViewModel.onBookmarkClicked() }) {
                     if (isBookmarked) {
                         Icon(
@@ -152,20 +113,7 @@ fun PoemScreenActionHeader(
                 IconButton(
                     modifier = Modifier
                         .size(24.dp)
-                        .introShowCaseTarget(
-                            index = 3,
-                            style = ShowcaseStyle.Default.copy(
-                                backgroundColor = MaterialTheme.colorScheme.primary,
-                                backgroundAlpha = 0.98f,
-                                targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            content = {
-                                ButtonIntro(
-                                    stringResource(R.string.INTRO_SHARE_TITLE),
-                                    stringResource(R.string.INTRO_SHARE_DESC)
-                                )
-                            }
-                        ),
+                        ,
                     onClick = {
                         poemViewModel.share(
                             poemViewModel.verses.value,
@@ -187,20 +135,6 @@ fun PoemScreenActionHeader(
                     selectMode = selectMode,
                     onToggleVerseNumbers = onToggleVerseNumbers,
                     onToggleSelectMode = onToggleSelectMode,
-                    modifier = Modifier.introShowCaseTarget(
-                        index = 4,
-                        style = ShowcaseStyle.Default.copy(
-                            backgroundColor = MaterialTheme.colorScheme.primary,
-                            backgroundAlpha = 0.98f,
-                            targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        content = {
-                            ButtonIntro(
-                                stringResource(R.string.INTRO_ETC),
-                                ""
-                            )
-                        }
-                    ),
                 )
             }
         }
