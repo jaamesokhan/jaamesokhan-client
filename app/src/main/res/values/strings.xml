@@ -115,4 +115,5 @@
     <string name="INTRO_HOME_DESC">در این صفحه به شاعران دانلود شده دسترسی دارین</string>
     <string name="INTRO_MERGE_HIGHLIGHT_TITLE">ادغام هایلایت‌ها</string>
     <string name="INTRO_MERGE_HIGHLIGHT_DESC">هایلایت‌هاتون رو جداگانه یا به صورت ادغام شده مشاهده کنید</string>
+    <string name="RECITE">خوانش</string>
 </resources>
