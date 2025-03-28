@@ -5,6 +5,7 @@
     <string name="FALLBACK_IMAGE_URL">https://ganjoor.net/image/gdap.png</string>
 
     <!--  About Us  -->
+    <string name="ABOUT_US">درباره ما</string>
     <string name="ABOUT_US_BASE">
         جام سخن یک اپلیکیشن متن باز است و هدف ما از توسعه آن، دسترسی راحت همه علاقه‌مندان به اشعار فارسی است.
     </string>
@@ -73,10 +74,11 @@
     <string name="DELETE">حذف</string>
     <string name="SEARCH">جست‌وجو</string>
     <string name="CLOSE">بستن</string>
-    <string name="RANDOM_POEM">شعر رندم</string>
+    <string name="RANDOM_POEM">شعر تصادفی</string>
     <string name="RANDOM_POEM_OPTIONS">تنظیمات شعر تصادفی</string>
     <string name="CATEGORY">دسته‌بندی</string>
     <string name="POEM">شعر</string>
+    <string name="INTRO_TO_FRIEND">معرفی به دوستان</string>
 
     <!-- Intro Stuff    -->
     <string name="INTRO_HISTORY_TITLE">تاریخچه</string>
@@ -106,4 +108,5 @@
     <string name="INTRO_MERGE_HIGHLIGHT_TITLE">ادغام هایلایت‌ها</string>
     <string name="INTRO_MERGE_HIGHLIGHT_DESC">هایلایت‌هاتون رو جداگانه یا به صورت ادغام شده مشاهده کنید</string>
     <string name="RECITE">خوانش</string>
+    <string name="SETTINGS">تنظیمات</string>
 </resources>
