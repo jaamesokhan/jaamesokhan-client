@@ -46,6 +46,7 @@ import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
+import ir.jaamebaade.jaamebaade_client.view.SettingsMenu
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.TopBarViewModel
@@ -77,9 +78,12 @@ fun IntroShowcaseScope.TopBar(
     val showHistory = viewModel.showHistoryIcon
     val showSearch = viewModel.showSearchIcon
     val showOptions = viewModel.showOptionsIcon
+    val settingBottomSheetState = rememberModalBottomSheetState()
+    var showSettingBottomSheet by remember { mutableStateOf(false) }
 
     val sheetState = rememberModalBottomSheetState()
     var showPoetOptionModal by remember { mutableStateOf(false) }
+
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -100,6 +104,12 @@ fun IntroShowcaseScope.TopBar(
         }
     }
 
+    if(showSettingBottomSheet) {
+        SettingsMenu(
+            sheetState = settingBottomSheetState,
+            onDismiss = {showSettingBottomSheet = false}
+        )
+    }
 
 
     BackHandler(enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
@@ -136,11 +146,15 @@ fun IntroShowcaseScope.TopBar(
                                     )
                                 }
                             } else {
-                                Icon(
-                                    imageVector = Icons.Default.Menu,
-                                    contentDescription = "Place Holder!",
-                                    modifier = Modifier.size(32.dp),
-                                )
+                                IconButton(onClick = {
+                                    showSettingBottomSheet = true
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Menu,
+                                        contentDescription = "Settings Menu",
+                                        modifier = Modifier.size(32.dp),
+                                    )
+                                }
                             }
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
