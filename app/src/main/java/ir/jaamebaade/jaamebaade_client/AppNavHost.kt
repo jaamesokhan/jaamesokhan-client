@@ -48,7 +48,6 @@ import ir.jaamebaade.jaamebaade_client.view.PoemScreen
 import ir.jaamebaade.jaamebaade_client.view.PoetDetailScreen
 import ir.jaamebaade.jaamebaade_client.view.SearchScreen
 import ir.jaamebaade.jaamebaade_client.view.SettingsOptionsScreen
-import ir.jaamebaade.jaamebaade_client.view.SettingsScreen
 import ir.jaamebaade.jaamebaade_client.view.components.AboutUsScreen
 import ir.jaamebaade.jaamebaade_client.view.components.Navbar
 import ir.jaamebaade.jaamebaade_client.view.components.PermissionRationaleDialog

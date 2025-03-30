@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,7 +34,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -62,8 +65,8 @@ fun IntroShowcaseScope.TopBar(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
-        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.SETTINGS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.SEARCH_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.FAVORITE_SCREEN.toString())
-
+        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.BOOKMARKS_SCREEN.toString())
+    Log.d("Ttt", backStackEntry.toString())
 
 
     LaunchedEffect(key1 = backStackEntry) {
@@ -71,6 +74,8 @@ fun IntroShowcaseScope.TopBar(
         viewModel.shouldShowHistory(backStackEntry)
         viewModel.shouldShowOptions(backStackEntry)
         viewModel.shouldShowSearch(backStackEntry)
+        viewModel.shouldExtendTopBar(backStackEntry)
+        viewModel.shouldShowDownArrow(backStackEntry)
     }
 
     val breadCrumbs = viewModel.breadCrumbs
@@ -80,10 +85,11 @@ fun IntroShowcaseScope.TopBar(
     val showOptions = viewModel.showOptionsIcon
     val settingBottomSheetState = rememberModalBottomSheetState()
     var showSettingBottomSheet by remember { mutableStateOf(false) }
+    val topBarIsExtended = viewModel.topBarIsExtended
+    val downArrow = viewModel.downArrow
 
     val sheetState = rememberModalBottomSheetState()
     var showPoetOptionModal by remember { mutableStateOf(false) }
-
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -104,10 +110,11 @@ fun IntroShowcaseScope.TopBar(
         }
     }
 
-    if(showSettingBottomSheet) {
+    if (showSettingBottomSheet) {
         SettingsMenu(
             sheetState = settingBottomSheetState,
-            onDismiss = {showSettingBottomSheet = false}
+            onDismiss = { showSettingBottomSheet = false },
+            navController
         )
     }
 
@@ -116,7 +123,7 @@ fun IntroShowcaseScope.TopBar(
         onBackButtonClicked(backStackEntry, navController)
     }
     Surface(
-        shadowElevation = 4.dp
+        shadowElevation = if (topBarIsExtended) 0.dp else 4.dp
     ) {
         Column {
             TopAppBar(
@@ -139,7 +146,7 @@ fun IntroShowcaseScope.TopBar(
                                         onBackButtonClicked(backStackEntry, navController)
                                     }) {
                                     Icon(
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        imageVector = if (downArrow) ImageVector.vectorResource(R.drawable.down_back) else Icons.AutoMirrored.Filled.ArrowBack,
                                         tint = MaterialTheme.colorScheme.onSurface,
                                         contentDescription = "Back",
                                         modifier = Modifier.size(32.dp),
