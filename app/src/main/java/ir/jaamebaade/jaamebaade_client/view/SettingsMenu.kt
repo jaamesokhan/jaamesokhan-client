@@ -32,7 +32,7 @@ fun SettingsMenu(
     onDismiss: () -> Unit,
     navController: NavController
 ) {
-    val coroutineScope = rememberCoroutineScope()
+    rememberCoroutineScope()
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,

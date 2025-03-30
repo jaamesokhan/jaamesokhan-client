@@ -1,7 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
 import android.util.Log
-import android.widget.ImageView
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
@@ -67,7 +65,7 @@ fun IntroShowcaseScope.TopBar(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
-        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString()  && backStackEntry?.destination?.route != AppRoutes.BOOKMARKS_SCREEN.toString())
+        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.BOOKMARKS_SCREEN.toString())
     Log.d("Ttt", backStackEntry.toString())
 
 
@@ -112,10 +110,10 @@ fun IntroShowcaseScope.TopBar(
         }
     }
 
-    if(showSettingBottomSheet) {
+    if (showSettingBottomSheet) {
         SettingsMenu(
             sheetState = settingBottomSheetState,
-            onDismiss = {showSettingBottomSheet = false},
+            onDismiss = { showSettingBottomSheet = false },
             navController
         )
     }
@@ -148,7 +146,7 @@ fun IntroShowcaseScope.TopBar(
                                         onBackButtonClicked(backStackEntry, navController)
                                     }) {
                                     Icon(
-                                        imageVector = if(downArrow) ImageVector.vectorResource(R.drawable.down_back) else Icons.AutoMirrored.Filled.ArrowBack,
+                                        imageVector = if (downArrow) ImageVector.vectorResource(R.drawable.down_back) else Icons.AutoMirrored.Filled.ArrowBack,
                                         tint = MaterialTheme.colorScheme.onSurface,
                                         contentDescription = "Back",
                                         modifier = Modifier.size(32.dp),
