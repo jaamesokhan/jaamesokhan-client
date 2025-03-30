@@ -24,9 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 
-/**
- * This component is used in poet detail screen to show a list of items (category or poem).
- */
+
 @Composable
 fun MenuItem(
     title: String,
