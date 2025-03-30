@@ -48,6 +48,7 @@ import ir.jaamebaade.jaamebaade_client.view.MyBookmarkScreen
 import ir.jaamebaade.jaamebaade_client.view.PoemScreen
 import ir.jaamebaade.jaamebaade_client.view.PoetDetailScreen
 import ir.jaamebaade.jaamebaade_client.view.SearchScreen
+import ir.jaamebaade.jaamebaade_client.view.SettingsOptionsScreen
 import ir.jaamebaade.jaamebaade_client.view.SettingsScreen
 import ir.jaamebaade.jaamebaade_client.view.components.AboutUsScreen
 import ir.jaamebaade.jaamebaade_client.view.components.Navbar
@@ -149,10 +150,11 @@ fun AppNavHost(
                             )
                         }
                         animatedComposable(AppRoutes.SETTINGS_SCREEN.toString()) {
-                            SettingsScreen(
-                                modifier = Modifier.padding(innerPadding),
-                                navController = navController,
-                            )
+//                            SettingsScreen(
+//                                modifier = Modifier.padding(innerPadding),
+//                                navController = navController,
+//                            )
+                            SettingsOptionsScreen(modifier = Modifier.padding(innerPadding))
                         }
                         animatedComposable(route = AppRoutes.SEARCH_SCREEN.toString()) {
                             SearchScreen(

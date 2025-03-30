@@ -14,11 +14,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
+import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.view.components.setting.MenuItem
 
@@ -27,8 +30,9 @@ import ir.jaamebaade.jaamebaade_client.view.components.setting.MenuItem
 fun SettingsMenu(
     sheetState: SheetState,
     onDismiss: () -> Unit,
+    navController: NavController
 ) {
-
+    val coroutineScope = rememberCoroutineScope()
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
@@ -46,7 +50,8 @@ fun SettingsMenu(
                         modifier = Modifier.size(24.dp)
                     )
                 },
-                onClick = { }//TODO
+                onClick = { //TODO
+                }
             )
 
             MenuItem(
@@ -60,7 +65,10 @@ fun SettingsMenu(
                         modifier = Modifier.size(24.dp)
                     )
                 },
-                onClick = { }//TODO
+                onClick = {
+                    navController.navigate(AppRoutes.SEARCH_SCREEN.toString())
+                    onDismiss()
+                }
             )
 
             MenuItem(
@@ -74,7 +82,10 @@ fun SettingsMenu(
                         modifier = Modifier.size(24.dp)
                     )
                 },
-                onClick = { }//TODO
+                onClick = {
+                    navController.navigate(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString())
+                    onDismiss()
+                }
             )
 
 
@@ -91,7 +102,10 @@ fun SettingsMenu(
                         modifier = Modifier.size(24.dp)
                     )
                 },
-                onClick = { }//TODO
+                onClick = {
+                    navController.navigate(AppRoutes.SETTINGS_SCREEN.toString())
+                    onDismiss()
+                }
             )
             MenuItem(
                 title = stringResource(R.string.ABOUT_US),
@@ -104,7 +118,10 @@ fun SettingsMenu(
                         modifier = Modifier.size(24.dp)
                     )
                 },
-                onClick = { }//TODO
+                onClick = {
+                    navController.navigate(AppRoutes.ABOUT_US_SCREEN.toString())
+                    onDismiss()
+                }
             )
             MenuItem(
                 title = stringResource(R.string.INTRO_TO_FRIEND),
@@ -117,10 +134,16 @@ fun SettingsMenu(
                         modifier = Modifier.size(24.dp)
                     )
                 },
-                onClick = { }//TODO
+                onClick = {
+                    //TODO
+                }
             )
 
 
         }
+
+
     }
 }
+
+
