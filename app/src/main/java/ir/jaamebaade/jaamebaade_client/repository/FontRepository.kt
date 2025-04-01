@@ -17,9 +17,17 @@ class FontRepository @Inject constructor(
     private val _fontFamily = MutableStateFlow(CustomFonts.getDefaultFont())
     val fontFamily: StateFlow<CustomFont> get() = _fontFamily
 
+    private val _poemFontFamily = MutableStateFlow(CustomFonts.getDefaultFont())
+    val poemFontFamily : StateFlow<CustomFont> get() = _poemFontFamily
+
+    private val _poemFontSizeIndex = MutableStateFlow(1)
+    val poemFontSizeIndex: StateFlow<Int> get() = _poemFontSizeIndex
+
     init {
         _fontSizeIndex.value = sharedPrefManager.getFontSizeIndex()
         _fontFamily.value = sharedPrefManager.getFont()
+        _poemFontSizeIndex.value = sharedPrefManager.getFontSizeIndex()
+        _poemFontFamily.value = sharedPrefManager.getFont()
     }
 
     fun setFontSize(size: Int) {
@@ -28,6 +36,16 @@ class FontRepository @Inject constructor(
     }
 
     fun setFontFamily(family: CustomFont) {
+        _fontFamily.value = family
+        sharedPrefManager.saveFont(family)
+    }
+
+    fun setPoemFontSize(size: Int) {
+        _fontSizeIndex.value = size
+        sharedPrefManager.saveFontSizeIndex(size)
+    }
+
+    fun setPoemFontFamily(family: CustomFont) {
         _fontFamily.value = family
         sharedPrefManager.saveFont(family)
     }
