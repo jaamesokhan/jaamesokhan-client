@@ -116,6 +116,7 @@ val secondaryS90Dark = Color(0xFFDDE5CF)
 val secondaryS30Dark = Color(0xFF6E991F)
 val secondaryS40Dark = Color(0xFF83B22D)
 val secondaryS50Dark = Color(0xFF9ACC3D)
+val secondaryS30color = Color(0xFF6E991F) //TODO check
 val neutralN50Dark = Color(0xFF808080)
 val neutralN70Dark = Color(0xFFB3B3B3)
 val neutralN90Dark = Color(0xFFE6E6E6)
