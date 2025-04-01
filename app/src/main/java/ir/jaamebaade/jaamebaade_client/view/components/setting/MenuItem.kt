@@ -3,7 +3,6 @@ package ir.jaamebaade.jaamebaade_client.view.components.setting
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,7 +29,6 @@ fun MenuItem(
     title: String,
     showDivider: Boolean,
     leadingIcon: @Composable () -> Unit,
-    showTrailingArrow: Boolean = true,
     onClick: () -> Unit
 ) {
     Surface(
@@ -42,14 +40,15 @@ fun MenuItem(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(start = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier.padding(start = 29.dp)) {
+            Box(modifier = Modifier.padding(start = 20.dp, end = 0.dp)) {
                 leadingIcon()
             }
-            Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.padding(6.dp))
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -57,28 +56,25 @@ fun MenuItem(
                 Row(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .padding(end = 24.dp)
+                        .padding(end = 20.dp, start = 0.dp)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Column(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
-                    if (showTrailingArrow) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBackIosNew,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
+
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBackIosNew,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(16.dp)
+                    )
+
                 }
                 if (showDivider) {
                     HorizontalDivider(
