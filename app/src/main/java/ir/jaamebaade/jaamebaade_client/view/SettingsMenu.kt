@@ -47,7 +47,7 @@ fun SettingsMenu(
                         painter = painterResource(id = R.drawable.book_ribbon),
                         contentDescription = stringResource(R.string.RANDOM_POEM),
                         tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(32.dp)
                     )
                 },
                 onClick = { //TODO
@@ -62,7 +62,7 @@ fun SettingsMenu(
                         imageVector = Icons.Default.Search,
                         contentDescription = stringResource(R.string.SEARCH),
                         tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(32.dp)
                     )
                 },
                 onClick = {
@@ -79,7 +79,7 @@ fun SettingsMenu(
                         imageVector = Icons.Default.AddCircleOutline,
                         contentDescription = stringResource(R.string.RANDOM_POEM),
                         tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(32.dp)
                     )
                 },
                 onClick = {
@@ -99,7 +99,7 @@ fun SettingsMenu(
                         imageVector = Icons.Outlined.Settings,
                         contentDescription = stringResource(R.string.SETTINGS),
                         tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(32.dp)
                     )
                 },
                 onClick = {
@@ -115,7 +115,7 @@ fun SettingsMenu(
                         imageVector = Icons.Outlined.PersonOutline,
                         contentDescription = stringResource(R.string.RANDOM_POEM),
                         tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(32.dp)
                     )
                 },
                 onClick = {
@@ -131,7 +131,7 @@ fun SettingsMenu(
                         painter = painterResource(id = R.drawable.intro_to_friends),
                         contentDescription = stringResource(R.string.INTRO_TO_FRIEND),
                         tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(32.dp)
                     )
                 },
                 onClick = {
