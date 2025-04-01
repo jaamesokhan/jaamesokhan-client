@@ -43,6 +43,7 @@
     <string name="NOT_NOW">الآن نه</string>
     <string name="UNBOOKMARK_SUCCESS">"با موفقیت حذف شد."</string>
     <string name="NO_BOOKMARK">هنوز هیچ شعری ذخیره نکرده‌اید!</string>
+    <string name="RECITATION_NOT_FOUND">هیچ خوانشی برای این شعر یافت نشد.</string>
 
 
     <!--  Titles  -->
@@ -106,4 +107,5 @@
     <string name="INTRO_MERGE_HIGHLIGHT_TITLE">ادغام هایلایت‌ها</string>
     <string name="INTRO_MERGE_HIGHLIGHT_DESC">هایلایت‌هاتون رو جداگانه یا به صورت ادغام شده مشاهده کنید</string>
     <string name="RECITE">خوانش</string>
+    <string name="OPTIONS">گزینه‌ها</string>
 </resources>

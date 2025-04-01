@@ -10,6 +10,7 @@ val onPrimaryContainerLight = Color(0xFF3E452D)
 val secondaryLight = Color(0xFFBAD982)
 val onSecondaryLight = Color(0xFF333333)
 val secondaryS90Light = Color(0xFFDDE5CF)
+val secondaryS30Light = Color(0xFF6E991F)
 val secondaryContainerLight = Color(0xFFDDE5CF)
 val onSecondaryContainerLight = Color(0xFF46660A)
 
@@ -110,6 +111,7 @@ val inversePrimaryDark = Color(0xFFC1CDE0)
 ////////////////
 
 val secondaryS90Dark = Color(0xFFDDE5CF)
+val secondaryS30Dark = Color(0xFF6E991F)
 val neutralN50Dark = Color(0xFF808080)
 val neutralN70Dark = Color(0xFFB3B3B3)
 val neutralN90Dark = Color(0xFFE6E6E6)

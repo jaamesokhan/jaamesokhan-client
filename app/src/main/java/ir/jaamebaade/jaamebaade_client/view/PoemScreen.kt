@@ -6,8 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material.icons.outlined.VolumeUp
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,20 +25,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import ir.jaamebaade.jaamebaade_client.R
+import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
+import ir.jaamebaade.jaamebaade_client.view.components.AudioListScreen
 import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenActionHeader
 import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenBottomToolBar
 import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenPathHeader
+import ir.jaamebaade.jaamebaade_client.view.components.ToggleButtonItem
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PoemScreen(
     navController: NavController,
@@ -69,6 +82,7 @@ fun PoemScreen(
 
     var showVerseNumbers by remember { mutableStateOf(false) }
     var selectMode by remember { mutableStateOf(false) }
+    val isBookmarked by poemViewModel.isBookmarked.collectAsState()
 
     val lazyListState = rememberLazyListState()
 
@@ -139,6 +153,55 @@ fun PoemScreen(
         lazyListState.animateScrollToItem(index = recitedVerseIndex)
     }
 
+    var audioOptionChecked by remember { mutableStateOf(false) }
+
+    val toggleButtonItems = listOf(
+        ToggleButtonItem(
+            checkedImageVector = Icons.Filled.VolumeUp,
+            uncheckedImageVector = Icons.Outlined.VolumeUp,
+            contentDescription = stringResource(R.string.RECITE),
+            checked = audioOptionChecked,
+            onClick = { audioOptionChecked = it }
+        ),
+        ToggleButtonItem(
+            checkedIconId = R.drawable.bookmark_selected,
+            uncheckedIconId = R.drawable.bookmark,
+            contentDescription = stringResource(R.string.BOOKMARK),
+            checked = isBookmarked,
+            onClick = { poemViewModel.onBookmarkClicked() }
+        ),
+        ToggleButtonItem(
+            checkedIconId = R.drawable.note,
+            uncheckedIconId = R.drawable.note,
+            contentDescription = stringResource(R.string.COMMENT),
+            checked = false,
+            onClick = { navController.navigate("${AppRoutes.COMMENTS}/$poetId/$poemId") }
+        ),
+        ToggleButtonItem(
+            checkedImageVector = Icons.Default.MoreVert,
+            uncheckedImageVector = Icons.Default.MoreVert,
+            contentDescription = stringResource(R.string.OPTIONS),
+            checked = false,
+            onClick = { }
+        )
+    )
+
+    val sheetState = rememberModalBottomSheetState()
+
+
+
+    if (audioOptionChecked) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                audioOptionChecked = false
+            },
+            sheetState = sheetState,
+            containerColor = MaterialTheme.colorScheme.background,
+        ) {
+            AudioListScreen(viewModel = poemViewModel, audioViewModel = audioViewModel)
+        }
+    }
+
     Column(
         modifier = modifier
     ) {
@@ -156,19 +219,7 @@ fun PoemScreen(
                 }
 
                 PoemScreenActionHeader(
-                    navController = navController,
-                    poetId = poetId,
-                    poemId = poemId,
-                    poetName = path?.poet?.name,
-                    poemViewModel = poemViewModel,
-                    showVerseNumbers = showVerseNumbers,
-                    selectMode = selectMode,
-                    audioViewModel = audioViewModel,
-                    onToggleVerseNumbers = { showVerseNumbers = !showVerseNumbers },
-                    onToggleSelectMode = {
-                        selectMode = !selectMode
-                        if (!selectMode) selectedVerses.clear()
-                    },
+                    toggleButtonItems = toggleButtonItems
                 )
             }
         }

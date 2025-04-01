@@ -80,9 +80,9 @@ private val darkScheme = darkColorScheme(
     inversePrimary = inversePrimaryDark,
 )
 
-val ColorScheme.secondaryS90: Color
+val ColorScheme.secondaryS30: Color
     @Composable
-    get() = if (isSystemInDarkTheme()) secondaryS90Dark else secondaryS90Light
+    get() = if (isSystemInDarkTheme()) secondaryS30Dark else secondaryS30Light
 
 
 val ColorScheme.neutralN50: Color
