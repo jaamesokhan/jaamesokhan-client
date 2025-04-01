@@ -41,12 +41,12 @@ class FontRepository @Inject constructor(
     }
 
     fun setPoemFontSize(size: Int) {
-        _fontSizeIndex.value = size
+        _poemFontSizeIndex.value = size
         sharedPrefManager.saveFontSizeIndex(size)
     }
 
     fun setPoemFontFamily(family: CustomFont) {
-        _fontFamily.value = family
+        _poemFontFamily.value = family
         sharedPrefManager.saveFont(family)
     }
 }

@@ -84,7 +84,9 @@ val ColorScheme.secondaryS90: Color
     @Composable
     get() = if (isSystemInDarkTheme()) secondaryS90Dark else secondaryS90Light
 
-
+val ColorScheme.secondaryS30 : Color
+    @Composable
+    get() = secondaryS30color
 val ColorScheme.neutralN50: Color
     @Composable
     get() = if (isSystemInDarkTheme()) neutralN50Dark else neutralN50Light
