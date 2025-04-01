@@ -48,7 +48,7 @@ import ir.jaamebaade.jaamebaade_client.view.MyPoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.PoemScreen
 import ir.jaamebaade.jaamebaade_client.view.PoetDetailScreen
 import ir.jaamebaade.jaamebaade_client.view.SearchScreen
-import ir.jaamebaade.jaamebaade_client.view.SettingsOptionsScreen
+import ir.jaamebaade.jaamebaade_client.view.SettingsListScreen
 import ir.jaamebaade.jaamebaade_client.view.components.AboutUsScreen
 import ir.jaamebaade.jaamebaade_client.view.components.Navbar
 import ir.jaamebaade.jaamebaade_client.view.components.PermissionRationaleDialog
@@ -153,7 +153,7 @@ fun AppNavHost(
 //                                modifier = Modifier.padding(innerPadding),
 //                                navController = navController,
 //                            )
-                            SettingsOptionsScreen(modifier = Modifier.padding(innerPadding))
+                            SettingsListScreen(modifier = Modifier.padding(innerPadding), fontRepository)
                         }
                         animatedComposable(route = AppRoutes.SEARCH_SCREEN.toString()) {
                             SearchScreen(
