@@ -1,22 +1,17 @@
 package ir.jaamebaade.jaamebaade_client.view
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -27,21 +22,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
+import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
+import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
+import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN20
+import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.view.components.setting.CustomRadioButton
 import ir.jaamebaade.jaamebaade_client.view.components.setting.SettingListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsListScreen(modifier: Modifier = Modifier, fontRepository: FontRepository) {
-    //val selectedPoemFontFamily by val fontRepository.poemFontFamily.
+fun SettingsListScreen(
+    modifier: Modifier = Modifier,
+    fontRepository: FontRepository,
+    themeRepository: ThemeRepository
+) {
     var selectedPoemFontFamily by remember { mutableStateOf(fontRepository.poemFontFamily.value) }
-    var selectPoemFontSize by remember { mutableStateOf(fontRepository.poemFontSizeIndex.value) }
+    var selectPoemFontSizeIndex by remember { mutableStateOf(fontRepository.poemFontSize.value) }
+    var selectedTheme by remember { mutableStateOf(themeRepository.appTheme.value) }
     var selectedSettingItem by remember { mutableStateOf<SettingItem?>(null) }
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -51,7 +54,7 @@ fun SettingsListScreen(modifier: Modifier = Modifier, fontRepository: FontReposi
             shadowElevation = 4.dp
         ) {
             Column(
-                modifier = Modifier.padding(32.dp),
+                modifier = Modifier.padding(top = 5.dp, bottom = 32.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -69,15 +72,16 @@ fun SettingsListScreen(modifier: Modifier = Modifier, fontRepository: FontReposi
                 .fillMaxSize()
                 .padding(top = 8.dp)
                 .padding(horizontal = 4.dp)
+
         ) {
             SettingListItem(
                 "حالت روز",
                 leadingIcon = {
                     Icon(
-                        painter = painterResource(id = R.drawable.book_ribbon),
-                        contentDescription = stringResource(R.string.RANDOM_POEM),
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(24.dp)
+                        painter = painterResource(id = R.drawable.theme),
+                        contentDescription = "تم برنامه",
+                        tint = MaterialTheme.colorScheme.neutralN20,
+                        modifier = Modifier.size(32.dp)
                     )
                 }, onClick = {
                     showBottomSheet = true
@@ -93,10 +97,12 @@ fun SettingsListScreen(modifier: Modifier = Modifier, fontRepository: FontReposi
                 "فونت ${selectedPoemFontFamily.displayName}",
                 leadingIcon = {
                     Icon(
-                        painter = painterResource(id = R.drawable.book_ribbon),
-                        contentDescription = stringResource(R.string.RANDOM_POEM),
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(24.dp)
+                        painter = painterResource(id = R.drawable.font),
+                        contentDescription = "فونت",
+                        tint = MaterialTheme.colorScheme.neutralN20,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .graphicsLayer(scaleX = -1f)
                     )
                 }, onClick = {
                     showBottomSheet = true
@@ -108,13 +114,13 @@ fun SettingsListScreen(modifier: Modifier = Modifier, fontRepository: FontReposi
                 color = MaterialTheme.colorScheme.outline
             )
             SettingListItem(
-                "اندازه قلم $selectPoemFontSize",
+                "اندازه قلم $selectPoemFontSizeIndex",
                 leadingIcon = {
                     Icon(
-                        painter = painterResource(id = R.drawable.book_ribbon),
-                        contentDescription = stringResource(R.string.RANDOM_POEM),
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(24.dp)
+                        painter = painterResource(id = R.drawable.font_size),
+                        contentDescription = "اندازه قلم",
+                        tint = MaterialTheme.colorScheme.neutralN20,
+                        modifier = Modifier.size(32.dp)
                     )
                 }, onClick = {
                     showBottomSheet = true
@@ -130,11 +136,10 @@ fun SettingsListScreen(modifier: Modifier = Modifier, fontRepository: FontReposi
                 showBottomSheet = false
             },
             sheetState = sheetState,
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = MaterialTheme.colorScheme.neutralN95,
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
                     .selectableGroup()
             ) {
                 when (selectedSettingItem) {
@@ -143,7 +148,6 @@ fun SettingsListScreen(modifier: Modifier = Modifier, fontRepository: FontReposi
                             fun onFontClick() {
                                 selectedPoemFontFamily = customFont
                                 fontRepository.setPoemFontFamily(customFont)
-                                showBottomSheet = false
                             }
                             CustomRadioButton(
                                 title = customFont.displayName,
@@ -157,11 +161,31 @@ fun SettingsListScreen(modifier: Modifier = Modifier, fontRepository: FontReposi
 
 
                     SettingItem.FONT_SIZE -> {
-                        // Font size selection logic here
+                        fontRepository.getAvailableFontSizes().forEachIndexed { index, fontSize ->
+                            fun onFontSizeClick() {
+                                selectPoemFontSizeIndex = fontSize
+                                fontRepository.setPoemFontSize(fontSize)
+                            }
+                            CustomRadioButton(
+                                title = fontRepository.getFontNameFromSize(fontSize),
+                                showDivider = index != CustomFonts.getAllFonts().lastIndex,
+                                isSelected = fontSize == selectPoemFontSizeIndex,
+                            ) { onFontSizeClick() }
+                        }
                     }
 
                     SettingItem.THEME -> {
-                        // Theme selection logic here
+                        AppThemeType.entries.forEachIndexed { index, appThemeType ->
+                            fun onThemeClick() {
+                                selectedTheme = appThemeType
+                                themeRepository.setAppThemePreference(appThemeType)
+                            }
+                            CustomRadioButton(
+                                title = appThemeType.displayName,
+                                showDivider = index != AppThemeType.entries.lastIndex,
+                                isSelected = appThemeType == selectedTheme,
+                            ) { onThemeClick() }
+                        }
                     }
 
                     null -> {

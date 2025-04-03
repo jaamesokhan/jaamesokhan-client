@@ -11,20 +11,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.R
+import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS30
-
 
 @Composable
 fun CustomRadioButton(
@@ -43,7 +44,7 @@ fun CustomRadioButton(
                 role = Role.RadioButton
             ),
         onClick = onClick,
-        color = MaterialTheme.colorScheme.surface
+        color = MaterialTheme.colorScheme.neutralN95
     ) {
         Row(
             modifier = Modifier
@@ -52,17 +53,39 @@ fun CustomRadioButton(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RadioButton(
-                modifier = Modifier
-                    .padding(start = 14.dp, end = 0.dp)
-                    .size(32.dp),
-                selected = isSelected,
-                onClick = onClick,
-                colors = RadioButtonDefaults.colors(
-                    selectedColor = MaterialTheme.colorScheme.secondaryS30,
-                    unselectedColor = MaterialTheme.colorScheme.secondaryS30
-                )
-            )
+            Box(modifier = Modifier.padding(start = 14.dp, end = 0.dp)) {
+                IconToggleButton(
+                    checked = isSelected,
+                    onCheckedChange = { onClick() },
+                    modifier = Modifier
+                        .size(24.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(
+                            if (isSelected) {
+                                R.drawable.selected_radio_button
+                            } else {
+                                R.drawable.radio_button
+                            }
+                        ),
+                        contentDescription = null,
+                        tint =
+                            MaterialTheme.colorScheme.secondaryS30
+
+                    )
+                }
+            }
+//            RadioButton(
+//                modifier = Modifier
+//                    .padding(start = 14.dp, end = 0.dp)
+//                    .size(32.dp),
+//                selected = isSelected,
+//                onClick = onClick,
+//                colors = RadioButtonDefaults.colors(
+//                    selectedColor = MaterialTheme.colorScheme.secondaryS30,
+//                    unselectedColor = MaterialTheme.colorScheme.secondaryS30
+//                )
+//            )
 
             Spacer(modifier = Modifier.width(16.dp))
             Box(

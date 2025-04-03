@@ -146,7 +146,7 @@ fun IntroShowcaseScope.TopBar(
                                         onBackButtonClicked(backStackEntry, navController)
                                     }) {
                                     Icon(
-                                        imageVector = if (downArrow) ImageVector.vectorResource(R.drawable.down_back) else Icons.AutoMirrored.Filled.ArrowBack,
+                                        imageVector = if (downArrow) ImageVector.vectorResource(R.drawable.back_arrow_down) else Icons.AutoMirrored.Filled.ArrowBack,
                                         tint = MaterialTheme.colorScheme.onSurface,
                                         contentDescription = "Back",
                                         modifier = Modifier.size(32.dp),

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Icon
@@ -25,7 +26,8 @@ import androidx.compose.ui.unit.dp
 fun SettingListItem(
     title: String,
     leadingIcon: @Composable () -> Unit,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+
 ) {
     Surface(
         modifier = Modifier
@@ -42,10 +44,10 @@ fun SettingListItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier.padding(start = 20.dp)) {
+            Box(modifier = Modifier.padding(start = 16.dp)) {
                 leadingIcon()
             }
-            Spacer(modifier = Modifier.padding(12.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -63,7 +65,7 @@ fun SettingListItem(
                     ) {
                         Text(
                             text = title,
-                            style = MaterialTheme.typography.headlineMedium,
+                            style = MaterialTheme.typography.headlineLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
                     }
