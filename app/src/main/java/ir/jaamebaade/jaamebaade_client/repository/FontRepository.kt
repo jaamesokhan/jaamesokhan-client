@@ -10,7 +10,7 @@ import javax.inject.Inject
 class FontRepository @Inject constructor(
     private val sharedPrefManager: SharedPrefManager,
 ) {
-
+    // probably we won't need these anymore
     private val _fontSizeIndex = MutableStateFlow(1)
     val fontSizeIndex: StateFlow<Int> get() = _fontSizeIndex
 
@@ -20,13 +20,13 @@ class FontRepository @Inject constructor(
     private val _poemFontFamily = MutableStateFlow(CustomFonts.getDefaultFont())
     val poemFontFamily : StateFlow<CustomFont> get() = _poemFontFamily
 
-    private val _poemFontSizeIndex = MutableStateFlow(1)
-    val poemFontSizeIndex: StateFlow<Int> get() = _poemFontSizeIndex
+    private val _poemFontSize = MutableStateFlow(1)
+    val poemFontSize: StateFlow<Int> get() = _poemFontSize
 
     init {
         _fontSizeIndex.value = sharedPrefManager.getFontSizeIndex()
         _fontFamily.value = sharedPrefManager.getFont()
-        _poemFontSizeIndex.value = sharedPrefManager.getFontSizeIndex()
+        _poemFontSize.value = sharedPrefManager.getFontSizeIndex()
         _poemFontFamily.value = sharedPrefManager.getFont()
     }
 
@@ -41,12 +41,26 @@ class FontRepository @Inject constructor(
     }
 
     fun setPoemFontSize(size: Int) {
-        _poemFontSizeIndex.value = size
+        _poemFontSize.value = size
         sharedPrefManager.saveFontSizeIndex(size)
     }
 
     fun setPoemFontFamily(family: CustomFont) {
         _poemFontFamily.value = family
         sharedPrefManager.saveFont(family)
+    }
+
+
+
+    fun getAvailableFontSizes(): List<Int> {
+        return listOf(0,1,2)
+    }
+    fun getFontNameFromSize(size: Int): String {
+        return when (size) {
+            0 -> "ریز"
+            1 -> "متوسط"
+            2 -> "درشت"
+            else -> "Medium"
+        }
     }
 }

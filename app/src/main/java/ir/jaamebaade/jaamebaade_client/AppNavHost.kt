@@ -153,7 +153,7 @@ fun AppNavHost(
 //                                modifier = Modifier.padding(innerPadding),
 //                                navController = navController,
 //                            )
-                            SettingsListScreen(modifier = Modifier.padding(innerPadding), fontRepository)
+                            SettingsListScreen(modifier = Modifier.padding(innerPadding), fontRepository, themeRepository)
                         }
                         animatedComposable(route = AppRoutes.SEARCH_SCREEN.toString()) {
                             SearchScreen(
