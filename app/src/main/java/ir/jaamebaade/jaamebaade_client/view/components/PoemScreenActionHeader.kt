@@ -32,7 +32,7 @@ fun PoemScreenActionHeader(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .width(190.dp)
-                .padding(vertical = 8.dp, horizontal = 20.dp)
+                .padding(vertical = 16.dp, horizontal = 20.dp)
         ) {
 
             toggleButtonItems.forEach { item ->
