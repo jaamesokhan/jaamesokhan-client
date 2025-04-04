@@ -47,10 +47,6 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
 val routeMap = mapOf(
     "downloadedPoetsScreen" to "downloadedPoetsScreen",
     "downloadablePoetsScreen" to "downloadablePoetsScreen",
-//    "poetCategoryScreen/{poetId}/{parentIds}" to "downloadedPoetsScreen",
-    "poemsListScreen/{poetId}/{categoryId}" to "downloadedPoetsScreen",
-    "poem/{poetId}/{poemId}" to "downloadedPoetsScreen",
-    "poem/{poetId}/{poemId}/{verseId}" to "downloadedPoetsScreen",
     "changeFontScreen" to "settingsScreen",
     "accountScreen" to "settingsScreen",
     "settingsScreen" to "settingsScreen",

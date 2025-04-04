@@ -5,25 +5,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import coil.size.Size
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
 
 @Composable
 fun PoetIconButton(poet: Poet, onLongClick: () -> Unit, onClick: () -> Unit) {
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(poet.imageUrl ?: "https://ganjoor.net/image/gdap.png")
-            .size(Size.ORIGINAL)
-            .build()
-    )
     SquareButton(
         modifier = Modifier.padding(bottom = 16.dp),
-        image = painter,
+        imageUrl = poet.imageUrl ?: stringResource(R.string.FALLBACK_IMAGE_URL),
         tint = Color.White,
         contentDescription = poet.name,
         textStyle = MaterialTheme.typography.headlineMedium,

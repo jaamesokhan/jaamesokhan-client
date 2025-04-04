@@ -6,7 +6,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FormatListNumbered
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material.icons.outlined.VolumeUp
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -17,20 +30,30 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
-import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenActionHeader
-import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenBottomToolBar
-import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenPathHeader
+import ir.jaamebaade.jaamebaade_client.view.components.AudioListItems
+import ir.jaamebaade.jaamebaade_client.view.components.NotesBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
+import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemMoreOptionsList
+import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemOptionItem
+import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenActionHeader
+import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenBottomToolBar
+import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenTitle
+import ir.jaamebaade.jaamebaade_client.view.components.poem.ToggleButtonItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PoemScreen(
     navController: NavController,
@@ -40,6 +63,7 @@ fun PoemScreen(
     modifier: Modifier,
     audioViewModel: AudioViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
 
     var path by remember(poemId) {
         mutableStateOf<VersePoemCategoriesPoet?>(null)
@@ -66,8 +90,12 @@ fun PoemScreen(
     var shouldFocusForRecitation by remember { mutableStateOf(false) }
 
 
+    var showNotes by remember { mutableStateOf(false) }
+
+    var showHighlights by remember { mutableStateOf(true) }
     var showVerseNumbers by remember { mutableStateOf(false) }
     var selectMode by remember { mutableStateOf(false) }
+    val isBookmarked by poemViewModel.isBookmarked.collectAsState()
 
     val lazyListState = rememberLazyListState()
 
@@ -138,35 +166,156 @@ fun PoemScreen(
         lazyListState.animateScrollToItem(index = recitedVerseIndex)
     }
 
+    var audioOptionChecked by remember { mutableStateOf(false) }
+    var moreOptionsChecked by remember { mutableStateOf(false) }
+
+
+    val toggleButtonItems = listOf(
+        ToggleButtonItem(
+            checkedImageVector = Icons.Filled.VolumeUp,
+            uncheckedImageVector = Icons.Outlined.VolumeUp,
+            contentDescription = stringResource(R.string.RECITE),
+            checked = audioOptionChecked,
+            onClick = { audioOptionChecked = it }
+        ),
+        ToggleButtonItem(
+            checkedIconId = R.drawable.bookmark_selected,
+            uncheckedIconId = R.drawable.bookmark,
+            contentDescription = stringResource(R.string.BOOKMARK),
+            checked = isBookmarked,
+            onClick = { poemViewModel.onBookmarkClicked() }
+        ),
+        ToggleButtonItem(
+            checkedIconId = R.drawable.note,
+            uncheckedIconId = R.drawable.note,
+            contentDescription = stringResource(R.string.COMMENT),
+            checked = showNotes,
+            onClick = { showNotes = !showNotes }
+        ),
+        ToggleButtonItem(
+            checkedImageVector = Icons.Default.MoreVert,
+            uncheckedImageVector = Icons.Default.MoreVert,
+            contentDescription = stringResource(R.string.OPTIONS),
+            checked = moreOptionsChecked,
+            onClick = { moreOptionsChecked = it }
+        )
+    )
+
+    val moreOptionsList = listOf(
+        PoemOptionItem(
+            deactivatedIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.Visibility,
+                    contentDescription = stringResource(R.string.SHOW_HIGHLIGHT)
+                )
+            },
+            activatedIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.VisibilityOff,
+                    contentDescription = stringResource(R.string.DONT_SHOW_HIGHLIGHT)
+                )
+            },
+            deactivatedText = stringResource(R.string.SHOW_HIGHLIGHT),
+            activatedText = stringResource(R.string.DONT_SHOW_HIGHLIGHT),
+            isActive = showHighlights,
+            onClick = { showHighlights = !showHighlights; moreOptionsChecked = false }
+        ),
+        PoemOptionItem(
+            deactivatedIcon = {
+                Icon(
+                    imageVector = Icons.Default.FormatListNumbered,
+                    contentDescription = stringResource(R.string.VERSE_NUMBER)
+                )
+            },
+            activatedIcon = {
+                Icon(
+                    imageVector = Icons.Default.FormatListNumbered,
+                    contentDescription = stringResource(R.string.REMOVE_VERSE_NUMBER)
+                )
+            },
+            deactivatedText = stringResource(R.string.VERSE_NUMBER),
+            activatedText = stringResource(R.string.REMOVE_VERSE_NUMBER),
+            isActive = showVerseNumbers,
+            onClick = { showVerseNumbers = !showVerseNumbers; moreOptionsChecked = false }
+        ),
+        PoemOptionItem(
+            deactivatedIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.selection),
+                    contentDescription = stringResource(R.string.SELECT_VERSES),
+                )
+            },
+            deactivatedText = stringResource(R.string.SELECT_VERSES),
+            isActive = selectMode,
+            onClick = { selectMode = !selectMode; moreOptionsChecked = false }
+        ),
+        PoemOptionItem(
+            deactivatedIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.Share,
+                    contentDescription = stringResource(R.string.SHARE),
+                )
+            },
+            deactivatedText = stringResource(R.string.SHARE),
+            onClick = {
+                moreOptionsChecked = !moreOptionsChecked; poemViewModel.share(
+                versesWithHighlights,
+                poemTitle,
+                context
+            )
+            }
+        )
+    )
+
+    val sheetState = rememberModalBottomSheetState()
+
+    if (audioOptionChecked || moreOptionsChecked) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                audioOptionChecked = false
+                moreOptionsChecked = false
+            },
+            sheetState = sheetState,
+            containerColor = MaterialTheme.colorScheme.background,
+        ) {
+            if (audioOptionChecked) {
+                AudioListItems(viewModel = poemViewModel, audioViewModel = audioViewModel)
+            } else if (moreOptionsChecked) {
+                PoemMoreOptionsList(optionsList = moreOptionsList)
+            }
+        }
+    }
+
+    if (showNotes) {
+        NotesBottomSheet(
+            onDismissRequest = { showNotes = false },
+            poemId = poemId,
+        )
+    }
+
     Column(
         modifier = modifier
     ) {
-        PoemScreenPathHeader(
-            navController = navController,
-            poetId = poetId,
-            poemId = poemId,
-            minId = minId,
-            maxId = maxId,
-            path = path,
-        )
+        Surface(
+            shadowElevation = 4.dp
+        ) {
+            Column {
+                path?.let {
+                    PoemScreenTitle(
+                        navController = navController,
+                        minId = minId,
+                        maxId = maxId,
+                        poemPath = it,
+                    )
+                }
 
-        PoemScreenActionHeader(
-            navController = navController,
-            poetId = poetId,
-            poemId = poemId,
-            poetName = path?.poet?.name,
-            poemViewModel = poemViewModel,
-            showVerseNumbers = showVerseNumbers,
-            selectMode = selectMode,
-            audioViewModel = audioViewModel,
-            onToggleVerseNumbers = { showVerseNumbers = !showVerseNumbers },
-            onToggleSelectMode = {
-                selectMode = !selectMode
-                if (!selectMode) selectedVerses.clear()
-            },
-        )
+                PoemScreenActionHeader(
+                    toggleButtonItems = toggleButtonItems
+                )
+            }
+        }
 
-        LazyColumn(modifier = Modifier.padding(10.dp),state = lazyListState) {
+        LazyColumn(modifier = Modifier.padding(10.dp), state = lazyListState) {
             itemsIndexed(versesWithHighlights) { index, verseWithHighlights ->
                 val isSelected = selectedVerses.contains(verseWithHighlights)
                 val itemModifier =
@@ -183,7 +332,7 @@ fun PoemScreen(
                 VerseItem(
                     modifier = itemModifier,
                     verse = verseWithHighlights.verse,
-                    highlights = verseWithHighlights.highlights,
+                    highlights = if (showHighlights) verseWithHighlights.highlights else listOf(),
                     index = index,
                     showVerseNumber = showVerseNumbers,
                     selectMode = selectMode,

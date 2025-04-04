@@ -21,14 +21,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SquareButton(
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
-    image: AsyncImagePainter? = null,
+    imageUrl: String? = null,
     tint: Color,
     contentDescription: String,
     text: String? = contentDescription,
@@ -40,8 +39,8 @@ fun SquareButton(
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
-    assert(icon != null || image != null) { "Icon and image can't be null at the same time" }
-    assert(icon == null || image == null) { "Icon and image can't be set at the same time" }
+    assert(icon != null || imageUrl != null) { "Icon and image can't be null at the same time" }
+    assert(icon == null || imageUrl == null) { "Icon and image can't be set at the same time" }
 
     Column(
         modifier = modifier
@@ -65,13 +64,15 @@ fun SquareButton(
                 Icon(
                     imageVector = it,
                     contentDescription = contentDescription,
-                    modifier = Modifier.size(iconSize.dp).align(Alignment.Center),
+                    modifier = Modifier
+                        .size(iconSize.dp)
+                        .align(Alignment.Center),
                     tint = tint,
                 )
             }
-            image?.let {
+            imageUrl?.let {
                 SquareImage(
-                    image = it,
+                    imageUrl = it,
                     contentDescription = contentDescription,
                     size = size
                 )

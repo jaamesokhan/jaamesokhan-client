@@ -15,34 +15,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import coil.request.CachePolicy
-import coil.request.ImageRequest
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
 @Composable
 fun PoetInformationBox(poet: Poet) {
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(
-                poet.imageUrl ?: "https://ganjoor.net/image/gdap.png"
-            )
-            .size(coil.size.Size.ORIGINAL)
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .memoryCachePolicy(CachePolicy.ENABLED)
-            .build()
-    )
 
     var expanded by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier
-        .padding(horizontal = 24.dp)
-        .padding(bottom = 30.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 24.dp)
+            .padding(bottom = 30.dp)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -50,7 +40,7 @@ fun PoetInformationBox(poet: Poet) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SquareImage(
-                image = painter,
+                imageUrl = poet.imageUrl ?: stringResource(R.string.FALLBACK_IMAGE_URL),
                 contentDescription = poet.name,
                 size = 88
             )

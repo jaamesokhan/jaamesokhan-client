@@ -2,6 +2,7 @@
     <string name="app_name">جام سخن</string>
     <string name="SERVER_BASE_URL">https://jaamesokhan.ir/</string>
     <string name="GANJOOR_BASE_URL">https://api.ganjoor.net/</string>
+    <string name="FALLBACK_IMAGE_URL">https://ganjoor.net/image/gdap.png</string>
 
     <!--  About Us  -->
     <string name="ABOUT_US_BASE">
@@ -42,6 +43,7 @@
     <string name="NOT_NOW">الآن نه</string>
     <string name="UNBOOKMARK_SUCCESS">"با موفقیت حذف شد."</string>
     <string name="NO_BOOKMARK">هنوز هیچ شعری ذخیره نکرده‌اید!</string>
+    <string name="RECITATION_NOT_FOUND">هیچ خوانشی برای این شعر یافت نشد.</string>
 
 
     <!--  Titles  -->
@@ -58,6 +60,9 @@
     <string name="SELECT_VERSES">انتخاب مصرع</string>
     <string name="NORMAL_MODE">حالت عادی</string>
     <string name="DELETE_POET">حذف شاعر</string>
+    <string name="SHOW_HIGHLIGHT">نمایش هایلایت</string>
+    <string name="DONT_SHOW_HIGHLIGHT">عدم نمایش هایلایت</string>
+    <string name="REMOVE_VERSE_NUMBER">حذف شماره بیت</string>
 
 
     <!--  Icon Descriptions  -->
@@ -76,6 +81,8 @@
     <string name="RANDOM_POEM_OPTIONS">تنظیمات شعر تصادفی</string>
     <string name="CATEGORY">دسته‌بندی</string>
     <string name="POEM">شعر</string>
+    <string name="RECITE">خوانش</string>
+    <string name="OPTIONS">گزینه‌ها</string>
 
     <!-- Intro Stuff    -->
     <string name="INTRO_HISTORY_TITLE">تاریخچه</string>

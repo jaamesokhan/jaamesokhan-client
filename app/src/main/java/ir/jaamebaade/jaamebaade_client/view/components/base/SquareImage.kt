@@ -8,20 +8,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 
 @Composable
 fun SquareImage(
     modifier: Modifier = Modifier,
-    image: AsyncImagePainter,
+    imageUrl: String,
     contentDescription: String?,
     size: Int,
     scale: Float = 1.1f,
     roundedCornerShapeSize: Int = 25,
 ) {
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(imageUrl)
+            .size(coil.size.Size.ORIGINAL) // Set the target size to load the image at.
+            .diskCachePolicy(CachePolicy.ENABLED) // Enable disk cache
+            .memoryCachePolicy(CachePolicy.ENABLED) // Enable memory cache
+            .build()
+    )
     Image(
-        painter = image,
+        painter = painter,
         contentDescription = contentDescription,
         contentScale = ContentScale.Crop,
         modifier = modifier

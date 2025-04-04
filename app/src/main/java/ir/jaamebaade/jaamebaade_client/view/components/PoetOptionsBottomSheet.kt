@@ -19,12 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import coil.request.CachePolicy
-import coil.request.ImageRequest
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
@@ -42,17 +38,6 @@ fun PoetOptionsBottomSheet(
     showDescription: Boolean = true,
     onDeleteClick: () -> Unit
 ) {
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(
-                poet.imageUrl ?: "https://ganjoor.net/image/gdap.png"
-            )
-            .size(coil.size.Size.ORIGINAL)
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .memoryCachePolicy(CachePolicy.ENABLED)
-            .build()
-    )
-
     ModalBottomSheet(
         dragHandle = { BottomSheetDefaults.DragHandle(color = MaterialTheme.colorScheme.neutralN70) },
         containerColor = if (showHeader) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background,
@@ -100,7 +85,7 @@ fun PoetOptionsBottomSheet(
                         .padding(4.dp)
                 ) {
                     SquareImage(
-                        image = painter,
+                        imageUrl = poet.imageUrl ?: stringResource(R.string.FALLBACK_IMAGE_URL),
                         contentDescription = poet.name,
                         size = 89,
                     )

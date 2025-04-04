@@ -19,10 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
 @Composable
@@ -94,7 +95,7 @@ fun NewCardItem(
     headerText: String? = null,
     bodyText: AnnotatedString,
     footerText: String? = null,
-    image: AsyncImagePainter,
+    imageUrl: String?,
     icon: ImageVector? = null,
     iconDescription: String? = null,
     onClick: () -> Unit,
@@ -118,7 +119,7 @@ fun NewCardItem(
         ) {
 
             SquareImage(
-                image = image,
+                imageUrl = imageUrl ?: stringResource(R.string.FALLBACK_IMAGE_URL),
                 contentDescription = null,
                 size = 66,
                 roundedCornerShapeSize = 20,
