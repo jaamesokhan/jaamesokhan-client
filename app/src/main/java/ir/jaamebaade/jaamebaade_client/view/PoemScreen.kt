@@ -37,18 +37,18 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
-import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 import ir.jaamebaade.jaamebaade_client.view.components.AudioListScreen
-import ir.jaamebaade.jaamebaade_client.view.components.PoemMoreOptionsList
-import ir.jaamebaade.jaamebaade_client.view.components.PoemOptionItem
-import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenActionHeader
-import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenBottomToolBar
-import ir.jaamebaade.jaamebaade_client.view.components.PoemScreenPathHeader
-import ir.jaamebaade.jaamebaade_client.view.components.ToggleButtonItem
+import ir.jaamebaade.jaamebaade_client.view.components.NotesBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
+import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemMoreOptionsList
+import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemOptionItem
+import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenActionHeader
+import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenBottomToolBar
+import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenPathHeader
+import ir.jaamebaade.jaamebaade_client.view.components.poem.ToggleButtonItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 import kotlinx.coroutines.delay
@@ -89,6 +89,8 @@ fun PoemScreen(
     var shouldFocusForSearch by remember { mutableStateOf(false) }
     var shouldFocusForRecitation by remember { mutableStateOf(false) }
 
+
+    var showNotes by remember { mutableStateOf(false) }
 
     var showHighlights by remember { mutableStateOf(true) }
     var showVerseNumbers by remember { mutableStateOf(false) }
@@ -187,8 +189,8 @@ fun PoemScreen(
             checkedIconId = R.drawable.note,
             uncheckedIconId = R.drawable.note,
             contentDescription = stringResource(R.string.COMMENT),
-            checked = false,
-            onClick = { navController.navigate("${AppRoutes.COMMENTS}/$poetId/$poemId") }
+            checked = showNotes,
+            onClick = { showNotes = !showNotes }
         ),
         ToggleButtonItem(
             checkedImageVector = Icons.Default.MoreVert,
@@ -282,6 +284,13 @@ fun PoemScreen(
                 PoemMoreOptionsList(optionsList = moreOptionsList)
             }
         }
+    }
+
+    if (showNotes) {
+        NotesBottomSheet(
+            onDismissRequest = { showNotes = false },
+            poemId = poemId,
+        )
     }
 
     Column(

@@ -1,4 +1,4 @@
-package ir.jaamebaade.jaamebaade_client.view.components
+package ir.jaamebaade.jaamebaade_client.view.components.poem
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
