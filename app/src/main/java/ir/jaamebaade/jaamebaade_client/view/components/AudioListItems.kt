@@ -42,7 +42,7 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 
 @Composable
-fun AudioListScreen(
+fun AudioListItems(
     viewModel: PoemViewModel,
     audioViewModel: AudioViewModel,
 ) {
@@ -130,6 +130,7 @@ fun AudioListScreen(
                                 .fillMaxSize()
                         ) {
                             RadioButton(
+                                modifier = Modifier.size(24.dp),
                                 selected = selectedAudio == audioData,
                                 onClick = { onClick(audioData) },
                                 colors = RadioButtonDefaults.colors(
@@ -145,7 +146,10 @@ fun AudioListScreen(
                                     style = MaterialTheme.typography.headlineLarge
                                 )
                                 if (audioDataList.last() != audioData) {
-                                    HorizontalDivider(modifier = Modifier.align(Alignment.BottomCenter))
+                                    HorizontalDivider(
+                                        color = MaterialTheme.colorScheme.outline,
+                                        modifier = Modifier.align(Alignment.BottomCenter)
+                                    )
                                 }
                             }
                         }

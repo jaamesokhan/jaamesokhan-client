@@ -30,9 +30,11 @@ data class PoemOptionItem(
 
 @Composable
 fun PoemMoreOptionsList(optionsList: List<PoemOptionItem>) {
-    Column(modifier = Modifier
-        .padding(horizontal = 8.dp)
-        .padding(bottom = 32.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 8.dp)
+            .padding(bottom = 32.dp)
+    ) {
         optionsList.forEach { item ->
             Card(
                 onClick = item.onClick,
@@ -63,7 +65,10 @@ fun PoemMoreOptionsList(optionsList: List<PoemOptionItem>) {
                             style = MaterialTheme.typography.headlineLarge
                         )
                         if (item != optionsList.last()) {
-                            HorizontalDivider(modifier = Modifier.align(Alignment.BottomCenter))
+                            HorizontalDivider(
+                                color = MaterialTheme.colorScheme.outline,
+                                modifier = Modifier.align(Alignment.BottomCenter)
+                            )
                         }
                     }
                 }

@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import ir.jaamebaade.jaamebaade_client.view.components.base.SquareToggleButton
+import ir.jaamebaade.jaamebaade_client.view.components.base.SquareToggleIconButton
 
 data class ToggleButtonItem(
     val checkedIconId: Int? = null,
@@ -36,7 +36,7 @@ fun PoemScreenActionHeader(
         ) {
 
             toggleButtonItems.forEach { item ->
-                SquareToggleButton(
+                SquareToggleIconButton(
                     checkedIconId = item.checkedIconId,
                     uncheckedIconId = item.uncheckedIconId,
                     checkedImageVector = item.checkedImageVector,

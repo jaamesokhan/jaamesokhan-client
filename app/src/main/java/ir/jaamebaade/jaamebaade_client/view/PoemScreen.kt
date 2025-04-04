@@ -40,14 +40,14 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
-import ir.jaamebaade.jaamebaade_client.view.components.AudioListScreen
+import ir.jaamebaade.jaamebaade_client.view.components.AudioListItems
 import ir.jaamebaade.jaamebaade_client.view.components.NotesBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
 import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemMoreOptionsList
 import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemOptionItem
 import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenActionHeader
 import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenBottomToolBar
-import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenPathHeader
+import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenTitle
 import ir.jaamebaade.jaamebaade_client.view.components.poem.ToggleButtonItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
@@ -279,7 +279,7 @@ fun PoemScreen(
             containerColor = MaterialTheme.colorScheme.background,
         ) {
             if (audioOptionChecked) {
-                AudioListScreen(viewModel = poemViewModel, audioViewModel = audioViewModel)
+                AudioListItems(viewModel = poemViewModel, audioViewModel = audioViewModel)
             } else if (moreOptionsChecked) {
                 PoemMoreOptionsList(optionsList = moreOptionsList)
             }
@@ -301,7 +301,7 @@ fun PoemScreen(
         ) {
             Column {
                 path?.let {
-                    PoemScreenPathHeader(
+                    PoemScreenTitle(
                         navController = navController,
                         minId = minId,
                         maxId = maxId,

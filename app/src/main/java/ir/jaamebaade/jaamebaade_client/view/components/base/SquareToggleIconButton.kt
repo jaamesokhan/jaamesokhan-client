@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun SquareToggleButton(
+fun SquareToggleIconButton(
     checkedIconId: Int?,
     uncheckedIconId: Int?,
     checkedImageVector: ImageVector?,

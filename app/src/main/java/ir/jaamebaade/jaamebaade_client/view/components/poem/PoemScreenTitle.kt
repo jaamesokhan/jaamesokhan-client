@@ -30,7 +30,7 @@ import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
 @Composable
-fun PoemScreenPathHeader(
+fun PoemScreenTitle(
     navController: NavController,
     poemPath: VersePoemCategoriesPoet,
     minId: Int,
