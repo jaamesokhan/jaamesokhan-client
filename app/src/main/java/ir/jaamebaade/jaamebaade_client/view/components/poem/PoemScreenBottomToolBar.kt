@@ -1,4 +1,4 @@
-package ir.jaamebaade.jaamebaade_client.view.components
+package ir.jaamebaade.jaamebaade_client.view.components.poem
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
+import ir.jaamebaade.jaamebaade_client.view.components.RoundButton
 
 @Composable
 fun PoemScreenBottomToolBar(

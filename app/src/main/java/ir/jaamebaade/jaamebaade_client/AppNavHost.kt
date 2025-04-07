@@ -39,12 +39,11 @@ import ir.jaamebaade.jaamebaade_client.utility.toIntArray
 import ir.jaamebaade.jaamebaade_client.view.AccountScreen
 import ir.jaamebaade.jaamebaade_client.view.ChangeFontScreen
 import ir.jaamebaade.jaamebaade_client.view.ChangeThemeScreen
-import ir.jaamebaade.jaamebaade_client.view.CommentsScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadablePoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.FavoritesScreen
 import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
-import ir.jaamebaade.jaamebaade_client.view.MyPoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.MyBookmarkScreen
+import ir.jaamebaade.jaamebaade_client.view.MyPoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.PoemScreen
 import ir.jaamebaade.jaamebaade_client.view.PoetDetailScreen
 import ir.jaamebaade.jaamebaade_client.view.SearchScreen
@@ -200,20 +199,6 @@ fun AppNavHost(
                                 poetId = poetId!!,
                                 focusedVerseId = verseId,
                                 audioViewModel = audioViewModel,
-                                modifier = Modifier.padding(innerPadding),
-                            )
-                        }
-                        animatedComposable(
-                            "${AppRoutes.COMMENTS}/{poetId}/{poemId}",
-                            arguments = listOf(
-                                navArgument("poetId") { type = NavType.IntType },
-                                navArgument("poemId") { type = NavType.IntType },
-                            )
-                        ) { backStackEntry ->
-                            val poemId = backStackEntry.arguments?.getInt("poemId")
-
-                            CommentsScreen(
-                                poemId = poemId!!,
                                 modifier = Modifier.padding(innerPadding),
                             )
                         }

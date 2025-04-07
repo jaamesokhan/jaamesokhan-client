@@ -33,9 +33,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import coil.size.Size
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemCategoriesPoetFirstVerse
@@ -79,18 +76,14 @@ fun MyBookmarkScreen(
         }
     } else {
         LazyColumn(modifier = modifier.fillMaxSize()) {
-            itemsIndexed(items = bookmarks, key = {_, item -> item.bookmark.id }) { index, bookmark ->
-                val painter = rememberAsyncImagePainter(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(bookmark.poet.imageUrl ?: "https://ganjoor.net/image/gdap.png")
-                        .size(Size.ORIGINAL)
-                        .build()
-                )
+            itemsIndexed(
+                items = bookmarks,
+                key = { _, item -> item.bookmark.id }) { index, bookmark ->
                 NewCardItem(
                     modifier = Modifier.animateItem(),
                     headerText = bookmark.poem.title,
                     bodyText = AnnotatedString(bookmark.firstVerse.text),
-                    image = painter,
+                    imageUrl = bookmark.poet.imageUrl,
                     onClick = { navController.navigate("${AppRoutes.POEM}/${bookmark.poet.id}/${bookmark.poem.id}/-1") },
                     icon = Icons.Filled.MoreVert,
                     onIconClick = {
@@ -98,7 +91,7 @@ fun MyBookmarkScreen(
                         showBottomSheet = true
                     }
                 )
-                if(index != bookmarks.size - 1)
+                if (index != bookmarks.size - 1)
                     HorizontalDivider(
                         modifier = Modifier.padding(
                             start = 90.dp,
@@ -147,5 +140,3 @@ fun MyBookmarkScreen(
         }
     }
 }
-
-

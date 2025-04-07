@@ -70,6 +70,7 @@ fun IntroShowcaseScope.TopBar(
         viewModel.shouldShowHistory(backStackEntry)
         viewModel.shouldShowOptions(backStackEntry)
         viewModel.shouldShowSearch(backStackEntry)
+        viewModel.shouldExtendTopBar(backStackEntry)
     }
 
     val breadCrumbs = viewModel.breadCrumbs
@@ -77,6 +78,7 @@ fun IntroShowcaseScope.TopBar(
     val showHistory = viewModel.showHistoryIcon
     val showSearch = viewModel.showSearchIcon
     val showOptions = viewModel.showOptionsIcon
+    val topBarIsExtended = viewModel.topBarIsExtended
 
     val sheetState = rememberModalBottomSheetState()
     var showPoetOptionModal by remember { mutableStateOf(false) }
@@ -106,7 +108,7 @@ fun IntroShowcaseScope.TopBar(
         onBackButtonClicked(backStackEntry, navController)
     }
     Surface(
-        shadowElevation = 4.dp
+        shadowElevation = if (topBarIsExtended) 0.dp else 4.dp
     ) {
         Column {
             TopAppBar(
