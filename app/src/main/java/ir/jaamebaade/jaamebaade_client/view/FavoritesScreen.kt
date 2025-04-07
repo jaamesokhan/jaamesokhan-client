@@ -40,7 +40,7 @@ fun FavoritesScreen(
             screen = { HighlightList(viewModel, navController) }
         ),
         TabItem(
-            text = stringResource(R.string.COMMENTS),
+            text = stringResource(R.string.NOTES),
             screen = { CommentsList(viewModel, navController) }
         ),
     )
