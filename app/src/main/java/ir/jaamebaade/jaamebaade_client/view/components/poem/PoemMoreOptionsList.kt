@@ -30,7 +30,7 @@ fun PoemMoreOptionsList(optionsList: List<PoemOptionItem>) {
                 deactivatedText = item.deactivatedText,
                 activatedText = item.activatedText,
                 includeBottomLine = item != optionsList.last(),
-            ) { }
+            ) { item.onClick() }
         }
     }
 }
