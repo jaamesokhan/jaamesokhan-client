@@ -1,6 +1,5 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,17 +11,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.KeyboardArrowUp
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,11 +36,14 @@ import ir.jaamebaade.jaamebaade_client.model.Comment
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
 import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
 import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
+import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
+import ir.jaamebaade.jaamebaade_client.view.components.poem.MenuRowItem
 import java.util.Date
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CommentItem(modifier: Modifier = Modifier, comment: Comment, onDeleteClicked: () -> Unit) {
-    var showMore by remember { mutableStateOf(false) }
+fun CommentItem(modifier: Modifier = Modifier, comment: Comment, onShareClicked: () -> Unit, onDeleteClicked: () -> Unit) {
+    var showOptions by remember { mutableStateOf(false) }
 
     Card(
         modifier = modifier
@@ -72,12 +73,12 @@ fun CommentItem(modifier: Modifier = Modifier, comment: Comment, onDeleteClicked
                 ) {
                     IconButton(
                         onClick = {
-                            showMore = !showMore
+                            showOptions = !showOptions
                         }
                     ) {
                         Icon(
-                            imageVector = if (showMore) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
-                            contentDescription = null
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = null,
                         )
                     }
                 }
@@ -99,26 +100,38 @@ fun CommentItem(modifier: Modifier = Modifier, comment: Comment, onDeleteClicked
                     color = MaterialTheme.colorScheme.outlineVariant,
                 )
             }
-            AnimatedVisibility(
-                visible = showMore,
-            ) {
-                TextButton(
-                    onClick = onDeleteClicked,
-                    colors = ButtonDefaults.buttonColors(
-                        contentColor = MaterialTheme.colorScheme.error,
-                        containerColor = Color.Transparent,
-                    ),
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Delete,
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(R.string.DELETE),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
-                    )
+
+            if (showOptions) {
+                CustomBottomSheet({ showOptions = false }) {
+                    Column {
+                        MenuRowItem(
+                            activatedIcon = {
+                                Icon(
+                                    imageVector = Icons.Outlined.Share,
+                                    contentDescription = null
+                                )
+                            },
+                            deactivatedText = stringResource(R.string.SHARE),
+                        ) {
+                            onShareClicked()
+                            showOptions = false
+                        }
+                        MenuRowItem(
+                            activatedIcon = {
+                                Icon(
+                                    imageVector = Icons.Outlined.Delete,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.error,
+                                )
+                            },
+                            deactivatedText = stringResource(R.string.DELETE),
+                            textColor = MaterialTheme.colorScheme.error,
+                            includeBottomLine = false,
+                        ) {
+                            onDeleteClicked()
+                            showOptions = false
+                        }
+                    }
                 }
             }
         }

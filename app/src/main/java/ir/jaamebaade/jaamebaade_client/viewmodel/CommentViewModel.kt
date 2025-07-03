@@ -1,5 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.viewmodel
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -38,6 +40,21 @@ class CommentViewModel @AssistedInject constructor(
         viewModelScope.launch {
             val comment = Comment(poemId = poemId, text = text)
             addCommentToRepository(comment)
+        }
+    }
+
+    fun shareComment(comment: Comment, context: Context) {
+        viewModelScope.launch {
+            // TODO add the poem path to this
+            val textToShare = comment.text
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, textToShare)
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            context.startActivity(shareIntent)
         }
     }
 
