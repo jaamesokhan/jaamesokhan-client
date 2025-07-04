@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.repository
 
+import androidx.compose.ui.unit.TextUnit
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
@@ -42,7 +43,7 @@ class FontRepository @Inject constructor(
 
     fun setPoemFontSize(size: Int) {
         _poemFontSize.value = size
-        sharedPrefManager.saveFontSizeIndex(size)
+        sharedPrefManager.savePoemFontSizeIndex(size)
     }
 
     fun setPoemFontFamily(family: CustomFont) {
@@ -60,7 +61,16 @@ class FontRepository @Inject constructor(
             0 -> "ریز"
             1 -> "متوسط"
             2 -> "درشت"
-            else -> "Medium"
+            else -> "متوسط"
+        }
+    }
+
+    fun getPoemFontSizeFromIndex(index: Int): TextUnit {
+        return when (index) {
+            0 -> _poemFontFamily.value.specs.body.small.fontSize
+            1 -> _poemFontFamily.value.specs.body.medium.fontSize
+            2 -> _poemFontFamily.value.specs.body.large.fontSize
+            else -> _poemFontFamily.value.specs.body.medium.fontSize
         }
     }
 }

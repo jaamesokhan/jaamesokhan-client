@@ -28,7 +28,7 @@ fun SettingListItem(
     leadingIcon: @Composable () -> Unit,
     onClick: () -> Unit,
 
-) {
+    ) {
     Surface(
         modifier = Modifier
             .height(64.dp)
@@ -39,8 +39,7 @@ fun SettingListItem(
 
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                ,
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {

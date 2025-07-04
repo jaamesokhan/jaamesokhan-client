@@ -49,7 +49,7 @@ import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
-import ir.jaamebaade.jaamebaade_client.view.SettingsMenu
+import ir.jaamebaade.jaamebaade_client.view.OptionsMenu
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.TopBarViewModel
@@ -111,7 +111,7 @@ fun IntroShowcaseScope.TopBar(
     }
 
     if (showSettingBottomSheet) {
-        SettingsMenu(
+        OptionsMenu(
             sheetState = settingBottomSheetState,
             onDismiss = { showSettingBottomSheet = false },
             navController
