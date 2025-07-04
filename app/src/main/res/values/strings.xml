@@ -52,7 +52,7 @@
     <string name="FONT_SIZE_TEXT">اندازه فونت:</string>
     <string name="BOOKMARKS">علاقه‌مندی‌ها</string>
     <string name="HIGHLIGHTS">هایلایت‌ها</string>
-    <string name="COMMENTS">یادداشت‌ها</string>
+    <string name="NOTES">یادداشت‌ها</string>
     <string name="VERSE_NUMBER">شماره بیت</string>
     <string name="MERGE_HIGHLIGHTS">ادغام هایلایت‌ها</string>
     <string name="RECENT_SEARCHES">جستجوهای اخیر شما</string>
@@ -63,6 +63,7 @@
     <string name="SHOW_HIGHLIGHT">نمایش هایلایت</string>
     <string name="DONT_SHOW_HIGHLIGHT">عدم نمایش هایلایت</string>
     <string name="REMOVE_VERSE_NUMBER">حذف شماره بیت</string>
+    <string name="NOTE_PLACE_HOLDER">یادداشت خود را اینجا بنویسید …</string>
 
 
     <!--  Icon Descriptions  -->
@@ -83,6 +84,7 @@
     <string name="POEM">شعر</string>
     <string name="RECITE">خوانش</string>
     <string name="OPTIONS">گزینه‌ها</string>
+    <string name="SUBMIT">ثبت</string>
 
     <!-- Intro Stuff    -->
     <string name="INTRO_HISTORY_TITLE">تاریخچه</string>
