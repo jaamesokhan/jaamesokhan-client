@@ -27,7 +27,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.setting.MenuItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsMenu(
+fun OptionsMenu(
     sheetState: SheetState,
     onDismiss: () -> Unit,
     navController: NavController
@@ -36,9 +36,8 @@ fun SettingsMenu(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.neutralN95,
-
     ) {
-        Column {
+        Column (){
             MenuItem(
                 title = stringResource(R.string.RANDOM_POEM),
                 showDivider = true,
