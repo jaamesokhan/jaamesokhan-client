@@ -7,29 +7,37 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.Verse
+import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
+import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
+import ir.jaamebaade.jaamebaade_client.view.components.poem.HighlightActionButton
 import ir.jaamebaade.jaamebaade_client.viewmodel.SelectionOptionViewModel
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun SelectionBottomSheet(
-    sheetState: SheetState,
     viewModel: SelectionOptionViewModel,
     verse: Verse,
     startIndex: Int,
@@ -41,9 +49,8 @@ fun SelectionBottomSheet(
     meaning: String,
     onDismiss: () -> Unit,
 ) {
-    ModalBottomSheet(
+    CustomBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = sheetState,
     ) {
         viewModel.getWordMeaning(
             word = verse.text.substring(startIndex, endIndex),
@@ -53,25 +60,31 @@ fun SelectionBottomSheet(
             failureCallBack = {
                 changeMeaningFetchStatus(Status.FAILED)
             })
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp)) {
             Row(
                 modifier = Modifier
                     .padding(4.dp)
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
+                horizontalArrangement = Arrangement.Absolute.Left,
             ) {
-                Button(onClick = {
+                HighlightActionButton(
+                    painter = painterResource(R.drawable.highlight),
+                    text = stringResource(R.string.HIGHLIGHT),
+                ) {
                     highlightCallBack(
                         startIndex,
                         endIndex
                     )
                     onDismiss()
-
-                }) {
-                    Text("هایلایت", style = MaterialTheme.typography.bodySmall)
                 }
 
-                Button(onClick = {
+                Spacer(modifier = Modifier.width(12.dp))
+
+                HighlightActionButton(
+                    painter = rememberVectorPainter(image = Icons.Default.ContentCopy),
+                    text = stringResource(R.string.COPY),
+                    outlined = true,
+                ) {
                     val clipboard =
                         context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val clip = ClipData.newPlainText(
@@ -80,17 +93,23 @@ fun SelectionBottomSheet(
                     )
                     clipboard.setPrimaryClip(clip)
                     onDismiss()
-                }) {
-                    Text("کپی", style = MaterialTheme.typography.bodySmall)
                 }
             }
-            Row(modifier = Modifier.padding(bottom = 8.dp)) {
-                Text(
-                    text = "معنی: "
+            Row(
+                modifier = Modifier.padding(bottom = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Circle,
+                    tint = MaterialTheme.colorScheme.secondaryS50,
+                    contentDescription = null,
+                    modifier = Modifier.size(8.dp),
                 )
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = verse.text.substring(startIndex, endIndex),
-                    fontWeight = FontWeight.Bold
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.headlineLarge,
                 )
             }
             when (currentMeaningFetchStatus) {
@@ -107,9 +126,11 @@ fun SelectionBottomSheet(
                 Status.SUCCESS -> {
                     Text(
                         text = meaning,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.outlineVariant,
                         modifier = Modifier
                             .padding(
-                                bottom = 10.dp
+                                bottom = 32.dp
                             )
                             .verticalScroll(rememberScrollState()),
                     )
