@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -15,6 +16,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -37,6 +39,7 @@ fun OptionsMenu(
         sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.neutralN95,
     ) {
+        val context = LocalContext.current
         Column (){
             MenuItem(
                 title = stringResource(R.string.RANDOM_POEM),
@@ -49,7 +52,9 @@ fun OptionsMenu(
                         modifier = Modifier.size(32.dp)
                     )
                 },
-                onClick = { //TODO
+                onClick = {
+                    navController.navigate(AppRoutes.RANDOM_POEM_OPTIONS.toString())
+                    onDismiss()
                 }
             )
 
@@ -134,7 +139,15 @@ fun OptionsMenu(
                     )
                 },
                 onClick = {
-                    //TODO
+                    val sendIntent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT,
+                            context.getString(R.string.INTRO_TO_FRIENDS_TEXT))
+                        type = "text/plain"
+                    }
+
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    context.startActivity(shareIntent)
                 }
             )
 

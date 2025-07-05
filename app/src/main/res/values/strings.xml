@@ -16,7 +16,7 @@
         در صورت تمایل، می‌توانید از طریق لینک زیر از ما حمایت کنید.
     </string>
     <string name="ABOUT_US_EMAIL">
-        اگر تمایل دارید به هر نحوی به بهتر شدن این اپلیکیشن کمک کنید،‌ از طریق ایمیل زیر با ما در ارتباط باشید.
+        اگر تمایل دارید به هر نحوی به بهتر شدن این اپلیکیشن کمک کنید،‌ از طریق ایمیل jaamesokhan@gmail.com با ما در ارتباط باشید.
     </string>
     <string name="COPY_RIGHT">
         منبع اشعار و خوانش‌های موجود در برنامه، پایگاه داده‌ی آزاد گنجور است.
@@ -109,4 +109,9 @@
     <string name="INTRO_MERGE_HIGHLIGHT_DESC">هایلایت‌هاتون رو جداگانه یا به صورت ادغام شده مشاهده کنید</string>
     <string name="RECITE">خوانش</string>
     <string name="SETTINGS">تنظیمات</string>
+    <string name="ABOUT_US_TITLE">درباره جام سخن</string>
+    <string name="ABOUT_SUPPORT_TITLE">حمایت از ما</string>
+    <string name="ABOUT_CONTRIBUTION_TITLE">همکاری با ما</string>
+    <string name="INTRO_TO_FRIENDS_TEXT">https://google.com</string>
+    <string name="SAVE">ذخیره</string>
 </resources>

@@ -52,6 +52,7 @@ import ir.jaamebaade.jaamebaade_client.view.SettingsListScreen
 import ir.jaamebaade.jaamebaade_client.view.components.AboutUsScreen
 import ir.jaamebaade.jaamebaade_client.view.components.Navbar
 import ir.jaamebaade.jaamebaade_client.view.components.PermissionRationaleDialog
+import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemOptions
 import ir.jaamebaade.jaamebaade_client.view.components.TopBar
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.MainIntroViewModel
@@ -154,6 +155,10 @@ fun AppNavHost(
 //                                navController = navController,
 //                            )
                             SettingsListScreen(modifier = Modifier.padding(innerPadding), fontRepository, themeRepository)
+                        }
+                        animatedComposable(AppRoutes.RANDOM_POEM_OPTIONS.toString()) {
+                            //TODO must implement onSave
+                            RandomPoemOptions(modifier = Modifier.padding(innerPadding), onSave = {})
                         }
                         animatedComposable(route = AppRoutes.SEARCH_SCREEN.toString()) {
                             SearchScreen(
