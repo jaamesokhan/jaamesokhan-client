@@ -64,6 +64,8 @@
     <string name="DONT_SHOW_HIGHLIGHT">عدم نمایش هایلایت</string>
     <string name="REMOVE_VERSE_NUMBER">حذف شماره بیت</string>
     <string name="NOTE_PLACE_HOLDER">یادداشت خود را اینجا بنویسید …</string>
+    <string name="HIGHLIGHT">هایلایت</string>
+    <string name="COPY">کپی</string>
 
 
     <!--  Icon Descriptions  -->
