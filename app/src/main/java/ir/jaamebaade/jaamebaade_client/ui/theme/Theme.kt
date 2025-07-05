@@ -11,12 +11,17 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+
+
+val LocalDarkTheme = compositionLocalOf { false }
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -82,34 +87,34 @@ private val darkScheme = darkColorScheme(
 
 val ColorScheme.secondaryS90: Color
     @Composable
-    get() = if (isSystemInDarkTheme()) secondaryS90Dark else secondaryS90Light
+    get() = if (isAppInDarkMode()) secondaryS90Dark else secondaryS90Light
 
 val ColorScheme.secondaryS30 : Color
     @Composable
     get() = secondaryS30color
 val ColorScheme.neutralN50: Color
     @Composable
-    get() = if (isSystemInDarkTheme()) neutralN50Dark else neutralN50Light
+    get() = if (isAppInDarkMode()) neutralN50Dark else neutralN50Light
 
 val ColorScheme.neutralN70: Color
     @Composable
-    get() = if (isSystemInDarkTheme()) neutralN70Dark else neutralN70Light
+    get() = if (isAppInDarkMode()) neutralN70Dark else neutralN70Light
 
 val ColorScheme.neutralN90: Color
     @Composable
-    get() = if (isSystemInDarkTheme()) neutralN90Dark else neutralN90Light
+    get() = if (isAppInDarkMode()) neutralN90Dark else neutralN90Light
 
 val ColorScheme.neutralN95: Color
     @Composable
-    get() = if (isSystemInDarkTheme()) neutralN95Dark else neutralN95Light
+    get() = if (isAppInDarkMode()) neutralN95Dark else neutralN95Light
 
 val ColorScheme.neutralN100: Color
     @Composable
-    get() = if (isSystemInDarkTheme()) neutralN100Dark else neutralN100Light
+    get() = if (isAppInDarkMode()) neutralN100Dark else neutralN100Light
 
 val ColorScheme.neutralN20: Color
     @Composable
-    get() = if (isSystemInDarkTheme()) neutralN20Dark else neutralN20Light
+    get() = if (isAppInDarkMode()) neutralN20Dark else neutralN20Light
 
 @Composable
 fun JaamebaadeclientTheme(
@@ -137,9 +142,15 @@ fun JaamebaadeclientTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = typography,
-        content = content
-    )
+    CompositionLocalProvider(LocalDarkTheme provides darkTheme) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = typography,
+            content = content
+        )
+    }
+}
+@Composable
+fun isAppInDarkMode(): Boolean {
+    return LocalDarkTheme.current
 }
