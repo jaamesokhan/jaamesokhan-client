@@ -1,7 +1,10 @@
 package ir.jaamebaade.jaamebaade_client.view
 
 import android.content.Intent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircleOutline
@@ -14,8 +17,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -152,6 +158,29 @@ fun OptionsMenu(
             )
 
 
+        }
+        // A box which contains name-logo
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 40.dp),
+            verticalArrangement = Arrangement.SpaceAround,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.name_logo),
+                modifier = Modifier
+                    .size(width = 150.dp, height = 50.dp)
+                    .scale(scaleX = -1f, scaleY = 1f),
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = "Logo"
+            )
+
+            Text(
+                text = stringResource(R.string.APP_NAME),
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.primary,
+            )
         }
 
 
