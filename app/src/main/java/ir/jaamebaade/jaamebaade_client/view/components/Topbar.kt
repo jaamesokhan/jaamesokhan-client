@@ -66,7 +66,6 @@ fun IntroShowcaseScope.TopBar(
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
         (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.BOOKMARKS_SCREEN.toString())
-    Log.d("Ttt", backStackEntry.toString())
 
 
     LaunchedEffect(key1 = backStackEntry) {

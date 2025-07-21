@@ -27,8 +27,8 @@ class FontRepository @Inject constructor(
     init {
         _fontSizeIndex.value = sharedPrefManager.getFontSizeIndex()
         _fontFamily.value = sharedPrefManager.getFont()
-        _poemFontSize.value = sharedPrefManager.getFontSizeIndex()
-        _poemFontFamily.value = sharedPrefManager.getFont()
+        _poemFontSize.value = sharedPrefManager.getPoemFontSizeIndex()
+        _poemFontFamily.value = sharedPrefManager.getPoemFont()
     }
 
     fun setFontSize(size: Int) {

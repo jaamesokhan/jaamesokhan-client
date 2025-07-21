@@ -75,17 +75,6 @@ fun CustomRadioButton(
                     )
                 }
             }
-//            RadioButton(
-//                modifier = Modifier
-//                    .padding(start = 14.dp, end = 0.dp)
-//                    .size(32.dp),
-//                selected = isSelected,
-//                onClick = onClick,
-//                colors = RadioButtonDefaults.colors(
-//                    selectedColor = MaterialTheme.colorScheme.secondaryS30,
-//                    unselectedColor = MaterialTheme.colorScheme.secondaryS30
-//                )
-//            )
 
             Spacer(modifier = Modifier.width(16.dp))
             Box(

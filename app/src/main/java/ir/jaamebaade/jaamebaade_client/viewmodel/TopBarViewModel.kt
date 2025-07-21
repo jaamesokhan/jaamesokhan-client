@@ -92,7 +92,6 @@ class TopBarViewModel @Inject constructor(
 
     fun shouldShowDownArrow(navStack: NavBackStackEntry?) {
         val path = getPath(navStack)
-        Log.d("kir",path.toString())
         downArrow = when (path) {
             AppRoutes.SETTINGS_SCREEN -> true
             AppRoutes.ABOUT_US_SCREEN -> true

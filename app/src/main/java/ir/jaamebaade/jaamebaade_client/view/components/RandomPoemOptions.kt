@@ -58,7 +58,7 @@ fun RandomPoemOptions(
             backgroundColor = MaterialTheme.colorScheme.primary,
             textColor = MaterialTheme.colorScheme.onPrimary,
             text = stringResource(R.string.SAVE)
-        ) {downloadedPoetViewModel.saveSelectedCategoriesForRandomPoem()
+        ) { downloadedPoetViewModel.saveSelectedCategoriesForRandomPoem()
             onSave() }
 
     }
