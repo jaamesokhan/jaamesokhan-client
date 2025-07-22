@@ -8,7 +8,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -24,7 +28,12 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
+import ir.jaamebaade.jaamebaade_client.model.CommentPoemCategoriesPoet
+import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
+import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
+import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
+import java.util.Date
 
 @Composable
 fun CardItem(
@@ -184,4 +193,122 @@ fun NewCardItem(
 
     }
 
+}
+
+@Composable
+fun ComposableCardItem(
+    modifier: Modifier = Modifier,
+    header: (@Composable () -> Unit)? = null,
+    body: @Composable () -> Unit,
+    footer: (@Composable () -> Unit)? = null,
+    imageUrl: String? = null,
+    icon: ImageVector? = null,
+    iconDescription: String? = null,
+    onClick: () -> Unit,
+    onIconClick: () -> Unit = {},
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            SquareImage(
+                imageUrl = imageUrl ?: stringResource(R.string.FALLBACK_IMAGE_URL),
+                contentDescription = null,
+                size = 66,
+                roundedCornerShapeSize = 20,
+                modifier = Modifier.padding(start = 20.dp, end = 0.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        header?.let { it() }
+                        body()
+                    }
+                    if (icon != null) {
+                        IconButton(
+                            modifier = Modifier.padding(end = 5.dp),
+                            onClick = onIconClick
+                        ) {
+                            Icon(
+                                imageVector = icon,
+                                contentDescription = iconDescription,
+                            )
+                        }
+                    }
+
+                }
+
+                footer?.let { it() }
+            }
+        }
+    }
+}
+
+@Composable
+fun MyNoteCardItem(
+    modifier: Modifier = Modifier,
+    note: CommentPoemCategoriesPoet,
+    onClick: () -> Unit = {},
+    onIconClick: () -> Unit = {},
+) {
+    ComposableCardItem(
+        modifier = modifier,
+        imageUrl = note.path.poet.imageUrl,
+        header = {
+            Text(
+                text = note.path.poem.title,
+                style = MaterialTheme.typography.headlineMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
+        body = {
+            Text(
+                text = note.comment.text.trim(),
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.outlineVariant,
+            )
+        },
+        footer =
+            {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Circle,
+                        tint = MaterialTheme.colorScheme.secondaryS50,
+                        contentDescription = null,
+                        modifier = Modifier.size(8.dp),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = Date(note.comment.createdAt).convertToJalali()
+                            .toLocalFormatWithHour(),
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+            },
+        icon = Icons.Filled.MoreVert,
+        iconDescription = "More",
+        onClick = onClick,
+        onIconClick = onIconClick
+    )
 }
