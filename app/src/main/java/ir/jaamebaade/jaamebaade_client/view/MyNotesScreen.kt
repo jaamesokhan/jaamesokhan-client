@@ -67,7 +67,7 @@ fun MyNotesScreen(
                 contentDescription = "",
             )
             Text(
-                text = stringResource(R.string.NO_BOOKMARK),
+                text = stringResource(R.string.NO_NOTE),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.outlineVariant
             )

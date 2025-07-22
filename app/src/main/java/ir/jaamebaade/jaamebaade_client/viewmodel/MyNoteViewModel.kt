@@ -42,18 +42,14 @@ class MyNoteViewModel @Inject constructor(
     }
 
     fun share(note: CommentPoemCategoriesPoet, context: Context) {
-        viewModelScope.launch {
-
-            val textToCopy = note.comment.text
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, textToCopy)
-                type = "text/plain"
-            }
-
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            context.startActivity(shareIntent)
+        val textToCopy = note.comment.text
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, textToCopy)
+            type = "text/plain"
         }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        context.startActivity(shareIntent)
     }
 
     private suspend fun deleteCommentFromRepository(comment: Comment) {
