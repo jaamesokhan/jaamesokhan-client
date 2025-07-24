@@ -55,7 +55,7 @@
     <string name="NOTES">یادداشت‌ها</string>
     <string name="VERSE_NUMBER">شماره بیت</string>
     <string name="MERGE_HIGHLIGHTS">ادغام هایلایت‌ها</string>
-    <string name="RECENT_SEARCHES">جستجوهای اخیر شما</string>
+    <string name="RECENT_SEARCHES">جستجوهای اخیر</string>
     <string name="NOTIFICATION_ACCESS_TITLE">دسترسی ارسال اعلان</string>
     <string name="SELECT_VERSES">انتخاب مصرع</string>
     <string name="NORMAL_MODE">حالت عادی</string>
@@ -64,6 +64,8 @@
     <string name="DONT_SHOW_HIGHLIGHT">عدم نمایش هایلایت</string>
     <string name="REMOVE_VERSE_NUMBER">حذف شماره بیت</string>
     <string name="NOTE_PLACE_HOLDER">یادداشت خود را اینجا بنویسید …</string>
+    <string name="SEARCH_TITLE">جست‌وجو در اشعار</string>
+    <string name="EMPTY_SEARCH_FILTER">خالی!</string>
 
 
     <!--  Icon Descriptions  -->
@@ -76,7 +78,6 @@
     <string name="CANCEL">لغو</string>
     <string name="COPY_SELECTED_VERSES">رونوشت</string>
     <string name="DELETE">حذف</string>
-    <string name="SEARCH">جست‌وجو</string>
     <string name="CLOSE">بستن</string>
     <string name="RANDOM_POEM">شعر رندم</string>
     <string name="RANDOM_POEM_OPTIONS">تنظیمات شعر تصادفی</string>
@@ -85,6 +86,8 @@
     <string name="RECITE">خوانش</string>
     <string name="OPTIONS">گزینه‌ها</string>
     <string name="SUBMIT">ثبت</string>
+    <string name="SEARCH_BAR_HINT">دنبال چه شعری می‌گردید؟</string>
+    <string name="MORE">بیشتر</string>
 
     <!-- Intro Stuff    -->
     <string name="INTRO_HISTORY_TITLE">تاریخچه</string>
@@ -113,4 +116,11 @@
     <string name="INTRO_HOME_DESC">در این صفحه به شاعران دانلود شده دسترسی دارین</string>
     <string name="INTRO_MERGE_HIGHLIGHT_TITLE">ادغام هایلایت‌ها</string>
     <string name="INTRO_MERGE_HIGHLIGHT_DESC">هایلایت‌هاتون رو جداگانه یا به صورت ادغام شده مشاهده کنید</string>
+    <string name="SEARCH_ALL_POETS">همه شاعران</string>
+    <string name="NOT_FOUND">هیچ موردی یافت نشد!</string>
+    <string name="SEARCH_ALL_CATEGORIES">همه دسته‌بندی‌ها</string>
+    <string name="SEARCH_POEMS">اشعار</string>
+    <string name="SEARCH_BOOKMARKS">ذخیره‌ها</string>
+    <string name="SEARCH_HIGHLIGHTS">هایلایت‌ها</string>
+    <string name="SEARCH_COMMENTS">یادداشت‌ها</string>
 </resources>

@@ -185,7 +185,7 @@ fun AppNavHost(
                                 navArgument("poetId") { type = NavType.IntType },
                                 // TODO add parentIds here (or at least the last of them)
                                 navArgument("poemId") { type = NavType.IntType },
-                                navArgument("verseId") { type = NavType.IntType },
+                                navArgument("verseId") { type = NavType.LongType },
                             )
                         ) { backStackEntry ->
                             val poetId = backStackEntry.arguments?.getInt("poetId")
