@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,7 +36,6 @@ import ir.jaamebaade.jaamebaade_client.utility.toPersianNumber
 import ir.jaamebaade.jaamebaade_client.viewmodel.SelectionOptionViewModel
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VerseItem(
     modifier: Modifier = Modifier,
@@ -62,7 +59,6 @@ fun VerseItem(
 
     var annotatedString by remember { mutableStateOf<AnnotatedString?>(null) }
     val highlightColor = MaterialTheme.colorScheme.tertiary
-    val sheetState = rememberModalBottomSheetState()
 
     val context = LocalContext.current
 
@@ -88,7 +84,6 @@ fun VerseItem(
     }
     if (showDialog) {
         SelectionBottomSheet(
-            sheetState = sheetState,
             viewModel = viewModel,
             verse = verse,
             startIndex = startIndex,
