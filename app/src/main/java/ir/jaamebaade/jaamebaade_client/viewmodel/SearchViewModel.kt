@@ -33,7 +33,7 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel() {
     var query by mutableStateOf("")
 
-    var poetFilter by mutableStateOf<Poet?>(null)
+    var poetFilter by mutableStateOf<List<Poet>>(emptyList())
     var results by mutableStateOf<List<VersePoemCategoriesPoet>>(emptyList())
         private set
 
@@ -69,7 +69,7 @@ class SearchViewModel @Inject constructor(
     fun clearSearch() {
         query = ""
         results = emptyList()
-        poetFilter = null
+        poetFilter = emptyList()
         viewModelScope.launch {
             collectSearchHistory()
         }
@@ -101,7 +101,7 @@ class SearchViewModel @Inject constructor(
 
     private suspend fun runSearchOnDatabase(callBack: () -> Unit) {
         withContext(Dispatchers.IO) {
-            val tempResults = verseRepository.searchVerses(query, poetFilter?.id)
+            val tempResults = verseRepository.searchVerses(query, poetFilter.map { it.id })
 
             results = tempResults.map {
                 val parentCategories = categoryRepository.getAllParentsOfCategoryId(it.category.id)

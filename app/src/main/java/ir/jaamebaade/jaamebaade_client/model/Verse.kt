@@ -22,4 +22,5 @@ data class Verse(
     @ColumnInfo(name = "verse_order") val verseOrder: Int,
     @ColumnInfo(name = "position") val position: Int,
     @ColumnInfo(name = "poem_id") val poemId: Int,
+    // TODO Add a normalized text column for search correctness
 )

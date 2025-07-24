@@ -56,11 +56,41 @@ interface VerseDao {
             JOIN poems p ON v.poem_id = p.id
             JOIN categories c ON p.category_id = c.id
             JOIN poets pt ON c.poet_id = pt.id
-            WHERE (:poetId is null OR c.poet_id = :poetId)
+            WHERE c.poet_id IN (:poetIds)
                 AND v.text LIKE :query
         """
     )
-    fun searchVerses(query: String, poetId: Int?): List<VersePoemCategoryPoet>
+    fun searchVerses(query: String, poetIds: List<Int>): List<VersePoemCategoryPoet>
+
+
+    @Query(
+        """
+            SELECT 
+                v.id AS verse_id, 
+                v.text AS verse_text, 
+                v.poem_id AS verse_poem_id, 
+                v.verse_order AS verse_verse_order,
+                v.position AS verse_position,
+                p.id AS poem_id, 
+                p.title AS poem_title, 
+                p.category_id AS poem_category_id, 
+                c.id AS category_id, 
+                c.text AS category_text, 
+                c.poet_id AS category_poet_id,
+                c.parent_id AS category_parent_id,
+                c.random_selected AS category_random_selected,
+                pt.id AS poet_id, 
+                pt.name AS poet_name,
+                pt.description AS poet_description,
+                pt.imageUrl AS poet_imageUrl
+            FROM verses v
+            JOIN poems p ON v.poem_id = p.id
+            JOIN categories c ON p.category_id = c.id
+            JOIN poets pt ON c.poet_id = pt.id
+            WHERE v.text LIKE :query
+        """
+    )
+    fun searchVerses(query: String): List<VersePoemCategoryPoet>
 
     @Query("SELECT * FROM verses WHERE id = :verseId")
     fun getVerseById(verseId: Int): Verse

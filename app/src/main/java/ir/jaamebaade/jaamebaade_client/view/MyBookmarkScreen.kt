@@ -81,8 +81,8 @@ fun MyBookmarkScreen(
                 key = { _, item -> item.bookmark.id }) { index, bookmark ->
                 NewCardItem(
                     modifier = Modifier.animateItem(),
-                    headerText = bookmark.poem.title,
-                    bodyText = AnnotatedString(bookmark.firstVerse.text),
+                    headerText = AnnotatedString(bookmark.poem.title),
+                    bodyText = bookmark.firstVerse.text,
                     imageUrl = bookmark.poet.imageUrl,
                     onClick = { navController.navigate("${AppRoutes.POEM}/${bookmark.poet.id}/${bookmark.poem.id}/-1") },
                     icon = Icons.Filled.MoreVert,

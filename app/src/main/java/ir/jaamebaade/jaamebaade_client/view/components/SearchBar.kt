@@ -10,30 +10,31 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.ArrowDropDown
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -43,19 +44,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
+import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
+import ir.jaamebaade.jaamebaade_client.view.components.base.NotFoundBox
+import ir.jaamebaade.jaamebaade_client.view.components.search.DropDownToggleOption
+import ir.jaamebaade.jaamebaade_client.view.components.search.OptionDropDown
+import kotlinx.coroutines.flow.StateFlow
+
+enum class SearchCategory(val messageId: Int) {
+    ALL(R.string.SEARCH_ALL_CATEGORIES),
+    POEMS(R.string.SEARCH_POEMS),
+    BOOKMARKS(R.string.SEARCH_BOOKMARKS),
+    HIGHLIGHTS(R.string.SEARCH_HIGHLIGHTS),
+    COMMENTS(R.string.SEARCH_COMMENTS),
+    ;
+}
 
 @Composable
 fun SearchBar(
     modifier: Modifier,
-    poets: List<Poet>,
+    poetsStateFlow: StateFlow<List<Poet>>,
     searchHistoryRecords: List<SearchHistoryRecord> = emptyList(),
-    onSearchFilterChanged: (Poet?) -> Unit,
+    onSearchFilterChanged: (List<Poet>) -> Unit,
     onSearchQueryChanged: (String) -> Unit,
     onSearchHistoryRecordClick: ((SearchHistoryRecord) -> Unit)? = null,
     onSearchHistoryRecordDeleteClick: ((SearchHistoryRecord) -> Unit)? = null,
@@ -63,9 +77,32 @@ fun SearchBar(
     onSearchQueryIconClicked: (String, () -> Unit) -> Unit,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
-    var expanded by remember { mutableStateOf(false) }
-    var selectedPoetIndex by rememberSaveable { mutableStateOf<Int?>(null) }
+    var poetSelectionExpanded by remember { mutableStateOf(false) }
+    val allPoetsOptionString = stringResource(R.string.SEARCH_ALL_POETS)
+    val poets by poetsStateFlow.collectAsState()
+    val poetOptions = remember {
+        mutableStateListOf(
+            DropDownToggleOption(
+                text = allPoetsOptionString,
+                key = null,
+            ),
+            *poets.map { DropDownToggleOption(text = it.name, key = it.id) }.toTypedArray()
+        )
+    }
     var isSearchIconClicked by remember { mutableStateOf(false) }
+
+    var categorySelectionExpanded by remember { mutableStateOf(false) }
+    val categoryOptionTexts = SearchCategory.entries.map { stringResource(it.messageId) }
+    val categoryOptions = remember {
+        mutableStateListOf(
+            *SearchCategory.entries.mapIndexed { index, category ->
+                DropDownToggleOption(
+                    text = categoryOptionTexts[index],
+                    key = category.ordinal,
+                )
+            }.toTypedArray()
+        )
+    }
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -79,8 +116,19 @@ fun SearchBar(
             },
             modifier = modifier
                 .fillMaxWidth()
+                .padding(16.dp)
                 .background(Color.Transparent),
-            trailingIcon = {
+            shape = RoundedCornerShape(15.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                disabledContainerColor = Color.Transparent,
+                errorContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+            ),
+            leadingIcon = {
                 if (!isSearchIconClicked) {
                     IconButton(onClick = {
                         onSearchQueryIconClicked(query) {
@@ -89,8 +137,9 @@ fun SearchBar(
                         keyboardController?.hide()
                     }) {
                         Icon(
+                            modifier = Modifier.size(24.dp),
                             imageVector = Icons.Default.Search,
-                            contentDescription = stringResource(R.string.SEARCH)
+                            contentDescription = stringResource(R.string.SEARCH_BAR_HINT)
                         )
                     }
                 } else {
@@ -107,14 +156,14 @@ fun SearchBar(
                     }
                 }
             },
-            label = {
+            placeholder = {
                 Text(
-                    stringResource(R.string.SEARCH),
-                    style = MaterialTheme.typography.labelSmall,
+                    stringResource(R.string.SEARCH_BAR_HINT),
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             },
-            textStyle = MaterialTheme.typography.bodyMedium,
+            textStyle = MaterialTheme.typography.bodyLarge,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
                 onSearchQueryIconClicked(query) {
@@ -125,70 +174,49 @@ fun SearchBar(
         )
 
         Row(
-            modifier = Modifier.padding(8.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("در: ", style = MaterialTheme.typography.labelSmall)
-            Spacer(modifier = Modifier.width(2.dp))
-            Row(
-                modifier = Modifier
-                    .clickable { expanded = true }
-                    .padding(2.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (selectedPoetIndex == null) {
-                    Text(
-                        text = "همه",
-                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                    )
+            OptionDropDown(
+                selectedText = if (categoryOptions.first().selected.value) {
+                    categoryOptions.first().text
                 } else {
-                    Text(
-                        text = poets[selectedPoetIndex!!].name,
-                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                    )
-                }
-                Spacer(modifier = Modifier.width(4.dp))
-
-                Icon(imageVector = Icons.Outlined.ArrowDropDown, contentDescription = "more")
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier
-                    .height(200.dp)
-                    .padding(8.dp)
-            ) {
-                DropdownMenuItem(
-                    text = { Text("همه", style = MaterialTheme.typography.labelMedium) },
-                    onClick = {
-                        onSearchFilterChanged(null)
-                        selectedPoetIndex = null
-                        onSearchQueryIconClicked(query) {
-                            isSearchIconClicked = true
-                        }
-                        expanded = false
-                    })
-                poets.forEachIndexed { index, poet ->
-                    HorizontalDivider()
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                poet.name,
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                        },
-                        onClick = {
-                            onSearchFilterChanged(poet)
-                            selectedPoetIndex = index
-                            onSearchQueryIconClicked(query) {
-                                isSearchIconClicked = true
-                            }
-                            expanded = false
-                        })
-                }
-            }
+                    categoryOptions.filter { it.selected.value }.joinToString("/") { it.text }
+                },
+                opened = categorySelectionExpanded,
+                onOpen = { categorySelectionExpanded = true },
+                onClose = {
+                    categorySelectionExpanded = false
+                    // TODO implement the search logic later
+                },
+                options = categoryOptions,
+                allOptionsKey = 0,
+            )
+            OptionDropDown(
+                selectedText = if (poetOptions.first().selected.value) {
+                    poetOptions.first().text
+                } else {
+                    if (poetOptions.none { it.selected.value }) {
+                        stringResource(R.string.EMPTY_SEARCH_FILTER)
+                    } else {
+                        poetOptions.filter { it.selected.value }.joinToString("/") { it.text }
+                    }
+                },
+                opened = poetSelectionExpanded,
+                onOpen = { poetSelectionExpanded = true },
+                onClose = {
+                    onSearchQueryIconClicked(query) {
+                        isSearchIconClicked = true
+                    }
+                    poetSelectionExpanded = false
+                    val filters = getSelectedPoets(poetOptions, poets)
+                    onSearchFilterChanged(filters)
+                },
+                options = poetOptions,
+                allOptionsKey = null,
+            )
         }
 
         AnimatedVisibility(
@@ -212,11 +240,7 @@ fun SearchBar(
                     .padding(8.dp)
 
             )
-
-
         }
-
-
     }
 }
 
@@ -228,30 +252,42 @@ fun SearchHistoryList(
     onSearchHistoryRecordClick: (SearchHistoryRecord) -> Unit,
     onSearchHistoryRecordDelete: (SearchHistoryRecord) -> Unit
 ) {
-
-    LazyColumn(
-        modifier = modifier
-            .fillMaxWidth()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 32.dp)
     ) {
-        item {
-            AnimatedVisibility(searchHistoryRecords.isNotEmpty()) {
-                Text(
-                    text = stringResource(R.string.RECENT_SEARCHES),
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
-        }
-
-        items(items = searchHistoryRecords, key = { it.id }) { historyItem ->
-            SearchHistoryRecordItem(
-                modifier = Modifier.animateItem(),
-                historyItem = historyItem,
-                onSearchHistoryRecordClick = onSearchHistoryRecordClick,
-                onSearchHistoryRecordDelete = onSearchHistoryRecordDelete
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.RECENT_SEARCHES),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.neutralN50,
             )
+            Spacer(modifier = Modifier.width(12.dp))
+            HorizontalDivider()
+        }
+        if (searchHistoryRecords.isEmpty()) {
+            NotFoundBox()
+        } else {
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxWidth()
+            ) {
+                items(items = searchHistoryRecords, key = { it.id }) { historyItem ->
+                    SearchHistoryRecordItem(
+                        modifier = Modifier.animateItem(),
+                        historyItem = historyItem,
+                        onSearchHistoryRecordClick = onSearchHistoryRecordClick,
+                        onSearchHistoryRecordDelete = onSearchHistoryRecordDelete
+                    )
+                }
+            }
+
         }
     }
-
 }
 
 @Composable
@@ -264,13 +300,9 @@ private fun SearchHistoryRecordItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onSearchHistoryRecordClick(historyItem) }
-            .padding(8.dp),
+            .clickable { onSearchHistoryRecordClick(historyItem) },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(historyItem.query, style = MaterialTheme.typography.labelMedium)
-
         IconButton(onClick = {
             onSearchHistoryRecordDelete(historyItem)
         }) {
@@ -280,5 +312,21 @@ private fun SearchHistoryRecordItem(
                 modifier = Modifier.size(20.dp)
             )
         }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            text = historyItem.query,
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.neutralN50,
+        )
     }
+}
+
+fun getSelectedPoets(
+    poetOptions: List<DropDownToggleOption>,
+    poets: List<Poet>
+): List<Poet> {
+    return poetOptions.filter { it.selected.value && it.key != null }
+        .map { poetOption -> poets.find { it.id == poetOption.key!! }!! }
 }

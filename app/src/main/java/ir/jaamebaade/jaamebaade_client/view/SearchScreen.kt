@@ -1,20 +1,19 @@
 package ir.jaamebaade.jaamebaade_client.view
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -22,15 +21,17 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
-import ir.jaamebaade.jaamebaade_client.view.components.CardItem
 import ir.jaamebaade.jaamebaade_client.view.components.LoadingIndicator
+import ir.jaamebaade.jaamebaade_client.view.components.NewCardItem
 import ir.jaamebaade.jaamebaade_client.view.components.SearchBar
+import ir.jaamebaade.jaamebaade_client.view.components.base.NotFoundBox
 import ir.jaamebaade.jaamebaade_client.viewmodel.SearchViewModel
 
 @Composable
@@ -46,10 +47,10 @@ fun SearchScreen(
     val poets = searchViewModel.allPoets
 
     val showingSearchHistory = searchViewModel.showingSearchHistory.collectAsState()
-    Column(modifier = modifier) {
+    Column(modifier = modifier.background(color = MaterialTheme.colorScheme.surface)) {
         SearchBar(
             modifier = Modifier.fillMaxWidth(),
-            poets = poets.collectAsState().value,
+            poetsStateFlow = poets,
             searchHistoryRecords = showingSearchHistory.value,
             onSearchFilterChanged = {
                 searchViewModel.poetFilter = it
@@ -100,29 +101,36 @@ fun SearchResults(
     navController: NavController
 ) {
     if (results.isEmpty() && searchStatus == Status.SUCCESS) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "جست‌وجوی شما نتیجه‌ای در بر نداشت!")
-        }
+        NotFoundBox()
     } else if (searchStatus == Status.LOADING) {
         LoadingIndicator()
     } else {
-        LazyColumn {
+        LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
             items(results) { result ->
-                val bodyText = createSearchResultBody(
+                val content = createSearchResultBody(
                     item = result,
                     searchQuery = searchQuery,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                CardItem(
-                    headerText = result.toPathHeaderText(),
-                    bodyText = bodyText,
+                NewCardItem(
+                    headerText = content,
+                    bodyText = result.toPathHeaderText(),
+                    imageUrl = result.poet.imageUrl,
                     onClick = {
                         navController.navigate("${AppRoutes.POEM}/${result.poet.id}/${result.verse!!.poemId}/${result.verse.id}")
                     },
                 )
+                if (result != results.last()) {
+                    HorizontalDivider(
+                        modifier = Modifier.padding(
+                            start = 90.dp,
+                            end = 0.dp,
+                            top = 5.dp,
+                            bottom = 5.dp
+                        ),
+                        color = MaterialTheme.colorScheme.outline
+                    )
+                }
             }
         }
     }
