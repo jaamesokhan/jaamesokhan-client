@@ -116,4 +116,5 @@
     <string name="INTRO_MERGE_HIGHLIGHT_TITLE">ادغام هایلایت‌ها</string>
     <string name="INTRO_MERGE_HIGHLIGHT_DESC">هایلایت‌هاتون رو جداگانه یا به صورت ادغام شده مشاهده کنید</string>
     <string name="NO_NOTE">هنوز هیچ یادداشتی ندارید!</string>
+    <string name="MORE">More</string>
 </resources>

@@ -307,7 +307,7 @@ fun MyNoteCardItem(
 
             },
         icon = Icons.Filled.MoreVert,
-        iconDescription = "More",
+        iconDescription = stringResource(R.string.MORE),
         onClick = onClick,
         onIconClick = onIconClick
     )

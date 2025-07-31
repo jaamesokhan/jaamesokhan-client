@@ -174,12 +174,8 @@ fun AppNavHost(
                             )
                         }
                         animatedComposable(AppRoutes.NOTES_SCREEN.toString()) {
-                            // TODO this is temporary
                             MyNotesScreen(Modifier.padding(innerPadding), navController)
-//                            FavoritesScreen(
-//                                modifier = Modifier.padding(innerPadding),
-//                                navController = navController
-//                            )
+
                         }
                         animatedComposable(
                             "${AppRoutes.POEM}/{poetId}/{poemId}/{verseId}",
