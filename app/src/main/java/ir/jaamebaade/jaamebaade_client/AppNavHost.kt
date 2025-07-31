@@ -37,8 +37,6 @@ import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import ir.jaamebaade.jaamebaade_client.utility.animatedComposable
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
 import ir.jaamebaade.jaamebaade_client.view.AccountScreen
-import ir.jaamebaade.jaamebaade_client.view.ChangeFontScreen
-import ir.jaamebaade.jaamebaade_client.view.ChangeThemeScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadablePoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.FavoritesScreen
 import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
@@ -149,10 +147,6 @@ fun AppNavHost(
                             )
                         }
                         animatedComposable(AppRoutes.SETTINGS_SCREEN.toString()) {
-//                            SettingsScreen(
-//                                modifier = Modifier.padding(innerPadding),
-//                                navController = navController,
-//                            )
                             SettingsListScreen(modifier = Modifier.padding(innerPadding), fontRepository, themeRepository)
                         }
                         animatedComposable(AppRoutes.RANDOM_POEM_OPTIONS.toString()) {
@@ -208,18 +202,7 @@ fun AppNavHost(
                                 modifier = Modifier.padding(innerPadding),
                             )
                         }
-                        animatedComposable(AppRoutes.CHANGE_FONT_SCREEN.toString()) {
-                            ChangeFontScreen(
-                                modifier = Modifier.padding(innerPadding),
-                                fontRepository = fontRepository,
-                            )
-                        }
-                        animatedComposable(AppRoutes.CHANGE_THEME_SCREEN.toString()) {
-                            ChangeThemeScreen(
-                                modifier = Modifier.padding(innerPadding),
-                                themeRepository = themeRepository,
-                            )
-                        }
+
                         animatedComposable(AppRoutes.ABOUT_US_SCREEN.toString()) {
                             AboutUsScreen(
                                 modifier = Modifier.padding(innerPadding),

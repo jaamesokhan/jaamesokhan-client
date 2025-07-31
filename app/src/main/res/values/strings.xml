@@ -124,4 +124,14 @@
     <string name="INTRO_TO_FRIENDS_TEXT">https://google.com</string>
     <string name="SAVE">ذخیره</string>
     <string name="APP_NAME">Jaame-Sokhan V2</string>
+    <string name="ABOUT_BE_SUPPORTIVE">حامی باش</string>
+    <string name="LOGO">Logo</string>
+    <string name="SETTING_VERSE_ONE">بیت اول</string>
+    <string name="SETTING_VERSE_TWO">بیت دوم</string>
+    <string name="SETTING_VERSE_THREE">بیت سوم</string>
+    <string name="APP_THEME">تم برنامه</string>
+    <string name="FONT">فونت</string>
+    <string name="FONT_SIZE">اندازه قلم</string>
+    <string name="THEME_SETTING_STR">حالت</string>
+    <string name="GITHUB">Github</string>
 </resources>

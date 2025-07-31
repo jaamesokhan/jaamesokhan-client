@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
@@ -33,7 +34,6 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN20
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN90
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.view.components.setting.CustomRadioButton
 import ir.jaamebaade.jaamebaade_client.view.components.setting.SettingListItem
 
@@ -45,7 +45,7 @@ fun SettingsListScreen(
     themeRepository: ThemeRepository
 ) {
     var selectedPoemFontFamily by remember { mutableStateOf(fontRepository.poemFontFamily.value) }
-    var selectPoemFontSizeIndex by remember { mutableStateOf(fontRepository.poemFontSize.value) }
+    var selectedPoemFontSize by remember { mutableStateOf(fontRepository.poemFontSize.value) }
     var selectedTheme by remember { mutableStateOf(themeRepository.appTheme.value) }
     var selectedSettingItem by remember { mutableStateOf<SettingItem?>(null) }
     val sheetState = rememberModalBottomSheetState()
@@ -60,13 +60,13 @@ fun SettingsListScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val myTextStyle =  TextStyle(fontFamily = selectedPoemFontFamily.fontFamily, fontSize = fontRepository.getPoemFontSizeFromIndex(selectPoemFontSizeIndex))
-                Text(style = myTextStyle, text = "بیت اول")
-                Text(style = myTextStyle, text = "بیت اول")
-                Text(style = myTextStyle, text = "بیت دوم")
-                Text(style = myTextStyle, text = "بیت دوم")
-                Text(style = myTextStyle, text = "بیت سوم")
-                Text(style = myTextStyle, text = "بیت سوم")
+                val myTextStyle =  TextStyle(fontFamily = selectedPoemFontFamily.fontFamily, fontSize = fontRepository.getPoemFontNumberFromSize(selectedPoemFontSize))
+                Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_ONE))
+                Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_ONE))
+                Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_TWO))
+                Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_TWO))
+                Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_THREE))
+                Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_THREE))
             }
         }
 
@@ -78,11 +78,11 @@ fun SettingsListScreen(
 
         ) {
             SettingListItem(
-                "حالت ${selectedTheme.displayName}",
+                "${stringResource(R.string.THEME_SETTING_STR)} ${selectedTheme.displayName}",
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.theme),
-                        contentDescription = "تم برنامه",
+                        contentDescription = stringResource(R.string.APP_THEME),
                         tint = MaterialTheme.colorScheme.neutralN20,
                         modifier = Modifier.size(32.dp)
                     )
@@ -97,11 +97,11 @@ fun SettingsListScreen(
             )
 
             SettingListItem(
-                "فونت ${selectedPoemFontFamily.displayName}",
+                "${stringResource(R.string.FONT)} ${selectedPoemFontFamily.displayName}",
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.font),
-                        contentDescription = "فونت",
+                        contentDescription = stringResource(R.string.FONT),
                         tint = MaterialTheme.colorScheme.neutralN20,
                         modifier = Modifier
                             .size(32.dp)
@@ -117,11 +117,11 @@ fun SettingsListScreen(
                 color = MaterialTheme.colorScheme.outline
             )
             SettingListItem(
-                "اندازه قلم ${fontRepository.getFontNameFromSize(selectPoemFontSizeIndex)}",
+                "${stringResource(R.string.FONT_SIZE)} ${selectedPoemFontSize.displayName}",
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.font_size),
-                        contentDescription = "اندازه قلم",
+                        contentDescription = stringResource(R.string.FONT_SIZE),
                         tint = MaterialTheme.colorScheme.neutralN20,
                         modifier = Modifier.size(32.dp)
                     )
@@ -166,13 +166,13 @@ fun SettingsListScreen(
                     SettingItem.FONT_SIZE -> {
                         fontRepository.getAvailableFontSizes().forEachIndexed { index, fontSize ->
                             fun onFontSizeClick() {
-                                selectPoemFontSizeIndex = fontSize
+                                selectedPoemFontSize = fontSize
                                 fontRepository.setPoemFontSize(fontSize)
                             }
                             CustomRadioButton(
                                 title = fontRepository.getFontNameFromSize(fontSize),
-                                showDivider = index != CustomFonts.getAllFonts().lastIndex,
-                                isSelected = fontSize == selectPoemFontSizeIndex,
+                                showDivider = index != fontRepository.getAvailableFontSizes().lastIndex,
+                                isSelected = fontSize == selectedPoemFontSize,
                             ) { onFontSizeClick() }
                         }
                     }

@@ -46,7 +46,7 @@ fun AboutUsScreen(modifier: Modifier) {
                     .size(width = 250.dp, height = 50.dp)
                     .scale(scaleX = -1f, scaleY = 1f),
                 tint = MaterialTheme.colorScheme.primary,
-                contentDescription = "Logo"
+                contentDescription = stringResource(R.string.LOGO)
             )
         }
         Spacer(modifier = Modifier.height(76.dp))
@@ -59,7 +59,7 @@ fun AboutUsScreen(modifier: Modifier) {
             RectangularButton(
                 backgroundColor = MaterialTheme.colorScheme.neutralN100,
                 textColor = MaterialTheme.colorScheme.primary,
-                text = "Github",
+                text = stringResource(R.string.GITHUB),
                 borderColor = MaterialTheme.colorScheme.primary,
                 buttonHeight = 50.dp,
                 buttonWidth = 248.dp,
@@ -81,7 +81,7 @@ fun AboutUsScreen(modifier: Modifier) {
             RectangularButton(
                 backgroundColor = MaterialTheme.colorScheme.primary,
                 textColor = MaterialTheme.colorScheme.neutralN100,
-                text = "حامی باش",
+                text = stringResource(R.string.ABOUT_BE_SUPPORTIVE),
                 buttonHeight = 50.dp,
                 buttonWidth = 248.dp,
                 onClick = {
