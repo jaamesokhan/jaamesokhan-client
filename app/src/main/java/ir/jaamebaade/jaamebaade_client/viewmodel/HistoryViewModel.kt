@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.Category
+import ir.jaamebaade.jaamebaade_client.model.HistoryRecordPathFirstVerse
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.HistoryRecordWithPath
 import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
@@ -27,7 +28,7 @@ class HistoryViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    var poemHistory by mutableStateOf<List<HistoryRecordWithPath>>(emptyList())
+    var poemHistory by mutableStateOf<List<HistoryRecordPathFirstVerse>>(emptyList())
         private set
 
     init {
@@ -56,7 +57,7 @@ class HistoryViewModel @Inject constructor(
                 historyRepository.getAllHistorySorted()
             }
 
-            val historyList = mutableListOf<HistoryRecordWithPath>()
+            val historyList = mutableListOf<HistoryRecordPathFirstVerse>()
 
             for (historyItem in historyItems) {
                 val timestamp =
@@ -71,8 +72,11 @@ class HistoryViewModel @Inject constructor(
                     poet = poemWithPoet.poet,
                     categories = categories
                 )
+                val firstVerse = withContext(Dispatchers.IO) {
+                    poemRepository.getPoemFirstVerse(poemId)
+                }
 
-                historyList.add(HistoryRecordWithPath(historyItem.id, timestamp, poemPoetCategory))
+                historyList.add(HistoryRecordPathFirstVerse(historyItem.id, timestamp, poemPoetCategory, firstVerse))
             }
 
 
