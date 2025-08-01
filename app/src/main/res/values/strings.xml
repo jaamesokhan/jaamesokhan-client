@@ -134,4 +134,6 @@
     <string name="FONT_SIZE">اندازه قلم</string>
     <string name="THEME_SETTING_STR">حالت</string>
     <string name="GITHUB">Github</string>
+    <string name="NO_NOTE">هنوز هیچ یادداشتی ندارید!</string>
+    <string name="MORE">More</string>
 </resources>
