@@ -86,7 +86,7 @@ fun IntroShowcaseScope.TopBar(
     val settingBottomSheetState = rememberModalBottomSheetState()
     var showSettingBottomSheet by remember { mutableStateOf(false) }
     var showHistoryBottomSheet by remember { mutableStateOf(false) }
-    var historyBottomSheetState = rememberModalBottomSheetState()
+    val historyBottomSheetState = rememberModalBottomSheetState()
 
     val topBarIsExtended = viewModel.topBarIsExtended
     val downArrow = viewModel.downArrow
@@ -124,7 +124,10 @@ fun IntroShowcaseScope.TopBar(
     if (showHistoryBottomSheet) {
         HistoryScreen(
             sheetState = historyBottomSheetState,
-            onDismissRequest = { showSettingBottomSheet = false },
+            onDismiss = {
+                showHistoryBottomSheet = false
+
+            },
             navController = navController,
 
             )
