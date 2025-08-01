@@ -5,6 +5,7 @@
     <string name="FALLBACK_IMAGE_URL">https://ganjoor.net/image/gdap.png</string>
 
     <!--  About Us  -->
+    <string name="ABOUT_US">درباره ما</string>
     <string name="ABOUT_US_BASE">
         جام سخن یک اپلیکیشن متن باز است و هدف ما از توسعه آن، دسترسی راحت همه علاقه‌مندان به اشعار فارسی است.
     </string>
@@ -15,7 +16,7 @@
         در صورت تمایل، می‌توانید از طریق لینک زیر از ما حمایت کنید.
     </string>
     <string name="ABOUT_US_EMAIL">
-        اگر تمایل دارید به هر نحوی به بهتر شدن این اپلیکیشن کمک کنید،‌ از طریق ایمیل زیر با ما در ارتباط باشید.
+        اگر تمایل دارید به هر نحوی به بهتر شدن این اپلیکیشن کمک کنید،‌ از طریق ایمیل jaamesokhan@gmail.com با ما در ارتباط باشید.
     </string>
     <string name="COPY_RIGHT">
         منبع اشعار و خوانش‌های موجود در برنامه، پایگاه داده‌ی آزاد گنجور است.
@@ -80,11 +81,11 @@
     <string name="DELETE">حذف</string>
     <string name="SEARCH">جست‌وجو</string>
     <string name="CLOSE">بستن</string>
-    <string name="RANDOM_POEM">شعر رندم</string>
+    <string name="RANDOM_POEM">شعر تصادفی</string>
     <string name="RANDOM_POEM_OPTIONS">تنظیمات شعر تصادفی</string>
     <string name="CATEGORY">دسته‌بندی</string>
     <string name="POEM">شعر</string>
-    <string name="RECITE">خوانش</string>
+    <string name="INTRO_TO_FRIEND">معرفی به دوستان</string>
     <string name="OPTIONS">گزینه‌ها</string>
     <string name="SUBMIT">ثبت</string>
 
@@ -115,6 +116,24 @@
     <string name="INTRO_HOME_DESC">در این صفحه به شاعران دانلود شده دسترسی دارین</string>
     <string name="INTRO_MERGE_HIGHLIGHT_TITLE">ادغام هایلایت‌ها</string>
     <string name="INTRO_MERGE_HIGHLIGHT_DESC">هایلایت‌هاتون رو جداگانه یا به صورت ادغام شده مشاهده کنید</string>
+    <string name="RECITE">خوانش</string>
+    <string name="SETTINGS">تنظیمات</string>
+    <string name="ABOUT_US_TITLE">درباره جام سخن</string>
+    <string name="ABOUT_SUPPORT_TITLE">حمایت از ما</string>
+    <string name="ABOUT_CONTRIBUTION_TITLE">همکاری با ما</string>
+    <string name="INTRO_TO_FRIENDS_TEXT">https://google.com</string>
+    <string name="SAVE">ذخیره</string>
+    <string name="APP_NAME">Jaame-Sokhan V2</string>
+    <string name="ABOUT_BE_SUPPORTIVE">حامی باش</string>
+    <string name="LOGO">Logo</string>
+    <string name="SETTING_VERSE_ONE">بیت اول</string>
+    <string name="SETTING_VERSE_TWO">بیت دوم</string>
+    <string name="SETTING_VERSE_THREE">بیت سوم</string>
+    <string name="APP_THEME">تم برنامه</string>
+    <string name="FONT">فونت</string>
+    <string name="FONT_SIZE">اندازه قلم</string>
+    <string name="THEME_SETTING_STR">حالت</string>
+    <string name="GITHUB">Github</string>
     <string name="NO_NOTE">هنوز هیچ یادداشتی ندارید!</string>
     <string name="MORE">More</string>
 </resources>

@@ -12,8 +12,8 @@ class SharedPrefManager(
     @ApplicationContext private val context: Context
 ) {
     companion object {
-        const val FONT_KEY = "Font"
-        const val FONT_SIZE_INDEX_KEY = "FontSizeIndex"
+        const val POEM_FONT_KEY = "PoemFont"
+        const val POEM_FONT_SIZE_KEY = "PoemFontSizeIndex"
         const val USERNAME_KEY = "Username"
         const val AUTH_TOKEN_KEY = "AuthToken"
         const val APP_THEME_TYPE_KEY = "AppThemeType"
@@ -42,27 +42,27 @@ class SharedPrefManager(
         return sharedPreferences.getString(AUTH_TOKEN_KEY, null)
     }
 
-    fun saveFont(font: CustomFont) {
+    fun savePoemFont(font: CustomFont) {
         sharedPreferences.edit {
-            putString(FONT_KEY, font.name)
+            putString(POEM_FONT_KEY, font.name)
         }
     }
 
-    fun saveFontSizeIndex(fontSizeIndex: Int) {
+    fun savePoemFontSizeIndex(fontSizeIndex: Int) {
         sharedPreferences.edit {
-            putInt(FONT_SIZE_INDEX_KEY, fontSizeIndex)
+            putInt(POEM_FONT_SIZE_KEY, fontSizeIndex)
         }
     }
 
-    fun getFont(): CustomFont {
-        val savedFontName = sharedPreferences.getString(FONT_KEY, CustomFonts.Vazirmatn.name)
+    fun getPoemFont(): CustomFont {
+        val savedFontName = sharedPreferences.getString(POEM_FONT_KEY, CustomFonts.Vazirmatn.name)
         return CustomFonts.getAllFonts().find { it.name == savedFontName }
             ?: CustomFonts.getDefaultFont()
 
     }
 
-    fun getFontSizeIndex(): Int {
-        return sharedPreferences.getInt(FONT_SIZE_INDEX_KEY, 1)
+    fun getPoemFontSizeIndex(): Int {
+        return sharedPreferences.getInt(POEM_FONT_SIZE_KEY, 1)
     }
 
     fun setThemePreference(appThemeType: AppThemeType) {

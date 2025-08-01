@@ -1,7 +1,9 @@
 package ir.jaamebaade.jaamebaade_client.repository
 
+import androidx.compose.ui.unit.TextUnit
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
+import ir.jaamebaade.jaamebaade_client.ui.theme.PoemFontSize
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,24 +13,38 @@ class FontRepository @Inject constructor(
     private val sharedPrefManager: SharedPrefManager,
 ) {
 
-    private val _fontSizeIndex = MutableStateFlow(1)
-    val fontSizeIndex: StateFlow<Int> get() = _fontSizeIndex
+    private val _poemFontFamily = MutableStateFlow(CustomFonts.getDefaultFont())
+    val poemFontFamily : StateFlow<CustomFont> get() = _poemFontFamily
 
-    private val _fontFamily = MutableStateFlow(CustomFonts.getDefaultFont())
-    val fontFamily: StateFlow<CustomFont> get() = _fontFamily
+    private val _poemFontSize = MutableStateFlow(PoemFontSize.fromOrdinal(sharedPrefManager.getPoemFontSizeIndex()))
+    val poemFontSize: StateFlow<PoemFontSize> get() = _poemFontSize
 
     init {
-        _fontSizeIndex.value = sharedPrefManager.getFontSizeIndex()
-        _fontFamily.value = sharedPrefManager.getFont()
+        _poemFontSize.value = PoemFontSize.fromOrdinal(sharedPrefManager.getPoemFontSizeIndex())
+        _poemFontFamily.value = sharedPrefManager.getPoemFont()
     }
 
-    fun setFontSize(size: Int) {
-        _fontSizeIndex.value = size
-        sharedPrefManager.saveFontSizeIndex(size)
+
+    fun setPoemFontSize(size: PoemFontSize) {
+        _poemFontSize.value = size
+        sharedPrefManager.savePoemFontSizeIndex(size.ordinal)
     }
 
-    fun setFontFamily(family: CustomFont) {
-        _fontFamily.value = family
-        sharedPrefManager.saveFont(family)
+    fun getAvailableFontSizes(): List<PoemFontSize> = PoemFontSize.entries
+
+    fun getFontNameFromSize(size: PoemFontSize): String = size.displayName
+
+    fun getPoemFontNumberFromSize(size: PoemFontSize): TextUnit {
+        return when (size) {
+            PoemFontSize.SMALL -> _poemFontFamily.value.specs.body.small.fontSize
+            PoemFontSize.MEDIUM -> _poemFontFamily.value.specs.body.medium.fontSize
+            PoemFontSize.LARGE -> _poemFontFamily.value.specs.body.large.fontSize
+        }
     }
+
+    fun setPoemFontFamily(family: CustomFont) {
+        _poemFontFamily.value = family
+        sharedPrefManager.savePoemFont(family)
+    }
+
 }
