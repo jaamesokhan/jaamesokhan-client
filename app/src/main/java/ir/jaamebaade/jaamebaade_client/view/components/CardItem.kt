@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -207,13 +208,15 @@ fun ComposableCardItem(
     iconDescription: String? = null,
     onClick: () -> Unit,
     onIconClick: () -> Unit = {},
+    containerColor: Color = MaterialTheme.colorScheme.background, // Default background color
+
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = containerColor
         )
     ) {
         Row(
@@ -363,5 +366,6 @@ fun MyHistoryCardItem(
         icon = null,
         iconDescription = null,
         onClick = onClick,
+        containerColor = MaterialTheme.colorScheme.background
     )
 }
