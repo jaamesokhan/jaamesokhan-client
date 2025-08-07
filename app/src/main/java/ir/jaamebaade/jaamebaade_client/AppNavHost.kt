@@ -209,9 +209,9 @@ fun AppNavHost(
                         dialog(AppRoutes.ACCOUNT_SCREEN.toString()) {
                             AccountScreen(navController = navController)
                         }
-                        animatedComposable(AppRoutes.HISTORY.toString()) {
-                            HistoryScreen(Modifier.padding(innerPadding), navController)
-                        }
+//                        animatedComposable(AppRoutes.HISTORY.toString()) {
+//                            HistoryScreen(Modifier.padding(innerPadding), navController)
+//                        }
                     }
                 }
             }

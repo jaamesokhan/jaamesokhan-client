@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.CommentPoemCategoriesPoet
+import ir.jaamebaade.jaamebaade_client.model.HistoryRecordPathFirstVerse
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
 import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
 import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
@@ -206,13 +208,15 @@ fun ComposableCardItem(
     iconDescription: String? = null,
     onClick: () -> Unit,
     onIconClick: () -> Unit = {},
+    containerColor: Color = MaterialTheme.colorScheme.background, // Default background color
+
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = containerColor
         )
     ) {
         Row(
@@ -310,5 +314,58 @@ fun MyNoteCardItem(
         iconDescription = stringResource(R.string.MORE),
         onClick = onClick,
         onIconClick = onIconClick
+    )
+}
+
+
+@Composable
+fun MyHistoryCardItem(
+    modifier: Modifier = Modifier,
+    historyRecord: HistoryRecordPathFirstVerse,
+    onClick: () -> Unit = {},
+) {
+    ComposableCardItem(
+        modifier = modifier,
+        imageUrl = historyRecord.path.poet.imageUrl,
+        header = {
+            Text(
+                text = historyRecord.path.poem.title,
+                style = MaterialTheme.typography.headlineMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
+        body = {
+            Text(
+                text = historyRecord.firstVerse.text,
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.outlineVariant,
+            )
+        },
+        footer =
+            {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Circle,
+                        tint = MaterialTheme.colorScheme.secondaryS50,
+                        contentDescription = null,
+                        modifier = Modifier.size(8.dp),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = Date(historyRecord.timestamp).convertToJalali()
+                            .toLocalFormatWithHour(),
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+            },
+        icon = null,
+        iconDescription = null,
+        onClick = onClick,
+        containerColor = MaterialTheme.colorScheme.background
     )
 }

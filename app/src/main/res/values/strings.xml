@@ -136,4 +136,6 @@
     <string name="GITHUB">Github</string>
     <string name="NO_NOTE">هنوز هیچ یادداشتی ندارید!</string>
     <string name="MORE">More</string>
+    <string name="NO_HISTORY">هیچ شعری مطالعه نکرده‌اید!</string>
+    <string name="READ_HISTORY">آخرین اشعار مطالعه شده</string>
 </resources>
