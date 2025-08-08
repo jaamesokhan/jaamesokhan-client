@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,7 +35,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -47,6 +50,7 @@ import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
+import ir.jaamebaade.jaamebaade_client.view.OptionsMenu
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.TopBarViewModel
@@ -62,7 +66,7 @@ fun IntroShowcaseScope.TopBar(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
-        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.SETTINGS_SCREEN.toString()  && backStackEntry?.destination?.route != AppRoutes.FAVORITE_SCREEN.toString())
+        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.BOOKMARKS_SCREEN.toString())
     val context = LocalContext.current
 
 
@@ -72,6 +76,7 @@ fun IntroShowcaseScope.TopBar(
         viewModel.shouldShowOptions(backStackEntry)
         viewModel.shouldShowSearch(backStackEntry)
         viewModel.shouldExtendTopBar(backStackEntry)
+        viewModel.shouldShowDownArrow(backStackEntry)
     }
 
     val breadCrumbs = viewModel.breadCrumbs
@@ -79,7 +84,10 @@ fun IntroShowcaseScope.TopBar(
     val showHistory = viewModel.showHistoryIcon
     val showSearch = viewModel.showSearchIcon
     val showOptions = viewModel.showOptionsIcon
+    val settingBottomSheetState = rememberModalBottomSheetState()
+    var showSettingBottomSheet by remember { mutableStateOf(false) }
     val topBarIsExtended = viewModel.topBarIsExtended
+    val downArrow = viewModel.downArrow
 
     val sheetState = rememberModalBottomSheetState()
     var showPoetOptionModal by remember { mutableStateOf(false) }
@@ -103,6 +111,13 @@ fun IntroShowcaseScope.TopBar(
         }
     }
 
+    if (showSettingBottomSheet) {
+        OptionsMenu(
+            sheetState = settingBottomSheetState,
+            onDismiss = { showSettingBottomSheet = false },
+            navController
+        )
+    }
 
 
     BackHandler(enabled = backStackEntry?.destination?.route == AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
@@ -132,18 +147,22 @@ fun IntroShowcaseScope.TopBar(
                                         onBackButtonClicked(backStackEntry, navController)
                                     }) {
                                     Icon(
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        imageVector = if (downArrow) ImageVector.vectorResource(R.drawable.back_arrow_down) else Icons.AutoMirrored.Filled.ArrowBack,
                                         tint = MaterialTheme.colorScheme.onSurface,
                                         contentDescription = "Back",
                                         modifier = Modifier.size(32.dp),
                                     )
                                 }
                             } else {
-                                Icon(
-                                    imageVector = Icons.Default.Menu,
-                                    contentDescription = "Place Holder!",
-                                    modifier = Modifier.size(32.dp),
-                                )
+                                IconButton(onClick = {
+                                    showSettingBottomSheet = true
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Menu,
+                                        contentDescription = "Settings Menu",
+                                        modifier = Modifier.size(32.dp),
+                                    )
+                                }
                             }
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(

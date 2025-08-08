@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.viewmodel
 
+import android.util.Log
 import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +50,9 @@ class TopBarViewModel @Inject constructor(
     var topBarIsExtended by mutableStateOf(false)
         private set
 
+    var downArrow by mutableStateOf(false)
+        private set
+
     fun updateBreadCrumbs(path: NavBackStackEntry?, context: Context) {
         viewModelScope.launch {
             breadCrumbs = createPathBreadCrumbs(path!!, context)
@@ -83,11 +87,20 @@ class TopBarViewModel @Inject constructor(
         val path = getPath(navStack)
         topBarIsExtended = when (path) {
             AppRoutes.POEM -> true
+            AppRoutes.SETTINGS_SCREEN -> true
             AppRoutes.SEARCH_SCREEN -> true
             else -> false
         }
     }
 
+    fun shouldShowDownArrow(navStack: NavBackStackEntry?) {
+        val path = getPath(navStack)
+        downArrow = when (path) {
+            AppRoutes.SETTINGS_SCREEN -> true
+            AppRoutes.ABOUT_US_SCREEN -> true
+            else -> false
+        }
+    }
     private suspend fun createPathBreadCrumbs(navStack: NavBackStackEntry, context: Context): String {
         poet = null
         val path = getPath(navStack)

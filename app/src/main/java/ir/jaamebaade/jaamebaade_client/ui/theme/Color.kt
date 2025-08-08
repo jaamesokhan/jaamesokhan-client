@@ -57,6 +57,7 @@ val inversePrimaryLight = Color(0xFFAAC7FF)
 ///////////////
 
 
+val neutralN20Light = Color(0xFF333333)
 val neutralN50Light = Color(0xFF808080)
 val neutralN70Light = Color(0xFFB3B3B3)
 val neutralN90Light = Color(0xFFE6E6E6)
@@ -116,8 +117,11 @@ val secondaryS90Dark = Color(0xFFDDE5CF)
 val secondaryS30Dark = Color(0xFF6E991F)
 val secondaryS40Dark = Color(0xFF83B22D)
 val secondaryS50Dark = Color(0xFF9ACC3D)
+val secondaryS30color = Color(0xFF6E991F) //TODO check
+val neutralN20Dark = Color(0xFF333333)
 val neutralN50Dark = Color(0xFF808080)
 val neutralN70Dark = Color(0xFFB3B3B3)
-val neutralN90Dark = Color(0xFFE6E6E6)
-val neutralN95Dark = Color(0xFFF7F7F7)
+val neutralN90Dark = Color(0XFF2C2C2C)
+val neutralN95Dark = Color(0XFF2C2C2C)
 val neutralN100Dark = Color(0xFFFFFFFF)
+
