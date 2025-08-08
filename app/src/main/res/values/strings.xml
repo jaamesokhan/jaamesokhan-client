@@ -90,6 +90,7 @@
     <string name="OPTIONS">گزینه‌ها</string>
     <string name="SUBMIT">ثبت</string>
     <string name="SEARCH_BAR_HINT">دنبال چه شعری می‌گردید؟</string>
+    <string name="SEARCH">جست‌وجو</string>
     <string name="MORE">بیشتر</string>
 
     <!-- Intro Stuff    -->
@@ -145,5 +146,4 @@
     <string name="THEME_SETTING_STR">حالت</string>
     <string name="GITHUB">Github</string>
     <string name="NO_NOTE">هنوز هیچ یادداشتی ندارید!</string>
-    <string name="MORE">More</string>
 </resources>
