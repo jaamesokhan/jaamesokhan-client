@@ -51,15 +51,15 @@ class HistoryViewModel @Inject constructor(
     fun loadPoemHistory() {
         viewModelScope.launch {
             val historyItems = withContext(Dispatchers.IO) {
-                historyRepository.getAllHistorySorted()
+                historyRepository.getAllHistorySortedWithFirstVerse()
             }
 
             val historyList = mutableListOf<HistoryRecordPathFirstVerse>()
 
             for (historyItem in historyItems) {
                 val timestamp =
-                    historyItem.timestamp
-                val poemId = historyItem.poemId
+                    historyItem.history.timestamp
+                val poemId = historyItem.history.poemId
 
                 val poemWithPoet = fetchPoemWithPoet(poemId)
                 val categories = fetchAllCategories(poemWithPoet!!.poem)
@@ -69,11 +69,8 @@ class HistoryViewModel @Inject constructor(
                     poet = poemWithPoet.poet,
                     categories = categories
                 )
-                val firstVerse = withContext(Dispatchers.IO) {
-                    poemRepository.getPoemFirstVerse(poemId)
-                }
 
-                historyList.add(HistoryRecordPathFirstVerse(historyItem.id, timestamp, poemPoetCategory, firstVerse))
+                historyList.add(HistoryRecordPathFirstVerse(historyItem.history.id, timestamp, poemPoetCategory, historyItem.firstVerse))
             }
 
 
