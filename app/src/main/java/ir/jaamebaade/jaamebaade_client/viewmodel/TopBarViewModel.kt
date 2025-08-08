@@ -1,6 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.viewmodel
 
 import android.util.Log
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.Poem
@@ -51,9 +53,9 @@ class TopBarViewModel @Inject constructor(
     var downArrow by mutableStateOf(false)
         private set
 
-    fun updateBreadCrumbs(path: NavBackStackEntry?) {
+    fun updateBreadCrumbs(path: NavBackStackEntry?, context: Context) {
         viewModelScope.launch {
-            breadCrumbs = createPathBreadCrumbs(path!!)
+            breadCrumbs = createPathBreadCrumbs(path!!, context)
         }
     }
 
@@ -86,6 +88,7 @@ class TopBarViewModel @Inject constructor(
         topBarIsExtended = when (path) {
             AppRoutes.POEM -> true
             AppRoutes.SETTINGS_SCREEN -> true
+            AppRoutes.SEARCH_SCREEN -> true
             else -> false
         }
     }
@@ -98,7 +101,7 @@ class TopBarViewModel @Inject constructor(
             else -> false
         }
     }
-    private suspend fun createPathBreadCrumbs(navStack: NavBackStackEntry): String {
+    private suspend fun createPathBreadCrumbs(navStack: NavBackStackEntry, context: Context): String {
         poet = null
         val path = getPath(navStack)
         when (path) {
@@ -135,7 +138,7 @@ class TopBarViewModel @Inject constructor(
             }
 
             AppRoutes.SETTINGS_SCREEN -> return "تنظیمات"
-            AppRoutes.SEARCH_SCREEN -> return "جست‌وجو"
+            AppRoutes.SEARCH_SCREEN -> return context.getString(R.string.SEARCH_TITLE)
             AppRoutes.FAVORITE_SCREEN -> return "علاقه‌مندی‌ها"
             AppRoutes.CHANGE_FONT_SCREEN -> return "تغییر فونت"
             AppRoutes.ACCOUNT_SCREEN -> return "حساب کاربری"

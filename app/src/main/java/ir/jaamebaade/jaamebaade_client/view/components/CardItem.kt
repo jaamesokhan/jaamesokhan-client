@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -101,8 +102,8 @@ fun CardItem(
 @Composable
 fun NewCardItem(
     modifier: Modifier = Modifier,
-    headerText: String? = null,
-    bodyText: AnnotatedString,
+    headerText: AnnotatedString? = null,
+    bodyText: String,
     footerText: String? = null,
     imageUrl: String?,
     icon: ImageVector? = null,
@@ -115,7 +116,7 @@ fun NewCardItem(
             .fillMaxWidth()
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = Color.Transparent,
         )
     ) {
 

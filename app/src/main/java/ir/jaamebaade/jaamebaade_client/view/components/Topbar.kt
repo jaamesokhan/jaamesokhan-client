@@ -34,6 +34,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -66,10 +67,11 @@ fun IntroShowcaseScope.TopBar(
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
         (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.BOOKMARKS_SCREEN.toString())
+    val context = LocalContext.current
 
 
     LaunchedEffect(key1 = backStackEntry) {
-        viewModel.updateBreadCrumbs(backStackEntry)
+        viewModel.updateBreadCrumbs(backStackEntry, context)
         viewModel.shouldShowHistory(backStackEntry)
         viewModel.shouldShowOptions(backStackEntry)
         viewModel.shouldShowSearch(backStackEntry)
@@ -214,7 +216,7 @@ fun IntroShowcaseScope.TopBar(
                                     onClick = { navController.navigate("${AppRoutes.SEARCH_SCREEN}") }) {
                                     Icon(
                                         imageVector = Icons.Default.Search,
-                                        contentDescription = stringResource(R.string.SEARCH),
+                                        contentDescription = stringResource(R.string.SEARCH_BAR_HINT),
                                         tint = MaterialTheme.colorScheme.onSurface,
                                         modifier = Modifier.size(32.dp),
                                     )
@@ -226,7 +228,7 @@ fun IntroShowcaseScope.TopBar(
                                     onClick = { showPoetOptionModal = true }) {
                                     Icon(
                                         imageVector = Icons.Default.MoreVert,
-                                        contentDescription = stringResource(R.string.SEARCH),
+                                        contentDescription = stringResource(R.string.SEARCH_BAR_HINT),
                                         tint = MaterialTheme.colorScheme.onSurface,
                                         modifier = Modifier.size(32.dp),
                                     )
