@@ -148,4 +148,5 @@
     <string name="NO_NOTE">هنوز هیچ یادداشتی ندارید!</string>
     <string name="NO_HISTORY">هیچ شعری مطالعه نکرده‌اید!</string>
     <string name="READ_HISTORY">آخرین اشعار مطالعه شده</string>
+    <string name="DELETE_HIGHLIGHT_SUCCESS">هایلایت با موفقیت حذف شد.</string>
 </resources>

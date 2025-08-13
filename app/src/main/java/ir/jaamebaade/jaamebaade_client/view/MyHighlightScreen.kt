@@ -118,7 +118,7 @@ fun MyHighlightScreen(
                     bodyText = pathText,
                     imageUrl = mergedHighlight.poet.imageUrl,
                     icon = Icons.Filled.MoreVert,
-                    onClick = { navController.navigate("${AppRoutes.POEM}/${mergedHighlight.poet.id}/${mergedHighlight.poem.id}/-1") },
+                    onClick = { navController.navigate("${AppRoutes.POEM}/${mergedHighlight.poet.id}/${mergedHighlight.poem.id}/${mergedHighlight.highlights.first().verseId}") },
                     onIconClick = {
                         selectedHighlight = mergedHighlight
                         showBottomSheet = true
@@ -170,7 +170,7 @@ fun MyHighlightScreen(
                         )
                     }
                     showBottomSheet = false
-                    ToastManager.showToast(R.string.UNBOOKMARK_SUCCESS, ToastType.SUCCESS)
+                    ToastManager.showToast(R.string.DELETE_HIGHLIGHT_SUCCESS, ToastType.SUCCESS)
                 }
 
             }

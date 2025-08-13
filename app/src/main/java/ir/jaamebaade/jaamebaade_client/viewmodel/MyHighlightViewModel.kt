@@ -14,8 +14,6 @@ import ir.jaamebaade.jaamebaade_client.model.MergedHighlight
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
-import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
-import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,9 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyHighlightViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
-    private val highlightRepository: HighlightRepository,
-    private val verseRepository: VerseRepository,
-    private val sharedPrefManager: SharedPrefManager
+    private val highlightRepository: HighlightRepository
 ) : ViewModel() {
 
 
