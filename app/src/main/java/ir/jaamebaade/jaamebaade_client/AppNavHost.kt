@@ -166,11 +166,6 @@ fun AppNavHost(
                             )
                         }
                         animatedComposable(AppRoutes.HIGHLIGHTS_SCREEN.toString()) {
-                            // TODO this is temporary
-//                            FavoritesScreen(
-//                                modifier = Modifier.padding(innerPadding),
-//                                navController = navController
-//                            )
                             MyHighlightScreen(modifier = Modifier.padding(innerPadding),
                                 navController = navController)
                         }
