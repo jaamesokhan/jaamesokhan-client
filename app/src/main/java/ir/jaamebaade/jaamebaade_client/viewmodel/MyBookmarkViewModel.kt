@@ -89,4 +89,8 @@ class MyBookmarkViewModel @Inject constructor(
         }
         return res
     }
+
+    fun refreshBookmarks() {
+        getAllBookmarks()
+    }
 }

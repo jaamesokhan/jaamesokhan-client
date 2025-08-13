@@ -111,6 +111,9 @@ fun NewCardItem(
     iconDescription: String? = null,
     onClick: () -> Unit,
     onIconClick: () -> Unit = {},
+    wrapHeader: Boolean = false,
+    wrapBody: Boolean = false,
+    wrapFooter: Boolean = false
 ) {
     Card(
         modifier = modifier
@@ -120,7 +123,6 @@ fun NewCardItem(
             containerColor = Color.Transparent,
         )
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -138,24 +140,21 @@ fun NewCardItem(
             )
 
             Spacer(modifier = Modifier.width(8.dp))
-            // Texts columns
             Column(
-                modifier = Modifier
-                    .weight(1f),
+                modifier = Modifier.weight(1f),
             ) {
-                // Header and Icon Row
+                // Header Row
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    headerText?.let { headerText ->
+                    headerText?.let {
                         Text(
-                            text = headerText,
+                            text = it,
                             style = MaterialTheme.typography.headlineMedium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
+                            maxLines = if (wrapHeader) Int.MAX_VALUE else 1,
+                            overflow = if (wrapHeader) TextOverflow.Clip else TextOverflow.Ellipsis
                         )
                     }
 
@@ -168,32 +167,58 @@ fun NewCardItem(
                                 imageVector = it,
                                 contentDescription = iconDescription,
                             )
-
                         }
                     }
-
                 }
 
+                // Body
                 Text(
                     text = bodyText,
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.outlineVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    maxLines = if (wrapBody) Int.MAX_VALUE else 1,
+                    overflow = if (wrapBody) TextOverflow.Clip else TextOverflow.Ellipsis
                 )
+
+                // Footer
                 footerText?.let {
                     Text(
                         text = it,
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.outlineVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
+                        maxLines = if (wrapFooter) Int.MAX_VALUE else 1,
+                        overflow = if (wrapFooter) TextOverflow.Clip else TextOverflow.Ellipsis
                     )
                 }
             }
         }
-
     }
+}
+
+
+@Composable
+fun HighlightCardItem(
+    modifier: Modifier = Modifier,
+    headerText: AnnotatedString? = null,
+    bodyText: String,
+    imageUrl: String?,
+    icon: ImageVector? = null,
+    iconDescription: String? = null,
+    onClick: () -> Unit,
+    onIconClick: () -> Unit = {},
+) {
+    NewCardItem(
+        modifier = modifier,
+        headerText = headerText,
+        bodyText = bodyText,
+        imageUrl = imageUrl,
+        icon = icon,
+        iconDescription = iconDescription,
+        onClick = onClick,
+        onIconClick = onIconClick,
+        wrapHeader = true,
+        wrapBody = true,
+    )
 
 }
 

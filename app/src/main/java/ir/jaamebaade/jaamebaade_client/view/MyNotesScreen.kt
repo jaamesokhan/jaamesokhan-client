@@ -18,6 +18,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +53,14 @@ fun MyNotesScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedNote by remember { mutableStateOf<CommentPoemCategoriesPoet?>(null) }
     val context = LocalContext.current
+    LaunchedEffect(navController) {
+        navController.currentBackStackEntryFlow.collect { backStackEntry ->
+            if (backStackEntry.destination.route == AppRoutes.NOTES_SCREEN.toString()) {
+                // Screen is visible again, refresh
+                viewModel.refreshBookmarks()
+            }
+        }
+    }
     if (notes.isEmpty()) {
 
         Row(

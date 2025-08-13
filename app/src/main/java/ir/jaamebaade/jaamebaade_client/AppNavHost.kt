@@ -38,9 +38,8 @@ import ir.jaamebaade.jaamebaade_client.utility.animatedComposable
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
 import ir.jaamebaade.jaamebaade_client.view.AccountScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadablePoetsScreen
-import ir.jaamebaade.jaamebaade_client.view.FavoritesScreen
-import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
 import ir.jaamebaade.jaamebaade_client.view.MyBookmarkScreen
+import ir.jaamebaade.jaamebaade_client.view.MyHighlightScreen
 import ir.jaamebaade.jaamebaade_client.view.MyNotesScreen
 import ir.jaamebaade.jaamebaade_client.view.MyPoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.PoemScreen
@@ -167,11 +166,8 @@ fun AppNavHost(
                             )
                         }
                         animatedComposable(AppRoutes.HIGHLIGHTS_SCREEN.toString()) {
-                            // TODO this is temporary
-                            FavoritesScreen(
-                                modifier = Modifier.padding(innerPadding),
-                                navController = navController
-                            )
+                            MyHighlightScreen(modifier = Modifier.padding(innerPadding),
+                                navController = navController)
                         }
                         animatedComposable(AppRoutes.NOTES_SCREEN.toString()) {
                             MyNotesScreen(Modifier.padding(innerPadding), navController)
