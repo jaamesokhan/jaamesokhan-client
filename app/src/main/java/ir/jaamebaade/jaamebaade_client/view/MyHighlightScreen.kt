@@ -39,7 +39,6 @@ import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Category
-import ir.jaamebaade.jaamebaade_client.model.HighlightVersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.MergedHighlight
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.toMergedHighlight
@@ -125,7 +124,7 @@ fun MyHighlightScreen(
                         showBottomSheet = true
                     }
                 )
-                if (index != highlights.size - 1)
+                if (index != newHighlights.size - 1)
                     HorizontalDivider(
                         modifier = Modifier.padding(
                             start = 90.dp,
@@ -182,21 +181,6 @@ fun MyHighlightScreen(
 
 private fun createHighlightPath(categories: List<Category>, poem: Poem) =
     "${categories.joinToString(" > ") { it.text }} > ${poem.title}"
-
-private fun createNormalHighlightItemBody(
-    highlightInfo: HighlightVersePoemCategoriesPoet,
-    color: Color
-): AnnotatedString {
-    val bodyText = buildAnnotatedString {
-        append(highlightInfo.versePath.verse!!.text)
-        addStyle(
-            style = SpanStyle(background = color),
-            start = highlightInfo.highlight.startIndex,
-            end = highlightInfo.highlight.endIndex,
-        )
-    }
-    return bodyText
-}
 
 private fun createMergedHighlightItemHeader(
     mergedHighlight: MergedHighlight,

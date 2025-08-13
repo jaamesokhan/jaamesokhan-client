@@ -38,8 +38,6 @@ import ir.jaamebaade.jaamebaade_client.utility.animatedComposable
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
 import ir.jaamebaade.jaamebaade_client.view.AccountScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadablePoetsScreen
-import ir.jaamebaade.jaamebaade_client.view.FavoritesScreen
-import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
 import ir.jaamebaade.jaamebaade_client.view.MyBookmarkScreen
 import ir.jaamebaade.jaamebaade_client.view.MyHighlightScreen
 import ir.jaamebaade.jaamebaade_client.view.MyNotesScreen
