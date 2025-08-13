@@ -82,4 +82,8 @@ class MyNoteViewModel @Inject constructor(
         }
         return res
     }
+
+    fun refreshBookmarks() {
+        getAllNotes()
+    }
 }

@@ -89,4 +89,8 @@ class MyHighlightViewModel @Inject constructor(
         }
     }
 
+    fun refreshHighlights() {
+        getAllHighlights()
+    }
+
 }
