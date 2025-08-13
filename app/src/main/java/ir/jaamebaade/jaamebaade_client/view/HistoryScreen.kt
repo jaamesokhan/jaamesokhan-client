@@ -1,81 +1,142 @@
 package ir.jaamebaade.jaamebaade_client.view
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
-import ir.jaamebaade.jaamebaade_client.model.HistoryRecordWithPath
-import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
-import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
-import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
-import ir.jaamebaade.jaamebaade_client.view.components.CardItem
+import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
+import ir.jaamebaade.jaamebaade_client.view.components.MyHistoryCardItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.HistoryViewModel
-import java.sql.Date
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
-    modifier: Modifier,
     navController: NavController,
-    viewModel: HistoryViewModel = hiltViewModel()
+    viewModel: HistoryViewModel = hiltViewModel(),
+    onDismiss: () -> Unit,
+    sheetState: SheetState,
 ) {
-    val poemHistory = viewModel.poemHistory
-
-    if (poemHistory.isEmpty()) {
-        EmptyHistoryView(modifier)
-    } else {
-        HistoryList(viewModel = viewModel,
-            navController = navController,
-            poemHistory = poemHistory,
-            modifier = modifier
-        )
+    val poemHistory = viewModel.poemHistory.collectAsState()
+    val isSheetOpen = sheetState.isVisible
+    val lazyListState = rememberLazyListState()
+    // LaunchedEffect to reload history when the bottom sheet opens
+    LaunchedEffect(isSheetOpen) {
+        if (isSheetOpen) {
+            // Reload the history every time the bottom sheet is opened
+            viewModel.loadPoemHistory()
+        }
     }
 
-}
-
-@Composable
-fun EmptyHistoryView(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("از شعری بازدید نکرده‌اید!", style = MaterialTheme.typography.headlineMedium)
+    LaunchedEffect(poemHistory.value) {
+        // Scroll to the top only if the history data is loaded and not empty
+        if (poemHistory.value.isNotEmpty()) {
+            lazyListState.animateScrollToItem(0)
+        }
     }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun HistoryList(
-    viewModel: HistoryViewModel,
-    navController: NavController,
-    poemHistory: List<HistoryRecordWithPath>,
-    modifier: Modifier = Modifier,
-) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
-        items(items = poemHistory, key = { it.id }) { item ->
-            CardItem(
-                modifier = Modifier.animateItem(),
-                bodyText = AnnotatedString(item.path.toPathHeaderText()),
-                footerText = Date(item.timestamp).convertToJalali().toLocalFormatWithHour(),
-                onClick = { navController.navigate("${AppRoutes.POEM}/${item.path.poet.id}/${item.path.poem.id}/-1") },
-                icon = Icons.Outlined.Delete,
-                onIconClick = { viewModel.deleteHistoryRecord(item.id) },
+
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 12.dp)
+                .background(color = MaterialTheme.colorScheme.surface),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            IconButton(
+                onClick = onDismiss
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowDown,
+                    contentDescription = stringResource(R.string.CLOSE),
+                    tint = MaterialTheme.colorScheme.neutralN50
+                )
+            }
+            Text(
+                text = stringResource(R.string.READ_HISTORY),
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.neutralN50,
             )
         }
+
+        if (poemHistory.value.isEmpty()) {
+            Row(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Info,
+                    tint = MaterialTheme.colorScheme.outlineVariant,
+                    contentDescription = "",
+                )
+                Text(
+                    text = stringResource(R.string.NO_HISTORY),
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = MaterialTheme.colorScheme.outlineVariant
+                )
+            }
+        } else {
+            LazyColumn(state = lazyListState, modifier = Modifier.fillMaxSize()) {
+                itemsIndexed(
+                    items = poemHistory.value, key = { _, item ->
+                        item.id
+                    }) { index, historyRecord ->
+                    MyHistoryCardItem(
+                        historyRecord = historyRecord
+                    ) {
+                        navController.navigate("${AppRoutes.POEM}/${historyRecord.path.poet.id}/${historyRecord.path.poem.id}/-1")
+                        onDismiss()
+                    }
+
+                    if (index != poemHistory.value.size - 1)
+                        HorizontalDivider(
+                            modifier = Modifier.padding(
+                                start = 90.dp,
+                                end = 0.dp,
+                                top = 5.dp,
+                                bottom = 5.dp
+                            ).background(MaterialTheme.colorScheme.background),
+                            color = MaterialTheme.colorScheme.outline
+                        )
+                }
+            }
+        }
+
+
     }
 }
 

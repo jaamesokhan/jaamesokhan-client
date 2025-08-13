@@ -50,6 +50,7 @@ import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
+import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
 import ir.jaamebaade.jaamebaade_client.view.OptionsMenu
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
@@ -86,6 +87,9 @@ fun IntroShowcaseScope.TopBar(
     val showOptions = viewModel.showOptionsIcon
     val settingBottomSheetState = rememberModalBottomSheetState()
     var showSettingBottomSheet by remember { mutableStateOf(false) }
+    var showHistoryBottomSheet by remember { mutableStateOf(false) }
+    val historyBottomSheetState = rememberModalBottomSheetState()
+
     val topBarIsExtended = viewModel.topBarIsExtended
     val downArrow = viewModel.downArrow
 
@@ -117,6 +121,18 @@ fun IntroShowcaseScope.TopBar(
             onDismiss = { showSettingBottomSheet = false },
             navController
         )
+    }
+
+    if (showHistoryBottomSheet) {
+        HistoryScreen(
+            sheetState = historyBottomSheetState,
+            onDismiss = {
+                showHistoryBottomSheet = false
+
+            },
+            navController = navController,
+
+            )
     }
 
 
@@ -191,7 +207,7 @@ fun IntroShowcaseScope.TopBar(
                                                 stringResource(R.string.INTRO_HISTORY_DESC)
                                             )
                                         }),
-                                    onClick = { navController.navigate("${AppRoutes.HISTORY}") }) {
+                                    onClick = { showHistoryBottomSheet = true }) {
                                     Icon(
                                         imageVector = Icons.Filled.History,
                                         contentDescription = "History",
