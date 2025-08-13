@@ -1,8 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,21 +16,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.DownloadDone
 import androidx.compose.material.icons.outlined.FileDownloadOff
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
@@ -42,8 +35,7 @@ import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 
 @Composable
-fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
-    var expanded by remember { mutableStateOf(false) }
+fun PoetItem(poet: Poet, status: DownloadStatus, onButtonClick: () -> Unit) {
     val iconSize = 28.dp
 
     val painter = rememberAsyncImagePainter(
@@ -98,12 +90,14 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                     Text(
                         text = poet.name,
                         style = MaterialTheme.typography.titleLarge,
-                        maxLines = 3
+                        maxLines = 3,
+                        modifier = Modifier.weight(1f)
                     )
 
-                    IconButton(
-                        onClick = onClick,
-                    ) {
+                    Button(
+                        onClick = onButtonClick,
+
+                        ) {
                         when (status) {
                             DownloadStatus.NotDownloaded -> {
                                 Icon(
@@ -111,6 +105,8 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                                     imageVector = Icons.Outlined.Download,
                                     contentDescription = "Download"
                                 )
+                                Spacer(Modifier.width(4.dp))
+                                Text("افزودن")
                             }
 
                             DownloadStatus.Downloading -> {
@@ -123,6 +119,8 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                                     imageVector = Icons.Outlined.DownloadDone,
                                     contentDescription = "Downloaded"
                                 )
+                                Spacer(Modifier.width(4.dp))
+                                Text("باز کردن")
                             }
 
                             DownloadStatus.Failed -> {
@@ -136,15 +134,15 @@ fun PoetItem(poet: Poet, status: DownloadStatus, onClick: () -> Unit) {
                     }
                 }
 
-                Text(
-                    text = poet.description,
-                    modifier = Modifier
-                        .animateContentSize()
-                        .clickable { expanded = !expanded },
-                    style = MaterialTheme.typography.bodySmall,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = if (expanded) Int.MAX_VALUE else 3
-                )
+//                Text(
+//                    text = poet.description,
+//                    modifier = Modifier
+//                        .animateContentSize()
+//                        .clickable { expanded = !expanded },
+//                    style = MaterialTheme.typography.bodySmall,
+//                    overflow = TextOverflow.Ellipsis,
+//                    maxLines = if (expanded) Int.MAX_VALUE else 3
+//                )
             }
 
         }

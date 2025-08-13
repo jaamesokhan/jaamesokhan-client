@@ -93,6 +93,9 @@
     <string name="SEARCH">جست‌وجو</string>
     <string name="MORE">بیشتر</string>
 
+
+    <string name="POET_SEARCH_BAR_HINT">دنبال چه شاعری می‌گردید؟</string>
+
     <!-- Intro Stuff    -->
     <string name="INTRO_HISTORY_TITLE">تاریخچه</string>
     <string name="INTRO_HISTORY_DESC">به تاریخچه شعرهایی که خوندین به راحتی دسترسی داشته باشین و اونارو مدیریت کنین</string>

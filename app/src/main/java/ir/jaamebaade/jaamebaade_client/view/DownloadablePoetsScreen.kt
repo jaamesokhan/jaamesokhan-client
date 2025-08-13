@@ -2,18 +2,29 @@ package ir.jaamebaade.jaamebaade_client.view
 
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -24,8 +35,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.jaamebaade.jaamebaade_client.R
@@ -47,6 +61,7 @@ fun DownloadablePoetsScreen(
     val poets = poetViewModel.poets
     val fetchStatus = poetViewModel.poetFetchStatus
     var searchQuery by remember { mutableStateOf("") }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(modifier = modifier) {
         TextField(
@@ -55,10 +70,58 @@ fun DownloadablePoetsScreen(
                 searchQuery = it
                 poetViewModel.updateSearchQuery(it)
             },
-            label = { Text("نام شاعر", style = MaterialTheme.typography.labelSmall) },
-            modifier = Modifier.fillMaxWidth(),
-            textStyle = MaterialTheme.typography.bodyMedium,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .background(Color.Transparent),
+            shape = RoundedCornerShape(15.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                disabledContainerColor = Color.Transparent,
+                errorContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+            ),
+            leadingIcon = {
+
+                IconButton(onClick = {
+
+                    searchQuery = ""
+                    poetViewModel.updateSearchQuery(searchQuery)
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Close, contentDescription = stringResource(
+                            R.string.CLOSE
+                        )
+                    )
+                }
+
+            },
+            placeholder = {
+                Text(
+                    stringResource(R.string.POET_SEARCH_BAR_HINT),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
+            textStyle = MaterialTheme.typography.bodyLarge,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = {
+                keyboardController?.hide()
+            }),
         )
+//        TextField(
+//            value = searchQuery,
+//            onValueChange = {
+//                searchQuery = it
+//                poetViewModel.updateSearchQuery(it)
+//            },
+//            label = { Text("نام شاعر", style = MaterialTheme.typography.labelSmall) },
+//            modifier = Modifier.fillMaxWidth(),
+//            textStyle = MaterialTheme.typography.bodyMedium,
+//        )
         if (fetchStatus == Status.LOADING && poets.isEmpty()) {
             LoadingIndicator()
         } else if (fetchStatus == Status.FAILED) {
@@ -89,9 +152,13 @@ private fun DownloadablePoetsList(
                 poet = poet,
                 poetViewModel.downloadStatus[poet.id.toString()] ?: DownloadStatus.NotDownloaded
             ) {
-                coroutineScope.launch {
-                    val targetDir = getInternalStorageDir(context)
-                    poetViewModel.importPoetData(poet.id.toString(), targetDir)
+                if (poetViewModel.downloadStatus[poet.id.toString()] == DownloadStatus.Downloaded) {
+                 //TODO show bottom sheet
+                } else {
+                    coroutineScope.launch {
+                        val targetDir = getInternalStorageDir(context)
+                        poetViewModel.importPoetData(poet.id.toString(), targetDir)
+                    }
                 }
             }
             if (index != poets.size - 1) {
