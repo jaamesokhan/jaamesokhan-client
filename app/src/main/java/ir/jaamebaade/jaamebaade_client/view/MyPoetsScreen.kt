@@ -51,11 +51,16 @@ fun IntroShowcaseScope.MyPoetsScreen(
     val poets = viewModel.poets
     var fetchStatue by remember { mutableStateOf(Status.LOADING) }
     val coroutineScope = rememberCoroutineScope()
+    var randomPoetPreviewFetchStatus by remember { mutableStateOf(Status.LOADING) }
     val randomPoemPreview = viewModel.randomPoemPreview
 
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedPoet by remember { mutableStateOf<Poet?>(null) }
+
+    LaunchedEffect(Unit) {
+        viewModel.getRandomPoem(onSuccess = { randomPoetPreviewFetchStatus = Status.SUCCESS })
+    }
 
     LaunchedEffect(key1 = poets) {
         if (poets != null) fetchStatue = Status.SUCCESS
@@ -75,24 +80,26 @@ fun IntroShowcaseScope.MyPoetsScreen(
         }
     }
 
-    if (fetchStatue == Status.SUCCESS) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-        ) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+    ) {
+        if (randomPoetPreviewFetchStatus == Status.SUCCESS) {
             randomPoemPreview?.let {
                 RandomPoemBox(randomPoemPreview = it, onCardClick = {
-                    if (viewModel.poets?.find { randomPoemPreview.poemPath.poet.id == it.id } != null) {
+                    if (viewModel.poets?.find { poet -> randomPoemPreview.poemPath.poet.id == poet.id } != null) {
                         navController.navigate("${AppRoutes.POEM}/${randomPoemPreview.poemPath.poet.id}/${randomPoemPreview.poemPath.poem.id}/-1")
                     } else {
                         ToastManager.showToast(R.string.POEM_NOT_AVAILABLE, ToastType.ERROR)
                     }
                 }) {
-                    viewModel.getRandomPoem(refresh = true)
+                    viewModel.getRandomPoem(refresh = true, onSuccess = {})
                 }
             }
+        }
 
+        if (fetchStatue == Status.SUCCESS) {
             LazyVerticalGrid(columns = GridCells.Fixed(3)) {
                 if (poets!!.isNotEmpty()) {
                     items(poets) { poet ->

@@ -47,7 +47,6 @@ class MyPoetsViewModel @Inject constructor(
     init {
         getAllPoets()
         getAllCategories()
-        getRandomPoem()
     }
 
 
@@ -70,7 +69,7 @@ class MyPoetsViewModel @Inject constructor(
         }
     }
 
-    fun getRandomPoem(refresh: Boolean = false) {
+    fun getRandomPoem(refresh: Boolean = false, onSuccess: () -> Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val poemWithPoet = poemRepository.getRandomPoem()
@@ -83,6 +82,7 @@ class MyPoetsViewModel @Inject constructor(
                             verses = first4Verses
                         )
                     }
+                    onSuccess()
                 } else {
                     if (refresh) {
                         ToastManager.showToast(R.string.NO_POET_DOWNLOADED, ToastType.ERROR)
