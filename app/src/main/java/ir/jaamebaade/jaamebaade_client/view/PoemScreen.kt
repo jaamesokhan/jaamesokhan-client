@@ -279,7 +279,7 @@ fun PoemScreen(
             containerColor = MaterialTheme.colorScheme.background,
         ) {
             if (audioOptionChecked) {
-                AudioListItems(viewModel = poemViewModel, audioViewModel = audioViewModel)
+                AudioListItems(viewModel = poemViewModel, audioViewModel = audioViewModel, onDismiss={audioOptionChecked = false})
             } else if (moreOptionsChecked) {
                 PoemMoreOptionsList(optionsList = moreOptionsList)
             }
