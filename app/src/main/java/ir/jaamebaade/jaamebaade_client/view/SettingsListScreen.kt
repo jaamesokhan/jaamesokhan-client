@@ -30,7 +30,6 @@ import ir.jaamebaade.jaamebaade_client.repository.FontRepository
 import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN20
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.setting.CustomRadioButton
 import ir.jaamebaade.jaamebaade_client.view.components.setting.SettingListItem
@@ -83,7 +82,7 @@ fun SettingsListScreen(
                     Icon(
                         painter = painterResource(id = R.drawable.theme),
                         contentDescription = stringResource(R.string.APP_THEME),
-                        tint = MaterialTheme.colorScheme.neutralN20,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(32.dp)
                     )
                 }, onClick = {
@@ -102,7 +101,7 @@ fun SettingsListScreen(
                     Icon(
                         painter = painterResource(id = R.drawable.font),
                         contentDescription = stringResource(R.string.FONT),
-                        tint = MaterialTheme.colorScheme.neutralN20,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier
                             .size(32.dp)
                             .graphicsLayer(scaleX = -1f)
@@ -122,7 +121,7 @@ fun SettingsListScreen(
                     Icon(
                         painter = painterResource(id = R.drawable.font_size),
                         contentDescription = stringResource(R.string.FONT_SIZE),
-                        tint = MaterialTheme.colorScheme.neutralN20,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(32.dp)
                     )
                 }, onClick = {
