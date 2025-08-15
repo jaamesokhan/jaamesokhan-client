@@ -24,7 +24,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS30
 
 @Composable
@@ -44,7 +43,6 @@ fun CustomRadioButton(
                 role = Role.RadioButton
             ),
         onClick = onClick,
-        color = MaterialTheme.colorScheme.neutralN95
     ) {
         Row(
             modifier = Modifier

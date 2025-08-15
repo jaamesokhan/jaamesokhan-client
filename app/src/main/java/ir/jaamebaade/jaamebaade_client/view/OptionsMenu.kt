@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN20
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.view.components.setting.MenuItem
 
@@ -46,7 +45,7 @@ fun OptionsMenu(
         containerColor = MaterialTheme.colorScheme.neutralN95,
     ) {
         val context = LocalContext.current
-        Column (){
+        Column {
             MenuItem(
                 title = stringResource(R.string.RANDOM_POEM),
                 showDivider = true,
@@ -54,7 +53,7 @@ fun OptionsMenu(
                     Icon(
                         painter = painterResource(id = R.drawable.book_ribbon),
                         contentDescription = stringResource(R.string.RANDOM_POEM),
-                        tint = MaterialTheme.colorScheme.neutralN20,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(32.dp)
                     )
                 },
@@ -71,7 +70,7 @@ fun OptionsMenu(
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = stringResource(R.string.SEARCH),
-                        tint = MaterialTheme.colorScheme.neutralN20,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(32.dp)
                     )
                 },
@@ -88,7 +87,7 @@ fun OptionsMenu(
                     Icon(
                         imageVector = Icons.Default.AddCircleOutline,
                         contentDescription = stringResource(R.string.RANDOM_POEM),
-                        tint = MaterialTheme.colorScheme.neutralN20,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(32.dp)
                     )
                 },
@@ -108,7 +107,7 @@ fun OptionsMenu(
                     Icon(
                         imageVector = Icons.Outlined.Settings,
                         contentDescription = stringResource(R.string.SETTINGS),
-                        tint = MaterialTheme.colorScheme.neutralN20,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(32.dp)
                     )
                 },
@@ -124,7 +123,7 @@ fun OptionsMenu(
                     Icon(
                         imageVector = Icons.Outlined.PersonOutline,
                         contentDescription = stringResource(R.string.RANDOM_POEM),
-                        tint = MaterialTheme.colorScheme.neutralN20,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(32.dp)
                     )
                 },
@@ -140,15 +139,17 @@ fun OptionsMenu(
                     Icon(
                         painter = painterResource(id = R.drawable.intro_to_friends),
                         contentDescription = stringResource(R.string.INTRO_TO_FRIEND),
-                        tint = MaterialTheme.colorScheme.neutralN20,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(32.dp)
                     )
                 },
                 onClick = {
                     val sendIntent = Intent().apply {
                         action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT,
-                            context.getString(R.string.INTRO_TO_FRIENDS_TEXT))
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            context.getString(R.string.INTRO_TO_FRIENDS_TEXT)
+                        )
                         type = "text/plain"
                     }
 
