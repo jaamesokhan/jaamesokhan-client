@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,6 +46,7 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 fun AudioListItems(
     viewModel: PoemViewModel,
     audioViewModel: AudioViewModel,
+    onDismiss: () -> Unit
 ) {
     val audioDataList = viewModel.urls.collectAsState().value
     var fetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
@@ -56,8 +58,15 @@ fun AudioListItems(
             audioViewModel.setSelectedAudioDate(it)
             audioViewModel.changePlayStatus(Status.LOADING)
             viewModel.fetchAudioSyncInfo(it.syncXmlUrl, {
-                mediaPlayer.setDataSource(it.url)
-                mediaPlayer.prepareAsync()
+                mediaPlayer.apply {
+                    setDataSource(it.url)
+                    mediaPlayer.prepareAsync()
+                    setOnPreparedListener {
+                        audioViewModel.changePlayStatus(Status.IN_PROGRESS)
+                        start()
+                    }
+                }
+                onDismiss()
             }, {
                 // TODO show toast
             })
@@ -128,6 +137,7 @@ fun AudioListItems(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxSize()
+                                .padding(horizontal = 14.dp)
                         ) {
                             RadioButton(
                                 modifier = Modifier.size(24.dp),
