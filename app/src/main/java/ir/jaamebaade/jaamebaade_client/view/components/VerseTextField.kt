@@ -45,7 +45,7 @@ fun VerseTextField(
     val interactionSource = remember { MutableInteractionSource() }
     val textStyle = MaterialTheme.typography.bodyMedium.copy(
         textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.onPrimary
+        color = MaterialTheme.colorScheme.onBackground
     )
     val colors = TextFieldDefaults.colors(
         focusedContainerColor = Color.Transparent,

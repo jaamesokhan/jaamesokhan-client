@@ -71,7 +71,9 @@ fun ListItem(
                         Text(
                             text = title,
                             style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.onBackground
+                            color = MaterialTheme.colorScheme.onBackground,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
