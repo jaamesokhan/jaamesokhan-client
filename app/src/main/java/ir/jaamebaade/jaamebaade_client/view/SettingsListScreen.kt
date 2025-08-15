@@ -11,10 +11,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +31,7 @@ import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN20
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN90
+import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.setting.CustomRadioButton
 import ir.jaamebaade.jaamebaade_client.view.components.setting.SettingListItem
 
@@ -48,7 +46,6 @@ fun SettingsListScreen(
     var selectedPoemFontSize by remember { mutableStateOf(fontRepository.poemFontSize.value) }
     var selectedTheme by remember { mutableStateOf(themeRepository.appTheme.value) }
     var selectedSettingItem by remember { mutableStateOf<SettingItem?>(null) }
-    val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     Column(modifier = modifier.fillMaxWidth()) {
         Surface(
@@ -60,7 +57,10 @@ fun SettingsListScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val myTextStyle =  TextStyle(fontFamily = selectedPoemFontFamily.fontFamily, fontSize = fontRepository.getPoemFontNumberFromSize(selectedPoemFontSize))
+                val myTextStyle = TextStyle(
+                    fontFamily = selectedPoemFontFamily.fontFamily,
+                    fontSize = fontRepository.getPoemFontNumberFromSize(selectedPoemFontSize)
+                )
                 Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_ONE))
                 Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_ONE))
                 Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_TWO))
@@ -134,12 +134,10 @@ fun SettingsListScreen(
         }
     }
     if (showBottomSheet) {
-        ModalBottomSheet(
+        CustomBottomSheet(
             onDismissRequest = {
                 showBottomSheet = false
             },
-            sheetState = sheetState,
-            containerColor = MaterialTheme.colorScheme.neutralN90,
         ) {
             Column(
                 modifier = Modifier

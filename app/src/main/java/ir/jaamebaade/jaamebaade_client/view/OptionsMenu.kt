@@ -46,7 +46,7 @@ fun OptionsMenu(
         containerColor = MaterialTheme.colorScheme.neutralN95,
     ) {
         val context = LocalContext.current
-        Column (){
+        Column {
             MenuItem(
                 title = stringResource(R.string.RANDOM_POEM),
                 showDivider = true,
@@ -147,8 +147,10 @@ fun OptionsMenu(
                 onClick = {
                     val sendIntent = Intent().apply {
                         action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT,
-                            context.getString(R.string.INTRO_TO_FRIENDS_TEXT))
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            context.getString(R.string.INTRO_TO_FRIENDS_TEXT)
+                        )
                         type = "text/plain"
                     }
 
