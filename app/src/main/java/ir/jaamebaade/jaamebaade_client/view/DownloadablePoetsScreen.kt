@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.view
 
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +18,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,7 +41,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.jaamebaade.jaamebaade_client.R
@@ -47,7 +51,7 @@ import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.view.components.LoadingIndicator
-import ir.jaamebaade.jaamebaade_client.view.components.PoetItem
+import ir.jaamebaade.jaamebaade_client.view.components.DownloadablePoetItem
 import ir.jaamebaade.jaamebaade_client.view.components.ServerFailure
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoetViewModel
 import kotlinx.coroutines.launch
@@ -63,7 +67,9 @@ fun DownloadablePoetsScreen(
     var searchQuery by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.background(MaterialTheme.colorScheme.surface)) {
+
+
         TextField(
             value = searchQuery,
             onValueChange = {
@@ -72,7 +78,6 @@ fun DownloadablePoetsScreen(
             },
             modifier = modifier
                 .fillMaxWidth()
-                .padding(16.dp)
                 .background(Color.Transparent),
             shape = RoundedCornerShape(15.dp),
             colors = TextFieldDefaults.colors(
@@ -112,16 +117,6 @@ fun DownloadablePoetsScreen(
                 keyboardController?.hide()
             }),
         )
-//        TextField(
-//            value = searchQuery,
-//            onValueChange = {
-//                searchQuery = it
-//                poetViewModel.updateSearchQuery(it)
-//            },
-//            label = { Text("نام شاعر", style = MaterialTheme.typography.labelSmall) },
-//            modifier = Modifier.fillMaxWidth(),
-//            textStyle = MaterialTheme.typography.bodyMedium,
-//        )
         if (fetchStatus == Status.LOADING && poets.isEmpty()) {
             LoadingIndicator()
         } else if (fetchStatus == Status.FAILED) {
@@ -146,9 +141,9 @@ private fun DownloadablePoetsList(
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
-    LazyColumn(userScrollEnabled = true, modifier = Modifier.padding(8.dp), state = listState) {
+    LazyColumn(userScrollEnabled = true, state = listState) {
         itemsIndexed(poets) { index, poet ->
-            PoetItem(
+            DownloadablePoetItem(
                 poet = poet,
                 poetViewModel.downloadStatus[poet.id.toString()] ?: DownloadStatus.NotDownloaded
             ) {

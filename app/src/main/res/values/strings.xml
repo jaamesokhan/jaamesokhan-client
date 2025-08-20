@@ -152,4 +152,6 @@
     <string name="NO_HISTORY">هیچ شعری مطالعه نکرده‌اید!</string>
     <string name="READ_HISTORY">آخرین اشعار مطالعه شده</string>
     <string name="DELETE_HIGHLIGHT_SUCCESS">هایلایت با موفقیت حذف شد.</string>
+    <string name="DOWNLOAD_POET">افزودن</string>
+    <string name="OPEN_DOWNLOADED_POET_DESC">باز کردن</string>
 </resources>
