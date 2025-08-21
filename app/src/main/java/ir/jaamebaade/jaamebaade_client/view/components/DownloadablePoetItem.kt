@@ -1,10 +1,8 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,9 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.FileDownloadOff
-import androidx.compose.material.icons.outlined.FileDownloadOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,62 +21,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN20
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
+import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButton
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
 enum class ComposableSquareButtonStyle {
     Filled, Outlined
 }
 
-@Composable
-fun ComposableSquareButton(
-    modifier: Modifier = Modifier,
-    style: ComposableSquareButtonStyle = ComposableSquareButtonStyle.Filled,
-    backgroundColor: Color = MaterialTheme.colorScheme.primary, // your green shade
-    contentColor: Color = Color.White,
-    borderColor: Color = MaterialTheme.colorScheme.primary,
-    buttonWidth: Dp = Dp.Unspecified,
-    buttonHeight: Dp = Dp.Unspecified,
-    borderWidth: Dp = 1.dp,
-    onClick: () -> Unit,
-    content: @Composable RowScope.() -> Unit
-) {
-    val containerColor =
-        if (style == ComposableSquareButtonStyle.Filled) backgroundColor else Color.Transparent
-
-    val contentColorFinal =
-        if (style == ComposableSquareButtonStyle.Filled) contentColor else backgroundColor
-
-    Button(
-        modifier = modifier
-            .then(
-                if (buttonWidth != Dp.Unspecified && buttonHeight != Dp.Unspecified) {
-                    Modifier.size(buttonWidth, buttonHeight)
-                } else Modifier
-            )
-            .border(
-                width = borderWidth,
-                color = if (style == ComposableSquareButtonStyle.Outlined) borderColor else Color.Transparent,
-                shape = RoundedCornerShape(15.dp)
-            ),
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = contentColorFinal
-        ),
-        shape = RoundedCornerShape(15.dp)
-    ) {
-        content()
-    }
-}
 
 
 @Composable
@@ -107,7 +59,6 @@ fun DownloadablePoetItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            // .heightIn(min = 200.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
 
