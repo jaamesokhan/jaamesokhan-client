@@ -73,7 +73,7 @@ fun DownloadablePoetsScreen(
     var searchQuery by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.background(MaterialTheme.colorScheme.surface)) {
 
         TextField(
             value = searchQuery,
@@ -83,7 +83,7 @@ fun DownloadablePoetsScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(32.dp)
+                .padding(16.dp)
                 .background(Color.Transparent),
             shape = RoundedCornerShape(15.dp),
             colors = TextFieldDefaults.colors(
