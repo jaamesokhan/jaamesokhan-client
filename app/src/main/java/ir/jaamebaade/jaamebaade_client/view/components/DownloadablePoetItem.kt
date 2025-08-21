@@ -1,6 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -13,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.FileDownloadOff
 import androidx.compose.material.icons.outlined.FileDownloadOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -83,13 +85,21 @@ fun ComposableSquareButton(
 
 
 @Composable
-fun DownloadablePoetItem(poet: Poet, status: DownloadStatus, onButtonClick: () -> Unit) {
+fun DownloadablePoetItem(
+    poet: Poet,
+    status: DownloadStatus,
+    onButtonClick: () -> Unit,
+    onItemClick: () -> Unit
+) {
     val iconSize = 18.dp
 
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp),
+            .clickable {
+                onItemClick()
+
+            },
         shape = RoundedCornerShape(16.dp),
         color = MaterialTheme.colorScheme.surface
     ) {
@@ -109,7 +119,6 @@ fun DownloadablePoetItem(poet: Poet, status: DownloadStatus, onButtonClick: () -
                 imageUrl = poet.imageUrl ?: "https://ganjoor.net/image/gdap.png",
                 size = 66,
                 roundedCornerShapeSize = 20,
-                modifier = Modifier.padding(start = 20.dp, end = 0.dp)
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -133,7 +142,7 @@ fun DownloadablePoetItem(poet: Poet, status: DownloadStatus, onButtonClick: () -
                     DownloadStatus.NotDownloaded -> {
                         ComposableSquareButton(
                             style = ComposableSquareButtonStyle.Outlined,
-                            onClick = { },
+                            onClick = onButtonClick,
                             buttonHeight = 50.dp,
                             buttonWidth = 114.dp
                         ) {
@@ -143,20 +152,29 @@ fun DownloadablePoetItem(poet: Poet, status: DownloadStatus, onButtonClick: () -
                                 contentDescription = stringResource(R.string.DOWNLOAD_POET)
                             )
                             Spacer(Modifier.width(1.dp))
-                            Text(stringResource(R.string.DOWNLOAD_POET),
+                            Text(
+                                stringResource(R.string.DOWNLOAD_POET),
                                 style = MaterialTheme.typography.labelSmall,
                             )
                         }
                     }
 
                     DownloadStatus.Downloading -> {
-                        CircularProgressIndicator(modifier = Modifier.size(iconSize))
+                        ComposableSquareButton(
+                            style = ComposableSquareButtonStyle.Outlined,
+                            onClick = {},
+                            buttonHeight = 50.dp,
+                            buttonWidth = 114.dp
+                        ) {
+                            CircularProgressIndicator(modifier = Modifier.size(iconSize))
+
+                        }
                     }
 
                     DownloadStatus.Downloaded -> {
                         ComposableSquareButton(
                             style = ComposableSquareButtonStyle.Filled,
-                            onClick = { },
+                            onClick = onButtonClick,
                             buttonHeight = 50.dp,
                             buttonWidth = 114.dp
                         ) {
@@ -175,51 +193,26 @@ fun DownloadablePoetItem(poet: Poet, status: DownloadStatus, onButtonClick: () -
                     }
 
                     DownloadStatus.Failed -> {
-                        Icon(
-                            modifier = Modifier.size(iconSize),
-                            imageVector = Icons.Outlined.FileDownloadOff,
-                            contentDescription = "Download"
-                        )
+                        ComposableSquareButton(
+                            style = ComposableSquareButtonStyle.Outlined,
+                            onClick = onButtonClick,
+                            buttonHeight = 50.dp,
+                            buttonWidth = 114.dp
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(iconSize),
+                                imageVector = Icons.Default.FileDownloadOff,
+                                contentDescription = stringResource(R.string.DOWNLOAD_POET)
+                            )
+                            Spacer(Modifier.width(1.dp))
+                            Text(
+                                stringResource(R.string.DOWNLOAD_POET),
+                                style = MaterialTheme.typography.labelSmall,
+                            )
+                        }
                     }
                 }
-//                    Button(
-//                        onClick = onButtonClick,
-//
-//                        ) {
-////                        when (status) {
-////                            DownloadStatus.NotDownloaded -> {
-////                                Icon(
-////                                    modifier = Modifier.size(iconSize),
-////                                    imageVector = Icons.Outlined.Download,
-////                                    contentDescription = "Download"
-////                                )
-////                                Spacer(Modifier.width(4.dp))
-////                                Text("افزودن")
-////                            }
-////
-////                            DownloadStatus.Downloading -> {
-////                                CircularProgressIndicator(modifier = Modifier.size(iconSize))
-////                            }
-////
-////                            DownloadStatus.Downloaded -> {
-////                                Icon(
-////                                    modifier = Modifier.size(iconSize),
-////                                    imageVector = Icons.Outlined.DownloadDone,
-////                                    contentDescription = "Downloaded"
-////                                )
-////                                Spacer(Modifier.width(4.dp))
-////                                Text("باز کردن")
-////                            }
-////
-////                            DownloadStatus.Failed -> {
-////                                Icon(
-////                                    modifier = Modifier.size(iconSize),
-////                                    imageVector = Icons.Outlined.FileDownloadOff,
-////                                    contentDescription = "Download"
-////                                )
-////                            }
-////                        }
-//                    }
+
             }
 
 

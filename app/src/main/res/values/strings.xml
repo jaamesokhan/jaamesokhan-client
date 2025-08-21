@@ -154,4 +154,5 @@
     <string name="DELETE_HIGHLIGHT_SUCCESS">هایلایت با موفقیت حذف شد.</string>
     <string name="DOWNLOAD_POET">افزودن</string>
     <string name="OPEN_DOWNLOADED_POET_DESC">باز کردن</string>
+    <string name="DOWNLOAD_NEW_POET">افزودن شاعر جدید</string>
 </resources>
