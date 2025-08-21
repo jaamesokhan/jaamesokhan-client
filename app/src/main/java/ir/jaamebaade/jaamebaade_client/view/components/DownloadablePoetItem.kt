@@ -28,11 +28,9 @@ import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN20
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButton
+import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButtonStyle
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
-enum class ComposableSquareButtonStyle {
-    Filled, Outlined
-}
 
 
 

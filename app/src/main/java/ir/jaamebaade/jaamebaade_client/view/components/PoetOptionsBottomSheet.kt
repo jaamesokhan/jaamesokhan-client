@@ -35,7 +35,8 @@ fun PoetOptionsBottomSheet(
             onButtonClick = onDeleteClick,
             buttonBackgroundColor = MaterialTheme.colorScheme.error,
             buttonTextColor = MaterialTheme.colorScheme.onError,
-            buttonText = stringResource(R.string.DELETE_POET)
+            buttonText = stringResource(R.string.DELETE_POET),
+            onHeaderIconClick = onDismiss
         )
     }
 }

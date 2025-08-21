@@ -282,7 +282,8 @@ fun DownloadablePoetOptionsBottomSheet(
             showDescription = showDescription,
             headerText = stringResource(R.string.DOWNLOAD_NEW_POET),
             buttonType = buttonType,
-            onButtonClick = onButtonClick
+            onButtonClick = onButtonClick,
+            onHeaderIconClick = onDismiss
         )
     }
 }

@@ -26,6 +26,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButt
 import ir.jaamebaade.jaamebaade_client.view.components.base.RectangularButton
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 import androidx.compose.material3.CircularProgressIndicator
+import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButtonStyle
 
 enum class PoetInfoButtonType {
     ADD, OPEN, LOADING, FAILED, DELETE
@@ -41,7 +42,8 @@ fun PoetBottomSheetContent(
     onButtonClick: () -> Unit,
     buttonBackgroundColor: Color? = null,
     buttonTextColor: Color? = null,
-    buttonText: String? = null
+    buttonText: String? = null,
+    onHeaderIconClick: () -> Unit = { /* Default no-op */ }
 ) {
     Column(
         modifier = Modifier
@@ -56,7 +58,7 @@ fun PoetBottomSheetContent(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 IconButton(
-                    onClick = onButtonClick // This should be onDismiss, but for shared usage, caller should wrap
+                    onClick = onHeaderIconClick
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,

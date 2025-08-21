@@ -26,7 +26,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import ir.jaamebaade.jaamebaade_client.view.components.ComposableSquareButtonStyle
+
+enum class ComposableSquareButtonStyle {
+    Filled, Outlined
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
