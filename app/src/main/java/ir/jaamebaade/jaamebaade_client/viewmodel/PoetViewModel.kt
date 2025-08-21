@@ -96,6 +96,11 @@ class PoetViewModel @Inject constructor(
             fetchPoets()
         }
     }
+    suspend fun getPoetCategoryId(poetId: Int): Int {
+        return withContext(Dispatchers.IO) {
+            categoryRepository.getPoetCategoryId(poetId)
+        }
+    }
 
     fun updateSearchQuery(query: String) {
         searchQuery = query

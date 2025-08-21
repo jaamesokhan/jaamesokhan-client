@@ -93,6 +93,9 @@
     <string name="SEARCH">جست‌وجو</string>
     <string name="MORE">بیشتر</string>
 
+
+    <string name="POET_SEARCH_BAR_HINT">دنبال چه شاعری می‌گردید؟</string>
+
     <!-- Intro Stuff    -->
     <string name="INTRO_HISTORY_TITLE">تاریخچه</string>
     <string name="INTRO_HISTORY_DESC">به تاریخچه شعرهایی که خوندین به راحتی دسترسی داشته باشین و اونارو مدیریت کنین</string>
@@ -149,4 +152,7 @@
     <string name="NO_HISTORY">هیچ شعری مطالعه نکرده‌اید!</string>
     <string name="READ_HISTORY">آخرین اشعار مطالعه شده</string>
     <string name="DELETE_HIGHLIGHT_SUCCESS">هایلایت با موفقیت حذف شد.</string>
+    <string name="DOWNLOAD_POET">افزودن</string>
+    <string name="OPEN_DOWNLOADED_POET_DESC">باز کردن</string>
+    <string name="DOWNLOAD_NEW_POET">افزودن شاعر جدید</string>
 </resources>

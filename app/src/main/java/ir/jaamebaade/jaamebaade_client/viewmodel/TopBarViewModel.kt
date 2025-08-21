@@ -1,6 +1,5 @@
 package ir.jaamebaade.jaamebaade_client.viewmodel
 
-import android.util.Log
 import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -89,6 +88,7 @@ class TopBarViewModel @Inject constructor(
             AppRoutes.POEM -> true
             AppRoutes.SETTINGS_SCREEN -> true
             AppRoutes.SEARCH_SCREEN -> true
+            AppRoutes.DOWNLOADABLE_POETS_SCREEN -> true
             else -> false
         }
     }

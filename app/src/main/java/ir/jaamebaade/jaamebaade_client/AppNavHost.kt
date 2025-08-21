@@ -127,7 +127,7 @@ fun AppNavHost(
                             )
                         }
                         animatedComposable(route = AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
-                            DownloadablePoetsScreen(modifier = Modifier.padding(innerPadding))
+                            DownloadablePoetsScreen(modifier = Modifier.padding(innerPadding), navController = navController)
                         }
                         animatedComposable(
                             route = "${AppRoutes.POET_CATEGORY_SCREEN}/{poetId}/{parentIds}",
