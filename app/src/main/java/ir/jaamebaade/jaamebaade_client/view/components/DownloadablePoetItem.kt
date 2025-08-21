@@ -25,13 +25,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN20
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButton
 import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButtonStyle
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
-
-
 
 
 @Composable
@@ -82,7 +79,7 @@ fun DownloadablePoetItem(
                 Text(
                     text = poet.name,
                     style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.neutralN20,
+                    color = MaterialTheme.colorScheme.onBackground, //MaterialTheme.colorScheme.neutralN20,
                     maxLines = 3,
                     modifier = Modifier.weight(1f)
                 )
