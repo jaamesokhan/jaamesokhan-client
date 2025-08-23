@@ -49,13 +49,6 @@ fun RandomPoemOptions(
                 downloadedPoetViewModel.saveSelectedCategoriesForRandomPoem()
             })
         }
-        // Save button
-//        RectangularButton(
-//            backgroundColor = MaterialTheme.colorScheme.primary,
-//            textColor = MaterialTheme.colorScheme.onPrimary,
-//            text = stringResource(R.string.SAVE)
-//        ) { downloadedPoetViewModel.saveSelectedCategoriesForRandomPoem()
-//            onSave() }
 
     }
 

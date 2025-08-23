@@ -208,5 +208,3 @@ fun AppNavHost(
         }
     }
 }
-
-
