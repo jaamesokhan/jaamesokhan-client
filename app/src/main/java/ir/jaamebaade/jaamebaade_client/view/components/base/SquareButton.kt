@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -121,8 +123,12 @@ fun ComposableSquareButton(
     Button(
         modifier = modifier
             .then(
-                if (buttonWidth != Dp.Unspecified && buttonHeight != Dp.Unspecified) {
-                    Modifier.size(buttonWidth, buttonHeight)
+                if (buttonWidth != Dp.Unspecified){
+                    Modifier.width(buttonWidth)
+                } else Modifier
+            ). then(
+                if( buttonHeight != Dp.Unspecified){
+                    Modifier.height(buttonHeight)
                 } else Modifier
             )
             .border(

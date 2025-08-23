@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -90,7 +91,7 @@ fun DownloadablePoetItem(
                             style = ComposableSquareButtonStyle.Outlined,
                             onClick = onButtonClick,
                             buttonHeight = 50.dp,
-                            buttonWidth = 114.dp
+                            modifier = Modifier.wrapContentWidth()
                         ) {
                             Icon(
                                 modifier = Modifier.size(iconSize),
@@ -110,7 +111,7 @@ fun DownloadablePoetItem(
                             style = ComposableSquareButtonStyle.Outlined,
                             onClick = {},
                             buttonHeight = 50.dp,
-                            buttonWidth = 114.dp
+                            modifier = Modifier.wrapContentWidth()
                         ) {
                             CircularProgressIndicator(modifier = Modifier.size(iconSize))
 
@@ -122,7 +123,7 @@ fun DownloadablePoetItem(
                             style = ComposableSquareButtonStyle.Filled,
                             onClick = onButtonClick,
                             buttonHeight = 50.dp,
-                            buttonWidth = 114.dp
+                            modifier = Modifier.wrapContentWidth()
                         ) {
                             Icon(
                                 modifier = Modifier.size(iconSize),
@@ -143,7 +144,7 @@ fun DownloadablePoetItem(
                             style = ComposableSquareButtonStyle.Outlined,
                             onClick = onButtonClick,
                             buttonHeight = 50.dp,
-                            buttonWidth = 114.dp
+                            modifier = Modifier.wrapContentWidth()
                         ) {
                             Icon(
                                 modifier = Modifier.size(iconSize),
