@@ -26,7 +26,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.canopas.lib.showcase.IntroShowcase
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
 import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
@@ -52,21 +51,18 @@ import ir.jaamebaade.jaamebaade_client.view.components.PermissionRationaleDialog
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemOptions
 import ir.jaamebaade.jaamebaade_client.view.components.TopBar
 import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
-import ir.jaamebaade.jaamebaade_client.viewmodel.MainIntroViewModel
 
 @Composable
 fun AppNavHost(
     fontRepository: FontRepository,
     themeRepository: ThemeRepository,
     sharedPrefManager: SharedPrefManager,
-    requestPermissionLauncher: (String) -> Unit,
-    mainIntroViewModel: MainIntroViewModel = hiltViewModel()
+    requestPermissionLauncher: (String) -> Unit
 ) {
     val audioViewModel: AudioViewModel = hiltViewModel()
 
     val navController =
         rememberNavController()
-    val showIntroShowcase by mainIntroViewModel.showAppIntro.collectAsState()
 
     val appTheme by themeRepository.appTheme.collectAsState()
 
@@ -95,120 +91,122 @@ fun AppNavHost(
                     }
                 )
             }
-            IntroShowcase(
-                showIntroShowCase = showIntroShowcase,
-                dismissOnClickOutside = true,
-                onShowCaseCompleted = {
-                    mainIntroViewModel.setIntroShown()
-                },
-            ) {
-                Scaffold(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .systemBarsPadding()
-                        .imePadding()
-                        .background(MaterialTheme.colorScheme.background),
-                    bottomBar = { Navbar(navController = navController) },
-                    topBar = {
-                        TopBar(
-                            navController = navController,
-                            audioViewModel = audioViewModel,
-                        )
-                    }) { innerPadding ->
-                    NavHost(
+
+            Scaffold(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .systemBarsPadding()
+                    .imePadding()
+                    .background(MaterialTheme.colorScheme.background),
+                bottomBar = { Navbar(navController = navController) },
+                topBar = {
+                    TopBar(
                         navController = navController,
-                        startDestination = AppRoutes.DOWNLOADED_POETS_SCREEN.toString()
-                    ) {
-                        animatedComposable(route = AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
-                            MyPoetsScreen(
-                                modifier = Modifier.padding(
-                                    innerPadding
-                                ), navController = navController
-                            )
-                        }
-                        animatedComposable(route = AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
-                            DownloadablePoetsScreen(modifier = Modifier.padding(innerPadding), navController = navController)
-                        }
-                        animatedComposable(
-                            route = "${AppRoutes.POET_CATEGORY_SCREEN}/{poetId}/{parentIds}",
-                            arguments = listOf(
-                                navArgument("poetId") { type = NavType.IntType },
-                                navArgument("parentIds") { type = NavType.StringType }
-                            ),
-                        ) { backStackEntry ->
-                            val poetId = backStackEntry.arguments?.getInt("poetId")
-                            val parentIds =
-                                backStackEntry.arguments?.getString("parentIds")?.toIntArray()
-                            PoetDetailScreen(
-                                modifier = Modifier.padding(innerPadding),
-                                poetId = poetId!!,
-                                parentIds = parentIds ?: intArrayOf(),
-                                navController = navController
-                            )
-                        }
-                        animatedComposable(AppRoutes.SETTINGS_SCREEN.toString()) {
-                            SettingsListScreen(modifier = Modifier.padding(innerPadding), fontRepository, themeRepository)
-                        }
-                        animatedComposable(AppRoutes.RANDOM_POEM_OPTIONS.toString()) {
-                            //TODO must implement onSave
-                            RandomPoemOptions(modifier = Modifier.padding(innerPadding))
-                        }
-                        animatedComposable(route = AppRoutes.SEARCH_SCREEN.toString()) {
-                            SearchScreen(
-                                modifier = Modifier.padding(innerPadding),
-                                navController = navController
-                            )
-                        }
-                        animatedComposable(AppRoutes.BOOKMARKS_SCREEN.toString()) {
-                            MyBookmarkScreen(
-                                modifier = Modifier.padding(innerPadding),
-                                navController = navController
-                            )
-                        }
-                        animatedComposable(AppRoutes.HIGHLIGHTS_SCREEN.toString()) {
-                            MyHighlightScreen(modifier = Modifier.padding(innerPadding),
-                                navController = navController)
-                        }
-                        animatedComposable(AppRoutes.NOTES_SCREEN.toString()) {
-                            MyNotesScreen(Modifier.padding(innerPadding), navController)
+                        audioViewModel = audioViewModel,
+                    )
+                }) { innerPadding ->
+                NavHost(
+                    navController = navController,
+                    startDestination = AppRoutes.DOWNLOADED_POETS_SCREEN.toString()
+                ) {
+                    animatedComposable(route = AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                        MyPoetsScreen(
+                            modifier = Modifier.padding(
+                                innerPadding
+                            ), navController = navController
+                        )
+                    }
+                    animatedComposable(route = AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
+                        DownloadablePoetsScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            navController = navController
+                        )
+                    }
+                    animatedComposable(
+                        route = "${AppRoutes.POET_CATEGORY_SCREEN}/{poetId}/{parentIds}",
+                        arguments = listOf(
+                            navArgument("poetId") { type = NavType.IntType },
+                            navArgument("parentIds") { type = NavType.StringType }
+                        ),
+                    ) { backStackEntry ->
+                        val poetId = backStackEntry.arguments?.getInt("poetId")
+                        val parentIds =
+                            backStackEntry.arguments?.getString("parentIds")?.toIntArray()
+                        PoetDetailScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            poetId = poetId!!,
+                            parentIds = parentIds ?: intArrayOf(),
+                            navController = navController
+                        )
+                    }
+                    animatedComposable(AppRoutes.SETTINGS_SCREEN.toString()) {
+                        SettingsListScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            fontRepository,
+                            themeRepository
+                        )
+                    }
+                    animatedComposable(AppRoutes.RANDOM_POEM_OPTIONS.toString()) {
+                        RandomPoemOptions(modifier = Modifier.padding(innerPadding))
+                    }
+                    animatedComposable(route = AppRoutes.SEARCH_SCREEN.toString()) {
+                        SearchScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            navController = navController
+                        )
+                    }
+                    animatedComposable(AppRoutes.BOOKMARKS_SCREEN.toString()) {
+                        MyBookmarkScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            navController = navController
+                        )
+                    }
+                    animatedComposable(AppRoutes.HIGHLIGHTS_SCREEN.toString()) {
+                        MyHighlightScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            navController = navController
+                        )
+                    }
+                    animatedComposable(AppRoutes.NOTES_SCREEN.toString()) {
+                        MyNotesScreen(Modifier.padding(innerPadding), navController)
 
-                        }
-                        animatedComposable(
-                            "${AppRoutes.POEM}/{poetId}/{poemId}/{verseId}",
-                            arguments = listOf(
-                                navArgument("poetId") { type = NavType.IntType },
-                                // TODO add parentIds here (or at least the last of them)
-                                navArgument("poemId") { type = NavType.IntType },
-                                navArgument("verseId") { type = NavType.LongType },
-                            )
-                        ) { backStackEntry ->
-                            val poetId = backStackEntry.arguments?.getInt("poetId")
-                            val poemId = backStackEntry.arguments?.getInt("poemId")
-                            val verseId = backStackEntry.arguments?.getLong("verseId")
-                                ?.let { if (it == -1L) null else it }
+                    }
+                    animatedComposable(
+                        "${AppRoutes.POEM}/{poetId}/{poemId}/{verseId}",
+                        arguments = listOf(
+                            navArgument("poetId") { type = NavType.IntType },
+                            // TODO add parentIds here (or at least the last of them)
+                            navArgument("poemId") { type = NavType.IntType },
+                            navArgument("verseId") { type = NavType.LongType },
+                        )
+                    ) { backStackEntry ->
+                        val poetId = backStackEntry.arguments?.getInt("poetId")
+                        val poemId = backStackEntry.arguments?.getInt("poemId")
+                        val verseId = backStackEntry.arguments?.getLong("verseId")
+                            ?.let { if (it == -1L) null else it }
 
-                            PoemScreen(
-                                navController,
-                                poemId = poemId!!,
-                                poetId = poetId!!,
-                                focusedVerseId = verseId,
-                                audioViewModel = audioViewModel,
-                                modifier = Modifier.padding(innerPadding),
-                            )
-                        }
+                        PoemScreen(
+                            navController,
+                            poemId = poemId!!,
+                            poetId = poetId!!,
+                            focusedVerseId = verseId,
+                            audioViewModel = audioViewModel,
+                            modifier = Modifier.padding(innerPadding),
+                        )
+                    }
 
-                        animatedComposable(AppRoutes.ABOUT_US_SCREEN.toString()) {
-                            AboutUsScreen(
-                                modifier = Modifier.padding(innerPadding),
-                            )
-                        }
-                        dialog(AppRoutes.ACCOUNT_SCREEN.toString()) {
-                            AccountScreen(navController = navController)
-                        }
+                    animatedComposable(AppRoutes.ABOUT_US_SCREEN.toString()) {
+                        AboutUsScreen(
+                            modifier = Modifier.padding(innerPadding),
+                        )
+                    }
+                    dialog(AppRoutes.ACCOUNT_SCREEN.toString()) {
+                        AccountScreen(navController = navController)
                     }
                 }
             }
         }
     }
 }
+
 

@@ -23,15 +23,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.canopas.lib.showcase.IntroShowcaseScope
-import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
-import ir.jaamebaade.jaamebaade_client.view.components.ButtonIntro
 import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
 import ir.jaamebaade.jaamebaade_client.view.components.PoetOptionsBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemBox
@@ -43,7 +40,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IntroShowcaseScope.MyPoetsScreen(
+fun MyPoetsScreen(
     modifier: Modifier = Modifier,
     viewModel: MyPoetsViewModel = hiltViewModel(),
     navController: NavController
@@ -123,21 +120,7 @@ fun IntroShowcaseScope.MyPoetsScreen(
                 }
                 item {
                     SquareButton(
-                        modifier = Modifier
-                            .introShowCaseTarget(
-                                index = 4,
-                                style = ShowcaseStyle.Default.copy(
-                                    backgroundColor = MaterialTheme.colorScheme.primary,
-                                    backgroundAlpha = 0.98f,
-                                    targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                                ),
-                                content = {
-                                    ButtonIntro(
-                                        stringResource(R.string.INTRO_DOWNLOAD_TITLE),
-                                        stringResource(R.string.INTRO_DOWNLOAD_DESC)
-                                    )
-                                }
-                            ),
+                        modifier = Modifier,
                         icon = Icons.Filled.Add,
                         tint = MaterialTheme.colorScheme.neutralN95,
                         backgroundColor = MaterialTheme.colorScheme.outline,

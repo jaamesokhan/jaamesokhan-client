@@ -35,8 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navOptions
-import com.canopas.lib.showcase.IntroShowcaseScope
-import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN70
@@ -108,7 +106,7 @@ val navbarItems = listOf(
 )
 
 @Composable
-fun IntroShowcaseScope.Navbar(navController: NavController) {
+fun Navbar(navController: NavController) {
     val currentRoute = currentRoute(navController, routeMap)
     // TODO : this may not be the best practice to handle this kind of situation
     if (currentRoute in navbarItems.map { it.route.toString() }) {
@@ -139,7 +137,7 @@ fun IntroShowcaseScope.Navbar(navController: NavController) {
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        navbarItems.forEachIndexed { index, item ->
+                        navbarItems.forEachIndexed { _, item ->
                             val isSelected = currentRoute == item.route.toString()
                             NavbarItem(
                                 route = item.route,
@@ -148,20 +146,7 @@ fun IntroShowcaseScope.Navbar(navController: NavController) {
                                 contentDescription = stringResource(item.contentDescriptionResId),
                                 isSelected = isSelected,
                                 navController = navController,
-                                modifier = Modifier.introShowCaseTarget(
-                                    index = index,
-                                    style = ShowcaseStyle.Default.copy(
-                                        backgroundColor = MaterialTheme.colorScheme.primary,
-                                        backgroundAlpha = 0.98f,
-                                        targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                                    ),
-                                    content = {
-                                        ButtonIntro(
-                                            stringResource(item.introTitleResId),
-                                            stringResource(item.introDescResId)
-                                        )
-                                    }
-                                )
+                                modifier = Modifier,
                             )
                         }
                     }
