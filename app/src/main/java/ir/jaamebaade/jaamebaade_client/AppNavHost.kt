@@ -151,7 +151,7 @@ fun AppNavHost(
                         }
                         animatedComposable(AppRoutes.RANDOM_POEM_OPTIONS.toString()) {
                             //TODO must implement onSave
-                            RandomPoemOptions(modifier = Modifier.padding(innerPadding), onSave = {})
+                            RandomPoemOptions(modifier = Modifier.padding(innerPadding))
                         }
                         animatedComposable(route = AppRoutes.SEARCH_SCREEN.toString()) {
                             SearchScreen(
