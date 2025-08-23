@@ -135,7 +135,11 @@
     <string name="ABOUT_US_TITLE">درباره جام سخن</string>
     <string name="ABOUT_SUPPORT_TITLE">حمایت از ما</string>
     <string name="ABOUT_CONTRIBUTION_TITLE">همکاری با ما</string>
-    <string name="INTRO_TO_FRIENDS_TEXT">https://google.com</string>
+    <string name="INTRO_TO_FRIENDS_TEXT">
+        جام سخن
+        اپلیکیشن متن باز برای دسترسی آسان به اشعار فارسی. دانلود از:
+        http://cafebazaar.ir/app/?id=ir.jaamebaade.jaamebaade_client&amp;ref=share
+    ما را به دوستان خود معرفی کنید!</string>
     <string name="SAVE">ذخیره</string>
     <string name="APP_NAME">Jaame-Sokhan V2</string>
     <string name="ABOUT_BE_SUPPORTIVE">حامی باش</string>
