@@ -7,13 +7,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
+import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
-import androidx.compose.material.icons.outlined.VolumeUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -40,6 +41,7 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
+import ir.jaamebaade.jaamebaade_client.repository.FontRepository
 import ir.jaamebaade.jaamebaade_client.view.components.AudioListItems
 import ir.jaamebaade.jaamebaade_client.view.components.NotesBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
@@ -61,10 +63,14 @@ fun PoemScreen(
     poetId: Int,
     focusedVerseId: Long?,
     modifier: Modifier,
-    audioViewModel: AudioViewModel = hiltViewModel()
+    audioViewModel: AudioViewModel = hiltViewModel(),
+    fontRepository: FontRepository
 ) {
     val context = LocalContext.current
-
+    val verseStyle = SpanStyle(
+        fontFamily = fontRepository.getPoemFontFamily(),
+        fontSize = fontRepository.getPoemFontSize()
+    )
     var path by remember(poemId) {
         mutableStateOf<VersePoemCategoriesPoet?>(null)
     }
@@ -172,8 +178,8 @@ fun PoemScreen(
 
     val toggleButtonItems = listOf(
         ToggleButtonItem(
-            checkedImageVector = Icons.Filled.VolumeUp,
-            uncheckedImageVector = Icons.Outlined.VolumeUp,
+            checkedImageVector = Icons.AutoMirrored.Filled.VolumeUp,
+            uncheckedImageVector = Icons.AutoMirrored.Outlined.VolumeUp,
             contentDescription = stringResource(R.string.RECITE),
             checked = audioOptionChecked,
             onClick = { audioOptionChecked = it }
@@ -340,6 +346,7 @@ fun PoemScreen(
                     onClick = {
                         if (selectMode) onClick(isSelected, verseWithHighlights)
                     },
+                    verseStyle = verseStyle
                 ) { startIndex, endIndex ->
                     poemViewModel.highlight(
                         verseWithHighlights.verse.id,

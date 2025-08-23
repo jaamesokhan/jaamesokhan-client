@@ -191,6 +191,7 @@ fun AppNavHost(
                             poetId = poetId!!,
                             focusedVerseId = verseId,
                             audioViewModel = audioViewModel,
+                            fontRepository = fontRepository,
                             modifier = Modifier.padding(innerPadding),
                         )
                     }

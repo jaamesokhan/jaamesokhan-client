@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.repository
 
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.TextUnit
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
@@ -47,4 +48,12 @@ class FontRepository @Inject constructor(
         sharedPrefManager.savePoemFont(family)
     }
 
+
+    fun getPoemFontFamily(): FontFamily{
+        return poemFontFamily.value.fontFamily
+    }
+
+    fun getPoemFontSize(): TextUnit {
+        return getPoemFontNumberFromSize(poemFontSize.value)
+    }
 }
