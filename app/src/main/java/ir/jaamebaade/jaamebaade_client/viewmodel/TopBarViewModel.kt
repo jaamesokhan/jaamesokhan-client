@@ -62,6 +62,9 @@ class TopBarViewModel @Inject constructor(
         val path = getPath(navStack)
         showHistoryIcon = when (path) {
             AppRoutes.DOWNLOADED_POETS_SCREEN -> true
+            AppRoutes.BOOKMARKS_SCREEN -> true
+            AppRoutes.HIGHLIGHTS_SCREEN -> true
+            AppRoutes.NOTES_SCREEN -> true
             else -> false
         }
     }
@@ -78,6 +81,9 @@ class TopBarViewModel @Inject constructor(
         val path = getPath(navStack)
         showSearchIcon = when (path) {
             AppRoutes.DOWNLOADED_POETS_SCREEN -> true
+            AppRoutes.BOOKMARKS_SCREEN -> true
+            AppRoutes.HIGHLIGHTS_SCREEN -> true
+            AppRoutes.NOTES_SCREEN -> true
             else -> false
         }
     }
@@ -105,7 +111,7 @@ class TopBarViewModel @Inject constructor(
         poet = null
         val path = getPath(navStack)
         when (path) {
-            null, AppRoutes.DOWNLOADED_POETS_SCREEN -> return ""
+//            null, AppRoutes.DOWNLOADED_POETS_SCREEN -> return ""
             AppRoutes.DOWNLOADABLE_POETS_SCREEN -> return "دانلود شاعر جدید"
             AppRoutes.POET_CATEGORY_SCREEN -> {
                 val poetId = navStack.arguments?.getInt("poetId")
