@@ -365,6 +365,8 @@ fun MyHistoryCardItem(
                 text = historyRecord.firstVerse.text,
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.outlineVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         footer =
