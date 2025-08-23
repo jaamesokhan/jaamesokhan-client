@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -88,10 +90,10 @@ fun DownloadablePoetItem(
                 when (status) {
                     DownloadStatus.NotDownloaded -> {
                         ComposableSquareButton(
+                            modifier =Modifier.height(50.dp)
+                                .wrapContentWidth().widthIn(min = 116.dp),
                             style = ComposableSquareButtonStyle.Outlined,
-                            onClick = onButtonClick,
-                            buttonHeight = 50.dp,
-                            modifier = Modifier.wrapContentWidth()
+                            onClick = onButtonClick
                         ) {
                             Icon(
                                 modifier = Modifier.size(iconSize),
@@ -108,10 +110,11 @@ fun DownloadablePoetItem(
 
                     DownloadStatus.Downloading -> {
                         ComposableSquareButton(
+                            modifier = Modifier.height(50.dp)
+                                .wrapContentWidth().widthIn(min = 116.dp) // default minimum width
+                                 ,
                             style = ComposableSquareButtonStyle.Outlined,
-                            onClick = {},
-                            buttonHeight = 50.dp,
-                            modifier = Modifier.wrapContentWidth()
+                            onClick = {}
                         ) {
                             CircularProgressIndicator(modifier = Modifier.size(iconSize))
 
@@ -120,10 +123,10 @@ fun DownloadablePoetItem(
 
                     DownloadStatus.Downloaded -> {
                         ComposableSquareButton(
+                            modifier = Modifier.height(50.dp)
+                                .wrapContentWidth().widthIn(min = 116.dp) ,
                             style = ComposableSquareButtonStyle.Filled,
-                            onClick = onButtonClick,
-                            buttonHeight = 50.dp,
-                            modifier = Modifier.wrapContentWidth()
+                            onClick = onButtonClick
                         ) {
                             Icon(
                                 modifier = Modifier.size(iconSize),
@@ -141,10 +144,10 @@ fun DownloadablePoetItem(
 
                     DownloadStatus.Failed -> {
                         ComposableSquareButton(
+                            modifier = Modifier.height(50.dp)
+                                .wrapContentWidth().widthIn(min = 116.dp) ,
                             style = ComposableSquareButtonStyle.Outlined,
-                            onClick = onButtonClick,
-                            buttonHeight = 50.dp,
-                            modifier = Modifier.wrapContentWidth()
+                            onClick = onButtonClick
                         ) {
                             Icon(
                                 modifier = Modifier.size(iconSize),
