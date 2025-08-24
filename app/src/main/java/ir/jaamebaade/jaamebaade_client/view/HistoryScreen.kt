@@ -94,7 +94,7 @@ fun HistoryScreen(
             Row(
                 modifier = Modifier
                     .padding(10.dp)
-                    .fillMaxSize(),
+                    .fillMaxSize().background(MaterialTheme.colorScheme.background),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -110,7 +110,7 @@ fun HistoryScreen(
                 )
             }
         } else {
-            LazyColumn(state = lazyListState, modifier = Modifier.fillMaxSize()) {
+            LazyColumn(state = lazyListState, modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
                 itemsIndexed(
                     items = poemHistory.value, key = { _, item ->
                         item.id
@@ -129,7 +129,7 @@ fun HistoryScreen(
                                 end = 0.dp,
                                 top = 5.dp,
                                 bottom = 5.dp
-                            ).background(MaterialTheme.colorScheme.background),
+                            ),
                             color = MaterialTheme.colorScheme.outline
                         )
                 }
