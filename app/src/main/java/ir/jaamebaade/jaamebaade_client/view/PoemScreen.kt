@@ -7,13 +7,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.VolumeUp
-import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material.icons.outlined.VolumeUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -178,8 +178,8 @@ fun PoemScreen(
 
     val toggleButtonItems = listOf(
         ToggleButtonItem(
-            checkedImageVector = Icons.AutoMirrored.Filled.VolumeUp,
-            uncheckedImageVector = Icons.AutoMirrored.Outlined.VolumeUp,
+            checkedImageVector = Icons.Filled.VolumeUp,
+            uncheckedImageVector = Icons.Outlined.VolumeUp,
             contentDescription = stringResource(R.string.RECITE),
             checked = audioOptionChecked,
             onClick = { audioOptionChecked = it }
