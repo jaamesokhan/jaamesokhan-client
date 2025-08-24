@@ -50,16 +50,16 @@ fun SearchScreen(
     val poets by searchViewModel.poets
         .collectAsStateWithLifecycle(initialValue = null)
 
-    var fetchStatue by remember { mutableStateOf(Status.LOADING) }
+    var fetchStatus by remember { mutableStateOf(Status.LOADING) }
 
     LaunchedEffect(key1 = poets) {
         if (poets != null) {
-            fetchStatue = Status.SUCCESS
+            fetchStatus = Status.SUCCESS
         }
     }
 
     val showingSearchHistory = searchViewModel.showingSearchHistory.collectAsState()
-    if (fetchStatue == Status.SUCCESS) {
+    if (fetchStatus == Status.SUCCESS) {
         Column(modifier = modifier.background(color = MaterialTheme.colorScheme.surface)) {
             SearchBar(
                 modifier = Modifier.fillMaxWidth(),

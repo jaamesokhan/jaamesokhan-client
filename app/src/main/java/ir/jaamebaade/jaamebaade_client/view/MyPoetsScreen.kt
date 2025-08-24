@@ -46,7 +46,7 @@ fun MyPoetsScreen(
     navController: NavController
 ) {
     val poets = viewModel.poets
-    var fetchStatue by remember { mutableStateOf(Status.LOADING) }
+    var fetchStatus by remember { mutableStateOf(Status.LOADING) }
     val coroutineScope = rememberCoroutineScope()
     var randomPoetPreviewFetchStatus by remember { mutableStateOf(Status.LOADING) }
     val randomPoemPreview = viewModel.randomPoemPreview
@@ -60,7 +60,7 @@ fun MyPoetsScreen(
     }
 
     LaunchedEffect(key1 = poets) {
-        if (poets != null) fetchStatue = Status.SUCCESS
+        if (poets != null) fetchStatus = Status.SUCCESS
     }
 
     if (showBottomSheet && selectedPoet != null) {
@@ -96,7 +96,7 @@ fun MyPoetsScreen(
             }
         }
 
-        if (fetchStatue == Status.SUCCESS) {
+        if (fetchStatus == Status.SUCCESS) {
             LazyVerticalGrid(columns = GridCells.Fixed(3)) {
                 if (poets!!.isNotEmpty()) {
                     items(poets) { poet ->
