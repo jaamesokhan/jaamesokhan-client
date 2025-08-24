@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -17,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -110,7 +112,16 @@ fun DownloadablePoetsScreen(
                             )
                         )
                     }
+                else
+                    IconButton(onClick = {
 
+                    }) {
+                        Icon(
+                            modifier = Modifier.size(24.dp),
+                            imageVector = Icons.Default.Search,
+                            contentDescription = stringResource(R.string.SEARCH_BAR_HINT)
+                        )
+                    }
             },
             placeholder = {
                 Text(
