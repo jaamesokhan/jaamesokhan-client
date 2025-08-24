@@ -17,9 +17,6 @@ class SharedPrefManager(
         const val USERNAME_KEY = "Username"
         const val AUTH_TOKEN_KEY = "AuthToken"
         const val APP_THEME_TYPE_KEY = "AppThemeType"
-        const val SHOW_APP_INTRO_POEM_KEY = "ShowAppIntroPoem"
-        const val SHOW_APP_INTRO_MANI_KEY = "ShowAppIntroMain"
-        const val SHOW_APP_INTRO_HIGHLIGHT_KEY = "ShowAppIntroHighlight"
 
         const val NOTIFICATION_PERMISSION_KEY = "NotificationPermission"
     }
@@ -55,7 +52,7 @@ class SharedPrefManager(
     }
 
     fun getPoemFont(): CustomFont {
-        val savedFontName = sharedPreferences.getString(POEM_FONT_KEY, CustomFonts.Vazirmatn.name)
+        val savedFontName = sharedPreferences.getString(POEM_FONT_KEY, CustomFonts.Dana.name)
         return CustomFonts.getAllFonts().find { it.name == savedFontName }
             ?: CustomFonts.getDefaultFont()
 
@@ -87,31 +84,6 @@ class SharedPrefManager(
 
     fun getHighlightMergeToggleState(): Boolean {
         return sharedPreferences.getBoolean("highlightMergeToggleState", false)
-    }
-
-    fun setShowAppIntroPoem(showIntro: Boolean) {
-        sharedPreferences.edit { putBoolean(SHOW_APP_INTRO_POEM_KEY, showIntro) }
-    }
-
-    fun getShowAppIntroPoem(): Boolean {
-        return sharedPreferences.getBoolean(SHOW_APP_INTRO_POEM_KEY, true)
-    }
-
-    fun setShowAppIntroHighlight(showIntro: Boolean) {
-        sharedPreferences.edit { putBoolean(SHOW_APP_INTRO_HIGHLIGHT_KEY, showIntro) }
-    }
-
-    fun getShowAppIntroHighlight(): Boolean {
-        return sharedPreferences.getBoolean(SHOW_APP_INTRO_HIGHLIGHT_KEY, true)
-
-    }
-
-    fun getShowAppIntroMain(): Boolean {
-        return sharedPreferences.getBoolean(SHOW_APP_INTRO_MANI_KEY, true)
-    }
-
-    fun setShowAppIntroMain(value: Boolean) {
-        sharedPreferences.edit { putBoolean(SHOW_APP_INTRO_MANI_KEY, value) }
     }
 
     fun setNotificationPermissionPreference(preference: Boolean) {

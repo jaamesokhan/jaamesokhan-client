@@ -106,8 +106,6 @@ fun ComposableSquareButton(
     backgroundColor: Color = MaterialTheme.colorScheme.primary, // your green shade
     contentColor: Color = Color.White,
     borderColor: Color = MaterialTheme.colorScheme.primary,
-    buttonWidth: Dp = Dp.Unspecified,
-    buttonHeight: Dp = Dp.Unspecified,
     borderWidth: Dp = 1.dp,
     onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit
@@ -120,11 +118,6 @@ fun ComposableSquareButton(
 
     Button(
         modifier = modifier
-            .then(
-                if (buttonWidth != Dp.Unspecified && buttonHeight != Dp.Unspecified) {
-                    Modifier.size(buttonWidth, buttonHeight)
-                } else Modifier
-            )
             .border(
                 width = borderWidth,
                 color = if (style == ComposableSquareButtonStyle.Outlined) borderColor else Color.Transparent,

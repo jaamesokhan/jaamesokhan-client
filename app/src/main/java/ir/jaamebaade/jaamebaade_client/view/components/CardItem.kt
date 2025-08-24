@@ -262,7 +262,7 @@ fun ComposableCardItem(
                 modifier = Modifier.weight(1f)
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(end =  24.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
@@ -365,6 +365,8 @@ fun MyHistoryCardItem(
                 text = historyRecord.firstVerse.text,
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.outlineVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         footer =

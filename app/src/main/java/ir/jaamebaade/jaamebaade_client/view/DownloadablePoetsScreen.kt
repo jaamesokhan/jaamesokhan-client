@@ -5,9 +5,11 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -16,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -73,7 +76,9 @@ fun DownloadablePoetsScreen(
     var searchQuery by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column(modifier = modifier.background(MaterialTheme.colorScheme.surface)) {
+    Column(modifier = modifier
+        .background(MaterialTheme.colorScheme.surface)
+        .fillMaxHeight()) {
 
         TextField(
             value = searchQuery,
@@ -96,19 +101,27 @@ fun DownloadablePoetsScreen(
                 disabledIndicatorColor = Color.Transparent,
             ),
             leadingIcon = {
-
-                IconButton(onClick = {
-
-                    searchQuery = ""
-                    poetViewModel.updateSearchQuery(searchQuery)
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Close, contentDescription = stringResource(
-                            R.string.CLOSE
+                if (searchQuery.isNotEmpty())
+                    IconButton(onClick = {
+                        searchQuery = ""
+                        poetViewModel.updateSearchQuery(searchQuery)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Close, contentDescription = stringResource(
+                                R.string.CLOSE
+                            )
                         )
-                    )
-                }
+                    }
+                else
+                    IconButton(onClick = {
 
+                    }) {
+                        Icon(
+                            modifier = Modifier.size(24.dp),
+                            imageVector = Icons.Default.Search,
+                            contentDescription = stringResource(R.string.SEARCH_BAR_HINT)
+                        )
+                    }
             },
             placeholder = {
                 Text(
@@ -257,7 +270,6 @@ private fun getInternalStorageDir(context: Context): File {
     }
     return dir
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)

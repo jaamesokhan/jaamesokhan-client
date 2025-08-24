@@ -27,6 +27,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.jaamebaade.jaamebaade_client.model.Highlight
@@ -47,8 +48,10 @@ fun VerseItem(
     isSelected: Boolean,
     onClick: () -> Unit,
     highlights: List<Highlight>,
-    highlightCallBack: (startIndex: Int, endIndex: Int) -> Unit
-) {
+    verseStyle: SpanStyle,
+    highlightCallBack: (startIndex: Int, endIndex: Int) -> Unit,
+
+    ) {
     val paddingFromStart = 14.dp
     var showDialog by remember { mutableStateOf(false) }
     var startIndex by remember { mutableIntStateOf(0) }
@@ -68,18 +71,25 @@ fun VerseItem(
 
     LaunchedEffect(key1 = highlights) {
         annotatedString = buildAnnotatedString {
-            append(verse.text)
-            highlights.forEach {
-                addStyle(
-                    style = SpanStyle(
-                        background = highlightColor,
-                        fontWeight = FontWeight.Bold
-                    ),
-                    start = it.startIndex,
-                    end = it.endIndex,
-                )
+
+            withStyle(verseStyle)
+            {
+                append(verse.text)
+
+
+                highlights.forEach {
+                    addStyle(
+                        style = SpanStyle(
+                            background = highlightColor,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        start = it.startIndex,
+                        end = it.endIndex,
+                    )
+                }
             }
         }
+
         textFieldValue = TextFieldValue(annotatedString!!)
     }
     if (showDialog) {

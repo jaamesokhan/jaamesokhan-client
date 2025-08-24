@@ -1,6 +1,5 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,8 +33,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -45,8 +44,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.canopas.lib.showcase.IntroShowcaseScope
-import com.canopas.lib.showcase.component.ShowcaseStyle
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
@@ -59,7 +56,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IntroShowcaseScope.TopBar(
+fun TopBar(
     navController: NavController,
     viewModel: TopBarViewModel = hiltViewModel(),
     myPoetsViewModel: MyPoetsViewModel = hiltViewModel(),
@@ -67,7 +64,8 @@ fun IntroShowcaseScope.TopBar(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
-        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.BOOKMARKS_SCREEN.toString())
+        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.BOOKMARKS_SCREEN.toString() &&
+                backStackEntry?.destination?.route != AppRoutes.HIGHLIGHTS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.NOTES_SCREEN.toString())
     val context = LocalContext.current
 
 
@@ -196,17 +194,7 @@ fun IntroShowcaseScope.TopBar(
                         Row {
                             if (showHistory) {
                                 IconButton(
-                                    modifier = Modifier.introShowCaseTarget(
-                                        index = 5, style = ShowcaseStyle.Default.copy(
-                                            backgroundColor = MaterialTheme.colorScheme.primary,
-                                            backgroundAlpha = 0.98f,
-                                            targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                                        ), content = {
-                                            ButtonIntro(
-                                                stringResource(R.string.INTRO_HISTORY_TITLE),
-                                                stringResource(R.string.INTRO_HISTORY_DESC)
-                                            )
-                                        }),
+                                    modifier = Modifier,
                                     onClick = { showHistoryBottomSheet = true }) {
                                     Icon(
                                         imageVector = Icons.Filled.History,
@@ -218,17 +206,7 @@ fun IntroShowcaseScope.TopBar(
                             }
                             if (showSearch) {
                                 IconButton(
-                                    modifier = Modifier.introShowCaseTarget(
-                                        index = 5, style = ShowcaseStyle.Default.copy(
-                                            backgroundColor = MaterialTheme.colorScheme.primary,
-                                            backgroundAlpha = 0.98f,
-                                            targetCircleColor = MaterialTheme.colorScheme.onPrimary
-                                        ), content = {
-                                            ButtonIntro(
-                                                stringResource(R.string.INTRO_SEARCH_TITLE),
-                                                stringResource(R.string.INTRO_SHARE_DESC),
-                                            )
-                                        }),
+                                    modifier = Modifier,
                                     onClick = { navController.navigate("${AppRoutes.SEARCH_SCREEN}") }) {
                                     Icon(
                                         imageVector = Icons.Default.Search,
@@ -240,7 +218,6 @@ fun IntroShowcaseScope.TopBar(
                             }
                             if (showOptions) {
                                 IconButton(
-                                    // TODO this might need an intro
                                     onClick = { showPoetOptionModal = true }) {
                                     Icon(
                                         imageVector = Icons.Default.MoreVert,

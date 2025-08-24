@@ -109,9 +109,7 @@ fun PoetBottomSheetContent(
                     PoetInfoButtonType.LOADING -> {
                         ComposableSquareButton(
                             style = ComposableSquareButtonStyle.Outlined,
-                            onClick = onButtonClick,
-                            buttonHeight = 50.dp,
-                            buttonWidth = 114.dp
+                            onClick = onButtonClick
                         ) {
                             CircularProgressIndicator(modifier = Modifier.size(18.dp))
                         }

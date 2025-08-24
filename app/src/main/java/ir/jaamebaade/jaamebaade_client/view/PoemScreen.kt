@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -40,6 +41,7 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
+import ir.jaamebaade.jaamebaade_client.repository.FontRepository
 import ir.jaamebaade.jaamebaade_client.view.components.AudioListItems
 import ir.jaamebaade.jaamebaade_client.view.components.NotesBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
@@ -61,10 +63,14 @@ fun PoemScreen(
     poetId: Int,
     focusedVerseId: Long?,
     modifier: Modifier,
-    audioViewModel: AudioViewModel = hiltViewModel()
+    audioViewModel: AudioViewModel = hiltViewModel(),
+    fontRepository: FontRepository
 ) {
     val context = LocalContext.current
-
+    val verseStyle = SpanStyle(
+        fontFamily = fontRepository.getPoemFontFamily(),
+        fontSize = fontRepository.getPoemFontSize()
+    )
     var path by remember(poemId) {
         mutableStateOf<VersePoemCategoriesPoet?>(null)
     }
@@ -340,6 +346,7 @@ fun PoemScreen(
                     onClick = {
                         if (selectMode) onClick(isSelected, verseWithHighlights)
                     },
+                    verseStyle = verseStyle
                 ) { startIndex, endIndex ->
                     poemViewModel.highlight(
                         verseWithHighlights.verse.id,

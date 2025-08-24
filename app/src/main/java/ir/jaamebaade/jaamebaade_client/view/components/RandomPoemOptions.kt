@@ -1,7 +1,5 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,14 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.jaamebaade.jaamebaade_client.R
-import ir.jaamebaade.jaamebaade_client.view.components.base.RectangularButton
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
 
@@ -29,9 +25,7 @@ import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
 @OptIn(ExperimentalMaterial3Api::class)
 fun RandomPoemOptions(
     modifier: Modifier = Modifier,
-    downloadedPoetViewModel: MyPoetsViewModel = hiltViewModel(),
-    onSave: () -> Unit
-) {
+    downloadedPoetViewModel: MyPoetsViewModel = hiltViewModel()) {
     //TODO must be redesigned
     val poetsWithCategories = downloadedPoetViewModel.categories
     Column(
@@ -51,15 +45,10 @@ fun RandomPoemOptions(
 
         // Category checklist
         poetsWithCategories?.let { categories ->
-            RecursiveCheckList(categories = categories)
+            RecursiveCheckList(categories = categories, onChange = {
+                downloadedPoetViewModel.saveSelectedCategoriesForRandomPoem()
+            })
         }
-        // Save button
-        RectangularButton(
-            backgroundColor = MaterialTheme.colorScheme.primary,
-            textColor = MaterialTheme.colorScheme.onPrimary,
-            text = stringResource(R.string.SAVE)
-        ) { downloadedPoetViewModel.saveSelectedCategoriesForRandomPoem()
-            onSave() }
 
     }
 
@@ -69,6 +58,7 @@ fun RandomPoemOptions(
 @Composable
 private fun RecursiveCheckList(
     categories: List<CategoryGraphNode>,
+    onChange: () -> Unit
 ) {
     categories.forEach { category ->
         val canExpand = category.subCategories.isNotEmpty()
@@ -84,12 +74,13 @@ private fun RecursiveCheckList(
                 }
                 changeCheckRecursively(category, selectedForRandomState)
                 updateParentCheckStatus(category)
+                onChange()
             },
             text = category.category.text,
             canExpand = canExpand
         ) {
             if (canExpand) {
-                RecursiveCheckList(categories = category.subCategories)
+                RecursiveCheckList(categories = category.subCategories, onChange = onChange)
             }
         }
     }
