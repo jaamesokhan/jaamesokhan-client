@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -73,7 +74,9 @@ fun DownloadablePoetsScreen(
     var searchQuery by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column(modifier = modifier.background(MaterialTheme.colorScheme.surface)) {
+    Column(modifier = modifier
+        .background(MaterialTheme.colorScheme.surface)
+        .fillMaxHeight()) {
 
         TextField(
             value = searchQuery,
@@ -96,18 +99,17 @@ fun DownloadablePoetsScreen(
                 disabledIndicatorColor = Color.Transparent,
             ),
             leadingIcon = {
-
-                IconButton(onClick = {
-
-                    searchQuery = ""
-                    poetViewModel.updateSearchQuery(searchQuery)
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Close, contentDescription = stringResource(
-                            R.string.CLOSE
+                if (searchQuery.isNotEmpty())
+                    IconButton(onClick = {
+                        searchQuery = ""
+                        poetViewModel.updateSearchQuery(searchQuery)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Close, contentDescription = stringResource(
+                                R.string.CLOSE
+                            )
                         )
-                    )
-                }
+                    }
 
             },
             placeholder = {
@@ -257,7 +259,6 @@ private fun getInternalStorageDir(context: Context): File {
     }
     return dir
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)

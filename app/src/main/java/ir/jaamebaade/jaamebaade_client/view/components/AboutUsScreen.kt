@@ -96,6 +96,7 @@ fun AboutUsScreen(modifier: Modifier) {
         Text(text = stringResource(R.string.ABOUT_CONTRIBUTION_TITLE), style = headlineTextStyle)
         Spacer(modifier = Modifier.height(4.dp))
         Text(text = context.getString(R.string.ABOUT_US_EMAIL), style = bodyTextStyle)
+        Spacer(modifier = Modifier.height(16.dp))
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             RectangularButton(
                 backgroundColor = MaterialTheme.colorScheme.neutralN100,

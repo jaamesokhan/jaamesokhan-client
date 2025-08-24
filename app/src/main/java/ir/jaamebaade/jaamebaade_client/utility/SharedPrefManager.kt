@@ -52,7 +52,7 @@ class SharedPrefManager(
     }
 
     fun getPoemFont(): CustomFont {
-        val savedFontName = sharedPreferences.getString(POEM_FONT_KEY, CustomFonts.Vazirmatn.name)
+        val savedFontName = sharedPreferences.getString(POEM_FONT_KEY, CustomFonts.Dana.name)
         return CustomFonts.getAllFonts().find { it.name == savedFontName }
             ?: CustomFonts.getDefaultFont()
 
