@@ -15,11 +15,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
@@ -40,7 +38,7 @@ fun PoetInformationBox(poet: Poet) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SquareImage(
-                imageUrl = poet.imageUrl ?: stringResource(R.string.FALLBACK_IMAGE_URL),
+                imageUrl = poet.imageUrl,
                 contentDescription = poet.name,
                 size = 88
             )

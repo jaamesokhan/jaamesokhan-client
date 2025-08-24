@@ -47,7 +47,7 @@ fun PoemScreenTitle(
     ) {
         SquareImage(
             modifier = Modifier.padding(bottom = 8.dp),
-            imageUrl = poemPath.poet.imageUrl ?: stringResource(R.string.FALLBACK_IMAGE_URL),
+            imageUrl = poemPath.poet.imageUrl,
             contentDescription = poemPath.poet.name,
             size = 88,
         )

@@ -37,7 +37,7 @@ import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemCategoriesPoetFirstVerse
-import ir.jaamebaade.jaamebaade_client.view.components.NewCardItem
+import ir.jaamebaade.jaamebaade_client.view.components.CardItem
 import ir.jaamebaade.jaamebaade_client.view.components.bookmark.BottomSheetListItem
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyBookmarkViewModel
@@ -90,7 +90,7 @@ fun MyBookmarkScreen(
             itemsIndexed(
                 items = bookmarks,
                 key = { _, item -> item.bookmark.id }) { index, bookmark ->
-                NewCardItem(
+                CardItem(
                     modifier = Modifier.animateItem(),
                     headerText = AnnotatedString(bookmark.poem.title),
                     bodyText = bookmark.firstVerse.text,

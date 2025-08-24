@@ -65,7 +65,7 @@ fun DownloadablePoetItem(
             SquareImage(
 
                 contentDescription = poet.name,
-                imageUrl = poet.imageUrl ?: "https://ganjoor.net/image/gdap.png",
+                imageUrl = poet.imageUrl,
                 size = 66,
                 roundedCornerShapeSize = 20,
             )

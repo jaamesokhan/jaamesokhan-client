@@ -38,7 +38,7 @@ class SearchViewModel @Inject constructor(
         private set
 
     private val _allPoets = MutableStateFlow<List<Poet>>(emptyList())
-    val allPoets = _allPoets.asStateFlow()
+    val poets = _allPoets.asStateFlow()
 
 
     private val searchHistoryList: Flow<List<SearchHistoryRecord>> =
@@ -47,11 +47,10 @@ class SearchViewModel @Inject constructor(
     val showingSearchHistory = _showingSearchHistory.asStateFlow()
 
     private var searchJob: Job? = null
+
     init {
-        viewModelScope.launch {
-            getAllPoets()
-            collectSearchHistory()
-        }
+        getAllPoets()
+        collectSearchHistory()
     }
 
 
@@ -93,9 +92,11 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private suspend fun collectSearchHistory() {
-        searchHistoryList.collectLatest { historyRecords ->
-            _showingSearchHistory.value = historyRecords
+    private fun collectSearchHistory() {
+        viewModelScope.launch {
+            searchHistoryList.collectLatest { historyRecords ->
+                _showingSearchHistory.value = historyRecords
+            }
         }
     }
 
@@ -126,11 +127,12 @@ class SearchViewModel @Inject constructor(
         searchHistoryRepository.insertSearchHistoryRecord(searchHistory)
     }
 
-    private suspend fun getAllPoets() {
-        withContext(Dispatchers.IO) {
-            _allPoets.value = poetRepository.getAllPoets()
+    private fun getAllPoets() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                _allPoets.value = poetRepository.getAllPoets()
+            }
         }
-
     }
 
 
