@@ -120,7 +120,11 @@ fun MyPoetsScreen(
                 }
                 item {
                     SquareButton(
-                        modifier = Modifier,
+                        modifier = if (poets.isEmpty()) {
+                            Modifier.padding(top = 16.dp)
+                        } else {
+                            Modifier
+                        },
                         icon = Icons.Filled.Add,
                         tint = MaterialTheme.colorScheme.neutralN95,
                         backgroundColor = MaterialTheme.colorScheme.outline,
