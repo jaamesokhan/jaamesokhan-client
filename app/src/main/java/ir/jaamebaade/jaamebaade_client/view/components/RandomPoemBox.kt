@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.RandomPoemPreview
 import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
+import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN90Light
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
 
@@ -77,9 +78,9 @@ fun RandomPoemBox(
                     Column {
                         Text(
                             text = targetRandomPoemPreview.verses.joinToString(separator = "\n") { it.text },
-                            color = MaterialTheme.colorScheme.neutralN95,
                             style = MaterialTheme.typography.bodyLarge,
-                            overflow = TextOverflow.Ellipsis
+                            color = neutralN90Light,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }
@@ -103,7 +104,7 @@ fun RandomPoemBox(
                     ) { targetRandomPoemPreview ->
                         Text(
                             text = targetRandomPoemPreview.poemPath.toPathHeaderText(),
-                            color = MaterialTheme.colorScheme.neutralN95,
+                            color = neutralN90Light,
                             style = MaterialTheme.typography.bodySmall,
                             overflow = TextOverflow.Ellipsis
                         )

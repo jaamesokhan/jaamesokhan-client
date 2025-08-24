@@ -86,7 +86,7 @@ fun PoetBottomSheetContent(
                     .padding(4.dp)
             ) {
                 SquareImage(
-                    imageUrl = poet.imageUrl ?: stringResource(R.string.FALLBACK_IMAGE_URL),
+                    imageUrl = poet.imageUrl,
                     contentDescription = poet.name,
                     size = 89,
                 )

@@ -2,7 +2,6 @@ package ir.jaamebaade.jaamebaade_client.view.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,69 +39,6 @@ import java.util.Date
 @Composable
 fun CardItem(
     modifier: Modifier = Modifier,
-    headerText: String? = null,
-    bodyText: AnnotatedString,
-    footerText: String? = null,
-    icon: ImageVector? = null,
-    iconDescription: String? = null,
-    onClick: () -> Unit,
-    onIconClick: () -> Unit = {},
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable { onClick() }
-    ) {
-
-        if (headerText != null) {
-            CardHeader(
-                text = headerText
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(vertical = 8.dp)
-            ) {
-                Text(
-                    text = bodyText,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier
-                        .padding(horizontal = 2.dp)
-                )
-            }
-
-            if (icon != null) {
-                IconButton(
-                    onClick = {
-                        onIconClick()
-                    },
-                    modifier = Modifier.padding(start = 8.dp)
-                ) {
-                    Icon(imageVector = icon, contentDescription = iconDescription)
-                }
-            }
-        }
-        if (footerText != null) {
-            CardFooter(
-                text = footerText
-            )
-        }
-    }
-}
-
-@Composable
-fun NewCardItem(
-    modifier: Modifier = Modifier,
     headerText: AnnotatedString? = null,
     bodyText: String,
     footerText: String? = null,
@@ -132,7 +68,7 @@ fun NewCardItem(
         ) {
 
             SquareImage(
-                imageUrl = imageUrl ?: stringResource(R.string.FALLBACK_IMAGE_URL),
+                imageUrl = imageUrl,
                 contentDescription = null,
                 size = 66,
                 roundedCornerShapeSize = 20,
@@ -207,7 +143,7 @@ fun HighlightCardItem(
     onClick: () -> Unit,
     onIconClick: () -> Unit = {},
 ) {
-    NewCardItem(
+    CardItem(
         modifier = modifier,
         headerText = headerText,
         bodyText = bodyText,
@@ -251,7 +187,7 @@ fun ComposableCardItem(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             SquareImage(
-                imageUrl = imageUrl ?: stringResource(R.string.FALLBACK_IMAGE_URL),
+                imageUrl = imageUrl,
                 contentDescription = null,
                 size = 66,
                 roundedCornerShapeSize = 20,

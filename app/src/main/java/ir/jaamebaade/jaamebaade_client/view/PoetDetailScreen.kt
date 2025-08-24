@@ -109,7 +109,7 @@ fun PoetDetailScreen(
             icon = Icons.Default.Shuffle,
             backgroundColor = MaterialTheme.colorScheme.primary,
             tint = MaterialTheme.colorScheme.onPrimary,
-            size = 80,
+            size = 64,
             iconSize = 32,
             roundedCornerShapeSize = 15,
             contentDescription = stringResource(R.string.RANDOM_POEM),

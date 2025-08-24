@@ -92,6 +92,7 @@ fun SquareButton(
                 text = it,
                 style = textStyle,
                 modifier = Modifier.padding(top = 4.dp),
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
             )
         }
@@ -103,7 +104,7 @@ fun SquareButton(
 fun ComposableSquareButton(
     modifier: Modifier = Modifier,
     style: ComposableSquareButtonStyle = ComposableSquareButtonStyle.Filled,
-    backgroundColor: Color = MaterialTheme.colorScheme.primary, // your green shade
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
     contentColor: Color = Color.White,
     borderColor: Color = MaterialTheme.colorScheme.primary,
     borderWidth: Dp = 1.dp,

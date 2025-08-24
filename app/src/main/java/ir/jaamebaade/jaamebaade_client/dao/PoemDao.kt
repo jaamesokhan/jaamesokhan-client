@@ -127,7 +127,8 @@ interface PoemDao {
             FROM poems p
             JOIN verses v ON v.poem_id = p.id
             WHERE p.id = :poemId 
-            AND v.verse_order = 1
+            AND v.verse_order < 2
+            ORDER BY v.verse_order ASC
         """
     )
     fun getPoemFirstVerse(poemId: Int): Verse

@@ -32,7 +32,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -53,21 +52,11 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
 import ir.jaamebaade.jaamebaade_client.view.components.base.NotFoundBox
 import ir.jaamebaade.jaamebaade_client.view.components.search.DropDownToggleOption
 import ir.jaamebaade.jaamebaade_client.view.components.search.OptionDropDown
-import kotlinx.coroutines.flow.StateFlow
-
-enum class SearchCategory(val messageId: Int) {
-    ALL(R.string.SEARCH_ALL_CATEGORIES),
-    POEMS(R.string.SEARCH_POEMS),
-    BOOKMARKS(R.string.SEARCH_BOOKMARKS),
-    HIGHLIGHTS(R.string.SEARCH_HIGHLIGHTS),
-    COMMENTS(R.string.SEARCH_COMMENTS),
-    ;
-}
 
 @Composable
 fun SearchBar(
     modifier: Modifier,
-    poetsStateFlow: StateFlow<List<Poet>>,
+    poets: List<Poet>,
     searchHistoryRecords: List<SearchHistoryRecord> = emptyList(),
     onSearchFilterChanged: (List<Poet>) -> Unit,
     onSearchQueryChanged: (String) -> Unit,
@@ -79,7 +68,6 @@ fun SearchBar(
     var query by rememberSaveable { mutableStateOf("") }
     var poetSelectionExpanded by remember { mutableStateOf(false) }
     val allPoetsOptionString = stringResource(R.string.SEARCH_ALL_POETS)
-    val poets by poetsStateFlow.collectAsState()
     val poetOptions = remember {
         mutableStateListOf(
             DropDownToggleOption(
@@ -91,18 +79,6 @@ fun SearchBar(
     }
     var isSearchIconClicked by remember { mutableStateOf(false) }
 
-    var categorySelectionExpanded by remember { mutableStateOf(false) }
-    val categoryOptionTexts = SearchCategory.entries.map { stringResource(it.messageId) }
-    val categoryOptions = remember {
-        mutableStateListOf(
-            *SearchCategory.entries.mapIndexed { index, category ->
-                DropDownToggleOption(
-                    text = categoryOptionTexts[index],
-                    key = category.ordinal,
-                )
-            }.toTypedArray()
-        )
-    }
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -177,23 +153,8 @@ fun SearchBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.Absolute.Left
         ) {
-            OptionDropDown(
-                selectedText = if (categoryOptions.first().selected.value) {
-                    categoryOptions.first().text
-                } else {
-                    categoryOptions.filter { it.selected.value }.joinToString("/") { it.text }
-                },
-                opened = categorySelectionExpanded,
-                onOpen = { categorySelectionExpanded = true },
-                onClose = {
-                    categorySelectionExpanded = false
-                    // TODO implement the search logic later
-                },
-                options = categoryOptions,
-                allOptionsKey = 0,
-            )
             OptionDropDown(
                 selectedText = if (poetOptions.first().selected.value) {
                     poetOptions.first().text

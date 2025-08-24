@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,13 +24,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
 import ir.jaamebaade.jaamebaade_client.view.components.LoadingIndicator
-import ir.jaamebaade.jaamebaade_client.view.components.NewCardItem
+import ir.jaamebaade.jaamebaade_client.view.components.CardItem
 import ir.jaamebaade.jaamebaade_client.view.components.SearchBar
 import ir.jaamebaade.jaamebaade_client.view.components.base.NotFoundBox
 import ir.jaamebaade.jaamebaade_client.viewmodel.SearchViewModel
@@ -44,51 +46,65 @@ fun SearchScreen(
     var finalSearchQuery by remember { mutableStateOf("") }
 
     val results = searchViewModel.results
-    val poets = searchViewModel.allPoets
+
+    val poets by searchViewModel.poets
+        .collectAsStateWithLifecycle(initialValue = null)
+
+    var fetchStatue by remember { mutableStateOf(Status.LOADING) }
+
+    LaunchedEffect(key1 = poets) {
+        if (poets != null) {
+            fetchStatue = Status.SUCCESS
+        }
+    }
 
     val showingSearchHistory = searchViewModel.showingSearchHistory.collectAsState()
-    Column(modifier = modifier.background(color = MaterialTheme.colorScheme.surface)) {
-        SearchBar(
-            modifier = Modifier.fillMaxWidth(),
-            poetsStateFlow = poets,
-            searchHistoryRecords = showingSearchHistory.value,
-            onSearchFilterChanged = {
-                searchViewModel.poetFilter = it
-            },
-            onSearchQueryChanged = {
-                searchViewModel.query = it
-                searchViewModel.onQueryChanged()
-            },
-            onSearchHistoryRecordClick = { historyItem ->
-                searchViewModel.query = historyItem.query
-                searchStatus = Status.LOADING
-                searchViewModel.search {
-                    searchStatus = Status.SUCCESS
+    if (fetchStatue == Status.SUCCESS) {
+        Column(modifier = modifier.background(color = MaterialTheme.colorScheme.surface)) {
+            SearchBar(
+                modifier = Modifier.fillMaxWidth(),
+                poets = poets!!,
+                searchHistoryRecords = showingSearchHistory.value,
+                onSearchFilterChanged = {
+                    searchViewModel.poetFilter = it
+                },
+                onSearchQueryChanged = {
+                    searchViewModel.query = it
+                    searchViewModel.onQueryChanged()
+                },
+                onSearchHistoryRecordClick = { historyItem ->
+                    searchViewModel.query = historyItem.query
+                    searchStatus = Status.LOADING
+                    searchViewModel.search {
+                        searchStatus = Status.SUCCESS
+                    }
+                },
+                onSearchHistoryRecordDeleteClick = { historyItem ->
+                    searchViewModel.deleteHistoryItem(historyItem)
+                },
+                onSearchClearClick = {
+                    searchViewModel.clearSearch()
+                    searchStatus = Status.NOT_STARTED
                 }
-            },
-            onSearchHistoryRecordDeleteClick = { historyItem ->
-                searchViewModel.deleteHistoryItem(historyItem)
-            },
-            onSearchClearClick = {
-                searchViewModel.clearSearch()
-                searchStatus = Status.NOT_STARTED
+
+            ) { query, callback ->
+                if (query.length > 2) {
+                    searchStatus = Status.LOADING
+                    finalSearchQuery = query
+                    searchViewModel.search(callBack = { searchStatus = Status.SUCCESS })
+                    callback()
+                }
             }
 
-        ) { query, callback ->
-            if (query.length > 2) {
-                searchStatus = Status.LOADING
-                finalSearchQuery = query
-                searchViewModel.search(callBack = { searchStatus = Status.SUCCESS })
-                callback()
-            }
+            SearchResults(
+                results = results,
+                searchQuery = finalSearchQuery,
+                searchStatus = searchStatus,
+                navController = navController
+            )
         }
-
-        SearchResults(
-            results = results,
-            searchQuery = finalSearchQuery,
-            searchStatus = searchStatus,
-            navController = navController
-        )
+    } else {
+        LoadingIndicator()
     }
 }
 
@@ -112,7 +128,7 @@ fun SearchResults(
                     searchQuery = searchQuery,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                NewCardItem(
+                CardItem(
                     headerText = content,
                     bodyText = result.toPathHeaderText(),
                     imageUrl = result.poet.imageUrl,
