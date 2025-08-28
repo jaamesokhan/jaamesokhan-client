@@ -45,20 +45,27 @@ fun SquareButton(
     size: Int = 89,
     iconSize: Int = size,
     roundedCornerShapeSize: Int = 25,
+    enabled: Boolean = true,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
     assert(icon != null || imageUrl != null) { "Icon and image can't be null at the same time" }
     assert(icon == null || imageUrl == null) { "Icon and image can't be set at the same time" }
 
+    val clickableModifier = if (enabled) {
+        Modifier.combinedClickable(
+            onClick = onClick,
+            onLongClick = onLongClick
+        )
+    } else {
+        Modifier
+    }
+
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(roundedCornerShapeSize.dp))
             .padding(horizontal = 12.dp)
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick
-            ),
+            .then(clickableModifier),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
