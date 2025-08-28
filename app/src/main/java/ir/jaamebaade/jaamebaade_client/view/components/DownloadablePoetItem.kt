@@ -88,7 +88,7 @@ fun DownloadablePoetItem(
                 when (status) {
                     DownloadStatus.NotDownloaded -> {
                         ComposableSquareButton(
-                            modifier =Modifier.height(50.dp).width(120.dp)
+                            modifier =Modifier.height(50.dp).width(130.dp)
                                 ,
                             style = ComposableSquareButtonStyle.Outlined,
                             onClick = onButtonClick
@@ -108,7 +108,7 @@ fun DownloadablePoetItem(
 
                     DownloadStatus.Downloading -> {
                         ComposableSquareButton(
-                            modifier = Modifier.height(50.dp).width(120.dp)
+                            modifier = Modifier.height(50.dp).width(130.dp)
                                 // default minimum width
                                  ,
                             style = ComposableSquareButtonStyle.Outlined,
@@ -121,7 +121,7 @@ fun DownloadablePoetItem(
 
                     DownloadStatus.Downloaded -> {
                         ComposableSquareButton(
-                            modifier = Modifier.height(50.dp).width(120.dp)
+                            modifier = Modifier.height(50.dp).width(130.dp)
                                  ,
                             style = ComposableSquareButtonStyle.Filled,
                             onClick = onButtonClick
@@ -142,7 +142,7 @@ fun DownloadablePoetItem(
 
                     DownloadStatus.Failed -> {
                         ComposableSquareButton(
-                            modifier = Modifier.height(50.dp).width(120.dp)
+                            modifier = Modifier.height(50.dp).width(130.dp)
                                  ,
                             style = ComposableSquareButtonStyle.Outlined,
                             onClick = onButtonClick

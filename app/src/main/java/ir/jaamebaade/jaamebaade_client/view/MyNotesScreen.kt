@@ -6,9 +6,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,17 +34,24 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
+import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.CommentPoemCategoriesPoet
-import ir.jaamebaade.jaamebaade_client.view.components.MyNoteCardItem
+import ir.jaamebaade.jaamebaade_client.model.Poem
+import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
+import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
+import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
+import ir.jaamebaade.jaamebaade_client.view.components.ComposableCardItem
 import ir.jaamebaade.jaamebaade_client.view.components.bookmark.BottomSheetListItem
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyNoteViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -149,3 +160,59 @@ fun MyNotesScreen(
         }
     }
 }
+
+@Composable
+fun MyNoteCardItem(
+    modifier: Modifier = Modifier,
+    note: CommentPoemCategoriesPoet,
+    onClick: () -> Unit = {},
+    onIconClick: () -> Unit = {},
+) {
+    ComposableCardItem(
+        modifier = modifier,
+        imageUrl = note.path.poet.imageUrl,
+        header = {
+            Text(
+                text = createPoemPath(note.path.categories, note.path.poem),
+                style = MaterialTheme.typography.headlineMedium,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
+        body = {
+            Text(
+                text = note.comment.text.trim(),
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.outlineVariant,
+            )
+        },
+        footer =
+            {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Circle,
+                        tint = MaterialTheme.colorScheme.secondaryS50,
+                        contentDescription = null,
+                        modifier = Modifier.size(8.dp),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = Date(note.comment.createdAt).convertToJalali()
+                            .toLocalFormatWithHour(),
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+            },
+        icon = Icons.Filled.MoreVert,
+        iconDescription = stringResource(R.string.MORE),
+        onClick = onClick,
+        onIconClick = onIconClick
+    )
+}
+
+private fun createPoemPath(categories: List<Category>, poem: Poem) =
+    "${categories.joinToString(" > ") { it.text }} > ${poem.title}"

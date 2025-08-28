@@ -44,7 +44,7 @@ import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.MergedHighlight
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.toMergedHighlight
-import ir.jaamebaade.jaamebaade_client.view.components.HighlightCardItem
+import ir.jaamebaade.jaamebaade_client.view.components.CardItem
 import ir.jaamebaade.jaamebaade_client.view.components.bookmark.BottomSheetListItem
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyHighlightViewModel
@@ -189,7 +189,31 @@ fun MyHighlightScreen(
         }
     }
 }
+@Composable
+fun HighlightCardItem(
+    modifier: Modifier = Modifier,
+    headerText: AnnotatedString? = null,
+    bodyText: String,
+    imageUrl: String?,
+    icon: ImageVector? = null,
+    iconDescription: String? = null,
+    onClick: () -> Unit,
+    onIconClick: () -> Unit = {},
+) {
+    CardItem(
+        modifier = modifier,
+        headerText = headerText,
+        bodyText = bodyText,
+        imageUrl = imageUrl,
+        icon = icon,
+        iconDescription = iconDescription,
+        onClick = onClick,
+        onIconClick = onIconClick,
+        wrapHeader = true,
+        wrapBody = true,
+    )
 
+}
 
 private fun createHighlightPath(categories: List<Category>, poem: Poem) =
     "${categories.joinToString(" > ") { it.text }} > ${poem.title}"
