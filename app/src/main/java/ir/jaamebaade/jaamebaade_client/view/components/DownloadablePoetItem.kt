@@ -90,8 +90,8 @@ fun DownloadablePoetItem(
                 when (status) {
                     DownloadStatus.NotDownloaded -> {
                         ComposableSquareButton(
-                            modifier =Modifier.height(50.dp)
-                                .wrapContentWidth().widthIn(min = 116.dp),
+                            modifier =Modifier.height(50.dp).width(120.dp)
+                                ,
                             style = ComposableSquareButtonStyle.Outlined,
                             onClick = onButtonClick
                         ) {
@@ -110,8 +110,8 @@ fun DownloadablePoetItem(
 
                     DownloadStatus.Downloading -> {
                         ComposableSquareButton(
-                            modifier = Modifier.height(50.dp)
-                                .wrapContentWidth().widthIn(min = 116.dp) // default minimum width
+                            modifier = Modifier.height(50.dp).width(120.dp)
+                                // default minimum width
                                  ,
                             style = ComposableSquareButtonStyle.Outlined,
                             onClick = {}
@@ -123,8 +123,8 @@ fun DownloadablePoetItem(
 
                     DownloadStatus.Downloaded -> {
                         ComposableSquareButton(
-                            modifier = Modifier.height(50.dp)
-                                .wrapContentWidth().widthIn(min = 116.dp) ,
+                            modifier = Modifier.height(50.dp).width(120.dp)
+                                 ,
                             style = ComposableSquareButtonStyle.Filled,
                             onClick = onButtonClick
                         ) {
@@ -144,8 +144,8 @@ fun DownloadablePoetItem(
 
                     DownloadStatus.Failed -> {
                         ComposableSquareButton(
-                            modifier = Modifier.height(50.dp)
-                                .wrapContentWidth().widthIn(min = 116.dp) ,
+                            modifier = Modifier.height(50.dp).width(120.dp)
+                                 ,
                             style = ComposableSquareButtonStyle.Outlined,
                             onClick = onButtonClick
                         ) {
