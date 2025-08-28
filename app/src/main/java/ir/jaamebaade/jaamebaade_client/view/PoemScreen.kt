@@ -121,8 +121,6 @@ fun PoemScreen(
     fun onClick(boolean: Boolean, item: VerseWithHighlights) {
         if (boolean) selectedVerses.remove(item)
         else selectedVerses.add(item)
-
-        if (selectedVerses.isEmpty()) selectMode = false
     }
 
     LaunchedEffect(poetId) {

@@ -56,7 +56,6 @@ val inverseOnSurfaceLight = Color(0xFFF1F0F6)
 val inversePrimaryLight = Color(0xFFAAC7FF)
 ///////////////
 
-
 val neutralN20Light = Color(0xFF333333)
 val neutralN50Light = Color(0xFF808080)
 val neutralN70Light = Color(0xFFB3B3B3)
