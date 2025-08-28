@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.view
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -79,6 +80,8 @@ fun MyBookmarkScreen(
                 tint = MaterialTheme.colorScheme.outlineVariant,
                 contentDescription = "",
             )
+            Spacer(modifier = Modifier.padding(3.dp))
+
             Text(
                 text = stringResource(R.string.NO_BOOKMARK),
                 style = MaterialTheme.typography.headlineLarge,
