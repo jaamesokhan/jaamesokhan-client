@@ -20,8 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -74,6 +72,7 @@ fun SearchScreen(
                 },
                 onSearchHistoryRecordClick = { historyItem ->
                     searchViewModel.query = historyItem.query
+                    finalSearchQuery = searchViewModel.query
                     searchStatus = Status.LOADING
                     searchViewModel.search {
                         searchStatus = Status.SUCCESS
@@ -126,7 +125,7 @@ fun SearchResults(
                 val content = createSearchResultBody(
                     item = result,
                     searchQuery = searchQuery,
-                    color = MaterialTheme.colorScheme.onSurface
+                    focusColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
                 )
                 CardItem(
                     headerText = content,
@@ -155,24 +154,17 @@ fun SearchResults(
 private fun createSearchResultBody(
     item: VersePoemCategoriesPoet,
     searchQuery: String,
-    color: Color
+    focusColor: Color,
 ): AnnotatedString {
     val text = item.verse!!.text
-    val annotatedString = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = color)) {
-            append(text)
-        }
-        text.indexOf(searchQuery, ignoreCase = true).let { index ->
-            if (index >= 0) {
-                addStyle(
-                    style = SpanStyle(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    start = index,
-                    end = index + searchQuery.length
-                )
+    return buildAnnotatedString {
+        append(text)
+        if (searchQuery.isNotBlank()) {
+            var idx = text.indexOf(searchQuery, ignoreCase = true)
+            while (idx >= 0) {
+                addStyle(SpanStyle(background = focusColor), idx, idx + searchQuery.length)
+                idx = text.indexOf(searchQuery, startIndex = idx + searchQuery.length, ignoreCase = true)
             }
         }
     }
-    return annotatedString
 }

@@ -77,7 +77,7 @@ fun SearchBar(
             *poets.map { DropDownToggleOption(text = it.name, key = it.id) }.toTypedArray()
         )
     }
-    var isSearchIconClicked by remember { mutableStateOf(false) }
+    var isSearchIconClicked by rememberSaveable { mutableStateOf(false) }
 
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -181,7 +181,7 @@ fun SearchBar(
         }
 
         AnimatedVisibility(
-            visible = !isSearchIconClicked,
+            visible = !isSearchIconClicked && query.isEmpty(),
             enter = fadeIn(),
             exit = fadeOut()
         ) {
