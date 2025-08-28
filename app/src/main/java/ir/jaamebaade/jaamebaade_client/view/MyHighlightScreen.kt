@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.view
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -43,7 +44,7 @@ import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.MergedHighlight
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.toMergedHighlight
-import ir.jaamebaade.jaamebaade_client.view.components.HighlightCardItem
+import ir.jaamebaade.jaamebaade_client.view.components.CardItem
 import ir.jaamebaade.jaamebaade_client.view.components.bookmark.BottomSheetListItem
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyHighlightViewModel
@@ -85,6 +86,7 @@ fun MyHighlightScreen(
                 tint = MaterialTheme.colorScheme.outlineVariant,
                 contentDescription = "",
             )
+            Spacer(modifier = Modifier.padding(3.dp))
             Text(
                 text = stringResource(R.string.NO_HIGHLIGHTS_FOUND),
                 style = MaterialTheme.typography.headlineLarge,
@@ -187,7 +189,31 @@ fun MyHighlightScreen(
         }
     }
 }
+@Composable
+fun HighlightCardItem(
+    modifier: Modifier = Modifier,
+    headerText: AnnotatedString? = null,
+    bodyText: String,
+    imageUrl: String?,
+    icon: ImageVector? = null,
+    iconDescription: String? = null,
+    onClick: () -> Unit,
+    onIconClick: () -> Unit = {},
+) {
+    CardItem(
+        modifier = modifier,
+        headerText = headerText,
+        bodyText = bodyText,
+        imageUrl = imageUrl,
+        icon = icon,
+        iconDescription = iconDescription,
+        onClick = onClick,
+        onIconClick = onIconClick,
+        wrapHeader = true,
+        wrapBody = true,
+    )
 
+}
 
 private fun createHighlightPath(categories: List<Category>, poem: Poem) =
     "${categories.joinToString(" > ") { it.text }} > ${poem.title}"

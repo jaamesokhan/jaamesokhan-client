@@ -3,13 +3,17 @@ package ir.jaamebaade.jaamebaade_client.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,14 +30,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
+import ir.jaamebaade.jaamebaade_client.model.Category
+import ir.jaamebaade.jaamebaade_client.model.HistoryRecordPathFirstVerse
+import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
-import ir.jaamebaade.jaamebaade_client.view.components.MyHistoryCardItem
+import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
+import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
+import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
+import ir.jaamebaade.jaamebaade_client.view.components.ComposableCardItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.HistoryViewModel
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -140,3 +152,61 @@ fun HistoryScreen(
     }
 }
 
+
+
+@Composable
+fun MyHistoryCardItem(
+    modifier: Modifier = Modifier,
+    historyRecord: HistoryRecordPathFirstVerse,
+    onClick: () -> Unit = {},
+) {
+    ComposableCardItem(
+        modifier = modifier,
+        imageUrl = historyRecord.path.poet.imageUrl,
+        header = {
+            Text(
+                text = createPoemPath(historyRecord.path.categories, historyRecord.path.poem),
+                style = MaterialTheme.typography.headlineMedium,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
+        body = {
+            Text(
+                text = historyRecord.firstVerse.text,
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.outlineVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
+        footer =
+            {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Circle,
+                        tint = MaterialTheme.colorScheme.secondaryS50,
+                        contentDescription = null,
+                        modifier = Modifier.size(8.dp),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = Date(historyRecord.timestamp).convertToJalali()
+                            .toLocalFormatWithHour(),
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+            },
+        icon = null,
+        iconDescription = null,
+        onClick = onClick,
+        containerColor = MaterialTheme.colorScheme.background
+    )
+}
+
+private fun createPoemPath(categories: List<Category>, poem: Poem) =
+    "${categories.joinToString(" > ") { it.text }} > ${poem.title}"

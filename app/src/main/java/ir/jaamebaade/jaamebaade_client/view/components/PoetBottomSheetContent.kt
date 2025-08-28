@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,10 +26,9 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
 import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButton
+import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButtonStyle
 import ir.jaamebaade.jaamebaade_client.view.components.base.RectangularButton
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
-import androidx.compose.material3.CircularProgressIndicator
-import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButtonStyle
 
 enum class PoetInfoButtonType {
     ADD, OPEN, LOADING, FAILED, DELETE
@@ -47,7 +49,7 @@ fun PoetBottomSheetContent(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth().verticalScroll(rememberScrollState())
     ) {
         if (showHeader) {
             Row(

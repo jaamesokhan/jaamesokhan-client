@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.view
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,6 +38,8 @@ import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemCategoriesPoetFirstVerse
+import ir.jaamebaade.jaamebaade_client.model.Category
+import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.view.components.CardItem
 import ir.jaamebaade.jaamebaade_client.view.components.bookmark.BottomSheetListItem
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
@@ -79,6 +82,8 @@ fun MyBookmarkScreen(
                 tint = MaterialTheme.colorScheme.outlineVariant,
                 contentDescription = "",
             )
+            Spacer(modifier = Modifier.padding(3.dp))
+
             Text(
                 text = stringResource(R.string.NO_BOOKMARK),
                 style = MaterialTheme.typography.headlineLarge,
@@ -92,7 +97,7 @@ fun MyBookmarkScreen(
                 key = { _, item -> item.bookmark.id }) { index, bookmark ->
                 CardItem(
                     modifier = Modifier.animateItem(),
-                    headerText = AnnotatedString(bookmark.poem.title),
+                    headerText = AnnotatedString(createPoemPath(bookmark.categories, bookmark.poem)),
                     bodyText = bookmark.firstVerse.text,
                     imageUrl = bookmark.poet.imageUrl,
                     onClick = { navController.navigate("${AppRoutes.POEM}/${bookmark.poet.id}/${bookmark.poem.id}/-1") },
@@ -151,3 +156,6 @@ fun MyBookmarkScreen(
         }
     }
 }
+
+private fun createPoemPath(categories: List<Category>, poem: Poem) =
+    "${categories.joinToString(" > ") { it.text }} > ${poem.title}"
