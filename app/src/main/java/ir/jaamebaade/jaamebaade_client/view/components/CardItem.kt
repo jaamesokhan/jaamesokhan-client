@@ -87,6 +87,7 @@ fun CardItem(
                 ) {
                     headerText?.let {
                         Text(
+                            modifier = Modifier.weight(7f),
                             text = it,
                             style = MaterialTheme.typography.headlineMedium,
                             maxLines = if (wrapHeader) Int.MAX_VALUE else 1,
@@ -96,7 +97,9 @@ fun CardItem(
 
                     icon?.let {
                         IconButton(
-                            modifier = Modifier.padding(end = 5.dp),
+                            modifier = Modifier
+                                .padding(end = 5.dp)
+                                .weight(1f),
                             onClick = onIconClick
                         ) {
                             Icon(
@@ -198,16 +201,26 @@ fun ComposableCardItem(
                 modifier = Modifier.weight(1f)
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(end =  24.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 24.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        header?.let { it() }
-                        body()
+                    Row(
+                        modifier = Modifier.fillMaxWidth().weight(7f)
+                    ) {
+                        Column() {
+                            header?.let { it() }
+                            body()
+
+                        }
                     }
                     if (icon != null) {
                         IconButton(
-                            modifier = Modifier.padding(end = 5.dp),
+                            modifier = Modifier
+                                .padding(end = 5.dp)
+                                .weight(1f),
                             onClick = onIconClick
                         ) {
                             Icon(
