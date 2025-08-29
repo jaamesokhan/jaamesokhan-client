@@ -38,7 +38,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.jaamebaade.jaamebaade_client.R
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS40
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.viewmodel.CommentViewModel
@@ -78,13 +77,13 @@ fun NotesBottomSheet(
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = stringResource(R.string.CLOSE),
-                        tint = MaterialTheme.colorScheme.neutralN50
+                        tint = MaterialTheme.colorScheme.onBackground,
                     )
                 }
                 Text(
                     text = stringResource(R.string.NOTES),
                     style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.neutralN50,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
             HorizontalDivider(color = MaterialTheme.colorScheme.outline)
@@ -127,7 +126,7 @@ fun NotesBottomSheet(
                     onValueChange = { commentText = it },
                     shape = RoundedCornerShape(15.dp),
                     colors = TextFieldDefaults.colors(
-                        unfocusedPlaceholderColor = MaterialTheme.colorScheme.neutralN50,
+                        unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                         focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                         focusedLeadingIconColor = MaterialTheme.colorScheme.secondaryS40,
                         unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,

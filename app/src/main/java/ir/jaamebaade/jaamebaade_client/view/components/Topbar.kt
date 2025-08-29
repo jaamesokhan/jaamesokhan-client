@@ -46,7 +46,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
 import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
 import ir.jaamebaade.jaamebaade_client.view.OptionsMenu
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
@@ -162,7 +161,7 @@ fun TopBar(
                                     }) {
                                     Icon(
                                         imageVector = if (downArrow) ImageVector.vectorResource(R.drawable.back_arrow_down) else Icons.AutoMirrored.Filled.ArrowBack,
-                                        tint = MaterialTheme.colorScheme.onSurface,
+                                        tint = MaterialTheme.colorScheme.onBackground,
                                         contentDescription = "Back",
                                         modifier = Modifier.size(32.dp),
                                     )
@@ -174,22 +173,25 @@ fun TopBar(
                                     Icon(
                                         imageVector = Icons.Default.Menu,
                                         contentDescription = "Settings Menu",
+                                        tint = MaterialTheme.colorScheme.onBackground,
                                         modifier = Modifier.size(32.dp),
                                     )
                                 }
                             }
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = breadCrumbs,
-                                style = MaterialTheme.typography.titleLarge,
-                                color = MaterialTheme.colorScheme.neutralN50,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.sizeIn(
-                                    maxWidth = 260.dp
-                                ),
-                                maxLines = 1
-                            )
+                            breadCrumbs?.let {
+                                Text(
+                                    text = it,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    overflow = TextOverflow.Ellipsis,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.sizeIn(
+                                        maxWidth = 260.dp
+                                    ),
+                                    maxLines = 1
+                                )
+                            }
                         }
                         Row {
                             if (showHistory) {
@@ -199,7 +201,7 @@ fun TopBar(
                                     Icon(
                                         imageVector = Icons.Filled.History,
                                         contentDescription = "History",
-                                        tint = MaterialTheme.colorScheme.onSurface,
+                                        tint = MaterialTheme.colorScheme.onBackground,
                                         modifier = Modifier.size(32.dp),
                                     )
                                 }
@@ -211,7 +213,7 @@ fun TopBar(
                                     Icon(
                                         imageVector = Icons.Default.Search,
                                         contentDescription = stringResource(R.string.SEARCH_BAR_HINT),
-                                        tint = MaterialTheme.colorScheme.onSurface,
+                                        tint = MaterialTheme.colorScheme.onBackground,
                                         modifier = Modifier.size(32.dp),
                                     )
                                 }

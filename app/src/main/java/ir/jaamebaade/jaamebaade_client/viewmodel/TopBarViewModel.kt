@@ -31,7 +31,7 @@ class TopBarViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val poemRepository: PoemRepository,
 ) : ViewModel() {
-    var breadCrumbs by mutableStateOf("")
+    var breadCrumbs by mutableStateOf<String?>(null)
         private set
 
     var poet by mutableStateOf<Poet?>(null)
@@ -107,7 +107,7 @@ class TopBarViewModel @Inject constructor(
             else -> false
         }
     }
-    private suspend fun createPathBreadCrumbs(navStack: NavBackStackEntry, context: Context): String {
+    private suspend fun createPathBreadCrumbs(navStack: NavBackStackEntry, context: Context): String? {
         poet = null
         val path = getPath(navStack)
         when (path) {
@@ -150,7 +150,7 @@ class TopBarViewModel @Inject constructor(
             AppRoutes.CHANGE_THEME_SCREEN -> return "تغییر پوسته"
             AppRoutes.ABOUT_US_SCREEN -> return "درباره ما"
             AppRoutes.HISTORY -> return "تاریخچه"
-            else -> return "جام سخن" // TODO change this later
+            else -> return null
         }
     }
 

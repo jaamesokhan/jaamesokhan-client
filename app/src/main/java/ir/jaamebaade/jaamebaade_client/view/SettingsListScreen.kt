@@ -58,7 +58,8 @@ fun SettingsListScreen(
             ) {
                 val myTextStyle = TextStyle(
                     fontFamily = selectedPoemFontFamily.fontFamily,
-                    fontSize = fontRepository.getPoemFontNumberFromSize(selectedPoemFontSize)
+                    fontSize = fontRepository.getPoemFontNumberFromSize(selectedPoemFontSize),
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
                 Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_ONE))
                 Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_ONE))

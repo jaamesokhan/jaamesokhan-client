@@ -48,7 +48,6 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
 import ir.jaamebaade.jaamebaade_client.view.components.base.NotFoundBox
 import ir.jaamebaade.jaamebaade_client.view.components.search.DropDownToggleOption
 import ir.jaamebaade.jaamebaade_client.view.components.search.OptionDropDown
@@ -225,7 +224,7 @@ fun SearchHistoryList(
             Text(
                 text = stringResource(R.string.RECENT_SEARCHES),
                 style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.neutralN50,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Spacer(modifier = Modifier.width(12.dp))
             HorizontalDivider()
@@ -279,7 +278,7 @@ private fun SearchHistoryRecordItem(
         Text(
             text = historyItem.query,
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.neutralN50,
+            color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }
