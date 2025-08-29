@@ -33,10 +33,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Status
-import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 
 @Composable
-fun AudioControlBar(navController: NavController, viewModel: AudioViewModel) {
+fun AudioControlBar(navController: NavController, viewModel: AppNavHostViewModel) {
     var showControlBar by remember { mutableStateOf(false) }
     val playStatus = viewModel.playStatus
     val poemWithPoet = viewModel.poemWithPoet

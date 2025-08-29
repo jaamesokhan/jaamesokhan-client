@@ -39,30 +39,30 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS30
-import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 
 @Composable
 fun AudioListItems(
     viewModel: PoemViewModel,
-    audioViewModel: AudioViewModel,
+    appNavHostViewModel: AppNavHostViewModel,
     onDismiss: () -> Unit
 ) {
     val audioDataList = viewModel.urls.collectAsState().value
     var fetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
-    val mediaPlayer = audioViewModel.mediaPlayer
-    val selectedAudio = audioViewModel.selectedAudioData
+    val mediaPlayer = appNavHostViewModel.mediaPlayer
+    val selectedAudio = appNavHostViewModel.selectedAudioData
     val onClick: (AudioData) -> Unit =
         {
             mediaPlayer.reset()
-            audioViewModel.setSelectedAudioDate(it)
-            audioViewModel.changePlayStatus(Status.LOADING)
+            appNavHostViewModel.setSelectedAudioDate(it)
+            appNavHostViewModel.changePlayStatus(Status.LOADING)
             viewModel.fetchAudioSyncInfo(it.syncXmlUrl, {
                 mediaPlayer.apply {
                     setDataSource(it.url)
                     mediaPlayer.prepareAsync()
                     setOnPreparedListener {
-                        audioViewModel.changePlayStatus(Status.IN_PROGRESS)
+                        appNavHostViewModel.changePlayStatus(Status.IN_PROGRESS)
                         start()
                     }
                 }

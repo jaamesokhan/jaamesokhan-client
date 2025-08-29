@@ -17,4 +17,6 @@ class PoetRepository @Inject constructor(appDatabase: AppDatabase) {
     fun deletePoet(poet: Poet) = poetDao.deletePoet(poet)
 
     fun updatePoetDownloadStatus(poet: Poet) = poetDao.update(poet)
+
+    fun getAllPoetsCount() = poetDao.getAllPoetsCount()
 }
