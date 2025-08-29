@@ -39,7 +39,6 @@ import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.HistoryRecordPathFirstVerse
 import ir.jaamebaade.jaamebaade_client.model.Poem
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
 import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
 import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
@@ -92,13 +91,13 @@ fun HistoryScreen(
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowDown,
                     contentDescription = stringResource(R.string.CLOSE),
-                    tint = MaterialTheme.colorScheme.neutralN50
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
             Text(
                 text = stringResource(R.string.READ_HISTORY),
                 style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.neutralN50,
+                color = MaterialTheme.colorScheme.onBackground,
             )
         }
 

@@ -24,7 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
 import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButton
 import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButtonStyle
 import ir.jaamebaade.jaamebaade_client.view.components.base.RectangularButton
@@ -65,13 +64,13 @@ fun PoetBottomSheetContent(
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = stringResource(R.string.CLOSE),
-                        tint = MaterialTheme.colorScheme.neutralN50
+                        tint = MaterialTheme.colorScheme.onBackground,
                     )
                 }
                 Text(
                     text = headerText,
                     style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.neutralN50,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
             HorizontalDivider(color = MaterialTheme.colorScheme.outline)

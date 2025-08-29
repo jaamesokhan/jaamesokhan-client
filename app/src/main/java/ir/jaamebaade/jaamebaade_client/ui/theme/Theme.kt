@@ -85,10 +85,6 @@ private val darkScheme = darkColorScheme(
     inversePrimary = inversePrimaryDark,
 )
 
-val ColorScheme.secondaryS90: Color
-    @Composable
-    get() = if (isAppInDarkMode()) secondaryS90Dark else secondaryS90Light
-
 val ColorScheme.secondaryS30: Color
     @Composable
     get() = if (isAppInDarkMode()) secondaryS30Dark else secondaryS30Light
@@ -102,18 +98,9 @@ val ColorScheme.secondaryS50: Color
     get() = if (isAppInDarkMode()) secondaryS50Dark else secondaryS50Light
 
 
-
-val ColorScheme.neutralN50: Color
-    @Composable
-    get() = if (isAppInDarkMode()) neutralN50Dark else neutralN50Light
-
 val ColorScheme.neutralN70: Color
     @Composable
     get() = if (isAppInDarkMode()) neutralN70Dark else neutralN70Light
-
-val ColorScheme.neutralN90: Color
-    @Composable
-    get() = if (isAppInDarkMode()) neutralN90Dark else neutralN90Light
 
 val ColorScheme.neutralN95: Color
     @Composable
@@ -122,10 +109,6 @@ val ColorScheme.neutralN95: Color
 val ColorScheme.neutralN100: Color
     @Composable
     get() = if (isAppInDarkMode()) neutralN100Dark else neutralN100Light
-
-val ColorScheme.neutralN20: Color
-    @Composable
-    get() = if (isAppInDarkMode()) neutralN20Dark else neutralN20Light
 
 @Composable
 fun JaamebaadeclientTheme(

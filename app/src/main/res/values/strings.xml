@@ -54,16 +54,14 @@
     <string name="BOOKMARKS">علاقه‌مندی‌ها</string>
     <string name="HIGHLIGHTS">هایلایت‌ها</string>
     <string name="NOTES">یادداشت‌ها</string>
-    <string name="VERSE_NUMBER">شماره بیت</string>
-    <string name="MERGE_HIGHLIGHTS">ادغام هایلایت‌ها</string>
+    <string name="VERSE_NUMBER">نمایش شماره بیت</string>
     <string name="RECENT_SEARCHES">جستجوهای اخیر</string>
-    <string name="NOTIFICATION_ACCESS_TITLE">دسترسی ارسال اعلان</string>
     <string name="SELECT_VERSES">انتخاب مصرع</string>
     <string name="NORMAL_MODE">حالت عادی</string>
     <string name="DELETE_POET">حذف شاعر</string>
-    <string name="SHOW_HIGHLIGHT">نمایش هایلایت</string>
-    <string name="DONT_SHOW_HIGHLIGHT">عدم نمایش هایلایت</string>
-    <string name="REMOVE_VERSE_NUMBER">حذف شماره بیت</string>
+    <string name="SHOW_HIGHLIGHT">نمایش دادن هایلایت</string>
+    <string name="DONT_SHOW_HIGHLIGHT">نمایش ندادن هایلایت</string>
+    <string name="REMOVE_VERSE_NUMBER">نمایش ندادن شماره بیت</string>
     <string name="NOTE_PLACE_HOLDER">یادداشت خود را اینجا بنویسید …</string>
     <string name="HIGHLIGHT">هایلایت</string>
     <string name="COPY">کپی</string>
@@ -94,7 +92,7 @@
     <string name="MORE">بیشتر</string>
 
 
-    <string name="POET_SEARCH_BAR_HINT">دنبال چه شاعری می‌گردید؟</string>
+    <string name="POET_SEARCH_BAR_HINT">دنبال کدام شاعر می‌گردید؟</string>
 
     <string name="NOTE_TITLE">یادداشت</string>
     <string name="BOOKMARK_TITLE">ذخیره‌ها</string>

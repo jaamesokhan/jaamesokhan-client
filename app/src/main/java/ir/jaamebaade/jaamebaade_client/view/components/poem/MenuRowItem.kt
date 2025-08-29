@@ -53,7 +53,7 @@ fun MenuRowItem(isActive: Boolean = true,
                     } else {
                         deactivatedText
                     },
-                    color = textColor ?: MaterialTheme.colorScheme.onSurface,
+                    color = textColor ?: MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.headlineLarge
                 )
                 if (includeBottomLine) {
