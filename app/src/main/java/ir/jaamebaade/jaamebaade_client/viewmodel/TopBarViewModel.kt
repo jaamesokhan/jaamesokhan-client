@@ -111,8 +111,7 @@ class TopBarViewModel @Inject constructor(
         poet = null
         val path = getPath(navStack)
         when (path) {
-//            null, AppRoutes.DOWNLOADED_POETS_SCREEN -> return ""
-            AppRoutes.DOWNLOADABLE_POETS_SCREEN -> return "دانلود شاعر جدید"
+            AppRoutes.DOWNLOADABLE_POETS_SCREEN -> return context.getString(R.string.ADD_NEW_POET_PAGE_TITLE)
             AppRoutes.POET_CATEGORY_SCREEN -> {
                 val poetId = navStack.arguments?.getInt("poetId")
                 val parentIds = navStack.arguments?.getString("parentIds")?.toIntArray()
@@ -205,7 +204,7 @@ class TopBarViewModel @Inject constructor(
         return withContext(Dispatchers.IO) {
             try {
                 poemRepository.getPoemWithPoet(poemId)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 null
             }
         }

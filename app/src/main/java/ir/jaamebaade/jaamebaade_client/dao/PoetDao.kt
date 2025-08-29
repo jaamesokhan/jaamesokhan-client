@@ -35,4 +35,11 @@ interface PoetDao {
     )
     fun getPoetByPoemId(poemId: Int): Poet
 
+    @Query(
+        """
+        SELECT COUNT(*) FROM poets
+        """
+    )
+    fun getAllPoetsCount(): Int
+
 }

@@ -76,16 +76,6 @@ class SharedPrefManager(
         return savedTheme
     }
 
-    fun setHighlightMergeToggleState(state: Boolean) {
-        sharedPreferences.edit {
-            putBoolean("highlightMergeToggleState", state)
-        }
-    }
-
-    fun getHighlightMergeToggleState(): Boolean {
-        return sharedPreferences.getBoolean("highlightMergeToggleState", false)
-    }
-
     fun setNotificationPermissionPreference(preference: Boolean) {
         sharedPreferences.edit { putBoolean(NOTIFICATION_PERMISSION_KEY, preference) }
     }

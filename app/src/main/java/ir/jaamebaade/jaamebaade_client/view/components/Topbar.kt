@@ -49,7 +49,7 @@ import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN50
 import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
 import ir.jaamebaade.jaamebaade_client.view.OptionsMenu
-import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.TopBarViewModel
 import kotlinx.coroutines.launch
@@ -60,7 +60,7 @@ fun TopBar(
     navController: NavController,
     viewModel: TopBarViewModel = hiltViewModel(),
     myPoetsViewModel: MyPoetsViewModel = hiltViewModel(),
-    audioViewModel: AudioViewModel
+    appNavHostViewModel: AppNavHostViewModel,
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
@@ -234,7 +234,7 @@ fun TopBar(
                 },
             )
             poet?.let { PoetInformationBox(poet = it) }
-            AudioControlBar(navController = navController, viewModel = audioViewModel)
+            AudioControlBar(navController = navController, viewModel = appNavHostViewModel)
         }
     }
 }

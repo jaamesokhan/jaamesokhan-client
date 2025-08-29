@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.model.Status
-import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 
 @Composable
-fun AudioButton(viewModel: AudioViewModel, onClick: () -> Unit) {
+fun AudioButton(viewModel: AppNavHostViewModel, onClick: () -> Unit) {
     val playStatus = viewModel.playStatus
     val mediaPlayer = viewModel.mediaPlayer
     val iconSize = 24.dp

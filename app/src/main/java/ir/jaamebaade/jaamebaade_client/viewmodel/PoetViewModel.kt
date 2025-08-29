@@ -41,8 +41,7 @@ class PoetViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val poetRepository: PoetRepository,
     private val poemRepository: PoemRepository,
-    private val verseRepository: VerseRepository
-
+    private val verseRepository: VerseRepository,
 ) : ViewModel() {
     var poets by mutableStateOf<List<Poet>>(emptyList())
         private set
@@ -96,6 +95,7 @@ class PoetViewModel @Inject constructor(
             fetchPoets()
         }
     }
+
     suspend fun getPoetCategoryId(poetId: Int): Int {
         return withContext(Dispatchers.IO) {
             categoryRepository.getPoetCategoryId(poetId)
@@ -134,8 +134,8 @@ class PoetViewModel @Inject constructor(
                     importPoemData(dir, poemRepository)
                     dir = targetDir.path + "/poet_$id" + "/verses_$id.csv"
                     importVerseData(dir, verseRepository)
-                    poetRepository.updatePoetDownloadStatus(poet.also { 
-                      it.downloadStatus = DownloadStatus.Downloaded 
+                    poetRepository.updatePoetDownloadStatus(poet.also {
+                        it.downloadStatus = DownloadStatus.Downloaded
                     })
                     downloadStatus[id] = DownloadStatus.Downloaded
                 } catch (e: Exception) {

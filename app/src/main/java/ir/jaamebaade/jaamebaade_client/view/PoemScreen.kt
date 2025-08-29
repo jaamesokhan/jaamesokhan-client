@@ -51,7 +51,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenActionHead
 import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenBottomToolBar
 import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenTitle
 import ir.jaamebaade.jaamebaade_client.view.components.poem.ToggleButtonItem
-import ir.jaamebaade.jaamebaade_client.viewmodel.AudioViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 import kotlinx.coroutines.delay
 
@@ -63,7 +63,7 @@ fun PoemScreen(
     poetId: Int,
     focusedVerseId: Long?,
     modifier: Modifier,
-    audioViewModel: AudioViewModel = hiltViewModel(),
+    appNavHostViewModel: AppNavHostViewModel = hiltViewModel(),
     fontRepository: FontRepository
 ) {
     val context = LocalContext.current
@@ -105,8 +105,8 @@ fun PoemScreen(
 
     val lazyListState = rememberLazyListState()
 
-    val mediaPlayer = audioViewModel.mediaPlayer
-    val playStatus = audioViewModel.playStatus
+    val mediaPlayer = appNavHostViewModel.mediaPlayer
+    val playStatus = appNavHostViewModel.playStatus
     val syncInfoFetchStatus = poemViewModel.syncInfoFetchStatus
     val audioSyncData = poemViewModel.audioSyncInfo.collectAsState().value
     var recitedVerseIndex by remember { mutableIntStateOf(0) }
@@ -283,7 +283,7 @@ fun PoemScreen(
             containerColor = MaterialTheme.colorScheme.background,
         ) {
             if (audioOptionChecked) {
-                AudioListItems(viewModel = poemViewModel, audioViewModel = audioViewModel, onDismiss={audioOptionChecked = false})
+                AudioListItems(viewModel = poemViewModel, appNavHostViewModel = appNavHostViewModel, onDismiss={audioOptionChecked = false})
             } else if (moreOptionsChecked) {
                 PoemMoreOptionsList(optionsList = moreOptionsList)
             }
