@@ -329,7 +329,7 @@ fun PoemScreen(
                     toggleButtonItems = toggleButtonItems
                 )
                 if (showHintForHighlight) {
-                    ShowHintMessage(poemViewModel)
+                    HighlightHintMessage(poemViewModel)
                 }
             }
         }
@@ -379,7 +379,7 @@ fun PoemScreen(
 }
 
 @Composable
-private fun ShowHintMessage(viewModel: PoemViewModel) {
+private fun HighlightHintMessage(viewModel: PoemViewModel) {
     Row(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.primaryContainer)
@@ -395,7 +395,7 @@ private fun ShowHintMessage(viewModel: PoemViewModel) {
         ) {
 
             Text(
-                text = "برای مشاهده معنی کلمات یا هایلایت کردن روی آنها نگه دارید.",
+                text = stringResource(R.string.HIGHLIGHT_HINT_MESSAGE),
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 2,
                 overflow = TextOverflow.Clip

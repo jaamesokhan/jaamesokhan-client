@@ -144,4 +144,5 @@ https://myket.ir/app/ir.jaamebaade.jaamebaade_client
     <string name="DOWNLOAD_POET">افزودن</string>
     <string name="OPEN_DOWNLOADED_POET_DESC">باز کردن</string>
     <string name="DOWNLOAD_NEW_POET">افزودن شاعر جدید</string>
+    <string name="HIGHLIGHT_HINT_MESSAGE">برای مشاهده معنی کلمات یا هایلایت کردن روی آنها نگه دارید.</string>
 </resources>
