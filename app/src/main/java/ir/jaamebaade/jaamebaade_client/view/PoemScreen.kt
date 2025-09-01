@@ -1,12 +1,17 @@
 package ir.jaamebaade.jaamebaade_client.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.VolumeUp
@@ -16,9 +21,11 @@ import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material.icons.outlined.VolumeUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,11 +36,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -112,7 +121,7 @@ fun PoemScreen(
     var recitedVerseIndex by remember { mutableIntStateOf(0) }
 
     val versesWithHighlights by poemViewModel.verses.collectAsState()
-
+    val showHintForHighlight = poemViewModel.showHintForHighlight
     val focusedVerse = versesWithHighlights.find { it.verse.id == focusedVerseId }
 
     val selectedVerses = remember { mutableStateListOf<VerseWithHighlights>() }
@@ -283,7 +292,10 @@ fun PoemScreen(
             containerColor = MaterialTheme.colorScheme.background,
         ) {
             if (audioOptionChecked) {
-                AudioListItems(viewModel = poemViewModel, appNavHostViewModel = appNavHostViewModel, onDismiss={audioOptionChecked = false})
+                AudioListItems(
+                    viewModel = poemViewModel,
+                    appNavHostViewModel = appNavHostViewModel,
+                    onDismiss = { audioOptionChecked = false })
             } else if (moreOptionsChecked) {
                 PoemMoreOptionsList(optionsList = moreOptionsList)
             }
@@ -316,6 +328,9 @@ fun PoemScreen(
                 PoemScreenActionHeader(
                     toggleButtonItems = toggleButtonItems
                 )
+                if (showHintForHighlight) {
+                    ShowHintMessage(poemViewModel)
+                }
             }
         }
 
@@ -360,5 +375,39 @@ fun PoemScreen(
     PoemScreenBottomToolBar(selectMode, modifier, selectedVerses) {
         selectMode = false
         selectedVerses.clear()
+    }
+}
+
+@Composable
+private fun ShowHintMessage(viewModel: PoemViewModel) {
+    Row(
+        modifier = Modifier
+            .background(color = MaterialTheme.colorScheme.primaryContainer)
+            .padding(vertical = 1.dp)
+            .fillMaxWidth(),
+
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Row(
+            modifier = Modifier.padding(start = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+
+            Text(
+                text = "برای مشاهده معنی کلمات یا هایلایت کردن روی آنها نگه دارید.",
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 2,
+                overflow = TextOverflow.Clip
+            )
+        }
+        IconButton(onClick = {
+            viewModel.onHighlightHintDismissed()
+        }) {
+            Icon(
+                imageVector = Icons.Default.Close, contentDescription = "close",
+                modifier = Modifier.size(24.dp)
+            )
+        }
     }
 }
