@@ -63,35 +63,28 @@ fun PoemScreenTitle(
                 .fillMaxWidth()
                 .padding(vertical = 4.dp, horizontal = 10.dp),
         ) {
-            if ((poemId - 1) >= minId) {
-                IconButton(
-                    modifier = Modifier
-                        .weight(0.1f)
-                        .size(32.dp),
-                    onClick = {
-                        navController.navigate(
-                            "${AppRoutes.POEM}/${poetId}/${poemId - 1}/-1",
-                            navOptions {
-                                popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
-                                    inclusive = true
-                                }
-                            }
-                        )
-                    },
-                    enabled = (poemId - 1) >= minId
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                        contentDescription = stringResource(R.string.PREVIOUS),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            } else {
-                Spacer(modifier = Modifier
+            IconButton(
+                modifier = Modifier
                     .weight(0.1f)
-                    .size(32.dp))
+                    .size(32.dp), onClick = {
+                    navController.navigate(
+                        "${AppRoutes.POEM}/${poetId}/${poemId - 1}/-1", navOptions {
+                            popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
+                                inclusive = true
+                            }
+                        })
+                }, enabled = (poemId - 1) >= minId
 
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    contentDescription = stringResource(R.string.PREVIOUS),
+                    tint = if ((poemId - 1) < minId) MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        0.1f
+                    ) else MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
+
 
             Text(
                 modifier = Modifier.weight(0.8f),
@@ -103,34 +96,27 @@ fun PoemScreenTitle(
                 overflow = TextOverflow.Ellipsis
             )
 
-            if ((poemId + 1) <= maxId) {
-                IconButton(
-                    modifier = Modifier
-                        .weight(0.1f)
-                        .size(32.dp),
-                    onClick = {
-                        navController.navigate(
-                            "${AppRoutes.POEM}/${poetId}/${poemId + 1}/-1",
-                            navOptions {
-                                popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
-                                    inclusive = true
-                                }
-                            }
-                        )
-                    },
-                    enabled = (poemId + 1) <= maxId
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = stringResource(R.string.NEXT),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            } else {
-                Spacer(modifier = Modifier
+            IconButton(
+                modifier = Modifier
                     .weight(0.1f)
-                    .size(32.dp))
+                    .size(32.dp), onClick = {
+                    navController.navigate(
+                        "${AppRoutes.POEM}/${poetId}/${poemId + 1}/-1", navOptions {
+                            popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
+                                inclusive = true
+                            }
+                        })
+                }, enabled = (poemId + 1) <= maxId
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = stringResource(R.string.NEXT),
+                    tint = if ((poemId + 1) > maxId) MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        0.1f
+                    ) else MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
+
         }
     }
 }

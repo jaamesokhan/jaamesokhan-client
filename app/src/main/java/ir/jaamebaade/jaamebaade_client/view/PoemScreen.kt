@@ -390,7 +390,7 @@ private fun HighlightHintMessage(viewModel: PoemViewModel) {
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Row(
-            modifier = Modifier.padding(start = 4.dp),
+            modifier = Modifier.padding(start = 4.dp).weight(1.0f),
             verticalAlignment = Alignment.CenterVertically,
         ) {
 
