@@ -456,119 +456,13 @@ object CustomFonts {
         )
     )
 
-    val SansSerif = CustomFont(
-        name = "SansSerif",
-        displayName = "سنس سریف",
-        fontFamily = FontFamily.Companion.SansSerif,
-        specs = CustomFontSpecs(
-            label = CustomFontAttributes(
-                small = CustomFontMeasures(
-                    fontSize = 10.sp,
-                    lineHeight = 12.sp,
-                    letterSpacing = 0.5.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-                medium = CustomFontMeasures(
-                    fontSize = 12.sp,
-                    lineHeight = 14.sp,
-                    letterSpacing = 0.5.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-                large = CustomFontMeasures(
-                    fontSize = 14.sp,
-                    lineHeight = 16.sp,
-                    letterSpacing = 0.5.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-            ),
-            body = CustomFontAttributes(
-                small = CustomFontMeasures(
-                    fontSize = 12.sp,
-                    lineHeight = 14.sp,
-                    letterSpacing = 0.25.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-                medium = CustomFontMeasures(
-                    fontSize = 14.sp,
-                    lineHeight = 16.sp,
-                    letterSpacing = 0.25.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-                large = CustomFontMeasures(
-                    fontSize = 16.sp,
-                    lineHeight = 18.sp,
-                    letterSpacing = 0.5.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-            ),
-            title = CustomFontAttributes(
-                small = CustomFontMeasures(
-                    fontSize = 14.sp,
-                    lineHeight = 16.sp,
-                    letterSpacing = 0.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-                medium = CustomFontMeasures(
-                    fontSize = 16.sp,
-                    lineHeight = 18.sp,
-                    letterSpacing = 0.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-                large = CustomFontMeasures(
-                    fontSize = 18.sp,
-                    lineHeight = 20.sp,
-                    letterSpacing = 0.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-            ),
-            display = CustomFontAttributes(
-                small = CustomFontMeasures(
-                    fontSize = 16.sp,
-                    lineHeight = 18.sp,
-                    letterSpacing = 0.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-                medium = CustomFontMeasures(
-                    fontSize = 18.sp,
-                    lineHeight = 20.sp,
-                    letterSpacing = 0.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-                large = CustomFontMeasures(
-                    fontSize = 20.sp,
-                    lineHeight = 22.sp,
-                    letterSpacing = 0.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-            ),
-            headline = CustomFontAttributes(
-                small = CustomFontMeasures(
-                    fontSize = 14.sp,
-                    lineHeight = 16.sp,
-                    letterSpacing = 0.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-                medium = CustomFontMeasures(
-                    fontSize = 16.sp,
-                    lineHeight = 18.sp,
-                    letterSpacing = 0.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-                large = CustomFontMeasures(
-                    fontSize = 18.sp,
-                    lineHeight = 20.sp,
-                    letterSpacing = 0.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-            )
-        )
-    )
+
 
     fun getDefaultFont(): CustomFont {
         return Dana
     }
 
     fun getAllFonts(): List<CustomFont> {
-        return listOf(Nastaliq, Vazirmatn, Dana, Serif, SansSerif)
+        return listOf(Nastaliq, Vazirmatn, Dana, Serif)
     }
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -62,28 +63,34 @@ fun PoemScreenTitle(
                 .fillMaxWidth()
                 .padding(vertical = 4.dp, horizontal = 10.dp),
         ) {
-
-            IconButton(
-                modifier = Modifier
-                    .weight(0.1f)
-                    .size(32.dp),
-                onClick = {
-                    navController.navigate(
-                        "${AppRoutes.POEM}/${poetId}/${poemId - 1}/-1",
-                        navOptions {
-                            popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
-                                inclusive = true
+            if ((poemId - 1) >= minId) {
+                IconButton(
+                    modifier = Modifier
+                        .weight(0.1f)
+                        .size(32.dp),
+                    onClick = {
+                        navController.navigate(
+                            "${AppRoutes.POEM}/${poetId}/${poemId - 1}/-1",
+                            navOptions {
+                                popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
+                                    inclusive = true
+                                }
                             }
-                        }
+                        )
+                    },
+                    enabled = (poemId - 1) >= minId
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                        contentDescription = stringResource(R.string.PREVIOUS),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                },
-                enabled = poemId - 1 >= minId
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = stringResource(R.string.PREVIOUS),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                }
+            } else {
+                Spacer(modifier = Modifier
+                    .weight(0.1f)
+                    .size(32.dp))
+
             }
 
             Text(
@@ -96,27 +103,33 @@ fun PoemScreenTitle(
                 overflow = TextOverflow.Ellipsis
             )
 
-            IconButton(
-                modifier = Modifier
-                    .weight(0.1f)
-                    .size(32.dp),
-                onClick = {
-                    navController.navigate(
-                        "${AppRoutes.POEM}/${poetId}/${poemId + 1}/-1",
-                        navOptions {
-                            popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
-                                inclusive = true
+            if ((poemId + 1) <= maxId) {
+                IconButton(
+                    modifier = Modifier
+                        .weight(0.1f)
+                        .size(32.dp),
+                    onClick = {
+                        navController.navigate(
+                            "${AppRoutes.POEM}/${poetId}/${poemId + 1}/-1",
+                            navOptions {
+                                popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
+                                    inclusive = true
+                                }
                             }
-                        }
+                        )
+                    },
+                    enabled = (poemId + 1) <= maxId
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                        contentDescription = stringResource(R.string.NEXT),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                },
-                enabled = poemId + 1 <= maxId
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = stringResource(R.string.NEXT),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                }
+            } else {
+                Spacer(modifier = Modifier
+                    .weight(0.1f)
+                    .size(32.dp))
             }
         }
     }
