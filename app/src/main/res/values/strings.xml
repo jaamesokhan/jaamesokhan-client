@@ -129,9 +129,14 @@ https://myket.ir/app/ir.jaamebaade.jaamebaade_client
     <string name="APP_NAME">Jaame-Sokhan V2</string>
     <string name="ABOUT_BE_SUPPORTIVE">حامی باش</string>
     <string name="LOGO">Logo</string>
-    <string name="SETTING_VERSE_ONE">بیت اول</string>
-    <string name="SETTING_VERSE_TWO">بیت دوم</string>
-    <string name="SETTING_VERSE_THREE">بیت سوم</string>
+    <string name="SETTING_VERSE_ONE_1">سخن ماند از تو همی یادگار</string>
+    <string name="SETTING_VERSE_ONE_2">سخن را چنین خوارمایه مدار </string>
+
+    <string name="SETTING_VERSE_TWO_1">فریدون فرخ فرشته نبود</string>
+    <string name="SETTING_VERSE_TWO_2">زمشک و ز عنبر سرشته نبود</string>
+    <string name="SETTING_VERSE_THREE_1">به داد و دهش یافت آن نیکویی</string>
+
+    <string name="SETTING_VERSE_THREE_2">تو دادو دهش کن فریدون تویی</string>
     <string name="APP_THEME">تم برنامه</string>
     <string name="FONT">فونت</string>
     <string name="FONT_SIZE">اندازه قلم</string>

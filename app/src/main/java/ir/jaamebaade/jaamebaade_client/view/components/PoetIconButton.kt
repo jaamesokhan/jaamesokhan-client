@@ -19,6 +19,9 @@ fun PoetIconButton(poet: Poet, onLongClick: () -> Unit, onClick: () -> Unit) {
         textStyle = MaterialTheme.typography.headlineMedium,
         backgroundColor = Color.Transparent,
         onClick = onClick,
-        onLongClick = onLongClick
+        onLongClick = onLongClick,
+        roundedCornerShapeSize = 5,
+        iconSize = 55,
+        size = 60
     )
 }

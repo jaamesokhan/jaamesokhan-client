@@ -97,7 +97,7 @@ fun MyPoetsScreen(
         }
 
         if (fetchStatus == Status.SUCCESS) {
-            LazyVerticalGrid(columns = GridCells.Fixed(3)) {
+            LazyVerticalGrid(columns = GridCells.Fixed(4)) {
                 if (poets!!.isNotEmpty()) {
                     items(poets) { poet ->
                         PoetIconButton(poet = poet, onLongClick = {
@@ -130,7 +130,8 @@ fun MyPoetsScreen(
                         backgroundColor = MaterialTheme.colorScheme.outline,
                         contentDescription = stringResource(R.string.ADD_NEW_POET),
                         textStyle = MaterialTheme.typography.headlineMedium,
-                    ) {
+                        size = 50
+                        ) {
                         navController.navigate(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
                             popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
                                 inclusive = true
