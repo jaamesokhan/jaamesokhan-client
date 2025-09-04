@@ -110,6 +110,15 @@ val ColorScheme.neutralN100: Color
     @Composable
     get() = if (isAppInDarkMode()) neutralN100Dark else neutralN100Light
 
+
+val ColorScheme.primary20: Color
+@Composable
+get() = if(isAppInDarkMode()) primary20Light else primary20Dark
+
+val ColorScheme.primary90: Color
+    @Composable
+    get() = if(isAppInDarkMode()) primary90Light else primary90Dark
+
 @Composable
 fun JaamebaadeclientTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

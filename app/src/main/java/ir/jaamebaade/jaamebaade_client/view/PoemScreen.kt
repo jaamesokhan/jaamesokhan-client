@@ -51,6 +51,8 @@ import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
+import ir.jaamebaade.jaamebaade_client.ui.theme.primary20
+import ir.jaamebaade.jaamebaade_client.ui.theme.primary90
 import ir.jaamebaade.jaamebaade_client.view.components.AudioListItems
 import ir.jaamebaade.jaamebaade_client.view.components.NotesBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
@@ -382,31 +384,34 @@ fun PoemScreen(
 private fun HighlightHintMessage(viewModel: PoemViewModel) {
     Row(
         modifier = Modifier
-            .background(color = MaterialTheme.colorScheme.primaryContainer)
-            .padding(vertical = 1.dp)
+            .background(color = MaterialTheme.colorScheme.primary90)
+            .padding(vertical = 4.dp)
             .fillMaxWidth(),
 
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Row(
-            modifier = Modifier.padding(start = 4.dp).weight(1.0f),
+            modifier = Modifier.padding(start = 8.dp).weight(2.0f),
             verticalAlignment = Alignment.CenterVertically,
         ) {
 
             Text(
                 text = stringResource(R.string.HIGHLIGHT_HINT_MESSAGE),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.headlineSmall,
                 maxLines = 2,
-                overflow = TextOverflow.Clip
+                overflow = TextOverflow.Clip,
+                color = MaterialTheme.colorScheme.primary20
             )
         }
-        IconButton(onClick = {
+        IconButton(
+            onClick = {
             viewModel.onHighlightHintDismissed()
         }) {
             Icon(
                 imageVector = Icons.Default.Close, contentDescription = "close",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.primary20
             )
         }
     }
