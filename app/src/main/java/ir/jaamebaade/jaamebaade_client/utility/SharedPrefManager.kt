@@ -17,7 +17,7 @@ class SharedPrefManager(
         const val USERNAME_KEY = "Username"
         const val AUTH_TOKEN_KEY = "AuthToken"
         const val APP_THEME_TYPE_KEY = "AppThemeType"
-
+        const val SHOW_HINT_FOR_HIGHLIGHT_KEY = "ShowHintForHighlight"
         const val NOTIFICATION_PERMISSION_KEY = "NotificationPermission"
     }
 
@@ -39,6 +39,15 @@ class SharedPrefManager(
         return sharedPreferences.getString(AUTH_TOKEN_KEY, null)
     }
 
+    fun setShowHintForHighlight(show: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(SHOW_HINT_FOR_HIGHLIGHT_KEY, show)
+        }
+    }
+
+    fun getShowHintForHighlight(): Boolean {
+        return sharedPreferences.getBoolean(SHOW_HINT_FOR_HIGHLIGHT_KEY, true)
+    }
     fun savePoemFont(font: CustomFont) {
         sharedPreferences.edit {
             putString(POEM_FONT_KEY, font.name)

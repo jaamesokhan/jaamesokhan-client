@@ -15,6 +15,10 @@ val secondaryS40Light = Color(0xFF83B22D)
 val secondaryS50Light = Color(0xFF9ACC3D)
 val secondaryContainerLight = Color(0xFFDDE5CF)
 val onSecondaryContainerLight = Color(0xFF46660A)
+val primary20Light = Color(0xFF3E452D)
+val primary20Dark = Color(0xFF3E452D)
+val primary90Light = Color(0xFFCCE595)
+val primary90Dark = Color(0xFFCCE595)
 
 /**
  * This is mapped to Gradient/Light in the design system

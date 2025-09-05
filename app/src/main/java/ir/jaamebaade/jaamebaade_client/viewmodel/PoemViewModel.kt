@@ -30,6 +30,7 @@ import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
 import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
+import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -47,7 +48,8 @@ class PoemViewModel @AssistedInject constructor(
     private val audioApiClient: AudioApiClient,
     private val syncAudioClient: SyncAudioClient,
     private val historyRepository: HistoryRepository,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val sharedPrefManager: SharedPrefManager
 ) : ViewModel() {
 
     private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
@@ -65,6 +67,8 @@ class PoemViewModel @AssistedInject constructor(
     var syncInfoFetchStatus by mutableStateOf(Status.NOT_STARTED)
         private set
 
+    var showHintForHighlight by mutableStateOf(false)
+        private set
 
     private var lastVisitedPoemId: Int? = null
 
@@ -91,10 +95,14 @@ class PoemViewModel @AssistedInject constructor(
 
 
     init {
+        showHintForHighlight = sharedPrefManager.getShowHintForHighlight()
         fetchPoemVerses()
         fetchIsBookmarked()
     }
-
+    fun onHighlightHintDismissed() {
+        showHintForHighlight = false
+        sharedPrefManager.setShowHintForHighlight(false)
+    }
     fun fetchRecitationsForPoem(onSuccess: () -> Unit, onFailure: () -> Unit) {
         viewModelScope.launch {
             _urls.value = audioApiClient.getAllRecitations(

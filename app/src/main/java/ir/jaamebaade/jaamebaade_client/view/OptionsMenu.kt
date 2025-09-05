@@ -47,6 +47,23 @@ fun OptionsMenu(
         val context = LocalContext.current
         Column {
             MenuItem(
+                title = stringResource(R.string.ADD_NEW_POET),
+                showDivider = false,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.AddCircleOutline,
+                        contentDescription = stringResource(R.string.RANDOM_POEM),
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(32.dp)
+                    )
+                },
+                onClick = {
+                    navController.navigate(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString())
+                    onDismiss()
+                }
+            )
+
+            MenuItem(
                 title = stringResource(R.string.RANDOM_POEM),
                 showDivider = true,
                 leadingIcon = {
@@ -80,22 +97,7 @@ fun OptionsMenu(
                 }
             )
 
-            MenuItem(
-                title = stringResource(R.string.ADD_NEW_POET),
-                showDivider = false,
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.AddCircleOutline,
-                        contentDescription = stringResource(R.string.RANDOM_POEM),
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(32.dp)
-                    )
-                },
-                onClick = {
-                    navController.navigate(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString())
-                    onDismiss()
-                }
-            )
+
 
 
             HorizontalDivider(color = MaterialTheme.colorScheme.outline)
