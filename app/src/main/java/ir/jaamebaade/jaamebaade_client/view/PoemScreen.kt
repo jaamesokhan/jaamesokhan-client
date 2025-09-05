@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -330,7 +331,9 @@ fun PoemScreen(
                 PoemScreenActionHeader(
                     toggleButtonItems = toggleButtonItems
                 )
-                if (showHintForHighlight) {
+                AnimatedVisibility(
+                    visible = showHintForHighlight
+                ) {
                     HighlightHintMessage(poemViewModel)
                 }
             }
@@ -385,14 +388,16 @@ private fun HighlightHintMessage(viewModel: PoemViewModel) {
     Row(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.primary90)
-            .padding(vertical = 4.dp)
+            .padding(vertical = 8.dp)
             .fillMaxWidth(),
 
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Row(
-            modifier = Modifier.padding(start = 8.dp).weight(2.0f),
+            modifier = Modifier
+                .padding(start = 12.dp)
+                .weight(2.0f),
             verticalAlignment = Alignment.CenterVertically,
         ) {
 
@@ -406,8 +411,8 @@ private fun HighlightHintMessage(viewModel: PoemViewModel) {
         }
         IconButton(
             onClick = {
-            viewModel.onHighlightHintDismissed()
-        }) {
+                viewModel.onHighlightHintDismissed()
+            }) {
             Icon(
                 imageVector = Icons.Default.Close, contentDescription = "close",
                 modifier = Modifier.size(24.dp),

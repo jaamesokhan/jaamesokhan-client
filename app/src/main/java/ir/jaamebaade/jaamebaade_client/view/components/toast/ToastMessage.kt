@@ -83,7 +83,7 @@ fun ToastMessage(
                 slideOutHorizontally(animationSpec = tween(300)) { it }
     ) {
         Row(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(12.dp)
         ) {
 
             Row(
@@ -91,7 +91,7 @@ fun ToastMessage(
                     .background(color = backgroundColor, shape = RoundedCornerShape(15.dp))
                     .padding(horizontal = 12.dp, vertical = 8.dp)
                     .fillMaxWidth()
-                    .height(80.dp),
+                    .height(72.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(

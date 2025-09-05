@@ -77,7 +77,7 @@ fun RandomPoemBox(
                     Column {
                         Text(
                             text = targetRandomPoemPreview.verses.joinToString(separator = "\n") { it.text },
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = neutralN95Light,
                             overflow = TextOverflow.Ellipsis,
                         )

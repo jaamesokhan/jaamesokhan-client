@@ -110,7 +110,7 @@ fun Navbar(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .padding(bottom = 24.dp)
+                    .padding(bottom = 16.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .navigationBarsPadding(),
             ) {
@@ -121,7 +121,7 @@ fun Navbar(navController: NavController) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(106.dp)
+                            .height(88.dp)
                             .background(color = MaterialTheme.colorScheme.surface)
                             .padding(horizontal = 8.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -196,7 +196,7 @@ fun NavbarItem(
             Icon(
                 painter = painterResource(id = iconId),
                 contentDescription = contentDescription,
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(28.dp),
                 tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.neutralN70
             )
             Spacer(modifier = Modifier.height(8.dp))

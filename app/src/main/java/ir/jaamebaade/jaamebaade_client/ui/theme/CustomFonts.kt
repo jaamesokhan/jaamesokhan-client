@@ -267,20 +267,20 @@ object CustomFonts {
             ),
             body = CustomFontAttributes(
                 small = CustomFontMeasures(
-                    fontSize = 14.sp,
-                    lineHeight = 26.6.sp,
+                    fontSize = 12.sp,
+                    lineHeight = 20.0.sp,
                     letterSpacing = 0.sp,
                     fontWeight = FontWeight.Medium,
                 ),
                 medium = CustomFontMeasures(
-                    fontSize = 16.sp,
-                    lineHeight = 30.4.sp,
+                    fontSize = 14.sp,
+                    lineHeight = 20.0.sp,
                     letterSpacing = 0.sp,
                     fontWeight = FontWeight.Medium,
                 ),
                 large = CustomFontMeasures(
-                    fontSize = 18.sp,
-                    lineHeight = 34.2.sp,
+                    fontSize = 16.sp,
+                    lineHeight = 20.0.sp,
                     letterSpacing = 0.sp,
                     fontWeight = FontWeight.Medium,
                 ),
