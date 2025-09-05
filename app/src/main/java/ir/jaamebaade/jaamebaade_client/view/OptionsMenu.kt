@@ -48,7 +48,7 @@ fun OptionsMenu(
         Column {
             MenuItem(
                 title = stringResource(R.string.ADD_NEW_POET),
-                showDivider = false,
+                showDivider = true,
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.AddCircleOutline,
@@ -82,7 +82,7 @@ fun OptionsMenu(
 
             MenuItem(
                 title = stringResource(R.string.SEARCH),
-                showDivider = true,
+                showDivider = false,
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
