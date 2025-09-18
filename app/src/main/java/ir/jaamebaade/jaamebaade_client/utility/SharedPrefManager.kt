@@ -7,6 +7,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
+import java.time.LocalTime
 
 class SharedPrefManager(
     @ApplicationContext private val context: Context
@@ -19,6 +20,9 @@ class SharedPrefManager(
         const val APP_THEME_TYPE_KEY = "AppThemeType"
         const val SHOW_HINT_FOR_HIGHLIGHT_KEY = "ShowHintForHighlight"
         const val NOTIFICATION_PERMISSION_KEY = "NotificationPermission"
+        const val IS_SCHEDULED_NOTIFICATIONS_ENABLED_KEY = "IsScheduledNotificationsEnabled"
+        const val IS_SCHEDULED_NOTIFICATIONS_SETUP_KEY = "IsScheduledNotificationsSetUp"
+        const val SCHEDULED_NOTIFICATION_TIME_KEY = "ScheduledNotificationTime"
     }
 
     private val sharedPreferences: SharedPreferences =
@@ -48,6 +52,7 @@ class SharedPrefManager(
     fun getShowHintForHighlight(): Boolean {
         return sharedPreferences.getBoolean(SHOW_HINT_FOR_HIGHLIGHT_KEY, true)
     }
+
     fun savePoemFont(font: CustomFont) {
         sharedPreferences.edit {
             putString(POEM_FONT_KEY, font.name)
@@ -91,5 +96,36 @@ class SharedPrefManager(
 
     fun getNotificationPermissionPreference(): Boolean {
         return sharedPreferences.getBoolean(NOTIFICATION_PERMISSION_KEY, true)
+    }
+
+    fun setIsScheduledNotificationsEnabled(value: Boolean) {
+        sharedPreferences.edit { putBoolean(IS_SCHEDULED_NOTIFICATIONS_ENABLED_KEY, value) }
+    }
+
+    fun getIsScheduledNotificationsEnabled(): Boolean {
+        return sharedPreferences.getBoolean(IS_SCHEDULED_NOTIFICATIONS_ENABLED_KEY, true)
+    }
+
+    fun getIsScheduledNotificationsSetUp(): Boolean {
+        return sharedPreferences.getBoolean(IS_SCHEDULED_NOTIFICATIONS_SETUP_KEY, false)
+    }
+
+    fun setIsScheduledNotificationsSetUp(value: Boolean) {
+        sharedPreferences.edit { putBoolean(IS_SCHEDULED_NOTIFICATIONS_SETUP_KEY, value) }
+    }
+
+    fun setScheduledNotificationTime(value: LocalTime) {
+        val string = "${value.hour}:${value.minute}"
+        sharedPreferences.edit { putString(SCHEDULED_NOTIFICATION_TIME_KEY, string) }
+    }
+
+    fun getScheduledNotificationTime(): LocalTime {
+        val string = sharedPreferences.getString(SCHEDULED_NOTIFICATION_TIME_KEY, null)
+        return if (string != null) {
+            val split = string.split(":")
+            LocalTime.of(split[0].toInt(), split[1].toInt())
+        } else {
+            LocalTime.of(12, 25)
+        }
     }
 }

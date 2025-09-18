@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.viewmodel
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,12 +15,14 @@ import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.RandomPoemPreview
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
+import ir.jaamebaade.jaamebaade_client.notifications.ExactAlarmScheduler
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatusManager
+import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +36,8 @@ class MyPoetsViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val poemRepository: PoemRepository,
     private val verseRepository: VerseRepository,
-    private val downloadStatusManager: DownloadStatusManager
+    private val downloadStatusManager: DownloadStatusManager,
+    private val sharedPrefManager: SharedPrefManager,
 ) : ViewModel() {
     var poets by mutableStateOf<List<Poet>?>(null)
         private set
@@ -105,6 +109,19 @@ class MyPoetsViewModel @Inject constructor(
             )
         }
         return res
+    }
+
+    fun startScheduler(context: Context) {
+        if (
+            sharedPrefManager.getIsScheduledNotificationsEnabled() &&
+            !sharedPrefManager.getIsScheduledNotificationsSetUp()
+        ) {
+            ExactAlarmScheduler.scheduleExact(
+                context = context,
+                localTime = sharedPrefManager.getScheduledNotificationTime()
+            )
+            sharedPrefManager.setIsScheduledNotificationsSetUp(true)
+        }
     }
 
     private suspend fun fetchAllCategoriesOfPoem(poem: Poem): List<Category> {

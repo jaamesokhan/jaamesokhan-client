@@ -67,6 +67,7 @@
     <string name="COPY">کپی</string>
     <string name="SEARCH_TITLE">جست‌وجو در اشعار</string>
     <string name="EMPTY_SEARCH_FILTER">خالی!</string>
+    <string name="DAILY_RANDOM_POEM_TITLE">شعر تصادفی امروز</string>
 
 
     <!--  Icon Descriptions  -->

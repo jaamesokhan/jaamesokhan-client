@@ -61,7 +61,8 @@ fun AppNavHost(
     fontRepository: FontRepository,
     themeRepository: ThemeRepository,
     sharedPrefManager: SharedPrefManager,
-    requestPermissionLauncher: (String) -> Unit
+    requestPermissionLauncher: (String) -> Unit,
+    startDestination: String?,
 ) {
     val appNavHostViewModel: AppNavHostViewModel = hiltViewModel()
 
@@ -95,8 +96,12 @@ fun AppNavHost(
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     requestPermissionLauncher(Manifest.permission.POST_NOTIFICATIONS)
                 }
-                sharedPrefManager.setNotificationPermissionPreference(false)
+
             }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                requestPermissionLauncher(Manifest.permission.SCHEDULE_EXACT_ALARM)
+            }
+            sharedPrefManager.setNotificationPermissionPreference(false)
 
             if (fetchStatus == Status.LOADING) {
                 SplashScreen()
@@ -116,7 +121,7 @@ fun AppNavHost(
                     }) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = if (hasDownloadedAnyPoets) {
+                        startDestination = startDestination ?: if (hasDownloadedAnyPoets) {
                             AppRoutes.DOWNLOADED_POETS_SCREEN.toString()
                         } else {
                             AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()
