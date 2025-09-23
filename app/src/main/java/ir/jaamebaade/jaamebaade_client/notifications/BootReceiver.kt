@@ -21,10 +21,16 @@ class BootReceiver : BroadcastReceiver() {
             Intent.ACTION_TIME_CHANGED -> {
                 Log.d("BootReceiver", "System event: ${intent.action}")
 
-                val localTime = sharedPrefManager.getScheduledNotificationTime()
-                ExactAlarmScheduler.scheduleExact(context, localTime)
+                if (sharedPrefManager.getIsScheduledNotificationsEnabled()) {
+                    val localTime = sharedPrefManager.getScheduledNotificationTime()
+                    ExactAlarmScheduler.cancel(context)
+                    ExactAlarmScheduler.scheduleExact(context, localTime)
+                    sharedPrefManager.setIsScheduledNotificationsSetUp(true)
+                } else {
+                    ExactAlarmScheduler.cancel(context)
+                    sharedPrefManager.setIsScheduledNotificationsSetUp(false)
+                }
             }
         }
     }
 }
-

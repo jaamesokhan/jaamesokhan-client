@@ -25,6 +25,7 @@ import ir.jaamebaade.jaamebaade_client.utility.DownloadStatusManager
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
+import java.time.LocalTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -48,6 +49,16 @@ class MyPoetsViewModel @Inject constructor(
     var randomPoemPreview by mutableStateOf<RandomPoemPreview?>(null)
         private set
 
+    var isScheduledNotificationsEnabled by mutableStateOf(
+        sharedPrefManager.getIsScheduledNotificationsEnabled()
+    )
+        private set
+
+    var scheduledNotificationTime by mutableStateOf(
+        sharedPrefManager.getScheduledNotificationTime()
+    )
+        private set
+
     init {
         getAllPoets()
         getAllCategories()
@@ -59,6 +70,29 @@ class MyPoetsViewModel @Inject constructor(
             categories?.let {
                 saveSelectedCategories(it)
             }
+        }
+    }
+
+    fun setScheduledNotificationsEnabled(context: Context, enabled: Boolean) {
+        isScheduledNotificationsEnabled = enabled
+        sharedPrefManager.setIsScheduledNotificationsEnabled(enabled)
+        if (enabled) {
+            sharedPrefManager.setIsScheduledNotificationsSetUp(true)
+            ExactAlarmScheduler.cancel(context)
+            ExactAlarmScheduler.scheduleExact(context, scheduledNotificationTime)
+        } else {
+            sharedPrefManager.setIsScheduledNotificationsSetUp(false)
+            ExactAlarmScheduler.cancel(context)
+        }
+    }
+
+    fun updateScheduledNotificationTime(context: Context, newTime: LocalTime) {
+        scheduledNotificationTime = newTime
+        sharedPrefManager.setScheduledNotificationTime(newTime)
+        if (isScheduledNotificationsEnabled) {
+            sharedPrefManager.setIsScheduledNotificationsSetUp(true)
+            ExactAlarmScheduler.cancel(context)
+            ExactAlarmScheduler.scheduleExact(context, newTime)
         }
     }
 
@@ -113,12 +147,12 @@ class MyPoetsViewModel @Inject constructor(
 
     fun startScheduler(context: Context) {
         if (
-            sharedPrefManager.getIsScheduledNotificationsEnabled() &&
+            isScheduledNotificationsEnabled &&
             !sharedPrefManager.getIsScheduledNotificationsSetUp()
         ) {
             ExactAlarmScheduler.scheduleExact(
                 context = context,
-                localTime = sharedPrefManager.getScheduledNotificationTime()
+                localTime = scheduledNotificationTime
             )
             sharedPrefManager.setIsScheduledNotificationsSetUp(true)
         }
