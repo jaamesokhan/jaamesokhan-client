@@ -73,11 +73,17 @@ class PoemViewModel @AssistedInject constructor(
     private var lastVisitedPoemId: Int? = null
 
 
-    fun share(verses: List<VerseWithHighlights>, poetName: String?, context: Context) {
-        val textToCopy = verses.joinToString("\n") { it.verse.text }.plus("\n\n$poetName")
+    fun share(verses: List<VerseWithHighlights>, poemPathText: String?, context: Context) {
+        val textToShare = buildString {
+            append(verses.joinToString("\n") { it.verse.text })
+            if (!poemPathText.isNullOrBlank()) {
+                append("\n\n")
+                append(poemPathText)
+            }
+        }
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, textToCopy)
+            putExtra(Intent.EXTRA_TEXT, textToShare)
             type = "text/plain"
         }
 
