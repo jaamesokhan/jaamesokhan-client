@@ -12,9 +12,6 @@ interface HistoryItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertHistoryItem(historyRecord: HistoryRecord)
 
-    @Query("SELECT * FROM history ORDER BY timestamp DESC")
-    fun getAllHistorySorted(): List<HistoryRecord>
-
     @Query(
         "SELECT h.id as history_id, h.poem_id as history_poem_id, h.timestamp as history_timestamp," +
                 "v.id AS verse_id, v.text as verse_text," +
@@ -26,4 +23,7 @@ interface HistoryItemDao {
 
     @Query("DELETE FROM history WHERE id = :id")
     fun deleteHistoryItem(id: Int)
+
+    @Query("DELETE FROM history")
+    fun clearHistory()
 }

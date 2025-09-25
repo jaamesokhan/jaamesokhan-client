@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -24,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -98,14 +100,25 @@ fun HistoryScreen(
                 text = stringResource(R.string.READ_HISTORY),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.weight(1f)
             )
+            if (poemHistory.value.isNotEmpty()) {
+                TextButton(onClick = { viewModel.clearHistory() }) {
+                    Text(
+                        text = stringResource(R.string.DELETE_ALL_HISTORY),
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                }
+            }
         }
 
         if (poemHistory.value.isEmpty()) {
             Row(
                 modifier = Modifier
                     .padding(10.dp)
-                    .fillMaxSize().background(MaterialTheme.colorScheme.background),
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -114,6 +127,7 @@ fun HistoryScreen(
                     tint = MaterialTheme.colorScheme.outlineVariant,
                     contentDescription = "",
                 )
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.NO_HISTORY),
                     style = MaterialTheme.typography.headlineLarge,
@@ -127,11 +141,13 @@ fun HistoryScreen(
                         item.id
                     }) { index, historyRecord ->
                     MyHistoryCardItem(
-                        historyRecord = historyRecord
-                    ) {
-                        navController.navigate("${AppRoutes.POEM}/${historyRecord.path.poet.id}/${historyRecord.path.poem.id}/-1")
-                        onDismiss()
-                    }
+                        historyRecord = historyRecord,
+                        onClick = {
+                            navController.navigate("${AppRoutes.POEM}/${historyRecord.path.poet.id}/${historyRecord.path.poem.id}/-1")
+                            onDismiss()
+                        },
+                        onDelete = { viewModel.deleteHistoryRecord(historyRecord.id) }
+                    )
 
                     if (index != poemHistory.value.size - 1)
                         HorizontalDivider(
@@ -158,6 +174,7 @@ fun MyHistoryCardItem(
     modifier: Modifier = Modifier,
     historyRecord: HistoryRecordPathFirstVerse,
     onClick: () -> Unit = {},
+    onDelete: (() -> Unit)? = null,
 ) {
     ComposableCardItem(
         modifier = modifier,
@@ -200,9 +217,10 @@ fun MyHistoryCardItem(
                 }
 
             },
-        icon = null,
-        iconDescription = null,
+        icon = onDelete?.let { Icons.Outlined.Delete },
+        iconDescription = onDelete?.let { stringResource(R.string.DELETE) },
         onClick = onClick,
+        onIconClick = onDelete ?: {},
         containerColor = MaterialTheme.colorScheme.background
     )
 }

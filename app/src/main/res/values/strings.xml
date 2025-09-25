@@ -79,6 +79,7 @@
     <string name="CANCEL">لغو</string>
     <string name="COPY_SELECTED_VERSES">رونوشت</string>
     <string name="DELETE">حذف</string>
+    <string name="DELETE_ALL_HISTORY">حذف همه</string>
     <string name="CLOSE">بستن</string>
     <string name="RANDOM_POEM">شعر تصادفی</string>
     <string name="RANDOM_POEM_OPTIONS">تنظیمات شعر تصادفی</string>
