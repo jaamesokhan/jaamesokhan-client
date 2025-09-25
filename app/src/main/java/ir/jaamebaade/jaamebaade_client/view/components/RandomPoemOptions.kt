@@ -229,6 +229,8 @@ fun RandomPoemOptions(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(24.dp)
+                        ,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
                             text = stringResource(id = R.string.CHANGE_TIME),

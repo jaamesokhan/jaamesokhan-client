@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TriStateCheckbox
 import androidx.compose.runtime.Composable
@@ -40,7 +41,7 @@ fun ExpandableCheckbox(
                 onClick = onCheckedChange,
                 modifier = Modifier.padding(end = 8.dp)
             )
-            Text(text = text)
+            Text(text = text, color = MaterialTheme.colorScheme.onBackground)
             if (canExpand) {
                 IconButton(onClick = { isExpanded = !isExpanded }) {
                     Icon(
