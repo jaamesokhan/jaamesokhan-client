@@ -51,6 +51,7 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
+import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
 import ir.jaamebaade.jaamebaade_client.ui.theme.primary20
 import ir.jaamebaade.jaamebaade_client.ui.theme.primary90
@@ -276,7 +277,7 @@ fun PoemScreen(
             onClick = {
                 moreOptionsChecked = !moreOptionsChecked; poemViewModel.share(
                 versesWithHighlights,
-                poemTitle,
+                path?.toPathHeaderText() ?: poemTitle,
                 context
             )
             }
