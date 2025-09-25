@@ -31,13 +31,15 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.view.components.setting.MenuItem
+import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OptionsMenu(
     sheetState: SheetState,
     onDismiss: () -> Unit,
-    navController: NavController
+    navController: NavController,
+    myPoetsViewModel: MyPoetsViewModel,
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -75,7 +77,15 @@ fun OptionsMenu(
                     )
                 },
                 onClick = {
-                    navController.navigate("${AppRoutes.SETTINGS_SCREEN}?openRandomSettings=true")
+                    myPoetsViewModel.getRandomPoem(refresh = true) {
+                        myPoetsViewModel.randomPoemPreview?.let { preview ->
+                            if (myPoetsViewModel.poets?.any { it.id == preview.poemPath.poet.id } == true) {
+                                android.os.Handler(android.os.Looper.getMainLooper()).post {
+                                    navController.navigate("${AppRoutes.POEM}/${preview.poemPath.poet.id}/${preview.poemPath.poem.id}/-1")
+                                }
+                            }
+                        }
+                    }
                     onDismiss()
                 }
             )
@@ -189,4 +199,3 @@ fun OptionsMenu(
 
     }
 }
-

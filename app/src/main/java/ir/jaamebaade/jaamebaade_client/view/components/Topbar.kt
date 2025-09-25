@@ -116,7 +116,8 @@ fun TopBar(
         OptionsMenu(
             sheetState = settingBottomSheetState,
             onDismiss = { showSettingBottomSheet = false },
-            navController
+            navController = navController,
+            myPoetsViewModel = myPoetsViewModel,
         )
     }
 
