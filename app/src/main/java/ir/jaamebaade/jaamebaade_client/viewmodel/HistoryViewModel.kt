@@ -91,4 +91,13 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
+    fun clearHistory() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                historyRepository.clearHistory()
+            }
+            _poemHistory.value = emptyList()
+        }
+    }
+
 }

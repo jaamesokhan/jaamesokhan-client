@@ -10,8 +10,8 @@ class HistoryRepository @Inject constructor(appDatabase: AppDatabase) {
     private val db = appDatabase
     private val historyDao = db.historyDao()
     fun insertHistoryItem(historyRecord: HistoryRecord) = historyDao.insertHistoryItem(historyRecord)
-    fun getAllHistorySorted(): List<HistoryRecord> = historyDao.getAllHistorySorted()
     fun getAllHistorySortedWithFirstVerse(): List<HistoryRecordFirstVerse> = historyDao.getAllHistorySortedWithFirstVerse()
 
     fun deleteHistoryItem(id: Int) = historyDao.deleteHistoryItem(id)
+    fun clearHistory() = historyDao.clearHistory()
 }
