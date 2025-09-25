@@ -255,6 +255,13 @@ private fun onBackButtonClicked(
             }
         }
     } else {
-        navController.popBackStack()
+        val popped = navController.popBackStack()
+        if (!popped) {
+            navController.navigate(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
+                    inclusive = true
+                }
+            }
+        }
     }
 }

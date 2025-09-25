@@ -52,7 +52,7 @@ fun OptionsMenu(
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.AddCircleOutline,
-                        contentDescription = stringResource(R.string.RANDOM_POEM),
+                        contentDescription = stringResource(R.string.ADD_NEW_POET),
                         tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(32.dp)
                     )
@@ -75,7 +75,7 @@ fun OptionsMenu(
                     )
                 },
                 onClick = {
-                    navController.navigate(AppRoutes.RANDOM_POEM_OPTIONS.toString())
+                    navController.navigate("${AppRoutes.SETTINGS_SCREEN}?openRandomSettings=true")
                     onDismiss()
                 }
             )
@@ -189,5 +189,4 @@ fun OptionsMenu(
 
     }
 }
-
 
