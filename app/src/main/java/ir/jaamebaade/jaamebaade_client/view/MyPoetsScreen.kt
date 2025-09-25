@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -55,8 +56,10 @@ fun MyPoetsScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedPoet by remember { mutableStateOf<Poet?>(null) }
 
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.getRandomPoem(onSuccess = { randomPoetPreviewFetchStatus = Status.SUCCESS })
+        viewModel.startScheduler(context)
     }
 
     LaunchedEffect(key1 = poets) {
@@ -132,7 +135,7 @@ fun MyPoetsScreen(
                         textStyle = MaterialTheme.typography.headlineSmall,
 
                         size = 65
-                        ) {
+                    ) {
                         navController.navigate(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
                             popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
                                 inclusive = true

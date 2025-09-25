@@ -67,6 +67,10 @@
     <string name="COPY">کپی</string>
     <string name="SEARCH_TITLE">جست‌وجو در اشعار</string>
     <string name="EMPTY_SEARCH_FILTER">خالی!</string>
+    <string name="DAILY_RANDOM_POEM_TITLE">شعر تصادفی امروز</string>
+    <string name="DAILY_RANDOM_POEM_NOTIFICATION">دریافت شعر تصادفی روزانه</string>
+    <string name="DAILY_RANDOM_POEM_TIME_LABEL">زمان ارسال اعلان: %1$s</string>
+    <string name="CHANGE_TIME">تغییر زمان</string>
 
 
     <!--  Icon Descriptions  -->
