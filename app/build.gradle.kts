@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId = "ir.jaamebaade.jaamebaade_client"
         minSdk = 27
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 6
         versionName = ""
 
