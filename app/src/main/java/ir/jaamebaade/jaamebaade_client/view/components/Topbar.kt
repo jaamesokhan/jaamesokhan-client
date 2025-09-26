@@ -82,7 +82,6 @@ fun TopBar(
     val showHistory = viewModel.showHistoryIcon
     val showSearch = viewModel.showSearchIcon
     val showOptions = viewModel.showOptionsIcon
-    val settingBottomSheetState = rememberModalBottomSheetState()
     var showSettingBottomSheet by remember { mutableStateOf(false) }
     var showHistoryBottomSheet by remember { mutableStateOf(false) }
     val historyBottomSheetState = rememberModalBottomSheetState()
@@ -114,7 +113,6 @@ fun TopBar(
 
     if (showSettingBottomSheet) {
         OptionsMenu(
-            sheetState = settingBottomSheetState,
             onDismiss = { showSettingBottomSheet = false },
             navController = navController,
             myPoetsViewModel = myPoetsViewModel,

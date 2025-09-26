@@ -279,7 +279,7 @@ object CustomFonts {
                     fontWeight = FontWeight.Medium,
                 ),
                 large = CustomFontMeasures(
-                    fontSize = 16.sp,
+                    fontSize = 18.sp,
                     lineHeight = 20.0.sp,
                     letterSpacing = 0.sp,
                     fontWeight = FontWeight.Medium,

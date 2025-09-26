@@ -15,8 +15,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,20 +28,19 @@ import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
+import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.setting.MenuItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OptionsMenu(
-    sheetState: SheetState,
     onDismiss: () -> Unit,
     navController: NavController,
     myPoetsViewModel: MyPoetsViewModel,
 ) {
-    ModalBottomSheet(
+    CustomBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.neutralN95,
     ) {
         val context = LocalContext.current

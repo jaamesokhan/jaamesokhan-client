@@ -135,7 +135,13 @@ fun HistoryScreen(
                 )
             }
         } else {
-            LazyColumn(state = lazyListState, modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+            LazyColumn(
+                state = lazyListState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(end = 12.dp)
+            ) {
                 itemsIndexed(
                     items = poemHistory.value, key = { _, item ->
                         item.id

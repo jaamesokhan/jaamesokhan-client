@@ -47,7 +47,7 @@ fun RectangularButton(
         shape = RoundedCornerShape(15.dp)
     ) {
         Text(
-            modifier = modifier.padding(horizontal = 32.dp, vertical = 2.dp),
+            modifier = modifier.padding(horizontal = 28.dp, vertical = 2.dp),
             text = text,
             style = textStyle,
             color = textColor,

@@ -6,16 +6,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN70
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomBottomSheet(onDismissRequest: () -> Unit, content: @Composable () -> Unit) {
-    // FIXME does not handle scrolling very well when items are too many
-    val sheetState = rememberModalBottomSheetState()
+fun CustomBottomSheet(
+    onDismissRequest: () -> Unit,
+    containerColor: Color = MaterialTheme.colorScheme.surface,
+    content: @Composable () -> Unit,
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(
         dragHandle = { BottomSheetDefaults.DragHandle(color = MaterialTheme.colorScheme.neutralN70) },
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = containerColor,
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {
