@@ -15,7 +15,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -223,7 +223,7 @@ fun MyHistoryCardItem(
                 }
 
             },
-        icon = onDelete?.let { Icons.Outlined.Delete },
+        icon = onDelete?.let { Icons.Outlined.Close },
         iconDescription = onDelete?.let { stringResource(R.string.DELETE) },
         onClick = onClick,
         onIconClick = onDelete ?: {},
