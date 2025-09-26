@@ -50,7 +50,6 @@ import ir.jaamebaade.jaamebaade_client.view.SettingsListScreen
 import ir.jaamebaade.jaamebaade_client.view.SplashScreen
 import ir.jaamebaade.jaamebaade_client.view.components.AboutUsScreen
 import ir.jaamebaade.jaamebaade_client.view.components.Navbar
-import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemOptions
 import ir.jaamebaade.jaamebaade_client.view.components.TopBar
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import kotlinx.coroutines.delay
@@ -157,15 +156,23 @@ fun AppNavHost(
                                 navController = navController
                             )
                         }
-                        animatedComposable(AppRoutes.SETTINGS_SCREEN.toString()) {
+                        animatedComposable(
+                            route = "${AppRoutes.SETTINGS_SCREEN}?openRandomSettings={openRandomSettings}",
+                            arguments = listOf(
+                                navArgument("openRandomSettings") {
+                                    type = NavType.BoolType
+                                    defaultValue = false
+                                }
+                            )
+                        ) { backStackEntry ->
+                            val openRandomSettings =
+                                backStackEntry.arguments?.getBoolean("openRandomSettings") ?: false
                             SettingsListScreen(
                                 modifier = Modifier.padding(innerPadding),
-                                fontRepository,
-                                themeRepository
+                                fontRepository = fontRepository,
+                                themeRepository = themeRepository,
+                                openRandomSettings = openRandomSettings
                             )
-                        }
-                        animatedComposable(AppRoutes.RANDOM_POEM_OPTIONS.toString()) {
-                            RandomPoemOptions(modifier = Modifier.padding(innerPadding))
                         }
                         animatedComposable(route = AppRoutes.SEARCH_SCREEN.toString()) {
                             SearchScreen(

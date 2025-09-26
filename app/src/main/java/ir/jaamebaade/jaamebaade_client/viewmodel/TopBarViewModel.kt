@@ -155,7 +155,10 @@ class TopBarViewModel @Inject constructor(
     }
 
     private fun getPath(navStack: NavBackStackEntry?): AppRoutes? {
-        val path = navStack?.destination?.route?.split("/")?.first()
+        val path = navStack?.destination?.route
+            ?.substringBefore("?")
+            ?.split("/")
+            ?.firstOrNull()
         return path?.let { AppRoutes.fromString(it) }
     }
 

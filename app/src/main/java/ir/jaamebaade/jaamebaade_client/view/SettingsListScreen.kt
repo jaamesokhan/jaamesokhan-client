@@ -34,19 +34,23 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.setting.CustomRadioButton
 import ir.jaamebaade.jaamebaade_client.view.components.setting.SettingListItem
+import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemOptions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsListScreen(
     modifier: Modifier = Modifier,
     fontRepository: FontRepository,
-    themeRepository: ThemeRepository
+    themeRepository: ThemeRepository,
+    openRandomSettings: Boolean = false
 ) {
     var selectedPoemFontFamily by remember { mutableStateOf(fontRepository.poemFontFamily.value) }
     var selectedPoemFontSize by remember { mutableStateOf(fontRepository.poemFontSize.value) }
     var selectedTheme by remember { mutableStateOf(themeRepository.appTheme.value) }
-    var selectedSettingItem by remember { mutableStateOf<SettingItem?>(null) }
-    var showBottomSheet by remember { mutableStateOf(false) }
+    var selectedSettingItem by remember(openRandomSettings) {
+        mutableStateOf<SettingItem?>(if (openRandomSettings) SettingItem.RANDOM_POEM else null)
+    }
+    var showBottomSheet by remember(openRandomSettings) { mutableStateOf(openRandomSettings) }
     Column(modifier = modifier.fillMaxWidth()) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -101,6 +105,25 @@ fun SettingsListScreen(
             )
 
             SettingListItem(
+                stringResource(R.string.RANDOM_POEM_OPTIONS),
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.book_ribbon),
+                        contentDescription = stringResource(R.string.RANDOM_POEM_OPTIONS),
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }, onClick = {
+                    showBottomSheet = true
+                    selectedSettingItem = SettingItem.RANDOM_POEM
+                }
+            )
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = 4.dp, horizontal = 9.dp),
+                color = MaterialTheme.colorScheme.outline
+            )
+
+            SettingListItem(
                 "${stringResource(R.string.FONT)} ${selectedPoemFontFamily.displayName}",
                 leadingIcon = {
                     Icon(
@@ -143,10 +166,12 @@ fun SettingsListScreen(
                 showBottomSheet = false
             },
         ) {
-            Column(
-                modifier = Modifier
-                    .selectableGroup()
-            ) {
+            val sheetModifier = if (selectedSettingItem == SettingItem.RANDOM_POEM) {
+                Modifier
+            } else {
+                Modifier.selectableGroup()
+            }
+            Column(modifier = sheetModifier) {
                 when (selectedSettingItem) {
                     SettingItem.FONT -> {
                         CustomFonts.getAllFonts().forEachIndexed { index, customFont ->
@@ -193,6 +218,10 @@ fun SettingsListScreen(
                         }
                     }
 
+                    SettingItem.RANDOM_POEM -> {
+                        RandomPoemOptions()
+                    }
+
                     null -> {
                         // Do nothing
                     }
@@ -205,6 +234,5 @@ fun SettingsListScreen(
 
 
 enum class SettingItem {
-    FONT, FONT_SIZE, THEME
+    FONT, FONT_SIZE, THEME, RANDOM_POEM
 }
-

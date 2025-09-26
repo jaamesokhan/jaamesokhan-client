@@ -17,8 +17,7 @@ enum class AppRoutes(private val route: String) {
     COMMENTS("comments"),
     CHANGE_THEME_SCREEN("changeThemeScreen"),
     ABOUT_US_SCREEN("aboutUsScreen"),
-    HISTORY("history"),
-    RANDOM_POEM_OPTIONS("randomPoemOptionsScreen")
+    HISTORY("history")
     ;
 
     companion object {
