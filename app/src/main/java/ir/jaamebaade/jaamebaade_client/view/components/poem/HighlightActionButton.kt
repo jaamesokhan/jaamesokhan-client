@@ -39,8 +39,8 @@ fun HighlightActionButton(
         null
     }
     Button(
-        shape = RoundedCornerShape(15.dp),
-        contentPadding = PaddingValues(vertical = 16.dp, horizontal = 12.dp),
+        shape = RoundedCornerShape(12.dp),
+        contentPadding = PaddingValues(vertical = 10.dp, horizontal = 10.dp),
         colors = buttonColors,
         border = border,
         onClick = onClick
@@ -49,10 +49,10 @@ fun HighlightActionButton(
             painter = painter,
             contentDescription = text,
         )
-        Spacer(modifier = Modifier.width(4.dp))
+        Spacer(modifier = Modifier.width(6.dp))
         Text(
             text = text,
-            style = MaterialTheme.typography.labelLarge
+            style = MaterialTheme.typography.labelMedium
         )
     }
 }

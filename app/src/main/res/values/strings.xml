@@ -8,6 +8,9 @@
     <string name="ABOUT_US_BASE">
         جام سخن یک اپلیکیشن متن باز است و هدف ما از توسعه آن، دسترسی راحت همه علاقه‌مندان به اشعار فارسی است.
     </string>
+    <string name="ABOUT_US_WEBSITE">
+        برای آشنایی بیشتر با برنامه و سازندگان آن، به وب‌سایت ما سر بزنید.
+    </string>
     <string name="ABOUT_US_GITHUB">
         کد‌های این اپلیکیشن از طریق مخزن GitHub در دسترس عموم هستند.
     </string>
@@ -25,6 +28,9 @@
     </string>
     <string name="HAMIBASH_URL">
         https://hamibash.com/jaamesokhan
+    </string>
+    <string name="WEBSITE_URL">
+        https://jaamesokhan.ir
     </string>
     <string name="EMAIL">
         jaamesokhan@gmail.com
@@ -150,6 +156,7 @@ https://myket.ir/app/ir.jaamebaade.jaamebaade_client
     <string name="FONT_SIZE">اندازه قلم</string>
     <string name="THEME_SETTING_STR">حالت</string>
     <string name="GITHUB">Github</string>
+    <string name="WEBSITE">سایت جام سخن</string>
     <string name="NO_NOTE">هنوز هیچ یادداشتی ندارید!</string>
     <string name="NO_HISTORY">هیچ شعری مطالعه نکرده‌اید!</string>
     <string name="READ_HISTORY">آخرین اشعار مطالعه شده</string>
