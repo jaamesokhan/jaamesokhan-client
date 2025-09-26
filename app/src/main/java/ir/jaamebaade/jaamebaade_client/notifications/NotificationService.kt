@@ -36,6 +36,7 @@ object NotificationService {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.mipmap.logo)
             .setContentTitle(title)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)

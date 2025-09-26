@@ -62,7 +62,7 @@ class ExactAlarmReceiver : BroadcastReceiver() {
         } else {
             verses
         }
-        return "${selectedVerses.joinToString("/") { verse -> verse.text }}\n${poem.poem.title}-${poem.poet.name}"
+        return "${selectedVerses.joinToString("/") { verse -> verse.text }}\n${poem.poem.title} - ${poem.poet.name}"
     }
 
 }
