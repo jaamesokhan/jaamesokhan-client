@@ -37,20 +37,20 @@ object CustomFonts {
             ),
             body = CustomFontAttributes(
                 small = CustomFontMeasures(
-                    fontSize = 10.sp,
-                    lineHeight = 12.sp,
+                    fontSize = 18.sp,
+                    lineHeight = 10.sp,
                     letterSpacing = 0.5.sp,
                     fontWeight = FontWeight.Normal,
                 ),
                 medium = CustomFontMeasures(
-                    fontSize = 12.sp,
-                    lineHeight = 14.sp,
+                    fontSize = 22.sp,
+                    lineHeight = 10.sp,
                     letterSpacing = 0.5.sp,
                     fontWeight = FontWeight.Normal,
                 ),
                 large = CustomFontMeasures(
-                    fontSize = 14.sp,
-                    lineHeight = 16.sp,
+                    fontSize = 26.sp,
+                    lineHeight = 10.sp,
                     letterSpacing = 0.5.sp,
                     fontWeight = FontWeight.Normal,
                 ),

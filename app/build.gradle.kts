@@ -15,14 +15,14 @@ room {
 
 android {
     namespace = "ir.jaamebaade.jaamebaade_client"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "ir.jaamebaade.jaamebaade_client"
         minSdk = 27
-        targetSdk = 34
-        versionCode = 5
-        versionName = "1.2"
+        targetSdk = 36
+        versionCode = 6
+        versionName = ""
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
