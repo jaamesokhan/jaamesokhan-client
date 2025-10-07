@@ -1,19 +1,22 @@
 package ir.jaamebaade.jaamebaade_client.utility
 
 fun Int.toPersianNumber(): String {
-    return toPersianNumber(this.toString())
+    return toString().replaceToPersianNumber()
 }
 
-fun toPersianNumber(englishNumber: String): String {
-    val persianDigits = "۰۱۲۳۴۵۶۷۸۹"
-    return englishNumber.map { digit ->
-        if (digit.isDigit()) {
-            persianDigits[digit.digitToInt()]
-        } else {
-            digit
-        }
-    }.joinToString("")
+fun String.replaceToPersianNumber(): String {
+    return this.replace("0", "۰")
+        .replace("1", "۱")
+        .replace("2", "۲")
+        .replace("3", "۳")
+        .replace("4", "۴")
+        .replace("5", "۵")
+        .replace("6", "۶")
+        .replace("7", "۷")
+        .replace("8", "۸")
+        .replace("9", "۹")
 }
+
 
 fun Int.toJalaliMonthName(): String {
     return when (this) {
