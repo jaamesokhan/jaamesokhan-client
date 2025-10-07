@@ -7,7 +7,7 @@ import ir.jaamebaade.jaamebaade_client.model.Category
 
 data class CategoryGraphNode(
     val category: Category,
-    var parent: CategoryGraphNode?,
+    val parent: CategoryGraphNode?,
     var subCategories: List<CategoryGraphNode> = listOf(),
-    var selectedForRandomState: MutableState<ToggleableState> = mutableStateOf(ToggleableState.On),
+    val selectedForRandomState: MutableState<ToggleableState> = mutableStateOf(ToggleableState.On),
 )
