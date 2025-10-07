@@ -3,15 +3,17 @@ package ir.jaamebaade.jaamebaade_client.view.components.poem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+@Immutable
 data class PoemOptionItem(
     val deactivatedIcon: @Composable () -> Unit,
     val activatedIcon: @Composable () -> Unit = deactivatedIcon,
     val deactivatedText: String,
     val activatedText: String = deactivatedText,
-    var isActive: Boolean = true,
+    val isActive: Boolean = true,
     val onClick: () -> Unit
 )
 
