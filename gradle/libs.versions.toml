@@ -7,7 +7,6 @@ googleHiltAndroid = "2.51.1"
 commonsCsv = "1.8"
 hiltCompiler = "1.2.0"
 hiltCompilerVersion = "2.52"
-introshowcaseviewVersion = "2.0.1"
 kotlin = "2.0.20"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -29,6 +28,7 @@ material = "1.12.0"
 navCompose = "2.8.2"
 simpleXml = "2.7.1"
 accompanist_version = "0.28.0"
+androidx-media = "1.7.0"
 
 [libraries]
 accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist_version" }
@@ -54,7 +54,6 @@ firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist_version" }
 hilt-android-v2511 = { module = "com.google.dagger:hilt-android", version.ref = "googleHiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompilerVersion" }
-introshowcaseview = { module = "com.canopas.intro-showcase-view:introshowcaseview", version.ref = "introshowcaseviewVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -74,6 +73,7 @@ androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplaye
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 simple-xml = { module = "org.simpleframework:simple-xml", version.ref = "simpleXml" }
+androidx-media = { module = "androidx.media:media", version.ref = "androidx-media" }
 
 
 [plugins]

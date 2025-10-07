@@ -50,6 +50,12 @@
     <string name="UNBOOKMARK_SUCCESS">"با موفقیت حذف شد."</string>
     <string name="NO_BOOKMARK">هنوز هیچ شعری ذخیره نکرده‌اید!</string>
     <string name="RECITATION_NOT_FOUND">هیچ خوانشی برای این شعر یافت نشد.</string>
+    <string name="RECITATION_FETCH_FAILED">دریافت خوانش با خطا مواجه شد!</string>
+    <string name="NOTIFICATION_PLAY">پخش</string>
+    <string name="NOTIFICATION_PAUSE">مکث</string>
+    <string name="NOTIFICATION_STOP">توقف</string>
+    <string name="AUDIO_NOTIFICATION_CHANNEL_NAME">پخش صوت</string>
+    <string name="AUDIO_NOTIFICATION_CHANNEL_DESCRIPTION">کنترل پخش صوت از طریق اعلان</string>
 
 
     <!--  Titles  -->

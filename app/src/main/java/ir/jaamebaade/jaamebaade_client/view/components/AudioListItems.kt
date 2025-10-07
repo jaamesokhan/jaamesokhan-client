@@ -39,8 +39,10 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS30
+import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
+import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
 
 @Composable
 fun AudioListItems(
@@ -54,21 +56,27 @@ fun AudioListItems(
     val selectedAudio = appNavHostViewModel.selectedAudioData
     val onClick: (AudioData) -> Unit =
         {
+            appNavHostViewModel.onPlaybackError()
             mediaPlayer.reset()
+            onDismiss()
             appNavHostViewModel.setSelectedAudioDate(it)
             appNavHostViewModel.changePlayStatus(Status.LOADING)
             viewModel.fetchAudioSyncInfo(it.syncXmlUrl, {
                 mediaPlayer.apply {
-                    setDataSource(it.url)
-                    mediaPlayer.prepareAsync()
-                    setOnPreparedListener {
-                        appNavHostViewModel.changePlayStatus(Status.IN_PROGRESS)
-                        start()
+                    setOnCompletionListener {
+                        appNavHostViewModel.onPlaybackCompleted()
                     }
+                    setOnPreparedListener {
+                        start()
+                        appNavHostViewModel.onPlaybackPrepared()
+                    }
+                    setDataSource(it.url)
+                    prepareAsync()
                 }
-                onDismiss()
             }, {
-                // TODO show toast
+                appNavHostViewModel.changePlayStatus(Status.FAILED)
+                appNavHostViewModel.onPlaybackError()
+                ToastManager.showToast(R.string.RECITATION_FETCH_FAILED, ToastType.ERROR)
             })
         }
     LaunchedEffect(Unit) {
@@ -77,6 +85,12 @@ fun AudioListItems(
             onSuccess = { fetchStatus = Status.SUCCESS },
             onFailure = { fetchStatus = Status.FAILED }
         )
+    }
+    LaunchedEffect(fetchStatus) {
+        if (fetchStatus == Status.FAILED) {
+            onDismiss()
+            ToastManager.showToast(R.string.RECITATION_FETCH_FAILED, ToastType.ERROR)
+        }
     }
     if (audioDataList.isEmpty() && fetchStatus == Status.SUCCESS) {
         Row(
@@ -115,7 +129,6 @@ fun AudioListItems(
         }
 
         Status.FAILED -> {
-            // TODO : Dismiss and display toast
         }
 
         else -> {
