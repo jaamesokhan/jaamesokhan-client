@@ -57,7 +57,7 @@ import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Status
-import ir.jaamebaade.jaamebaade_client.utility.toPersianNumber
+import ir.jaamebaade.jaamebaade_client.utility.replaceToPersianNumber
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -414,7 +414,7 @@ private fun formatTimestamp(value: Long): String {
         val seconds = totalSeconds % 60
         "%02d:%02d".format(minutes, seconds)
     }
-    return toPersianNumber(raw)
+    return raw.replaceToPersianNumber()
 }
 
 @Composable

@@ -82,7 +82,7 @@
     <string name="DAILY_RANDOM_POEM_TITLE">شعر تصادفی امروز</string>
     <string name="DAILY_RANDOM_POEM_NOTIFICATION">دریافت شعر تصادفی روزانه</string>
     <string name="DAILY_RANDOM_POEM_NOTIFICATION_DESCRIPTION">هر روز در زمان انتخابی شما، یک شعر تصادفی دریافت کنید.</string>
-    <string name="DAILY_RANDOM_POEM_TIME_LABEL">زمان ارسال اعلان: %1$s</string>
+    <string name="DAILY_RANDOM_POEM_TIME_LABEL">زمان ارسال اعلان:</string>
     <string name="CHANGE_TIME">تغییر زمان</string>
     <string name="RANDOM_POEM_CATEGORY_SELECTION">انتخاب دسته‌بندی‌های شعر تصادفی</string>
     <string name="RANDOM_POEM_CATEGORY_DESCRIPTION">دسته‌بندی‌هایی را که مایلید در اشعار تصادفی لحاظ شوند، انتخاب کنید.</string>
