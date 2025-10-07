@@ -38,6 +38,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,11 +50,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Status
+import ir.jaamebaade.jaamebaade_client.utility.toPersianNumber
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -115,7 +119,7 @@ fun AudioControlBar(navController: NavController, viewModel: AppNavHostViewModel
                 poetName = poetName,
                 playbackPosition = playbackPosition,
                 playbackDuration = playbackDuration,
-                canNavigateToPoem = poemWithPoet?.poet?.id != null && poemWithPoet?.poem?.id != null,
+                canNavigateToPoem = poemWithPoet?.poet?.id != null,
                 onNavigateToPoem = {
                     val poetId = poemWithPoet?.poet?.id
                     val poemId = poemWithPoet?.poem?.id
@@ -143,25 +147,26 @@ fun AudioControlBar(navController: NavController, viewModel: AppNavHostViewModel
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.primaryContainer)
                 .fillMaxWidth()
+                .clickable {
+                    if (!isBottomSheetOpen) {
+                        isBottomSheetOpen = true
+                        coroutineScope.launch {
+                            bottomSheetState.show()
+                        }
+                    }
+                },
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 4.dp, vertical = 6.dp),
+                    .padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Row(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable {
-                            if (!isBottomSheetOpen) {
-                                isBottomSheetOpen = true
-                                coroutineScope.launch {
-                                    bottomSheetState.show()
-                                }
-                            }
-                        },
+                        ,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     AudioButton(
@@ -177,10 +182,14 @@ fun AudioControlBar(navController: NavController, viewModel: AppNavHostViewModel
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Column(
-                        modifier = Modifier.sizeIn(maxWidth = 220.dp)
+                        modifier = Modifier.sizeIn(maxWidth = 240.dp)
                     ) {
                         Text(
-                            text = listOfNotNull(artistName, poemTitle, poetName).joinToString(" - "),
+                            text = listOfNotNull(
+                                artistName,
+                                poemTitle,
+                                poetName
+                            ).joinToString(" - "),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onBackground,
                             overflow = TextOverflow.Ellipsis,
@@ -188,25 +197,20 @@ fun AudioControlBar(navController: NavController, viewModel: AppNavHostViewModel
                         )
                     }
                 }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                IconButton(
+                    onClick = {
+                        viewModel.stopPlayback(clearSelection = true)
+                    },
+                    colors = IconButtonDefaults.iconButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onBackground
+                    )
                 ) {
-                    IconButton(
-                        onClick = {
-                            viewModel.stopPlayback(clearSelection = true)
-                        },
-                        colors = IconButtonDefaults.iconButtonColors(
-                            contentColor = MaterialTheme.colorScheme.onBackground
-                        )
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "close",
-                            modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "close",
+                        modifier = Modifier.size(20.dp),
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
                 }
             }
 
@@ -226,9 +230,9 @@ private fun AudioProgressControls(
     val onBackground = MaterialTheme.colorScheme.onBackground
     val sliderEnabled = playbackDuration > 0
 
-    var trackWidth by remember { mutableStateOf(1f) }
-    var handleFraction by remember { mutableStateOf(0f) }
-    var pendingFraction by remember { mutableStateOf(0f) }
+    var trackWidth by remember { mutableFloatStateOf(1f) }
+    var handleFraction by remember { mutableFloatStateOf(0f) }
+    var pendingFraction by remember { mutableFloatStateOf(0f) }
     var isUserSeeking by remember { mutableStateOf(false) }
 
     LaunchedEffect(playbackPosition, playbackDuration, isUserSeeking) {
@@ -258,7 +262,7 @@ private fun AudioProgressControls(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Box(
             modifier = Modifier
@@ -333,11 +337,27 @@ private fun AudioProgressControls(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = formatTimestamp(playbackDuration),
+                style = MaterialTheme.typography.labelSmall,
+                color = onBackground
+            )
+            Text(
+                text = formatTimestamp(playbackPosition),
+                style = MaterialTheme.typography.labelSmall,
+                color = onBackground
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                onClick = onSeekBack,
+                onClick = onSeekForward,
                 enabled = sliderEnabled,
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = onBackground,
@@ -345,8 +365,8 @@ private fun AudioProgressControls(
                 )
             ) {
                 Icon(
-                    imageVector = Icons.Default.Replay10,
-                    contentDescription = "rewind",
+                    imageVector = Icons.Default.Forward10,
+                    contentDescription = "forward",
                     modifier = Modifier.size(28.dp),
                     tint = onBackground
                 )
@@ -367,7 +387,7 @@ private fun AudioProgressControls(
             )
             Spacer(modifier = Modifier.width(32.dp))
             IconButton(
-                onClick = onSeekForward,
+                onClick = onSeekBack,
                 enabled = sliderEnabled,
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = onBackground,
@@ -375,14 +395,26 @@ private fun AudioProgressControls(
                 )
             ) {
                 Icon(
-                    imageVector = Icons.Default.Forward10,
-                    contentDescription = "forward",
+                    imageVector = Icons.Default.Replay10,
+                    contentDescription = "rewind",
                     modifier = Modifier.size(28.dp),
                     tint = onBackground
                 )
             }
         }
     }
+}
+
+private fun formatTimestamp(value: Long): String {
+    val raw = if (value <= 0L) {
+        "00:00"
+    } else {
+        val totalSeconds = value / 1000
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+        "%02d:%02d".format(minutes, seconds)
+    }
+    return toPersianNumber(raw)
 }
 
 @Composable
@@ -399,8 +431,8 @@ private fun AudioControlBottomSheetContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -409,7 +441,7 @@ private fun AudioControlBottomSheetContent(
         ) {
             Column(modifier = Modifier.weight(1f, fill = true)) {
                 Text(
-                    text = listOfNotNull(poemTitle, poetName).joinToString(" • "),
+                    text = listOfNotNull(poemTitle, poetName).joinToString(" - "),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     maxLines = 2,
@@ -450,7 +482,7 @@ private fun AudioControlBottomSheetContent(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-                    contentDescription = "View poem",
+                    contentDescription = stringResource(R.string.VIEW_POEM),
                     modifier = Modifier.size(24.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )

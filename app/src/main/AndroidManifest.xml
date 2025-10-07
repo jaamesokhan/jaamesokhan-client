@@ -23,6 +23,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Jaamebaadeclient"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
             >
             <intent-filter>

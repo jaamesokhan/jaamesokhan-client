@@ -1,11 +1,14 @@
 package ir.jaamebaade.jaamebaade_client.audio
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -36,10 +39,6 @@ class AudioSessionManager @Inject constructor(
     private val notificationManager = NotificationManagerCompat.from(context)
 
     private val mediaSession = MediaSessionCompat(context, "JaameSokhanMediaSession").apply {
-        setFlags(
-            MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or
-                MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
-        )
         setCallback(object : MediaSessionCompat.Callback() {
             override fun onPlay() {
                 playbackController?.onPlay()
@@ -125,6 +124,7 @@ class AudioSessionManager @Inject constructor(
         mediaSession.setPlaybackState(playbackState)
     }
 
+    @SuppressLint("MissingPermission")
     private fun showNotification(isPlaying: Boolean) {
         val playPauseAction = if (isPlaying) buildPauseAction() else buildPlayAction()
         val stopAction = buildStopAction()
@@ -132,7 +132,9 @@ class AudioSessionManager @Inject constructor(
         val contentIntent = PendingIntent.getActivity(
             context,
             0,
-            Intent(context, MainActivity::class.java),
+            Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            },
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
