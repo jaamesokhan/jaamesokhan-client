@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -108,9 +109,10 @@ fun AppNavHost(
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
                         .systemBarsPadding()
-                        .imePadding()
-                        .background(MaterialTheme.colorScheme.background),
+                        .imePadding(),
+                    containerColor = Color.Transparent,
                     bottomBar = { Navbar(navController = navController) },
                     topBar = {
                         TopBar(

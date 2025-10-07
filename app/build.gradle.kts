@@ -100,7 +100,7 @@ dependencies {
     implementation(libs.simple.xml)
     implementation(libs.google.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
-    implementation(libs.introshowcaseview)
+    implementation(libs.androidx.media)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
