@@ -1,10 +1,10 @@
 package ir.jaamebaade.jaamebaade_client.view.components.poem
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,8 +17,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,39 +58,62 @@ fun PoemScreenTitle(
             contentDescription = poemPath.poet.name,
             size = 88,
         )
+        // helpers
+        fun canPrev(id: Int, minId: Int) = (id - 1) >= minId
+        fun canNext(id: Int, maxId: Int) = (id + 1) <= maxId
+
+        fun NavController.navigateToPoem(poetId: Int, currentId: Int, targetId: Int) {
+            navigate("${AppRoutes.POEM}/$poetId/$targetId/-1", navOptions {
+                popUpTo("${AppRoutes.POEM}/$poetId/$currentId/-1") { inclusive = true }
+            })
+        }
+
+        val goPrev = {
+            if (canPrev(poemId, minId)) navController.navigateToPoem(poetId, poemId, poemId - 1)
+        }
+        val goNext = {
+            if (canNext(poemId, maxId)) navController.navigateToPoem(poetId, poemId, poemId + 1)
+        }
+
+        val swipeThresholdPx = with(LocalDensity.current) { 48.dp.toPx() }
+        var totalDragX by remember { mutableFloatStateOf(0f) }
+
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .background(
-                    color = MaterialTheme.colorScheme.surfaceVariant,
-                    shape = RoundedCornerShape(15.dp)
-                )
+                .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(15.dp))
                 .fillMaxWidth()
+                .pointerInput(poemId, minId, maxId) {
+                    detectHorizontalDragGestures(
+                        onHorizontalDrag = { _, dx -> totalDragX += dx },
+                        onDragEnd = {
+                            when {
+                                totalDragX <= -swipeThresholdPx -> goPrev()
+                                totalDragX >= swipeThresholdPx -> goNext()
+                            }
+                            totalDragX = 0f
+                        },
+                        onDragCancel = { totalDragX = 0f }
+                    )
+                }
                 .padding(vertical = 4.dp, horizontal = 10.dp),
         ) {
             IconButton(
                 modifier = Modifier
                     .weight(0.1f)
-                    .size(32.dp), onClick = {
-                    navController.navigate(
-                        "${AppRoutes.POEM}/${poetId}/${poemId - 1}/-1", navOptions {
-                            popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
-                                inclusive = true
-                            }
-                        })
-                }, enabled = (poemId - 1) >= minId
-
+                    .size(32.dp),
+                onClick = goPrev,
+                enabled = canPrev(poemId, minId)
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                     contentDescription = stringResource(R.string.PREVIOUS),
-                    tint = if ((poemId - 1) < minId) MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        0.1f
-                    ) else MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = if (!canPrev(poemId, minId))
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(0.1f)
+                    else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-
 
             Text(
                 modifier = Modifier.weight(0.8f),
@@ -99,24 +128,18 @@ fun PoemScreenTitle(
             IconButton(
                 modifier = Modifier
                     .weight(0.1f)
-                    .size(32.dp), onClick = {
-                    navController.navigate(
-                        "${AppRoutes.POEM}/${poetId}/${poemId + 1}/-1", navOptions {
-                            popUpTo("${AppRoutes.POEM}/${poetId}/${poemId}/-1") {
-                                inclusive = true
-                            }
-                        })
-                }, enabled = (poemId + 1) <= maxId
+                    .size(32.dp),
+                onClick = goNext,
+                enabled = canNext(poemId, maxId)
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = stringResource(R.string.NEXT),
-                    tint = if ((poemId + 1) > maxId) MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        0.1f
-                    ) else MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = if (!canNext(poemId, maxId))
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(0.1f)
+                    else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-
         }
     }
 }
