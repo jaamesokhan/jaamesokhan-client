@@ -28,7 +28,8 @@ object HighlightColors {
      * Convert Color to hex string for storage
      */
     fun colorToHex(color: Color): String {
-        return String.format("#%08X", color.value.toLong())
+        val argb = (color.value and 0xFFFFFFFFu).toLong()
+        return String.format("#%08X", argb)
     }
     
     /**
