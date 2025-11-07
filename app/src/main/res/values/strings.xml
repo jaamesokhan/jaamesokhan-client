@@ -76,6 +76,7 @@
     <string name="REMOVE_VERSE_NUMBER">نمایش ندادن شماره بیت</string>
     <string name="NOTE_PLACE_HOLDER">یادداشت خود را اینجا بنویسید …</string>
     <string name="HIGHLIGHT">هایلایت</string>
+    <string name="SELECT_HIGHLIGHT_COLOR">انتخاب رنگ هایلایت</string>
     <string name="COPY">کپی</string>
     <string name="SEARCH_TITLE">جست‌وجو در اشعار</string>
     <string name="EMPTY_SEARCH_FILTER">خالی!</string>

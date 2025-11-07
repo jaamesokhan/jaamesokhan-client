@@ -49,7 +49,7 @@ fun VerseItem(
     onClick: () -> Unit,
     highlights: List<Highlight>,
     verseStyle: SpanStyle,
-    highlightCallBack: (startIndex: Int, endIndex: Int) -> Unit,
+    highlightCallBack: (startIndex: Int, endIndex: Int, color: String) -> Unit,
 
     ) {
     val paddingFromStart = 14.dp
@@ -61,7 +61,6 @@ fun VerseItem(
     var meaningFetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
 
     var annotatedString by remember { mutableStateOf<AnnotatedString?>(null) }
-    val highlightColor = MaterialTheme.colorScheme.tertiary
 
     val context = LocalContext.current
 
@@ -80,7 +79,7 @@ fun VerseItem(
                 highlights.forEach {
                     addStyle(
                         style = SpanStyle(
-                            background = highlightColor,
+                            background = ir.jaamebaade.jaamebaade_client.constants.HighlightColors.hexToColor(it.color),
                             fontWeight = FontWeight.Bold
                         ),
                         start = it.startIndex,

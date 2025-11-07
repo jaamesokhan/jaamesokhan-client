@@ -366,11 +366,12 @@ fun PoemScreen(
                         if (selectMode) onClick(isSelected, verseWithHighlights)
                     },
                     verseStyle = verseStyle
-                ) { startIndex, endIndex ->
+                ) { startIndex, endIndex, color ->
                     poemViewModel.highlight(
                         verseWithHighlights.verse.id,
                         startIndex,
-                        endIndex
+                        endIndex,
+                        color
                     )
                 }
 

@@ -232,7 +232,7 @@ private fun createMergedHighlightItemHeader(
                     append(verse.text.plus("\n"))
                 }
                 addStyle(
-                    style = SpanStyle(background = highlightedTextColor),
+                    style = SpanStyle(background = ir.jaamebaade.jaamebaade_client.constants.HighlightColors.hexToColor(highlight.color)),
                     start = highlight.startIndex,
                     end = highlight.endIndex
                 )
