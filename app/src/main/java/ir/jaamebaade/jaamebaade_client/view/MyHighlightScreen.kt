@@ -83,14 +83,14 @@ fun MyHighlightScreen(
         ) {
             Icon(
                 imageVector = Icons.Outlined.Info,
-                tint = MaterialTheme.colorScheme.outline,
+                tint = MaterialTheme.colorScheme.outlineVariant,
                 contentDescription = "",
             )
             Spacer(modifier = Modifier.padding(3.dp))
             Text(
                 text = stringResource(R.string.NO_HIGHLIGHTS_FOUND),
                 style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.outline
+                color = MaterialTheme.colorScheme.outlineVariant
             )
         }
 

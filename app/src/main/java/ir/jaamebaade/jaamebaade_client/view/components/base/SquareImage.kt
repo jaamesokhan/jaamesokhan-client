@@ -25,7 +25,7 @@ fun SquareImage(
     scale: Float = 1.1f,
     roundedCornerShapeSize: Int = 25,
 ) {
-    val painter = if (imageUrl != null) {
+    val painter = if (!imageUrl.isNullOrEmpty()) {
          rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imageUrl)
@@ -35,7 +35,7 @@ fun SquareImage(
                 .build()
         )
     } else {
-        painterResource(id = R.mipmap.logo)
+        painterResource(id = R.mipmap.ic_launcher_round)
     }
     Image(
         painter = painter,
