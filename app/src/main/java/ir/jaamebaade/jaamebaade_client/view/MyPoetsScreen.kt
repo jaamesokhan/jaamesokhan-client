@@ -130,7 +130,7 @@ fun MyPoetsScreen(
                         },
                         icon = Icons.Filled.Add,
                         tint = MaterialTheme.colorScheme.neutralN95,
-                        backgroundColor = MaterialTheme.colorScheme.outline,
+                        backgroundColor = MaterialTheme.colorScheme.outlineVariant,
                         contentDescription = stringResource(R.string.ADD_NEW_POET),
                         textStyle = MaterialTheme.typography.headlineSmall,
 
