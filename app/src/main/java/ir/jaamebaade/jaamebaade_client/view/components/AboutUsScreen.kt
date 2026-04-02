@@ -20,8 +20,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN100
@@ -32,6 +32,7 @@ fun AboutUsScreen(modifier: Modifier) {
     val context = LocalContext.current
     val headlineTextStyle = MaterialTheme.typography.headlineMedium
     val bodyTextStyle = MaterialTheme.typography.bodyMedium
+    val textColor = MaterialTheme.colorScheme.onBackground
     Column(
         modifier = modifier
             .padding(start = 30.dp, end = 30.dp)
@@ -51,19 +52,25 @@ fun AboutUsScreen(modifier: Modifier) {
             )
         }
         Spacer(modifier = Modifier.height(76.dp))
-        Text(text = stringResource(R.string.ABOUT_US_TITLE), style = headlineTextStyle)
+        Text(
+            text = stringResource(R.string.ABOUT_US_TITLE),
+            style = headlineTextStyle,
+            color = textColor
+        )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = context.getString(R.string.ABOUT_US_BASE),
             style = bodyTextStyle,
-            textAlign = TextAlign.Justify
+            textAlign = TextAlign.Justify,
+            color = textColor
         )
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = context.getString(R.string.ABOUT_US_WEBSITE),
             style = bodyTextStyle,
-            textAlign = TextAlign.Justify
+            textAlign = TextAlign.Justify,
+            color = textColor
         )
         Spacer(modifier = Modifier.height(16.dp))
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -86,7 +93,8 @@ fun AboutUsScreen(modifier: Modifier) {
             modifier = Modifier.fillMaxWidth(),
             text = context.getString(R.string.ABOUT_US_GITHUB),
             style = bodyTextStyle,
-            textAlign = TextAlign.Justify
+            textAlign = TextAlign.Justify,
+            color = textColor
         )
         Spacer(modifier = Modifier.height(12.dp))
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -106,19 +114,21 @@ fun AboutUsScreen(modifier: Modifier) {
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = stringResource(R.string.ABOUT_SUPPORT_TITLE), style = headlineTextStyle)
+        Text(text = stringResource(R.string.ABOUT_SUPPORT_TITLE), style = headlineTextStyle,  color = textColor)
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = context.getString(R.string.COPY_RIGHT),
             style = bodyTextStyle,
-            textAlign = TextAlign.Justify
+            textAlign = TextAlign.Justify,
+            color = textColor,
         )
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = context.getString(R.string.ABOUT_US_SUPPORT),
             style = bodyTextStyle,
-            textAlign = TextAlign.Justify
+            textAlign = TextAlign.Justify,
+            color = textColor,
         )
         Spacer(modifier = Modifier.height(16.dp))
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -137,13 +147,30 @@ fun AboutUsScreen(modifier: Modifier) {
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = stringResource(R.string.ABOUT_CONTRIBUTION_TITLE), style = headlineTextStyle)
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            RectangularButton(
+                backgroundColor = MaterialTheme.colorScheme.primary,
+                textColor = MaterialTheme.colorScheme.neutralN100,
+                text = stringResource(R.string.ABOUT_DARAMET),
+                buttonHeight = 50.dp,
+                buttonWidth = 248.dp,
+                onClick = {
+                    val urlIntent = Intent(
+                        Intent.ACTION_VIEW, context.getString(R.string.DARAMET_URL).toUri()
+                    )
+                    context.startActivity(urlIntent)
+                }
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = stringResource(R.string.ABOUT_CONTRIBUTION_TITLE), style = headlineTextStyle, color = textColor,)
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = context.getString(R.string.ABOUT_US_EMAIL),
             style = bodyTextStyle,
-            textAlign = TextAlign.Justify
+            textAlign = TextAlign.Justify,
+            color = textColor
         )
         Spacer(modifier = Modifier.height(16.dp))
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {

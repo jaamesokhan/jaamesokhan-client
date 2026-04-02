@@ -128,7 +128,8 @@ fun VerseItem(
                 Text(
                     text = (index / 2 + 1).toPersianNumber(),
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(start = paddingFromStart)
+                    modifier = Modifier.padding(start = paddingFromStart),
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             } else {
                 Spacer(modifier = Modifier.width(paddingFromStart))

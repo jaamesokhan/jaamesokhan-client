@@ -173,16 +173,16 @@ fun MyNoteCardItem(
         imageUrl = note.path.poet.imageUrl,
         header = {
             Text(
-                text = createPoemPath(note.path.categories, note.path.poem),
+                text = note.comment.text.trim(),
                 style = MaterialTheme.typography.headlineMedium,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis,
             )
         },
         body = {
             Text(
-                text = note.comment.text.trim(),
+                text = createPoemPath(note.path.categories, note.path.poem),
                 style = MaterialTheme.typography.headlineSmall,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 3,
                 color = MaterialTheme.colorScheme.outlineVariant,
             )
         },

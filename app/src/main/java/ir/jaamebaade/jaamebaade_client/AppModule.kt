@@ -2,6 +2,11 @@ package ir.jaamebaade.jaamebaade_client
 
 import android.content.Context
 import androidx.room.Room
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import ir.jaamebaade.jaamebaade_client.api.AccountApiClient
 import ir.jaamebaade.jaamebaade_client.api.AccountApiService
 import ir.jaamebaade.jaamebaade_client.api.AudioApiClient
@@ -18,31 +23,35 @@ import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.CommentRepository
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
+import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
+import ir.jaamebaade.jaamebaade_client.repository.SearchHistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatusManager
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
-import ir.jaamebaade.jaamebaade_client.repository.SearchHistoryRepository
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    val okHttpClient = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(5, TimeUnit.SECONDS)
+        .writeTimeout(5, TimeUnit.SECONDS)
+        .build()
+
     @Provides
     @Singleton
     fun provideApiService(@ApplicationContext context: Context): PoetApiService {
         return Retrofit.Builder()
             .baseUrl(context.getString(R.string.SERVER_BASE_URL))
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build()
             .create(PoetApiService::class.java)
     }
@@ -82,6 +91,7 @@ object AppModule {
         return Retrofit.Builder()
             .baseUrl(context.getString(R.string.SERVER_BASE_URL))
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build()
             .create(DictionaryApiService::class.java)
     }
@@ -100,6 +110,7 @@ object AppModule {
         return Retrofit.Builder()
             .baseUrl(context.getString(R.string.GANJOOR_BASE_URL))
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build()
             .create(AudioApiService::class.java)
     }
@@ -140,6 +151,7 @@ object AppModule {
         return Retrofit.Builder()
             .baseUrl(context.getString(R.string.SERVER_BASE_URL))
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build()
             .create(AccountApiService::class.java)
     }

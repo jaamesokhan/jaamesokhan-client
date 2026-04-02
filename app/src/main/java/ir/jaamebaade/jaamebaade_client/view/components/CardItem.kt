@@ -79,6 +79,7 @@ fun CardItem(
                             modifier = Modifier.weight(7f),
                             text = it,
                             style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.scrim,
                             maxLines = if (wrapHeader) Int.MAX_VALUE else 3,
                             overflow = if (wrapHeader) TextOverflow.Clip else TextOverflow.Ellipsis
                         )
@@ -94,6 +95,7 @@ fun CardItem(
                             Icon(
                                 imageVector = it,
                                 contentDescription = iconDescription,
+                                tint = MaterialTheme.colorScheme.outlineVariant,
                             )
                         }
                     }

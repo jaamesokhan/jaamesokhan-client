@@ -95,6 +95,8 @@ fun SearchBar(
                 .background(Color.Transparent),
             shape = RoundedCornerShape(15.dp),
             colors = TextFieldDefaults.colors(
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 disabledContainerColor = Color.Transparent,
@@ -227,7 +229,7 @@ fun SearchHistoryList(
                 color = MaterialTheme.colorScheme.onBackground,
             )
             Spacer(modifier = Modifier.width(12.dp))
-            HorizontalDivider()
+            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
         }
         if (searchHistoryRecords.isEmpty()) {
             NotFoundBox()
@@ -269,7 +271,8 @@ private fun SearchHistoryRecordItem(
             Icon(
                 imageVector = Icons.Default.Clear,
                 contentDescription = stringResource(R.string.DELETE),
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(20.dp),
+                tint = MaterialTheme.colorScheme.onBackground,
             )
         }
 

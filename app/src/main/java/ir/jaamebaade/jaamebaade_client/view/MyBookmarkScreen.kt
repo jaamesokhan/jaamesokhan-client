@@ -79,7 +79,7 @@ fun MyBookmarkScreen(
         ) {
             Icon(
                 imageVector = Icons.Outlined.Info,
-                tint = MaterialTheme.colorScheme.outlineVariant,
+                tint = MaterialTheme.colorScheme.outline,
                 contentDescription = "",
             )
             Spacer(modifier = Modifier.padding(3.dp))
@@ -87,7 +87,7 @@ fun MyBookmarkScreen(
             Text(
                 text = stringResource(R.string.NO_BOOKMARK),
                 style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.outlineVariant
+                color = MaterialTheme.colorScheme.outline
             )
         }
     } else {

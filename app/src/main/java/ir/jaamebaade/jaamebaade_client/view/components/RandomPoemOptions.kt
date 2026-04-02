@@ -170,6 +170,7 @@ fun RandomPoemOptions(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+                Spacer(modifier = Modifier.width(4.dp))
                 Switch(
                     checked = isDailyRandomPoemEnabled,
                     onCheckedChange = {

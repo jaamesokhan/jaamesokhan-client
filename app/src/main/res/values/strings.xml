@@ -15,7 +15,7 @@
         کد‌های این اپلیکیشن از طریق مخزن GitHub در دسترس عموم هستند.
     </string>
     <string name="ABOUT_US_SUPPORT">
-        در صورت تمایل، می‌توانید از طریق لینک زیر از ما حمایت کنید.
+        در صورت تمایل، می‌توانید از طریق هر یک از لینک‌های زیر از ما حمایت کنید.
     </string>
     <string name="ABOUT_US_EMAIL">
         اگر تمایل دارید به هر نحوی به بهتر شدن این اپلیکیشن کمک کنید،‌ از طریق ایمیل jaamesokhan@gmail.com با ما در ارتباط باشید.
@@ -28,6 +28,9 @@
     </string>
     <string name="HAMIBASH_URL">
         https://hamibash.com/jaamesokhan
+    </string>
+    <string name="DARAMET_URL">
+        https://daramet.com/jaamesokhan
     </string>
     <string name="WEBSITE_URL">
         https://jaamesokhan.ir
@@ -149,6 +152,7 @@ https://myket.ir/app/ir.jaamebaade.jaamebaade_client
     <string name="SAVE">ذخیره</string>
     <string name="APP_NAME">Jaame-Sokhan V2</string>
     <string name="ABOUT_BE_SUPPORTIVE">حامی باش</string>
+    <string name="ABOUT_DARAMET">دارمت</string>
     <string name="LOGO">Logo</string>
     <string name="SETTING_VERSE_ONE_1">سخن ماند از تو همی یادگار</string>
     <string name="SETTING_VERSE_ONE_2">سخن را چنین خوارمایه مدار </string>

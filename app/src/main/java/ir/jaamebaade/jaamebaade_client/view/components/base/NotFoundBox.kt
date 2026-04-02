@@ -27,11 +27,13 @@ fun NotFoundBox() {
             Icon(
                 imageVector = Icons.Outlined.Info,
                 contentDescription = null,
+                tint = MaterialTheme.colorScheme.onBackground,
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = stringResource(R.string.NOT_FOUND),
                 style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground,
             )
         }
     }

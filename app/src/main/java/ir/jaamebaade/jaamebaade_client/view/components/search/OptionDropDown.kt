@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.Checkbox
@@ -60,51 +63,57 @@ fun OptionDropDown(
 
             Icon(
                 imageVector = Icons.Outlined.ArrowDropDown,
-                contentDescription = stringResource(R.string.MORE)
+                contentDescription = stringResource(R.string.MORE),
+                tint = MaterialTheme.colorScheme.tertiary,
             )
         }
         if (opened) {
             CustomBottomSheet(
                 onDismissRequest = onClose
             ) {
-                options.forEach { option ->
-                    Row(
-                        modifier = Modifier
-                            .padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = option.selected.value,
-                            onCheckedChange = { isChecked ->
-                                option.selected.value = isChecked
+                LazyColumn (modifier = Modifier.fillMaxHeight(0.7f)){
+                    itemsIndexed(options) { _, option ->
+                        Row(
+                            modifier = Modifier
+                                .padding(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = option.selected.value,
+                                onCheckedChange = { isChecked ->
+                                    option.selected.value = isChecked
 
-                                if (option.key == allOptionsKey) {
-                                    options.forEach { it.selected.value = isChecked }
-                                } else {
-                                    if (!isChecked) {
-                                        options.firstOrNull { it.key == allOptionsKey }?.selected?.value =
-                                            false
+                                    if (option.key == allOptionsKey) {
+                                        options.forEach { it.selected.value = isChecked }
                                     } else {
-                                        val allSelected = options
-                                            .filter { it.key != allOptionsKey }
-                                            .all { it.selected.value }
-                                        if (allSelected) {
+                                        if (!isChecked) {
                                             options.firstOrNull { it.key == allOptionsKey }?.selected?.value =
-                                                true
+                                                false
+                                        } else {
+                                            val allSelected = options
+                                                .filter { it.key != allOptionsKey }
+                                                .all { it.selected.value }
+                                            if (allSelected) {
+                                                options.firstOrNull { it.key == allOptionsKey }?.selected?.value =
+                                                    true
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = option.text,
-                            style = MaterialTheme.typography.headlineLarge,
-                            color = MaterialTheme.colorScheme.onBackground,
-                        )
-                    }
-                    if (option != options.last()) {
-                        HorizontalDivider()
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = option.text,
+                                style = MaterialTheme.typography.headlineLarge,
+                                color = MaterialTheme.colorScheme.onBackground,
+                            )
+                        }
+                        if (option != options.last()) {
+                            HorizontalDivider(
+                                modifier = Modifier.padding(horizontal = 32.dp),
+                                color = MaterialTheme.colorScheme.outline,
+                            )
+                        }
                     }
                 }
             }

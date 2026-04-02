@@ -92,6 +92,8 @@ fun DownloadablePoetsScreen(
                 .background(Color.Transparent),
             shape = RoundedCornerShape(15.dp),
             colors = TextFieldDefaults.colors(
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 disabledContainerColor = Color.Transparent,

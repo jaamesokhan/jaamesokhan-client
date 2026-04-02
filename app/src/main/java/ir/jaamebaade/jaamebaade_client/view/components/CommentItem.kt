@@ -64,7 +64,7 @@ fun CommentItem(modifier: Modifier = Modifier, comment: Comment, onShareClicked:
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(modifier = Modifier.weight(0.9f)) {
-                    Text(text = comment.text, style = MaterialTheme.typography.bodyMedium)
+                    Text(text = comment.text, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
                 }
                 Box(
                     modifier = Modifier
@@ -79,6 +79,7 @@ fun CommentItem(modifier: Modifier = Modifier, comment: Comment, onShareClicked:
                         Icon(
                             imageVector = Icons.Default.MoreVert,
                             contentDescription = null,
+                            tint = MaterialTheme.colorScheme.outlineVariant,
                         )
                     }
                 }

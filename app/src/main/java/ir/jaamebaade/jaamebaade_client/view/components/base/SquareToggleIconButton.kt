@@ -78,6 +78,7 @@ fun SquareToggleIconButton(
                     Icon(
                         painter = painterResource(it),
                         contentDescription = contentDescription,
+                        tint = MaterialTheme.colorScheme.outlineVariant,
                         modifier = Modifier.size(iconSize.dp)
                     )
                 }
@@ -85,6 +86,7 @@ fun SquareToggleIconButton(
                     Icon(
                         imageVector = it,
                         contentDescription = contentDescription,
+                        tint = MaterialTheme.colorScheme.outlineVariant,
                         modifier = Modifier.size(iconSize.dp)
                     )
                 }
