@@ -2,6 +2,7 @@ package ir.jaamebaade.jaamebaade_client.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -58,7 +59,7 @@ fun SearchScreen(
 
     val showingSearchHistory = searchViewModel.showingSearchHistory.collectAsState()
     if (fetchStatus == Status.SUCCESS) {
-        Column(modifier = modifier.background(color = MaterialTheme.colorScheme.surface)) {
+        Column(modifier = modifier.background(color = MaterialTheme.colorScheme.surface).fillMaxSize()) {
             SearchBar(
                 modifier = Modifier.fillMaxWidth(),
                 poets = poets!!,
@@ -125,7 +126,7 @@ fun SearchResults(
                 val content = createSearchResultBody(
                     item = result,
                     searchQuery = searchQuery,
-                    focusColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+                    focusColor = MaterialTheme.colorScheme.tertiary,
                 )
                 CardItem(
                     headerText = content,

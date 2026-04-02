@@ -63,7 +63,7 @@ fun SelectionBottomSheet(
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp)) {
             Row(
                 modifier = Modifier
-                    .padding(4.dp)
+                    .padding(8.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Absolute.Left,
             ) {
@@ -127,7 +127,7 @@ fun SelectionBottomSheet(
                     Text(
                         text = meaning,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.outlineVariant,
+                        color = MaterialTheme.colorScheme.outline,
                         modifier = Modifier
                             .padding(
                                 bottom = 32.dp

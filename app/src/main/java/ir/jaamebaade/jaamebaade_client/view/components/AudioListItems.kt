@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -86,12 +87,6 @@ fun AudioListItems(
             onFailure = { fetchStatus = Status.FAILED }
         )
     }
-    LaunchedEffect(fetchStatus) {
-        if (fetchStatus == Status.FAILED) {
-            onDismiss()
-            ToastManager.showToast(R.string.RECITATION_FETCH_FAILED, ToastType.ERROR)
-        }
-    }
     if (audioDataList.isEmpty() && fetchStatus == Status.SUCCESS) {
         Row(
             modifier = Modifier
@@ -129,6 +124,28 @@ fun AudioListItems(
         }
 
         Status.FAILED -> {
+            Row(
+                modifier = Modifier
+                    .height(250.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.ErrorOutline,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier
+                        .size(26.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.RECITATION_FETCH_FAILED),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
 
         else -> {

@@ -116,7 +116,11 @@ fun NotesBottomSheet(
                         )
 
                         if (comment != comments.last()) {
-                            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+                            HorizontalDivider(
+                                color = MaterialTheme.colorScheme.outline,
+                                modifier = Modifier
+                                    .padding(horizontal = 32.dp)
+                            )
                         }
                     }
                 }
@@ -126,6 +130,8 @@ fun NotesBottomSheet(
                     onValueChange = { commentText = it },
                     shape = RoundedCornerShape(15.dp),
                     colors = TextFieldDefaults.colors(
+                        focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
                         unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                         focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                         focusedLeadingIconColor = MaterialTheme.colorScheme.secondaryS40,
