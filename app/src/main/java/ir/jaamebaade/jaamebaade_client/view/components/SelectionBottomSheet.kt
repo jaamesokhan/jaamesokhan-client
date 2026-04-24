@@ -127,7 +127,7 @@ fun SelectionBottomSheet(
                     Text(
                         text = meaning,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.outline,
+                        color = MaterialTheme.colorScheme.outlineVariant,
                         modifier = Modifier
                             .padding(
                                 bottom = 32.dp
