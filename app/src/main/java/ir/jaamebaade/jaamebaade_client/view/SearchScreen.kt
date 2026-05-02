@@ -157,7 +157,7 @@ private fun createSearchResultBody(
     searchQuery: String,
     focusColor: Color,
 ): AnnotatedString {
-    val text = item.verse!!.text
+    val text = item.verse!!.normalizedText
     return buildAnnotatedString {
         append(text)
         if (searchQuery.isNotBlank()) {

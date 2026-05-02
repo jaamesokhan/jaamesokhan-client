@@ -45,7 +45,8 @@ interface PoemDao {
                 v.text AS verse_text,
                 v.verse_order AS verse_verse_order,
                 v.position AS verse_position,
-                v.poem_id AS verse_poem_id
+                v.poem_id AS verse_poem_id,
+                v.normalized_text AS verse_normalized_text
             FROM poems p
             JOIN verses v ON v.poem_id = p.id
             WHERE p.category_id = :categoryId 
@@ -123,7 +124,8 @@ interface PoemDao {
                 v.text AS text,
                 v.verse_order AS verse_order,
                 v.position AS position,
-                v.poem_id AS poem_id
+                v.poem_id AS poem_id,
+                v.normalized_text AS normalized_text
             FROM poems p
             JOIN verses v ON v.poem_id = p.id
             WHERE p.id = :poemId 

@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import ir.jaamebaade.jaamebaade_client.utility.normalizedForSearch
 
 @Entity(
     tableName = "verses",
@@ -22,5 +23,5 @@ data class Verse(
     @ColumnInfo(name = "verse_order") val verseOrder: Int,
     @ColumnInfo(name = "position") val position: Int,
     @ColumnInfo(name = "poem_id") val poemId: Int,
-    // TODO Add a normalized text column for search correctness
+    @ColumnInfo(name = "normalized_text", defaultValue = "") val normalizedText: String = text.normalizedForSearch(),
 )

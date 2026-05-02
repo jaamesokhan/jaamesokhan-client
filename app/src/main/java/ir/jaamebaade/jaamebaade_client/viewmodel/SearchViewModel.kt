@@ -13,6 +13,7 @@ import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.repository.SearchHistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
+import ir.jaamebaade.jaamebaade_client.utility.normalizedForSearch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -137,9 +138,10 @@ class SearchViewModel @Inject constructor(
 
 
     private suspend fun filterHistoryByQuery(query: String) {
+        val normalizedQuery = query.normalizedForSearch()
         searchHistoryList.collectLatest { historyRecords ->
             val filteredHistory = historyRecords.filter {
-                it.query.contains(query, ignoreCase = true)
+                it.query.normalizedForSearch().contains(normalizedQuery, ignoreCase = true)
             }
             _showingSearchHistory.value = filteredHistory
         }
