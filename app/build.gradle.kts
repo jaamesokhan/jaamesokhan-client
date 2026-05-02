@@ -21,8 +21,8 @@ android {
         applicationId = "ir.jaamebaade.jaamebaade_client"
         minSdk = 27
         targetSdk = 36
-        versionCode = 9
-        versionName = "2.2"
+        versionCode = 10
+        versionName = "2.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
