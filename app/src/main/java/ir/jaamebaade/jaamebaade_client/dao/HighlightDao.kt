@@ -35,6 +35,7 @@ interface HighlightDao {
                 v.poem_id AS verse_poem_id, 
                 v.verse_order AS verse_verse_order,
                 v.position AS verse_position,
+                v.normalized_text AS verse_normalized_text,
                 p.id AS poem_id, 
                 p.title AS poem_title, 
                 p.category_id AS poem_category_id,

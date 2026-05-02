@@ -121,7 +121,7 @@ object AppModule {
                 context.applicationContext,
                 AppDatabase::class.java,
                 "app_database"
-            ).build()
+            ).addMigrations(AppDatabase.MIGRATION_7_8).build()
         }
 
         return instance

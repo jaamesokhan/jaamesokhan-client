@@ -40,6 +40,7 @@ interface VerseDao {
                 v.poem_id AS verse_poem_id, 
                 v.verse_order AS verse_verse_order,
                 v.position AS verse_position,
+                v.normalized_text AS verse_normalized_text,
                 p.id AS poem_id, 
                 p.title AS poem_title, 
                 p.category_id AS poem_category_id, 
@@ -57,7 +58,7 @@ interface VerseDao {
             JOIN categories c ON p.category_id = c.id
             JOIN poets pt ON c.poet_id = pt.id
             WHERE c.poet_id IN (:poetIds)
-                AND v.text LIKE :query
+                AND v.normalized_text LIKE :query
         """
     )
     fun searchVerses(query: String, poetIds: List<Int>): List<VersePoemCategoryPoet>
@@ -71,6 +72,7 @@ interface VerseDao {
                 v.poem_id AS verse_poem_id, 
                 v.verse_order AS verse_verse_order,
                 v.position AS verse_position,
+                v.normalized_text AS verse_normalized_text,
                 p.id AS poem_id, 
                 p.title AS poem_title, 
                 p.category_id AS poem_category_id, 
@@ -87,7 +89,7 @@ interface VerseDao {
             JOIN poems p ON v.poem_id = p.id
             JOIN categories c ON p.category_id = c.id
             JOIN poets pt ON c.poet_id = pt.id
-            WHERE v.text LIKE :query
+            WHERE v.normalized_text LIKE :query
         """
     )
     fun searchVerses(query: String): List<VersePoemCategoryPoet>

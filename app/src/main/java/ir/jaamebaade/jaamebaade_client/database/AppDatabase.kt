@@ -3,6 +3,8 @@ package ir.jaamebaade.jaamebaade_client.database
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import ir.jaamebaade.jaamebaade_client.dao.BookmarkDao
 import ir.jaamebaade.jaamebaade_client.dao.CategoryDao
 import ir.jaamebaade.jaamebaade_client.dao.CommentDao
@@ -21,12 +23,13 @@ import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
 import ir.jaamebaade.jaamebaade_client.model.Verse
+import ir.jaamebaade.jaamebaade_client.utility.normalizedForSearch
 
 @Database(
     entities = [Poet::class, Category::class, Poem::class,
         Verse::class, Highlight::class, Bookmark::class, Comment::class,
         HistoryRecord::class, SearchHistoryRecord::class],
-    version = 7,
+    version = 8,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 3),
@@ -46,4 +49,29 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun commentDao(): CommentDao
     abstract fun historyDao(): HistoryItemDao
     abstract fun searchHistoryDao(): SearchHistoryDao
+
+    companion object {
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE verses ADD COLUMN normalized_text TEXT NOT NULL DEFAULT ''")
+
+                val cursor = db.query("SELECT id, text FROM verses")
+                val updateStatement = db.compileStatement(
+                    "UPDATE verses SET normalized_text = ? WHERE id = ?"
+                )
+                try {
+                    val idIndex = cursor.getColumnIndexOrThrow("id")
+                    val textIndex = cursor.getColumnIndexOrThrow("text")
+                    while (cursor.moveToNext()) {
+                        updateStatement.bindString(1, cursor.getString(textIndex).normalizedForSearch())
+                        updateStatement.bindLong(2, cursor.getLong(idIndex))
+                        updateStatement.executeUpdateDelete()
+                        updateStatement.clearBindings()
+                    }
+                } finally {
+                    cursor.close()
+                }
+            }
+        }
+    }
 }

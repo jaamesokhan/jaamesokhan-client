@@ -73,7 +73,7 @@ fun importVerseData(csvFilePath: String, verseRepository: VerseRepository) {
                 text = text,
                 verseOrder = verseOrder,
                 position = position,
-                poemId = poemId
+                poemId = poemId,
             )
         )
     }

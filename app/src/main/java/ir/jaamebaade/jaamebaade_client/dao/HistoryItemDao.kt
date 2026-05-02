@@ -15,7 +15,8 @@ interface HistoryItemDao {
     @Query(
         "SELECT h.id as history_id, h.poem_id as history_poem_id, h.timestamp as history_timestamp," +
                 "v.id AS verse_id, v.text as verse_text," +
-                "v.verse_order as verse_verse_order, v.position as verse_position, v.poem_id as verse_poem_id" +
+                "v.verse_order as verse_verse_order, v.position as verse_position, " +
+                "v.poem_id as verse_poem_id, v.normalized_text as verse_normalized_text" +
                 " FROM history h JOIN verses v ON v.poem_id = h.poem_id\n" +
                 "            WHERE v.verse_order = 1 ORDER BY timestamp DESC"
     )
