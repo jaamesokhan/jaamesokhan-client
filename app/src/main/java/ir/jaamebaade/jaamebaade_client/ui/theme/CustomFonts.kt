@@ -6,7 +6,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import ir.jaamebaade.jaamebaade_client.R
 
-// TODO : all other font sizes except for Dana need to change
 object CustomFonts {
     val Nastaliq = CustomFont(
         name = "Nastaliq",
@@ -37,19 +36,19 @@ object CustomFonts {
             ),
             body = CustomFontAttributes(
                 small = CustomFontMeasures(
-                    fontSize = 18.sp,
-                    lineHeight = 10.sp,
-                    letterSpacing = 0.5.sp,
-                    fontWeight = FontWeight.Normal,
-                ),
-                medium = CustomFontMeasures(
                     fontSize = 22.sp,
                     lineHeight = 10.sp,
                     letterSpacing = 0.5.sp,
                     fontWeight = FontWeight.Normal,
                 ),
-                large = CustomFontMeasures(
+                medium = CustomFontMeasures(
                     fontSize = 26.sp,
+                    lineHeight = 10.sp,
+                    letterSpacing = 0.5.sp,
+                    fontWeight = FontWeight.Normal,
+                ),
+                large = CustomFontMeasures(
+                    fontSize = 30.sp,
                     lineHeight = 10.sp,
                     letterSpacing = 0.5.sp,
                     fontWeight = FontWeight.Normal,
