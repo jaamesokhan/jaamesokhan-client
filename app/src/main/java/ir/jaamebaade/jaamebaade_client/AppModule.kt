@@ -9,12 +9,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ir.jaamebaade.jaamebaade_client.api.AccountApiClient
 import ir.jaamebaade.jaamebaade_client.api.AccountApiService
-import ir.jaamebaade.jaamebaade_client.api.AudioApiClient
-import ir.jaamebaade.jaamebaade_client.api.AudioApiService
-import ir.jaamebaade.jaamebaade_client.api.DictionaryApiClient
-import ir.jaamebaade.jaamebaade_client.api.DictionaryApiService
-import ir.jaamebaade.jaamebaade_client.api.PoetApiClient
-import ir.jaamebaade.jaamebaade_client.api.PoetApiService
+import ir.jaamebaade.jaamebaade_client.api.JaameSokhanApiClient
+import ir.jaamebaade.jaamebaade_client.api.JaameSokhanApiService
+import ir.jaamebaade.jaamebaade_client.api.GanjoorApiClient
+import ir.jaamebaade.jaamebaade_client.api.GanjoorAudioApiService
 import ir.jaamebaade.jaamebaade_client.api.SyncAudioClient
 import ir.jaamebaade.jaamebaade_client.database.AppDatabase
 import ir.jaamebaade.jaamebaade_client.datamanager.PoetDataManager
@@ -33,6 +31,7 @@ import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -47,14 +46,15 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApiService(@ApplicationContext context: Context): PoetApiService {
+    fun provideJaamesokhanRetrofit(@ApplicationContext context: Context): JaameSokhanApiService {
         return Retrofit.Builder()
             .baseUrl(context.getString(R.string.SERVER_BASE_URL))
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
-            .create(PoetApiService::class.java)
+            .create<JaameSokhanApiService>()
     }
+
 
     @Provides
     @Singleton
@@ -79,48 +79,30 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePoetApiClient(
-        apiService: PoetApiService,
-    ): PoetApiClient {
-        return PoetApiClient(apiService)
+    fun provideJaameSokhanApiClient(
+        apiService: JaameSokhanApiService,
+        ganjoorApiClient: GanjoorApiClient
+    ): JaameSokhanApiClient {
+        return JaameSokhanApiClient(apiService, ganjoorApiClient)
     }
 
     @Provides
     @Singleton
-    fun provideDictionaryApiService(@ApplicationContext context: Context): DictionaryApiService {
-        return Retrofit.Builder()
-            .baseUrl(context.getString(R.string.SERVER_BASE_URL))
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-            .create(DictionaryApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun providesDictionaryApiClient(
-        apiService: DictionaryApiService,
-    ): DictionaryApiClient {
-        return DictionaryApiClient(apiService)
-    }
-
-    @Provides
-    @Singleton
-    fun provideAudioApiService(@ApplicationContext context: Context): AudioApiService {
+    fun provideGanjoorAudioApiService(@ApplicationContext context: Context): GanjoorAudioApiService {
         return Retrofit.Builder()
             .baseUrl(context.getString(R.string.GANJOOR_BASE_URL))
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
-            .create(AudioApiService::class.java)
+            .create<GanjoorAudioApiService>()
     }
 
     @Provides
     @Singleton
-    fun providesAudioApiClient(
-        apiService: AudioApiService,
-    ): AudioApiClient {
-        return AudioApiClient(apiService)
+    fun provideGanjoorApiClient(
+        ganjoorApiService: GanjoorAudioApiService,
+    ): GanjoorApiClient {
+        return GanjoorApiClient(ganjoorApiService)
     }
 
     @Provides
@@ -153,7 +135,7 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
-            .create(AccountApiService::class.java)
+            .create<AccountApiService>()
     }
 
     @Provides

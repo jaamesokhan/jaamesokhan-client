@@ -13,7 +13,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import ir.jaamebaade.jaamebaade_client.R
-import ir.jaamebaade.jaamebaade_client.api.PoetApiClient
+import ir.jaamebaade.jaamebaade_client.api.JaameSokhanApiClient
 import ir.jaamebaade.jaamebaade_client.datamanager.PoetDataManager
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Status
@@ -36,7 +36,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PoetViewModel @Inject constructor(
     private val poetDataManager: PoetDataManager,
-    private val poetApiClient: PoetApiClient,
+    private val jaameSokhanApiClient: JaameSokhanApiClient,
     @ApplicationContext private val context: Context,
     private val categoryRepository: CategoryRepository,
     private val poetRepository: PoetRepository,
@@ -77,7 +77,7 @@ class PoetViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 poetFetchStatus = Status.LOADING
-                val response = poetApiClient.getPoets(currentPage, pageSize, searchQuery)
+                val response = jaameSokhanApiClient.getPoets(currentPage, pageSize, searchQuery)
                 if (response != null) {
                     poets = poets + response
                     currentPage++
@@ -168,7 +168,7 @@ class PoetViewModel @Inject constructor(
         downloadStatus[id] = DownloadStatus.Downloading
 
         try {
-            val response = poetApiClient.downloadPoet(id)
+            val response = jaameSokhanApiClient.downloadPoet(id)
             if (response.isSuccessful) {
                 response.body()?.let { body ->
                     val zipFile = File(targetDirectory, "poet_$id.zip")
