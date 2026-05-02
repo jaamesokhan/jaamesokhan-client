@@ -95,7 +95,7 @@ fun AudioControlBar(navController: NavController, viewModel: AppNavHostViewModel
         }
     }
 
-    val artistName = selectedAudio?.artist
+    val artistName = selectedAudio?.artistName
     val poemTitle = poemWithPoet?.poem?.title
     val poetName = poemWithPoet?.poet?.name
 

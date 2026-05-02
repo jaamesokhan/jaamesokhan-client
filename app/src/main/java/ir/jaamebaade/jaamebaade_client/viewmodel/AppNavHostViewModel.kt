@@ -86,7 +86,7 @@ class AppNavHostViewModel @Inject constructor(
         if (audioData == null) {
             audioSessionManager.updateMetadata(null, null)
         } else {
-            audioSessionManager.updateMetadata(audioData.artist, poemWithPoet?.poem?.title)
+            audioSessionManager.updateMetadata(audioData.artistName, poemWithPoet?.poem?.title)
         }
     }
 
@@ -95,7 +95,7 @@ class AppNavHostViewModel @Inject constructor(
             poemRepository.getPoemWithPoet(poemId = selectedAudioData?.poemId!!)
         }
         poemWithPoet = result
-        audioSessionManager.updateMetadata(poemWithPoet?.poem?.title, selectedAudioData?.artist)
+        audioSessionManager.updateMetadata(poemWithPoet?.poem?.title, selectedAudioData?.artistName)
     }
 
     fun resumePlayback() {

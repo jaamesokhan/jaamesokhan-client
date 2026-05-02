@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -62,7 +63,7 @@ fun AudioListItems(
             onDismiss()
             appNavHostViewModel.setSelectedAudioDate(it)
             appNavHostViewModel.changePlayStatus(Status.LOADING)
-            viewModel.fetchAudioSyncInfo(it.syncXmlUrl, {
+            viewModel.fetchAudioSyncInfo(it.syncFileUrl, {
                 mediaPlayer.apply {
                     setOnCompletionListener {
                         appNavHostViewModel.onPlaybackCompleted()
@@ -71,7 +72,7 @@ fun AudioListItems(
                         start()
                         appNavHostViewModel.onPlaybackPrepared()
                     }
-                    setDataSource(it.url)
+                    setDataSource(it.audioFileUrl)
                     prepareAsync()
                 }
             }, {
@@ -87,10 +88,11 @@ fun AudioListItems(
             onFailure = { fetchStatus = Status.FAILED }
         )
     }
+    val minHeight = 250.dp
     if (audioDataList.isEmpty() && fetchStatus == Status.SUCCESS) {
         Row(
             modifier = Modifier
-                .height(250.dp)
+                .height(minHeight)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -114,7 +116,7 @@ fun AudioListItems(
         Status.LOADING -> {
             Column(
                 modifier = Modifier
-                    .height(250.dp)
+                    .height(minHeight)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -126,7 +128,7 @@ fun AudioListItems(
         Status.FAILED -> {
             Row(
                 modifier = Modifier
-                    .height(250.dp)
+                    .height(minHeight)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
@@ -149,8 +151,10 @@ fun AudioListItems(
         }
 
         else -> {
-            LazyColumn {
-                items(items = audioDataList, key = { it.url }) { audioData ->
+            LazyColumn(
+                modifier = Modifier.heightIn(min = minHeight),
+            ) {
+                items(items = audioDataList, key = { it.audioFileUrl }) { audioData ->
                     Card(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.background,
@@ -182,7 +186,7 @@ fun AudioListItems(
                             Box(modifier = Modifier.fillMaxSize()) {
                                 Text(
                                     modifier = Modifier.align(Alignment.CenterStart),
-                                    text = audioData.artist,
+                                    text = audioData.artistName,
                                     style = MaterialTheme.typography.headlineLarge
                                 )
                                 if (audioDataList.last() != audioData) {

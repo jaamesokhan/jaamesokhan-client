@@ -12,7 +12,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.jaamebaade.jaamebaade_client.api.AudioApiClient
+import ir.jaamebaade.jaamebaade_client.api.JaameSokhanApiClient
 import ir.jaamebaade.jaamebaade_client.api.SyncAudioClient
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
 import ir.jaamebaade.jaamebaade_client.model.Category
@@ -45,7 +45,7 @@ class PoemViewModel @AssistedInject constructor(
     private val highlightRepository: HighlightRepository,
     private val poemRepository: PoemRepository,
     private val bookmarkRepository: BookmarkRepository,
-    private val audioApiClient: AudioApiClient,
+    private val jaameSokhanApiClient: JaameSokhanApiClient,
     private val syncAudioClient: SyncAudioClient,
     private val historyRepository: HistoryRepository,
     private val categoryRepository: CategoryRepository,
@@ -111,7 +111,7 @@ class PoemViewModel @AssistedInject constructor(
     }
     fun fetchRecitationsForPoem(onSuccess: () -> Unit, onFailure: () -> Unit) {
         viewModelScope.launch {
-            _urls.value = audioApiClient.getAllRecitations(
+            _urls.value = jaameSokhanApiClient.getAllRecitations(
                 poemId = poemId,
                 onSuccess = onSuccess,
                 onFailure = onFailure
