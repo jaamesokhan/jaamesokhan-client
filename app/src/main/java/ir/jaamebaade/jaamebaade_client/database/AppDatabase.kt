@@ -73,5 +73,29 @@ abstract class AppDatabase : RoomDatabase() {
                 }
             }
         }
+
+        val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                val cursor = db.query("SELECT id, text FROM verses")
+                val updateStatement = db.compileStatement(
+                    "UPDATE verses SET normalized_text = ? WHERE id = ?"
+                )
+
+                try {
+                    val idIndex = cursor.getColumnIndexOrThrow("id")
+                    val textIndex = cursor.getColumnIndexOrThrow("text")
+                    while (cursor.moveToNext()) {
+                        val id = cursor.getLong(idIndex)
+                        val text = cursor.getString(textIndex)
+                        updateStatement.bindString(1, text.normalizedForSearch())
+                        updateStatement.bindLong(2, id)
+                        updateStatement.executeUpdateDelete()
+                        updateStatement.clearBindings()
+                    }
+                } finally {
+                    cursor.close()
+                }
+            }
+        }
     }
 }
