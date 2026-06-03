@@ -38,6 +38,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
 @Composable
 fun PoemScreenTitle(
+    modifier: Modifier = Modifier,
     navController: NavController,
     poemPath: VersePoemCategoriesPoet,
     minId: Int,
@@ -47,7 +48,7 @@ fun PoemScreenTitle(
     val poemId = poemPath.poem.id
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 14.dp, vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

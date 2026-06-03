@@ -1,6 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.view
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,14 +33,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -114,6 +124,7 @@ fun PoemScreen(
     var showHighlights by remember { mutableStateOf(true) }
     var showVerseNumbers by remember { mutableStateOf(false) }
     var selectMode by remember { mutableStateOf(false) }
+    var poemHeaderRevealFraction by remember { mutableStateOf(1f) }
     val isBookmarked by poemViewModel.isBookmarked.collectAsState()
 
     val lazyListState = rememberLazyListState()
@@ -129,7 +140,50 @@ fun PoemScreen(
     val focusedVerse = versesWithHighlights.find { it.verse.id == focusedVerseId }
 
     val selectedVerses = remember { mutableStateListOf<VerseWithHighlights>() }
+    val collapseRangePx = with(LocalDensity.current) { 150.dp.toPx() }
+    var collapsedPoemHeaderOffsetPx by remember(poemId) { mutableFloatStateOf(0f) }
 
+    fun updatePoemHeaderReveal(collapsedOffsetPx: Float) {
+        collapsedPoemHeaderOffsetPx = collapsedOffsetPx.coerceIn(0f, collapseRangePx)
+        poemHeaderRevealFraction = 1f - collapsedPoemHeaderOffsetPx / collapseRangePx
+    }
+
+    val poemHeaderScrollConnection = remember(collapseRangePx) {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                val deltaY = available.y
+                if (deltaY == 0f) return Offset.Zero
+
+                val scrollingUp = deltaY < 0f
+                val scrollingDown = deltaY > 0f
+
+                return when {
+                    scrollingUp && collapsedPoemHeaderOffsetPx < collapseRangePx -> {
+                        val previousOffset = collapsedPoemHeaderOffsetPx
+                        updatePoemHeaderReveal(collapsedPoemHeaderOffsetPx - deltaY)
+                        Offset(x = 0f, y = -(collapsedPoemHeaderOffsetPx - previousOffset))
+                    }
+
+                    scrollingDown && collapsedPoemHeaderOffsetPx > 0f -> {
+                        val previousOffset = collapsedPoemHeaderOffsetPx
+                        updatePoemHeaderReveal(collapsedPoemHeaderOffsetPx - deltaY)
+                        Offset(x = 0f, y = previousOffset - collapsedPoemHeaderOffsetPx)
+                    }
+
+                    else -> Offset.Zero
+                }
+            }
+        }
+    }
+    val animatedPoemHeaderRevealFraction by animateFloatAsState(
+        targetValue = poemHeaderRevealFraction,
+        label = "poemHeaderRevealFraction"
+    )
+
+    LaunchedEffect(poemId) {
+        collapsedPoemHeaderOffsetPx = 0f
+        poemHeaderRevealFraction = 1f
+    }
 
     fun onClick(boolean: Boolean, item: VerseWithHighlights) {
         if (boolean) selectedVerses.remove(item)
@@ -322,6 +376,9 @@ fun PoemScreen(
             Column {
                 path?.let {
                     PoemScreenTitle(
+                        modifier = Modifier
+                            .verticalReveal(animatedPoemHeaderRevealFraction)
+                            .alpha(animatedPoemHeaderRevealFraction),
                         navController = navController,
                         minId = minId,
                         maxId = maxId,
@@ -340,7 +397,12 @@ fun PoemScreen(
             }
         }
 
-        LazyColumn(modifier = Modifier.padding(10.dp), state = lazyListState) {
+        LazyColumn(
+            modifier = Modifier
+                .nestedScroll(poemHeaderScrollConnection)
+                .padding(10.dp),
+            state = lazyListState
+        ) {
             itemsIndexed(versesWithHighlights) { index, verseWithHighlights ->
                 val isSelected = selectedVerses.contains(verseWithHighlights)
                 val itemModifier =
@@ -383,6 +445,17 @@ fun PoemScreen(
         selectedVerses.clear()
     }
 }
+
+private fun Modifier.verticalReveal(fraction: Float): Modifier = this
+    .clipToBounds()
+    .layout { measurable, constraints ->
+        val placeable = measurable.measure(constraints)
+        val revealedHeight = (placeable.height * fraction.coerceIn(0f, 1f)).toInt()
+
+        layout(placeable.width, revealedHeight) {
+            placeable.place(0, 0)
+        }
+    }
 
 @Composable
 private fun HighlightHintMessage(viewModel: PoemViewModel) {

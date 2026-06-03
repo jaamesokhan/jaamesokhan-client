@@ -22,12 +22,15 @@ import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
 
 @Composable
-fun PoetInformationBox(poet: Poet) {
+fun PoetInformationBox(
+    poet: Poet,
+    modifier: Modifier = Modifier
+) {
 
     var expanded by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 24.dp)
             .padding(bottom = 30.dp)
     ) {

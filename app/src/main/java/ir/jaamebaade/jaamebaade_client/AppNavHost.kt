@@ -75,6 +75,7 @@ fun AppNavHost(
 
     val hasDownloadedAnyPoets = appNavHostViewModel.hasDownloadedAnyPoets
     var fetchStatus by remember { mutableStateOf(Status.LOADING) }
+    var poetDetailTopBarRevealFraction by remember { mutableStateOf(1f) }
 
     LaunchedEffect(hasDownloadedAnyPoets) {
         if (hasDownloadedAnyPoets != null) {
@@ -118,6 +119,7 @@ fun AppNavHost(
                         TopBar(
                             navController = navController,
                             appNavHostViewModel = appNavHostViewModel,
+                            poetDetailTopBarRevealFraction = poetDetailTopBarRevealFraction,
                         )
                     }) { innerPadding ->
                     NavHost(
@@ -155,7 +157,8 @@ fun AppNavHost(
                                 modifier = Modifier.padding(innerPadding),
                                 poetId = poetId!!,
                                 parentIds = parentIds ?: intArrayOf(),
-                                navController = navController
+                                navController = navController,
+                                onTopBarRevealFractionChange = { poetDetailTopBarRevealFraction = it }
                             )
                         }
                         animatedComposable(
