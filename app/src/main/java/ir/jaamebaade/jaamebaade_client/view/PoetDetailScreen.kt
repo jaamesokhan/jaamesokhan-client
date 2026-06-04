@@ -6,17 +6,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -35,7 +46,8 @@ fun PoetDetailScreen(
     modifier: Modifier = Modifier,
     poetId: Int,
     parentIds: IntArray = intArrayOf(),
-    navController: NavController
+    navController: NavController,
+    onTopBarRevealFractionChange: (Float) -> Unit = {},
 ) {
     val viewModel =
         hiltViewModel<PoetDetailViewModel, PoetDetailViewModel.PoetDetailViewModelFactory> { factory ->
@@ -46,10 +58,57 @@ fun PoetDetailScreen(
     val poems = viewModel.poemsPageData.collectAsLazyPagingItems()
 
     val coroutineScope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+    val collapseRangePx = with(LocalDensity.current) { 180.dp.toPx() }
+    var collapsedTopBarOffsetPx by remember(poetId, parentIds.contentHashCode()) {
+        mutableFloatStateOf(0f)
+    }
 
+    fun updateTopBarReveal(collapsedOffsetPx: Float) {
+        collapsedTopBarOffsetPx = collapsedOffsetPx.coerceIn(0f, collapseRangePx)
+        onTopBarRevealFractionChange(1f - collapsedTopBarOffsetPx / collapseRangePx)
+    }
+
+    val topBarScrollConnection = remember(collapseRangePx) {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                val deltaY = available.y
+                if (deltaY == 0f) return Offset.Zero
+
+                val scrollingUp = deltaY < 0f
+                val scrollingDown = deltaY > 0f
+
+                return when {
+                    scrollingUp && collapsedTopBarOffsetPx < collapseRangePx -> {
+                        val previousOffset = collapsedTopBarOffsetPx
+                        updateTopBarReveal(collapsedTopBarOffsetPx - deltaY)
+                        Offset(x = 0f, y = -(collapsedTopBarOffsetPx - previousOffset))
+                    }
+
+                    scrollingDown && collapsedTopBarOffsetPx > 0f -> {
+                        val previousOffset = collapsedTopBarOffsetPx
+                        updateTopBarReveal(collapsedTopBarOffsetPx - deltaY)
+                        Offset(x = 0f, y = previousOffset - collapsedTopBarOffsetPx)
+                    }
+
+                    else -> Offset.Zero
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(poetId, parentIds.contentHashCode()) {
+        collapsedTopBarOffsetPx = 0f
+        onTopBarRevealFractionChange(1f)
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(modifier = modifier.padding(top = 8.dp)) {
+        LazyColumn(
+            state = listState,
+            modifier = modifier
+                .nestedScroll(topBarScrollConnection)
+                .padding(top = 8.dp)
+        ) {
             itemsIndexed(categories) { index, categoryWithCount ->
                 ListItem(
                     title = categoryWithCount.category.text,

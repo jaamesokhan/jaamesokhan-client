@@ -1,5 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,6 +37,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -61,6 +66,7 @@ fun TopBar(
     viewModel: TopBarViewModel = hiltViewModel(),
     myPoetsViewModel: MyPoetsViewModel = hiltViewModel(),
     appNavHostViewModel: AppNavHostViewModel,
+    poetDetailTopBarRevealFraction: Float = 1f,
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
@@ -89,6 +95,15 @@ fun TopBar(
 
     val topBarIsExtended = viewModel.topBarIsExtended
     val downArrow = viewModel.downArrow
+    val poetHeaderRevealFraction by animateFloatAsState(
+        targetValue = poetDetailTopBarRevealFraction,
+        label = "poetHeaderRevealFraction"
+    )
+    val showPoetHeader = poet != null && poetHeaderRevealFraction > 0.01f
+    val topBarShadowElevation by animateDpAsState(
+        targetValue = if (topBarIsExtended || showPoetHeader) 0.dp else 4.dp,
+        label = "topBarShadowElevation"
+    )
 
     val sheetState = rememberModalBottomSheetState()
     var showPoetOptionModal by remember { mutableStateOf(false) }
@@ -137,7 +152,7 @@ fun TopBar(
         onBackButtonClicked(backStackEntry, navController)
     }
     Surface(
-        shadowElevation = if (topBarIsExtended) 0.dp else 4.dp
+        shadowElevation = topBarShadowElevation
     ) {
         Column {
             TopAppBar(
@@ -235,11 +250,29 @@ fun TopBar(
 
                 },
             )
-            poet?.let { PoetInformationBox(poet = it) }
+            poet?.let {
+                PoetInformationBox(
+                    poet = it,
+                    modifier = Modifier
+                        .verticalReveal(poetHeaderRevealFraction)
+                        .alpha(poetHeaderRevealFraction)
+                )
+            }
             AudioControlBar(navController = navController, viewModel = appNavHostViewModel)
         }
     }
 }
+
+private fun Modifier.verticalReveal(fraction: Float): Modifier = this
+    .clipToBounds()
+    .layout { measurable, constraints ->
+        val placeable = measurable.measure(constraints)
+        val revealedHeight = (placeable.height * fraction.coerceIn(0f, 1f)).toInt()
+
+        layout(placeable.width, revealedHeight) {
+            placeable.place(0, 0)
+        }
+    }
 
 
 private fun onBackButtonClicked(
