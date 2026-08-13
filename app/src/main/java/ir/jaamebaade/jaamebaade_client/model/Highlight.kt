@@ -22,4 +22,5 @@ data class Highlight(
     @ColumnInfo(name = "start_index") val startIndex: Int,
     @ColumnInfo(name = "end_index") val endIndex: Int,
     @ColumnInfo(name = "created_at", defaultValue = "0") val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "color", defaultValue = "#FFFFEB3B") val color: String = "#FFFFEB3B", // Default yellow color
 )

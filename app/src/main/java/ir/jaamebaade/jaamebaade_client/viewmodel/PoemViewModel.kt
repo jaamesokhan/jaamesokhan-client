@@ -137,9 +137,9 @@ class PoemViewModel @AssistedInject constructor(
         }
     }
 
-    fun highlight(verseId: Long, startIndex: Int, endIndex: Int) {
+    fun highlight(verseId: Long, startIndex: Int, endIndex: Int, color: String) {
         viewModelScope.launch {
-            val highlight = addHighlightToRepository(verseId, startIndex, endIndex)
+            val highlight = addHighlightToRepository(verseId, startIndex, endIndex, color)
             _verses.value = _verses.value.map {
                 if (it.verse.id == verseId) {
                     it.copy(highlights = it.highlights + highlight)
@@ -153,12 +153,14 @@ class PoemViewModel @AssistedInject constructor(
     private suspend fun addHighlightToRepository(
         verseId: Long,
         startIndex: Int,
-        endIndex: Int
+        endIndex: Int,
+        color: String
     ): Highlight {
         val highlight = Highlight(
             verseId = verseId,
             startIndex = startIndex,
-            endIndex = endIndex
+            endIndex = endIndex,
+            color = color
         )
         withContext(Dispatchers.IO) {
             highlightRepository.insertHighlight(highlight)
