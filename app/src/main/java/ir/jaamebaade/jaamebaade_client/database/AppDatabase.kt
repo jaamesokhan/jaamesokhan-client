@@ -29,7 +29,7 @@ import ir.jaamebaade.jaamebaade_client.utility.normalizedForSearch
     entities = [Poet::class, Category::class, Poem::class,
         Verse::class, Highlight::class, Bookmark::class, Comment::class,
         HistoryRecord::class, SearchHistoryRecord::class],
-    version = 8,
+    version = 10,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 3),
@@ -37,6 +37,7 @@ import ir.jaamebaade.jaamebaade_client.utility.normalizedForSearch
         AutoMigration(from = 4, to = 5),
         AutoMigration(from = 5, to = 6),
         AutoMigration(from = 6, to = 7),
+        AutoMigration(from = 9, to = 10),
     ]
 )
 abstract class AppDatabase : RoomDatabase() {

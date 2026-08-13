@@ -16,6 +16,7 @@ import ir.jaamebaade.jaamebaade_client.api.JaameSokhanApiClient
 import ir.jaamebaade.jaamebaade_client.api.SyncAudioClient
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
 import ir.jaamebaade.jaamebaade_client.model.Category
+import ir.jaamebaade.jaamebaade_client.model.CharSpan
 import ir.jaamebaade.jaamebaade_client.model.Highlight
 import ir.jaamebaade.jaamebaade_client.model.HistoryRecord
 import ir.jaamebaade.jaamebaade_client.model.Pair
@@ -137,33 +138,41 @@ class PoemViewModel @AssistedInject constructor(
         }
     }
 
-    fun highlight(verseId: Long, startIndex: Int, endIndex: Int) {
+    /**
+     * Inserts one [Highlight] row per verse in [selection] (full range for verses in the
+     * middle of a multi-verse selection, partial range for the first/last verse touched).
+     * MyHighlightScreen already merges any run of highlights on consecutive verse ids in the
+     * same poem into one logical highlight, so no further grouping is needed here.
+     */
+    fun highlight(selection: Map<Long, CharSpan>, color: Int) {
+        if (selection.isEmpty()) return
         viewModelScope.launch {
-            val highlight = addHighlightToRepository(verseId, startIndex, endIndex)
-            _verses.value = _verses.value.map {
-                if (it.verse.id == verseId) {
-                    it.copy(highlights = it.highlights + highlight)
+            val inserted = addHighlightsToRepository(selection, color)
+            _verses.value = _verses.value.map { verseWithHighlights ->
+                val newHighlight = inserted[verseWithHighlights.verse.id]
+                if (newHighlight != null) {
+                    verseWithHighlights.copy(highlights = verseWithHighlights.highlights + newHighlight)
                 } else {
-                    it
+                    verseWithHighlights
                 }
             }
         }
     }
 
-    private suspend fun addHighlightToRepository(
-        verseId: Long,
-        startIndex: Int,
-        endIndex: Int
-    ): Highlight {
-        val highlight = Highlight(
-            verseId = verseId,
-            startIndex = startIndex,
-            endIndex = endIndex
-        )
-        withContext(Dispatchers.IO) {
+    private suspend fun addHighlightsToRepository(
+        selection: Map<Long, CharSpan>,
+        color: Int,
+    ): Map<Long, Highlight> = withContext(Dispatchers.IO) {
+        selection.mapValues { (verseId, span) ->
+            val highlight = Highlight(
+                verseId = verseId,
+                startIndex = span.start,
+                endIndex = span.end,
+                color = color,
+            )
             highlightRepository.insertHighlight(highlight)
+            highlight
         }
-        return highlight
     }
 
     fun onBookmarkClicked() {
