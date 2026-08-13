@@ -80,6 +80,7 @@
     <string name="NOTE_PLACE_HOLDER">یادداشت خود را اینجا بنویسید …</string>
     <string name="HIGHLIGHT">هایلایت</string>
     <string name="COPY">کپی</string>
+    <string name="MEANING">معنی</string>
     <string name="SEARCH_TITLE">جست‌وجو در اشعار</string>
     <string name="EMPTY_SEARCH_FILTER">خالی!</string>
     <string name="DAILY_RANDOM_POEM_TITLE">شعر تصادفی امروز</string>

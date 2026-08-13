@@ -118,10 +118,7 @@ fun MyHighlightScreen(
             itemsIndexed(
                 items = newHighlights,
                 key = { _, it -> it.highlights.first().id }) { index, mergedHighlight ->
-                val headerText = createMergedHighlightItemHeader(
-                    mergedHighlight,
-                    MaterialTheme.colorScheme.tertiary
-                )
+                val headerText = createMergedHighlightItemHeader(mergedHighlight)
                 val pathText =
                     createHighlightPath(mergedHighlight.categories, mergedHighlight.poem)
                 HighlightCardItem(
@@ -209,7 +206,6 @@ fun HighlightCardItem(
         iconDescription = iconDescription,
         onClick = onClick,
         onIconClick = onIconClick,
-        wrapHeader = true,
         wrapBody = true,
     )
 
@@ -218,10 +214,7 @@ fun HighlightCardItem(
 private fun createHighlightPath(categories: List<Category>, poem: Poem) =
     "${categories.joinToString(" > ") { it.text }} > ${poem.title}"
 
-private fun createMergedHighlightItemHeader(
-    mergedHighlight: MergedHighlight,
-    highlightedTextColor: Color
-): AnnotatedString {
+private fun createMergedHighlightItemHeader(mergedHighlight: MergedHighlight): AnnotatedString {
     var res = AnnotatedString("")
     mergedHighlight.highlights.zip(mergedHighlight.verses)
         .forEach { (highlight, verse) ->
@@ -232,7 +225,7 @@ private fun createMergedHighlightItemHeader(
                     append(verse.text.plus("\n"))
                 }
                 addStyle(
-                    style = SpanStyle(background = highlightedTextColor),
+                    style = SpanStyle(background = Color(highlight.color)),
                     start = highlight.startIndex,
                     end = highlight.endIndex
                 )
