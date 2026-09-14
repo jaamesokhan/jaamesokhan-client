@@ -13,12 +13,23 @@ class VerseRepository @Inject constructor(appDatabase: AppDatabase) {
     fun getPoemVersesWithHighlights(poemId: Int) = verseDao.getPoemVersesWithHighlights(poemId)
 
     fun searchVerses(query: String, poetIds: List<Int>): List<VersePoemCategoryPoet> {
-        val normalizedQuery = "%${query.normalizedForSearch()}%"
+        val ftsQuery = buildFtsMatchQuery(query)
+        if (ftsQuery.isBlank()) return emptyList()
         return if (poetIds.isEmpty()) {
-            verseDao.searchVerses(normalizedQuery)
+            verseDao.searchVerses(ftsQuery)
         } else {
-            verseDao.searchVerses(normalizedQuery, poetIds)
+            verseDao.searchVerses(ftsQuery, poetIds)
         }
+    }
+
+    // Each token becomes a prefix match (token*), ANDed together: matches verses containing
+    // all of the typed words (in any order), as a whole-token prefix. Unlike the old
+    // LIKE '%query%' this won't match a query landing mid-word.
+    private fun buildFtsMatchQuery(query: String): String {
+        return query.normalizedForSearch()
+            .split(Regex("\\s+"))
+            .filter { it.isNotBlank() }
+            .joinToString(" ") { "$it*" }
     }
 
     fun insertVerses(verses: List<Verse>) =

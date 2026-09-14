@@ -66,6 +66,30 @@ interface PoemDao {
 
     fun getCategoryByPoemId(poemId: Int): Int
 
+    // NOTE: candidate set is picked by COUNT + OFFSET (below) instead of ORDER BY RANDOM(),
+    // which would force SQLite to materialize and sort every matching poem on each call.
+    @Query(
+        """
+        WITH RECURSIVE category_tree AS (
+        SELECT id from categories WHERE id = :categoryId
+        UNION ALL
+        SELECT c.id FROM categories c JOIN category_tree ct ON c.parent_id = ct.id
+        )
+        SELECT COUNT(*)
+        FROM poems pm
+        JOIN categories c ON c.id = pm.category_id
+        WHERE
+            (
+                (:categoryId IS NULL
+                AND
+                (c.random_selected = 1 OR c.random_selected IS NULL))
+            OR
+                (c.id IN category_tree)
+            )
+    """
+    )
+    fun getRandomPoemCandidateCount(categoryId: Int?): Int
+
     @Query(
         """
         WITH RECURSIVE category_tree AS (
@@ -84,19 +108,19 @@ interface PoemDao {
         FROM poems pm
         JOIN categories c ON c.id = pm.category_id
         JOIN poets pt ON pt.id = c.poet_id
-        WHERE 
+        WHERE
             (
-                (:categoryId IS NULL 
-                AND 
+                (:categoryId IS NULL
+                AND
                 (c.random_selected = 1 OR c.random_selected IS NULL))
-            OR 
+            OR
                 (c.id IN category_tree)
             )
-        ORDER BY RANDOM()
-        LIMIT 1
+        ORDER BY pm.id
+        LIMIT 1 OFFSET :offset
     """
     )
-    fun getRandomPoem(categoryId: Int?): PoemWithPoet?
+    fun getPoemAtRandomOffset(categoryId: Int?, offset: Int): PoemWithPoet?
 
     @Query(
         """

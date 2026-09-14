@@ -23,13 +23,14 @@ import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
 import ir.jaamebaade.jaamebaade_client.model.Verse
+import ir.jaamebaade.jaamebaade_client.model.VerseSearch
 import ir.jaamebaade.jaamebaade_client.utility.normalizedForSearch
 
 @Database(
     entities = [Poet::class, Category::class, Poem::class,
         Verse::class, Highlight::class, Bookmark::class, Comment::class,
-        HistoryRecord::class, SearchHistoryRecord::class],
-    version = 8,
+        HistoryRecord::class, SearchHistoryRecord::class, VerseSearch::class],
+    version = 9,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 3),
@@ -74,27 +75,35 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Adds the verses_fts FTS4 table (external content over `verses`) so search can use
+        // MATCH instead of a leading-wildcard LIKE full scan. normalized_text on `verses` is
+        // already correct as of MIGRATION_7_8, so this migration only adds the FTS index and
+        // backfills it; it does not touch `verses` itself.
         val MIGRATION_8_9 = object : Migration(8, 9) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                val cursor = db.query("SELECT id, text FROM verses")
-                val updateStatement = db.compileStatement(
-                    "UPDATE verses SET normalized_text = ? WHERE id = ?"
+                db.execSQL(
+                    "CREATE VIRTUAL TABLE IF NOT EXISTS `verses_fts` USING FTS4(`normalized_text` TEXT NOT NULL, content=`verses`)"
                 )
 
-                try {
-                    val idIndex = cursor.getColumnIndexOrThrow("id")
-                    val textIndex = cursor.getColumnIndexOrThrow("text")
-                    while (cursor.moveToNext()) {
-                        val id = cursor.getLong(idIndex)
-                        val text = cursor.getString(textIndex)
-                        updateStatement.bindString(1, text.normalizedForSearch())
-                        updateStatement.bindLong(2, id)
-                        updateStatement.executeUpdateDelete()
-                        updateStatement.clearBindings()
-                    }
-                } finally {
-                    cursor.close()
-                }
+                // Content-sync triggers Room expects for an external-content FTS4 table
+                // (must match what Room's schema validator generates for this entity).
+                db.execSQL(
+                    "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_verses_fts_BEFORE_UPDATE BEFORE UPDATE ON `verses` BEGIN DELETE FROM `verses_fts` WHERE `docid`=OLD.`rowid`; END"
+                )
+                db.execSQL(
+                    "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_verses_fts_BEFORE_DELETE BEFORE DELETE ON `verses` BEGIN DELETE FROM `verses_fts` WHERE `docid`=OLD.`rowid`; END"
+                )
+                db.execSQL(
+                    "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_verses_fts_AFTER_UPDATE AFTER UPDATE ON `verses` BEGIN INSERT INTO `verses_fts`(`docid`, `normalized_text`) VALUES (NEW.`rowid`, NEW.`normalized_text`); END"
+                )
+                db.execSQL(
+                    "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_verses_fts_AFTER_INSERT AFTER INSERT ON `verses` BEGIN INSERT INTO `verses_fts`(`docid`, `normalized_text`) VALUES (NEW.`rowid`, NEW.`normalized_text`); END"
+                )
+
+                // Backfill: triggers only cover future writes, existing rows need this once.
+                db.execSQL(
+                    "INSERT INTO `verses_fts`(`docid`, `normalized_text`) SELECT `rowid`, `normalized_text` FROM `verses`"
+                )
             }
         }
     }
