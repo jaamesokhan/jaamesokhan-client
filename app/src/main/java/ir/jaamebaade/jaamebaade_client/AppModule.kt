@@ -22,6 +22,7 @@ import ir.jaamebaade.jaamebaade_client.repository.CommentRepository
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
 import ir.jaamebaade.jaamebaade_client.repository.HistoryRepository
+import ir.jaamebaade.jaamebaade_client.repository.LabelRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
 import ir.jaamebaade.jaamebaade_client.repository.SearchHistoryRepository
@@ -121,7 +122,11 @@ object AppModule {
                 context.applicationContext,
                 AppDatabase::class.java,
                 "app_database"
-            ).addMigrations(AppDatabase.MIGRATION_7_8, AppDatabase.MIGRATION_8_9).build()
+            ).addMigrations(
+                AppDatabase.MIGRATION_7_8,
+                AppDatabase.MIGRATION_8_9,
+                AppDatabase.MIGRATION_9_10
+            ).build()
         }
 
         return instance
@@ -204,5 +209,11 @@ object AppModule {
     @Singleton
     fun provideSearchHistoryRepository(appDatabase: AppDatabase): SearchHistoryRepository {
         return SearchHistoryRepository(appDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLabelRepository(appDatabase: AppDatabase): LabelRepository {
+        return LabelRepository(appDatabase)
     }
 }

@@ -70,8 +70,9 @@ fun TopBar(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canPop =
-        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.BOOKMARKS_SCREEN.toString() &&
-                backStackEntry?.destination?.route != AppRoutes.HIGHLIGHTS_SCREEN.toString() && backStackEntry?.destination?.route != AppRoutes.NOTES_SCREEN.toString())
+        (backStackEntry?.destination?.route != AppRoutes.DOWNLOADED_POETS_SCREEN.toString() &&
+                backStackEntry?.destination?.route?.startsWith(AppRoutes.BOOKMARK_CATEGORIES_SCREEN.toString()) != true &&
+                backStackEntry?.destination?.route != AppRoutes.NOTES_SCREEN.toString())
     val context = LocalContext.current
 
 

@@ -58,6 +58,9 @@ class PoemViewModel @AssistedInject constructor(
     private var _isBookmarked = MutableStateFlow(false)
     val isBookmarked: StateFlow<Boolean> = _isBookmarked
 
+    private val _pendingSaveMomentBookmarkId = MutableStateFlow<Int?>(null)
+    val pendingSaveMomentBookmarkId: StateFlow<Int?> = _pendingSaveMomentBookmarkId
+
     private val _urls = MutableStateFlow<List<AudioData>>(emptyList())
     val urls: StateFlow<List<AudioData>> = _urls
 
@@ -172,10 +175,15 @@ class PoemViewModel @AssistedInject constructor(
                 removeBookmark()
                 _isBookmarked.value = false
             } else {
-                addBookmark()
+                val bookmarkId = addBookmark()
                 _isBookmarked.value = true
+                _pendingSaveMomentBookmarkId.value = bookmarkId
             }
         }
+    }
+
+    fun dismissSaveMoment() {
+        _pendingSaveMomentBookmarkId.value = null
     }
 
     private suspend fun removeBookmark() {
@@ -184,8 +192,8 @@ class PoemViewModel @AssistedInject constructor(
         }
     }
 
-    private suspend fun addBookmark() {
-        withContext(Dispatchers.IO) {
+    private suspend fun addBookmark(): Int {
+        return withContext(Dispatchers.IO) {
             bookmarkRepository.insertBookmark(poemId)
         }
     }

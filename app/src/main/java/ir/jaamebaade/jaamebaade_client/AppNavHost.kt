@@ -39,9 +39,8 @@ import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import ir.jaamebaade.jaamebaade_client.utility.animatedComposable
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
 import ir.jaamebaade.jaamebaade_client.view.AccountScreen
+import ir.jaamebaade.jaamebaade_client.view.BookmarkCategoriesScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadablePoetsScreen
-import ir.jaamebaade.jaamebaade_client.view.MyBookmarkScreen
-import ir.jaamebaade.jaamebaade_client.view.MyHighlightScreen
 import ir.jaamebaade.jaamebaade_client.view.MyNotesScreen
 import ir.jaamebaade.jaamebaade_client.view.MyPoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.PoemScreen
@@ -185,16 +184,20 @@ fun AppNavHost(
                                 navController = navController
                             )
                         }
-                        animatedComposable(AppRoutes.BOOKMARKS_SCREEN.toString()) {
-                            MyBookmarkScreen(
-                                modifier = Modifier.padding(innerPadding),
-                                navController = navController
+                        animatedComposable(
+                            route = "${AppRoutes.BOOKMARK_CATEGORIES_SCREEN}/{tab}",
+                            arguments = listOf(
+                                navArgument("tab") {
+                                    type = NavType.StringType
+                                    defaultValue = "save"
+                                }
                             )
-                        }
-                        animatedComposable(AppRoutes.HIGHLIGHTS_SCREEN.toString()) {
-                            MyHighlightScreen(
+                        ) { backStackEntry ->
+                            val initialTab = backStackEntry.arguments?.getString("tab") ?: "save"
+                            BookmarkCategoriesScreen(
                                 modifier = Modifier.padding(innerPadding),
-                                navController = navController
+                                navController = navController,
+                                initialTab = initialTab,
                             )
                         }
                         animatedComposable(AppRoutes.NOTES_SCREEN.toString()) {
