@@ -1,13 +1,13 @@
 [versions]
-agp = "8.9.1"
+agp = "9.4.0"
 coilCompose = "2.1.0"
 converterGson = "2.9.0"
 firebaseBomVersion = "33.4.0"
-googleHiltAndroid = "2.51.1"
+googleHiltAndroid = "2.60.1"
 commonsCsv = "1.8"
 hiltCompiler = "1.2.0"
-hiltCompilerVersion = "2.52"
-kotlin = "2.0.20"
+hiltCompilerVersion = "2.60.1"
+kotlin = "2.3.20"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -18,10 +18,10 @@ composeBom = "2024.09.03"
 pagingCompose = "3.3.2"
 pagingRuntimeKtx = "3.3.2"
 persiandate = "1.7.1"
-roomCompiler = "2.6.1"
-roomKtx = "2.6.1"
-roomPaging = "2.6.1"
-roomRuntime = "2.6.1"
+roomCompiler = "2.8.5"
+roomKtx = "2.8.5"
+roomPaging = "2.8.5"
+roomRuntime = "2.8.5"
 media3Exoplayer = "1.4.1"
 runtimeLivedata = "1.7.3"
 material = "1.12.0"
@@ -78,5 +78,4 @@ androidx-media = { module = "androidx.media:media", version.ref = "androidx-medi
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

@@ -55,7 +55,7 @@ interface PoemDao {
     )
     fun getPoemPagingSource(categoryId: Int): PagingSource<Int, PoemWithFirstVerse>
 
-    @Query("SELECT MIN(id) as first, MAX(id) as second FROM poems WHERE category_id = :categoryId")
+    @Query("SELECT MIN(id) as `first`, MAX(id) as second FROM poems WHERE category_id = :categoryId")
     fun getFirstAndLastWithCategoryId(categoryId: Int): Pair
 
 
