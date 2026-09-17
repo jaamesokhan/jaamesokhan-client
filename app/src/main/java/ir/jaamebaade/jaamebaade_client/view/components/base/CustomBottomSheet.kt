@@ -7,6 +7,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import ir.jaamebaade.jaamebaade_client.ui.theme.SheetTopShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN70
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -18,6 +19,7 @@ fun CustomBottomSheet(
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(
+        shape = SheetTopShape,
         dragHandle = { BottomSheetDefaults.DragHandle(color = MaterialTheme.colorScheme.neutralN70) },
         containerColor = containerColor,
         onDismissRequest = onDismissRequest,

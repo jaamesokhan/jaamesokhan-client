@@ -6,6 +6,7 @@ import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -20,13 +21,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Forward10
 import androidx.compose.material.icons.filled.Replay10
+import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,6 +35,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,12 +53,16 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Status
+import ir.jaamebaade.jaamebaade_client.ui.theme.SheetTopShape
 import ir.jaamebaade.jaamebaade_client.utility.replaceToPersianNumber
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import kotlinx.coroutines.launch
@@ -101,6 +107,7 @@ fun AudioControlBar(navController: NavController, viewModel: AppNavHostViewModel
 
     if (isBottomSheetOpen && shouldShowControl) {
         ModalBottomSheet(
+            shape = SheetTopShape,
             onDismissRequest = {
                 coroutineScope.launch {
                     bottomSheetState.hide()
@@ -181,21 +188,26 @@ fun AudioControlBar(navController: NavController, viewModel: AppNavHostViewModel
                         tint = MaterialTheme.colorScheme.onBackground
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Column(
-                        modifier = Modifier.sizeIn(maxWidth = 240.dp)
-                    ) {
-                        Text(
-                            text = listOfNotNull(
-                                artistName,
-                                poemTitle,
-                                poetName
-                            ).joinToString(" - "),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            overflow = TextOverflow.Ellipsis,
-                            maxLines = 1
-                        )
+                    val subtitle = listOfNotNull(poetName, artistName).joinToString(" · ")
+                    val displayText = buildAnnotatedString {
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+                            append(poemTitle ?: "")
+                        }
+                        if (subtitle.isNotBlank()) {
+                            withStyle(SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) {
+                                append("  ·  ")
+                                append(subtitle)
+                            }
+                        }
                     }
+                    Text(
+                        text = displayText,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        modifier = Modifier
+                            .weight(1f)
+                            .basicMarquee()
+                    )
                 }
                 IconButton(
                     onClick = {
@@ -417,6 +429,23 @@ private fun formatTimestamp(value: Long): String {
     return raw.replaceToPersianNumber()
 }
 
+private val playbackSpeeds = listOf(0.75f, 1f, 1.25f, 1.5f, 2f)
+
+private fun nextPlaybackSpeed(current: Float): Float {
+    val currentIndex = playbackSpeeds.indexOfFirst { it == current }
+    val nextIndex = if (currentIndex == -1) 0 else (currentIndex + 1) % playbackSpeeds.size
+    return playbackSpeeds[nextIndex]
+}
+
+private fun formatPlaybackSpeed(speed: Float): String {
+    val trimmed = if (speed == speed.toInt().toFloat()) {
+        "${speed.toInt()}"
+    } else {
+        speed.toString()
+    }
+    return "${trimmed}×".replaceToPersianNumber()
+}
+
 @Composable
 private fun AudioControlBottomSheetContent(
     viewModel: AppNavHostViewModel,
@@ -470,8 +499,35 @@ private fun AudioControlBottomSheetContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val isRepeatEnabled = viewModel.isRepeatEnabled
+                IconButton(
+                    onClick = { viewModel.toggleRepeat() },
+                    colors = IconButtonDefaults.iconButtonColors(
+                        contentColor = if (isRepeatEnabled) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        }
+                    )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Repeat,
+                        contentDescription = stringResource(R.string.REPEAT),
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                TextButton(onClick = { viewModel.changePlaybackSpeed(nextPlaybackSpeed(viewModel.playbackSpeed)) }) {
+                    Text(
+                        text = formatPlaybackSpeed(viewModel.playbackSpeed),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
             IconButton(
                 onClick = onNavigateToPoem,
                 enabled = canNavigateToPoem,

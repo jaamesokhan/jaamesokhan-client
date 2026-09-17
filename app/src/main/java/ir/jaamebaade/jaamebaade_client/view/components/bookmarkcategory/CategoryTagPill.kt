@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.PillShape
 
 @Composable
 fun CategoryTagPill(
@@ -25,9 +25,9 @@ fun CategoryTagPill(
     Row(
         modifier = modifier
             .height(26.dp)
-            .clip(RoundedCornerShape(13.dp))
+            .clip(PillShape)
             .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(13.dp))
+            .border(1.dp, MaterialTheme.colorScheme.surfaceVariant, PillShape)
             .padding(horizontal = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(5.dp),

@@ -41,6 +41,7 @@ import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.HistoryRecordPathFirstVerse
 import ir.jaamebaade.jaamebaade_client.model.Poem
+import ir.jaamebaade.jaamebaade_client.ui.theme.SheetTopShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
 import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
 import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
@@ -74,6 +75,7 @@ fun HistoryScreen(
         }
     }
     ModalBottomSheet(
+        shape = SheetTopShape,
         onDismissRequest = onDismiss,
         sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.surface,

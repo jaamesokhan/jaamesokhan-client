@@ -23,7 +23,7 @@ fun SquareImage(
     contentDescription: String?,
     size: Int,
     scale: Float = 1.1f,
-    roundedCornerShapeSize: Int = 25,
+    roundedCornerShapeSize: Int = 20,
 ) {
     val painter = if (!imageUrl.isNullOrEmpty()) {
          rememberAsyncImagePainter(

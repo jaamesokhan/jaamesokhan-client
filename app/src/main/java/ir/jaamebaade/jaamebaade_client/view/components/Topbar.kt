@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.view.components
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -44,7 +44,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
@@ -167,6 +166,7 @@ fun TopBar(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Row(
+                            modifier = Modifier.weight(1f),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
 
@@ -200,12 +200,11 @@ fun TopBar(
                                     text = it,
                                     style = MaterialTheme.typography.titleLarge,
                                     color = MaterialTheme.colorScheme.onBackground,
-                                    overflow = TextOverflow.Ellipsis,
                                     textAlign = TextAlign.Center,
-                                    modifier = Modifier.sizeIn(
-                                        maxWidth = 260.dp
-                                    ),
-                                    maxLines = 1
+                                    maxLines = 1,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .basicMarquee()
                                 )
                             }
                         }

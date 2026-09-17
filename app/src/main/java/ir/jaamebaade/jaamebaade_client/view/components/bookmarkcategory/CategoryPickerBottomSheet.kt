@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.LabelWithCount
+import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 
 @Composable
@@ -104,6 +105,7 @@ fun CategoryPickerBottomSheet(
                 OutlinedButton(
                     onClick = onCancel,
                     modifier = Modifier.weight(1f),
+                    shape = ButtonShape,
                 ) {
                     Text(text = stringResource(R.string.CANCEL))
                 }
@@ -111,6 +113,7 @@ fun CategoryPickerBottomSheet(
                     onClick = onConfirm,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                    shape = ButtonShape,
                 ) {
                     Text(text = stringResource(R.string.CONFIRM))
                 }

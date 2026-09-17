@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Poet
+import ir.jaamebaade.jaamebaade_client.ui.theme.SheetTopShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN70
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -22,6 +23,7 @@ fun PoetOptionsBottomSheet(
     onDeleteClick: () -> Unit
 ) {
     ModalBottomSheet(
+        shape = SheetTopShape,
         dragHandle = { BottomSheetDefaults.DragHandle(color = MaterialTheme.colorScheme.neutralN70) },
         containerColor = if (showHeader) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background,
         onDismissRequest = onDismiss, sheetState = sheetState

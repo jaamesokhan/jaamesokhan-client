@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -38,6 +37,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navOptions
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
+import ir.jaamebaade.jaamebaade_client.ui.theme.CardShape
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN70
 import ir.jaamebaade.jaamebaade_client.utility.bottomBorder
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastMessage
@@ -47,7 +48,6 @@ val routeMap = mapOf(
     "downloadedPoetsScreen" to "downloadedPoetsScreen",
     "downloadablePoetsScreen" to "downloadablePoetsScreen",
     "changeFontScreen" to "settingsScreen",
-    "accountScreen" to "settingsScreen",
     "settingsScreen" to "settingsScreen",
     "searchScreen" to "searchScreen",
     "favoriteScreen" to "favoriteScreen",
@@ -117,9 +117,9 @@ fun Navbar(navController: NavController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                    .padding(horizontal = Dimens.screenGutter)
+                    .padding(bottom = Dimens.space16)
+                    .clip(CardShape)
                     .navigationBarsPadding(),
             ) {
                 Surface(

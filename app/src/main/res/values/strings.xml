@@ -131,6 +131,8 @@
     <string name="SEARCH_HIGHLIGHTS">هایلایت‌ها</string>
     <string name="SEARCH_COMMENTS">یادداشت‌ها</string>
     <string name="RECITE">خوانش</string>
+    <string name="REPEAT">تکرار خوانش</string>
+    <string name="PLAYBACK_SPEED">سرعت پخش</string>
     <string name="SETTINGS">تنظیمات</string>
     <string name="ABOUT_US_TITLE">درباره جام سخن</string>
     <string name="ABOUT_SUPPORT_TITLE">حمایت از ما</string>

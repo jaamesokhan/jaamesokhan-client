@@ -53,6 +53,7 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Status
+import ir.jaamebaade.jaamebaade_client.ui.theme.SheetTopShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN70
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
@@ -286,6 +287,7 @@ fun DownloadablePoetOptionsBottomSheet(
     onButtonClick: () -> Unit
 ) {
     ModalBottomSheet(
+        shape = SheetTopShape,
         dragHandle = { BottomSheetDefaults.DragHandle(color = MaterialTheme.colorScheme.neutralN70) },
         containerColor = if (showHeader) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background,
         onDismissRequest = onDismiss, sheetState = sheetState

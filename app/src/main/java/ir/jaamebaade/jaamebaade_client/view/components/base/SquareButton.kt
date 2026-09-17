@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,7 +45,7 @@ fun SquareButton(
     backgroundColor: Color,
     size: Int = 89,
     iconSize: Int = size,
-    roundedCornerShapeSize: Int = 25,
+    roundedCornerShapeSize: Int = 20,
     enabled: Boolean = true,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
@@ -129,14 +130,14 @@ fun ComposableSquareButton(
             .border(
                 width = borderWidth,
                 color = if (style == ComposableSquareButtonStyle.Outlined) borderColor else Color.Transparent,
-                shape = RoundedCornerShape(15.dp)
+                shape = ButtonShape
             ),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
             contentColor = contentColorFinal
         ),
-        shape = RoundedCornerShape(15.dp)
+        shape = ButtonShape
     ) {
         content()
     }

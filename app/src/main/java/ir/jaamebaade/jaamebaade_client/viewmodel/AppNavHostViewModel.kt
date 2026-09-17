@@ -49,6 +49,12 @@ class AppNavHostViewModel @Inject constructor(
     var playbackDuration by mutableStateOf(0L)
         private set
 
+    var isRepeatEnabled by mutableStateOf(false)
+        private set
+
+    var playbackSpeed by mutableStateOf(1f)
+        private set
+
     private var progressJob: Job? = null
 
 
@@ -139,11 +145,43 @@ class AppNavHostViewModel @Inject constructor(
     fun onPlaybackPrepared() {
         changePlayStatus(Status.IN_PROGRESS)
         playbackDuration = mediaPlayer.duration.toLong()
+        applyPlaybackSettings()
         startProgressUpdates()
         audioSessionManager.onPlay(
             mediaPlayer.currentPosition.toLong(),
             mediaPlayer.duration.toLong()
         )
+    }
+
+    fun toggleRepeat() {
+        isRepeatEnabled = !isRepeatEnabled
+        if (playStatus != Status.NOT_STARTED) {
+            mediaPlayer.isLooping = isRepeatEnabled
+        }
+    }
+
+    fun changePlaybackSpeed(speed: Float) {
+        playbackSpeed = speed
+        if (playStatus == Status.NOT_STARTED) {
+            return
+        }
+        val wasPlaying = mediaPlayer.isPlaying
+        try {
+            mediaPlayer.playbackParams = mediaPlayer.playbackParams.setSpeed(speed)
+            if (!wasPlaying) {
+                mediaPlayer.pause()
+            }
+        } catch (e: IllegalStateException) {
+            // MediaPlayer not in a state that allows changing playback params (e.g. mid-transition)
+        }
+    }
+
+    private fun applyPlaybackSettings() {
+        mediaPlayer.isLooping = isRepeatEnabled
+        try {
+            mediaPlayer.playbackParams = mediaPlayer.playbackParams.setSpeed(playbackSpeed)
+        } catch (e: IllegalStateException) {
+        }
     }
 
     fun onPlaybackCompleted() {

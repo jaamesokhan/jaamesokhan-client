@@ -63,6 +63,7 @@ import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
+import ir.jaamebaade.jaamebaade_client.ui.theme.SheetTopShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.primary20
 import ir.jaamebaade.jaamebaade_client.ui.theme.primary90
 import ir.jaamebaade.jaamebaade_client.view.components.AudioListItems
@@ -344,6 +345,7 @@ fun PoemScreen(
 
     if (audioOptionChecked || moreOptionsChecked) {
         ModalBottomSheet(
+            shape = SheetTopShape,
             onDismissRequest = {
                 audioOptionChecked = false
                 moreOptionsChecked = false

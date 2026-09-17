@@ -7,6 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
+import ir.jaamebaade.jaamebaade_client.ui.theme.CardShape
 
 @Composable
 fun ConfirmationDialog(
@@ -15,12 +17,14 @@ fun ConfirmationDialog(
     onDismiss: () -> Unit
 ) {
     AlertDialog(
+        shape = CardShape,
         onDismissRequest = onDismiss,
         title = { Text("تایید") },
         text = { Text(message) },
         confirmButton = {
             Button(
                 modifier = Modifier.padding(8.dp, 0.dp),
+                shape = ButtonShape,
                 onClick = {
                     onConfirm()
                 }
@@ -31,6 +35,7 @@ fun ConfirmationDialog(
         dismissButton = {
             Button(
                 modifier = Modifier.padding(8.dp, 0.dp),
+                shape = ButtonShape,
                 onClick = {
                     onDismiss()
                 }
