@@ -35,6 +35,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.setting.CustomRadioButton
 import ir.jaamebaade.jaamebaade_client.view.components.setting.SettingListItem
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemOptions
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +58,7 @@ fun SettingsListScreen(
             shadowElevation = 4.dp
         ) {
             Column(
-                modifier = Modifier.padding(top = 5.dp, bottom = 32.dp),
+                modifier = Modifier.padding(top = Dimens.space4, bottom = Dimens.space34),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -81,8 +82,8 @@ fun SettingsListScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 8.dp)
-                .padding(horizontal = 4.dp)
+                .padding(top = Dimens.space8)
+                .padding(horizontal = Dimens.space4)
 
         ) {
             SettingListItem(
@@ -100,7 +101,7 @@ fun SettingsListScreen(
                 }
             )
             HorizontalDivider(
-                modifier = Modifier.padding(vertical = 4.dp, horizontal = 9.dp),
+                modifier = Modifier.padding(vertical = Dimens.space4, horizontal = Dimens.space8),
                 color = MaterialTheme.colorScheme.outline
             )
 
@@ -119,7 +120,7 @@ fun SettingsListScreen(
                 }
             )
             HorizontalDivider(
-                modifier = Modifier.padding(vertical = 4.dp, horizontal = 9.dp),
+                modifier = Modifier.padding(vertical = Dimens.space4, horizontal = Dimens.space8),
                 color = MaterialTheme.colorScheme.outline
             )
 
@@ -140,7 +141,7 @@ fun SettingsListScreen(
                 }
             )
             HorizontalDivider(
-                modifier = Modifier.padding(vertical = 4.dp, horizontal = 9.dp),
+                modifier = Modifier.padding(vertical = Dimens.space4, horizontal = Dimens.space8),
                 color = MaterialTheme.colorScheme.outline
             )
             SettingListItem(

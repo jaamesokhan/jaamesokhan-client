@@ -22,6 +22,7 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.viewmodel.SaveMomentSheet
 import ir.jaamebaade.jaamebaade_client.viewmodel.SaveMomentViewModel
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -48,18 +49,18 @@ fun SaveMomentBottomSheet(
     }
 
     CustomBottomSheet(onDismissRequest = onDismiss) {
-        Column(modifier = Modifier.padding(bottom = 24.dp)) {
+        Column(modifier = Modifier.padding(bottom = Dimens.space24)) {
             Text(
                 text = stringResource(R.string.SAVE_MOMENT_TITLE),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                modifier = Modifier.padding(horizontal = Dimens.space24, vertical = Dimens.space8),
             )
 
             FlowRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 8.dp),
+                    .padding(horizontal = Dimens.space24, vertical = Dimens.space8),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
@@ -80,7 +81,7 @@ fun SaveMomentBottomSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                    .padding(horizontal = Dimens.space24, vertical = Dimens.space16),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 OutlinedButton(

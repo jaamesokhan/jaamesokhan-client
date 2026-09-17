@@ -45,11 +45,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.jaamebaade.jaamebaade_client.R
+import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
+import ir.jaamebaade.jaamebaade_client.ui.theme.CardShape
 import ir.jaamebaade.jaamebaade_client.utility.replaceToPersianNumber
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
 import java.time.LocalTime
 import java.util.Locale
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,7 +77,7 @@ fun RandomPoemOptions(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 24.dp)
+            .padding(horizontal = Dimens.space16, vertical = Dimens.space24)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -90,12 +93,12 @@ fun RandomPoemOptions(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant
             ),
-            shape = MaterialTheme.shapes.medium
+            shape = CardShape
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                    .padding(horizontal = Dimens.space20, vertical = Dimens.space16),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -128,13 +131,13 @@ fun RandomPoemOptions(
                     .fillMaxWidth()
                     .clip(MaterialTheme.shapes.medium)
                     .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
+                    .padding(horizontal = Dimens.space12, vertical = Dimens.space8)
             ) {
                 Text(
                     text = stringResource(id = R.string.RANDOM_POEM_CATEGORY_DESCRIPTION),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = Dimens.space8)
                 )
                 RecursiveCheckList(categories = poetsWithCategories!!, onChange = {
                     downloadedPoetViewModel.saveSelectedCategoriesForRandomPoem()
@@ -148,12 +151,12 @@ fun RandomPoemOptions(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant
             ),
-            shape = MaterialTheme.shapes.medium
+            shape = CardShape
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                    .padding(horizontal = Dimens.space20, vertical = Dimens.space16),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -187,12 +190,12 @@ fun RandomPoemOptions(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
-                shape = MaterialTheme.shapes.medium
+                shape = CardShape
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 16.dp),
+                        .padding(horizontal = Dimens.space20, vertical = Dimens.space16),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Row(
@@ -217,7 +220,7 @@ fun RandomPoemOptions(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        OutlinedButton(onClick = { showTimePicker = true }) {
+                        OutlinedButton(onClick = { showTimePicker = true }, shape = ButtonShape) {
                             Text(text = stringResource(id = R.string.CHANGE_TIME))
                         }
                     }
@@ -234,19 +237,19 @@ fun RandomPoemOptions(
 
             BasicAlertDialog(onDismissRequest = { showTimePicker = false }) {
                 Surface(
-                    shape = MaterialTheme.shapes.extraLarge,
+                    shape = CardShape,
                     tonalElevation = 6.dp
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(24.dp),
+                            .padding(Dimens.space24),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
                             text = stringResource(id = R.string.CHANGE_TIME),
                             style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(bottom = 16.dp)
+                            modifier = Modifier.padding(bottom = Dimens.space16)
                         )
                         TimePicker(
                             state = pickerState,
@@ -254,20 +257,23 @@ fun RandomPoemOptions(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 16.dp),
+                                .padding(top = Dimens.space16),
                             horizontalArrangement = Arrangement.End
                         ) {
                             TextButton(onClick = { showTimePicker = false }) {
                                 Text(text = stringResource(id = R.string.CANCEL))
                             }
                             Spacer(modifier = Modifier.width(8.dp))
-                            Button(onClick = {
-                                downloadedPoetViewModel.updateScheduledNotificationTime(
-                                    context,
-                                    LocalTime.of(pickerState.hour, pickerState.minute)
-                                )
-                                showTimePicker = false
-                            }) {
+                            Button(
+                                onClick = {
+                                    downloadedPoetViewModel.updateScheduledNotificationTime(
+                                        context,
+                                        LocalTime.of(pickerState.hour, pickerState.minute)
+                                    )
+                                    showTimePicker = false
+                                },
+                                shape = ButtonShape
+                            ) {
                                 Text(text = stringResource(id = R.string.SAVE))
                             }
                         }

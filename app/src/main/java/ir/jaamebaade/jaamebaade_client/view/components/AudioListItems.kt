@@ -45,6 +45,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun AudioListItems(
@@ -171,7 +172,7 @@ fun AudioListItems(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(horizontal = 14.dp)
+                                .padding(horizontal = Dimens.space14)
                         ) {
                             RadioButton(
                                 modifier = Modifier.size(24.dp),

@@ -26,6 +26,7 @@ import androidx.core.net.toUri
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN100
 import ir.jaamebaade.jaamebaade_client.view.components.base.RectangularButton
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun AboutUsScreen(modifier: Modifier) {
@@ -35,7 +36,7 @@ fun AboutUsScreen(modifier: Modifier) {
     val textColor = MaterialTheme.colorScheme.onBackground
     Column(
         modifier = modifier
-            .padding(start = 30.dp, end = 30.dp)
+            .padding(start = Dimens.space28, end = Dimens.space28)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.Start,
     ) {

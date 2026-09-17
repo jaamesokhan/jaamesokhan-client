@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
@@ -38,7 +37,6 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.Typography
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import ir.jaamebaade.jaamebaade_client.utility.animatedComposable
 import ir.jaamebaade.jaamebaade_client.utility.toIntArray
-import ir.jaamebaade.jaamebaade_client.view.AccountScreen
 import ir.jaamebaade.jaamebaade_client.view.BookmarkCategoriesScreen
 import ir.jaamebaade.jaamebaade_client.view.DownloadablePoetsScreen
 import ir.jaamebaade.jaamebaade_client.view.MyNotesScreen
@@ -233,9 +231,6 @@ fun AppNavHost(
                             AboutUsScreen(
                                 modifier = Modifier.padding(innerPadding),
                             )
-                        }
-                        dialog(AppRoutes.ACCOUNT_SCREEN.toString()) {
-                            AccountScreen(navController = navController)
                         }
                     }
                 }

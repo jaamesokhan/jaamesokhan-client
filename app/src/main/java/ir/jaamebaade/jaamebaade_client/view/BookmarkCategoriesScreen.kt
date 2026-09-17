@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,7 +14,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,6 +34,7 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.BookmarkCategoryItem
 import ir.jaamebaade.jaamebaade_client.model.MergedHighlight
+import ir.jaamebaade.jaamebaade_client.view.components.base.ListRowDivider
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.AddCategoryChip
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.CategoryFilterChip
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.CategoryPickerBottomSheet
@@ -46,6 +47,7 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.BookmarkCategoriesViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.BookmarkCategorySheetType
 import ir.jaamebaade.jaamebaade_client.viewmodel.BookmarkCategoryTab
 import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun BookmarkCategoriesScreen(
@@ -73,7 +75,7 @@ fun BookmarkCategoriesScreen(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 14.dp),
+                .padding(vertical = Dimens.space14),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 20.dp),
         ) {
@@ -106,7 +108,7 @@ fun BookmarkCategoriesScreen(
         if (visibleItems.isEmpty()) {
             Row(
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(Dimens.space10)
                     .fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -116,18 +118,29 @@ fun BookmarkCategoriesScreen(
                     tint = MaterialTheme.colorScheme.outlineVariant,
                     contentDescription = "",
                 )
-                Spacer(modifier = Modifier.padding(3.dp))
-                Column {
+                if (viewModel.activeFilterLabelId == null) {
+                    Spacer(modifier = Modifier.width(Dimens.space8))
                     Text(
-                        text = stringResource(R.string.EMPTY_CATEGORY_TITLE),
+                        text = stringResource(
+                            if (tab == BookmarkCategoryTab.SAVE) R.string.NO_BOOKMARK else R.string.NO_HIGHLIGHTS_FOUND
+                        ),
                         style = MaterialTheme.typography.headlineLarge,
                         color = MaterialTheme.colorScheme.outlineVariant
                     )
-                    Text(
-                        text = stringResource(R.string.EMPTY_CATEGORY_SUBTITLE),
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.outlineVariant
-                    )
+                } else {
+                    Spacer(modifier = Modifier.width(Dimens.space8))
+                    Column {
+                        Text(
+                            text = stringResource(R.string.EMPTY_CATEGORY_TITLE),
+                            style = MaterialTheme.typography.headlineLarge,
+                            color = MaterialTheme.colorScheme.outlineVariant
+                        )
+                        Text(
+                            text = stringResource(R.string.EMPTY_CATEGORY_SUBTITLE),
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.colorScheme.outlineVariant
+                        )
+                    }
                 }
             }
         } else {
@@ -158,10 +171,7 @@ fun BookmarkCategoriesScreen(
                         onAddToCategoryClick = { viewModel.openItemActions(item.id) },
                     )
                     if (index != visibleItems.size - 1) {
-                        HorizontalDivider(
-                            modifier = Modifier.padding(start = 90.dp, top = 5.dp, bottom = 5.dp),
-                            color = MaterialTheme.colorScheme.outline
-                        )
+                        ListRowDivider()
                     }
                 }
             }

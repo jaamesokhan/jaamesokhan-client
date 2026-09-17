@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -14,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
 
 @Composable
 fun HighlightActionButton(
@@ -39,7 +39,7 @@ fun HighlightActionButton(
         null
     }
     Button(
-        shape = RoundedCornerShape(12.dp),
+        shape = ButtonShape,
         contentPadding = PaddingValues(vertical = 10.dp, horizontal = 10.dp),
         colors = buttonColors,
         border = border,

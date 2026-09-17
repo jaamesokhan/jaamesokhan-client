@@ -25,6 +25,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS30
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun CustomRadioButton(
@@ -47,11 +48,11 @@ fun CustomRadioButton(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 8.dp),
+                .padding(start = Dimens.space8),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier.padding(start = 14.dp, end = 0.dp)) {
+            Box(modifier = Modifier.padding(start = Dimens.space14, end = 0.dp)) {
                 IconToggleButton(
                     checked = isSelected,
                     onCheckedChange = { onClick() },

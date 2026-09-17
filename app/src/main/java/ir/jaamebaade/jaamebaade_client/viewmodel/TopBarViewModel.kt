@@ -144,7 +144,6 @@ class TopBarViewModel @Inject constructor(
             AppRoutes.SEARCH_SCREEN -> return context.getString(R.string.SEARCH_TITLE)
             AppRoutes.FAVORITE_SCREEN -> return "علاقه‌مندی‌ها"
             AppRoutes.CHANGE_FONT_SCREEN -> return "تغییر فونت"
-            AppRoutes.ACCOUNT_SCREEN -> return "حساب کاربری"
             AppRoutes.CHANGE_THEME_SCREEN -> return "تغییر پوسته"
             AppRoutes.ABOUT_US_SCREEN -> return "درباره ما"
             AppRoutes.HISTORY -> return "تاریخچه"

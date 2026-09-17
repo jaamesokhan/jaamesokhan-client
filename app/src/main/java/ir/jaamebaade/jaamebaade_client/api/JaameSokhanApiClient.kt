@@ -1,6 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.api
 
 import android.util.Log
+import ir.jaamebaade.jaamebaade_client.RecitationsApiService
 import ir.jaamebaade.jaamebaade_client.api.request.WordRequest
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
 import ir.jaamebaade.jaamebaade_client.model.Poet
@@ -10,6 +11,7 @@ import javax.inject.Inject
 
 class JaameSokhanApiClient @Inject constructor(
     private val jaameSokhanApiService: JaameSokhanApiService,
+    @RecitationsApiService private val recitationsApiService: JaameSokhanApiService,
     private val ganjoorApiClient: GanjoorApiClient,
 ) {
     suspend fun getAllRecitations(
@@ -18,9 +20,14 @@ class JaameSokhanApiClient @Inject constructor(
         onFailure: () -> Unit
     ): List<AudioData> {
         try {
-            val res = jaameSokhanApiService.getAllRecitations(poemId).body() ?: return emptyList()
-            onSuccess()
-            return res
+            val response = recitationsApiService.getAllRecitations(poemId)
+            if (response.code() == 200) {
+                response.body()?.let {
+                    onSuccess()
+                    return it
+                }
+            }
+            Log.e("AudioApiClient", "New API returned HTTP ${response.code()}, trying Ganjoor fallback")
         } catch (e: Exception) {
             Log.e("AudioApiClient", "New API failed: ${e.message}, trying Ganjoor fallback")
         }

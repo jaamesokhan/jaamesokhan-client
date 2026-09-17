@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun PoemScreenBottomToolBar(
@@ -44,7 +45,7 @@ fun PoemScreenBottomToolBar(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
-                modifier = modifier.align(Alignment.BottomEnd).padding(4.dp),
+                modifier = modifier.align(Alignment.BottomEnd).padding(Dimens.space4),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 SquareButton(

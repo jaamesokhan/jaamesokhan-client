@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun NewCategoryBottomSheet(
@@ -34,15 +35,15 @@ fun NewCategoryBottomSheet(
     val nameOk = name.trim().isNotEmpty()
 
     CustomBottomSheet(onDismissRequest = onCancel) {
-        Column(modifier = Modifier.padding(bottom = 24.dp)) {
+        Column(modifier = Modifier.padding(bottom = Dimens.space24)) {
             Text(
                 text = stringResource(if (isEditing) R.string.EDIT_CATEGORY else R.string.NEW_CATEGORY),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                modifier = Modifier.padding(horizontal = Dimens.space24, vertical = Dimens.space8),
             )
 
-            Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)) {
+            Column(modifier = Modifier.padding(horizontal = Dimens.space24, vertical = Dimens.space8)) {
                 Text(
                     text = stringResource(R.string.CATEGORY_NAME_LABEL),
                     style = MaterialTheme.typography.labelLarge,
@@ -67,13 +68,13 @@ fun NewCategoryBottomSheet(
             }
 
             Column(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+                modifier = Modifier.padding(horizontal = Dimens.space24, vertical = Dimens.space12),
             ) {
                 Text(
                     text = stringResource(R.string.COLOR_LABEL),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.outlineVariant,
-                    modifier = Modifier.padding(bottom = 8.dp),
+                    modifier = Modifier.padding(bottom = Dimens.space8),
                 )
                 ColorSwatchPicker(selectedColor = color, onSelect = onColorChange)
             }
@@ -81,7 +82,7 @@ fun NewCategoryBottomSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 12.dp),
+                    .padding(horizontal = Dimens.space24, vertical = Dimens.space12),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 OutlinedButton(onClick = onCancel, modifier = Modifier.weight(1f)) {

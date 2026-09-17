@@ -15,13 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun ServerFailure() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp),
+            .padding(Dimens.space20),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -35,7 +36,7 @@ fun ServerFailure() {
             text = "مشکلی در ارتباط با سرور به وجود آمد. لطفا اینترنت خود را بررسی کنید.",
             style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 24.dp),
+            modifier = Modifier.padding(top = Dimens.space24),
             color = MaterialTheme.colorScheme.outlineVariant
         )
     }

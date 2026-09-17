@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.HorizontalDivider
@@ -23,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 /**
  * This component is used in poet detail screen to show a list of items (category or poem).
@@ -49,10 +51,10 @@ fun ListItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier.padding(start = 29.dp)) {
+            Box(modifier = Modifier.padding(start = Dimens.space28)) {
                 leadingIcon()
             }
-            Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.width(Dimens.space8))
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -60,7 +62,7 @@ fun ListItem(
                 Row(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .padding(end = 24.dp)
+                        .padding(end = Dimens.space24)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
@@ -82,7 +84,7 @@ fun ListItem(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             color = MaterialTheme.colorScheme.outlineVariant,
-                            modifier = Modifier.padding(end = 8.dp)
+                            modifier = Modifier.padding(end = Dimens.space8)
                         )
                     }
                     if (showTrailingArrow) {

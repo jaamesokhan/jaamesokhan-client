@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun ExpandableCheckbox(
@@ -39,7 +40,7 @@ fun ExpandableCheckbox(
             TriStateCheckbox(
                 state = state,
                 onClick = onCheckedChange,
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = Dimens.space8)
             )
             Text(text = text, color = MaterialTheme.colorScheme.onBackground)
             if (canExpand) {
@@ -54,7 +55,7 @@ fun ExpandableCheckbox(
         }
         Column(
             modifier = Modifier
-                .padding(start = 20.dp)
+                .padding(start = Dimens.space20)
                 .animateContentSize()
         ) {
             if (canExpand && isExpanded) {

@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.view.components
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -44,20 +44,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
+import ir.jaamebaade.jaamebaade_client.ui.theme.JaamebaadeclientTheme
 import ir.jaamebaade.jaamebaade_client.view.HistoryScreen
 import ir.jaamebaade.jaamebaade_client.view.OptionsMenu
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.TopBarViewModel
 import kotlinx.coroutines.launch
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -161,94 +166,19 @@ fun TopBar(
                     containerColor = MaterialTheme.colorScheme.surface,
                 ),
                 title = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-
-                            if (canPop) {
-                                IconButton(
-                                    onClick = {
-                                        onBackButtonClicked(backStackEntry, navController)
-                                    }) {
-                                    Icon(
-                                        imageVector = if (downArrow) ImageVector.vectorResource(R.drawable.back_arrow_down) else Icons.AutoMirrored.Filled.ArrowBack,
-                                        tint = MaterialTheme.colorScheme.onBackground,
-                                        contentDescription = "Back",
-                                        modifier = Modifier.size(32.dp),
-                                    )
-                                }
-                            } else {
-                                IconButton(onClick = {
-                                    showSettingBottomSheet = true
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Default.Menu,
-                                        contentDescription = "Settings Menu",
-                                        tint = MaterialTheme.colorScheme.onBackground,
-                                        modifier = Modifier.size(32.dp),
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            breadCrumbs?.let {
-                                Text(
-                                    text = it,
-                                    style = MaterialTheme.typography.titleLarge,
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    overflow = TextOverflow.Ellipsis,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier.sizeIn(
-                                        maxWidth = 260.dp
-                                    ),
-                                    maxLines = 1
-                                )
-                            }
-                        }
-                        Row(modifier = Modifier.padding(horizontal = 12.dp)) {
-                            if (showHistory) {
-                                IconButton(
-                                    modifier = Modifier,
-                                    onClick = { showHistoryBottomSheet = true }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.History,
-                                        contentDescription = "History",
-                                        tint = MaterialTheme.colorScheme.onBackground,
-                                        modifier = Modifier.size(32.dp),
-                                    )
-                                }
-                            }
-                            if (showSearch) {
-                                IconButton(
-                                    modifier = Modifier,
-                                    onClick = { navController.navigate("${AppRoutes.SEARCH_SCREEN}") }) {
-                                    Icon(
-                                        imageVector = Icons.Default.Search,
-                                        contentDescription = stringResource(R.string.SEARCH_BAR_HINT),
-                                        tint = MaterialTheme.colorScheme.onBackground,
-                                        modifier = Modifier.size(32.dp),
-                                    )
-                                }
-                            }
-                            if (showOptions) {
-                                IconButton(
-                                    onClick = { showPoetOptionModal = true }) {
-                                    Icon(
-                                        imageVector = Icons.Default.MoreVert,
-                                        contentDescription = stringResource(R.string.SEARCH_BAR_HINT),
-                                        tint = MaterialTheme.colorScheme.onSurface,
-                                        modifier = Modifier.size(32.dp),
-                                    )
-                                }
-
-                            }
-                        }
-                    }
-
+                    TopBarTitleRow(
+                        canPop = canPop,
+                        downArrow = downArrow,
+                        breadCrumbs = breadCrumbs,
+                        showHistory = showHistory,
+                        showSearch = showSearch,
+                        showOptions = showOptions,
+                        onBackClick = { onBackButtonClicked(backStackEntry, navController) },
+                        onMenuClick = { showSettingBottomSheet = true },
+                        onHistoryClick = { showHistoryBottomSheet = true },
+                        onSearchClick = { navController.navigate("${AppRoutes.SEARCH_SCREEN}") },
+                        onOptionsClick = { showPoetOptionModal = true },
+                    )
                 },
             )
             poet?.let {
@@ -260,6 +190,168 @@ fun TopBar(
                 )
             }
             AudioControlBar(navController = navController, viewModel = appNavHostViewModel)
+        }
+    }
+}
+
+@Composable
+private fun TopBarTitleRow(
+    canPop: Boolean,
+    downArrow: Boolean,
+    breadCrumbs: String?,
+    showHistory: Boolean,
+    showSearch: Boolean,
+    showOptions: Boolean,
+    onBackClick: () -> Unit,
+    onMenuClick: () -> Unit,
+    onHistoryClick: () -> Unit,
+    onSearchClick: () -> Unit,
+    onOptionsClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (canPop) {
+                IconButton(onClick = onBackClick) {
+                    Icon(
+                        imageVector = if (downArrow) ImageVector.vectorResource(R.drawable.back_arrow_down) else Icons.AutoMirrored.Filled.ArrowBack,
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        contentDescription = "Back",
+                        modifier = Modifier.size(32.dp),
+                    )
+                }
+            } else {
+                IconButton(onClick = onMenuClick) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = "Settings Menu",
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(32.dp),
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            breadCrumbs?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    textAlign = TextAlign.Start,
+                    maxLines = 1,
+                    modifier = Modifier
+                        .basicMarquee()
+                )
+            }
+        }
+        Row(modifier = Modifier.padding(horizontal = Dimens.space12)) {
+            if (showHistory) {
+                IconButton(onClick = onHistoryClick) {
+                    Icon(
+                        imageVector = Icons.Filled.History,
+                        contentDescription = "History",
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(32.dp),
+                    )
+                }
+            }
+            if (showSearch) {
+                IconButton(onClick = onSearchClick) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = stringResource(R.string.SEARCH_BAR_HINT),
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(32.dp),
+                    )
+                }
+            }
+            if (showOptions) {
+                IconButton(onClick = onOptionsClick) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = stringResource(R.string.SEARCH_BAR_HINT),
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(32.dp),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "TopBar - poem screen")
+@Composable
+private fun TopBarTitleRowPoemScreenPreview() {
+    JaamebaadeclientTheme {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            Surface(color = MaterialTheme.colorScheme.surface) {
+                TopBarTitleRow(
+                    canPop = true,
+                    downArrow = false,
+                    breadCrumbs = "مولوی > دیوان شمس > غزلیات",
+                    showHistory = false,
+                    showSearch = false,
+                    showOptions = false,
+                    onBackClick = {},
+                    onMenuClick = {},
+                    onHistoryClick = {},
+                    onSearchClick = {},
+                    onOptionsClick = {},
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "TopBar - poet category screen")
+@Composable
+private fun TopBarTitleRowPoetCategoryScreenPreview() {
+    JaamebaadeclientTheme {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            Surface(color = MaterialTheme.colorScheme.surface) {
+                TopBarTitleRow(
+                    canPop = true,
+                    downArrow = false,
+                    breadCrumbs = "مولوی > ... > غزلیات",
+                    showHistory = false,
+                    showSearch = false,
+                    showOptions = true,
+                    onBackClick = {},
+                    onMenuClick = {},
+                    onHistoryClick = {},
+                    onSearchClick = {},
+                    onOptionsClick = {},
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "TopBar - home screen")
+@Composable
+private fun TopBarTitleRowHomeScreenPreview() {
+    JaamebaadeclientTheme {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+            Surface(color = MaterialTheme.colorScheme.surface) {
+                TopBarTitleRow(
+                    canPop = false,
+                    downArrow = false,
+                    breadCrumbs = null,
+                    showHistory = true,
+                    showSearch = true,
+                    showOptions = false,
+                    onBackClick = {},
+                    onMenuClick = {},
+                    onHistoryClick = {},
+                    onSearchClick = {},
+                    onOptionsClick = {},
+                )
+            }
         }
     }
 }

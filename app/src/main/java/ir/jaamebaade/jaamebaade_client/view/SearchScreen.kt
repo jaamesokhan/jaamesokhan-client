@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,8 +31,10 @@ import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
 import ir.jaamebaade.jaamebaade_client.view.components.LoadingIndicator
 import ir.jaamebaade.jaamebaade_client.view.components.CardItem
 import ir.jaamebaade.jaamebaade_client.view.components.SearchBar
+import ir.jaamebaade.jaamebaade_client.view.components.base.ListRowDivider
 import ir.jaamebaade.jaamebaade_client.view.components.base.NotFoundBox
 import ir.jaamebaade.jaamebaade_client.viewmodel.SearchViewModel
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun SearchScreen(
@@ -121,7 +122,7 @@ fun SearchResults(
     } else if (searchStatus == Status.LOADING) {
         LoadingIndicator()
     } else {
-        LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
+        LazyColumn(modifier = Modifier.padding(horizontal = Dimens.space16)) {
             items(results) { result ->
                 val content = createSearchResultBody(
                     item = result,
@@ -137,15 +138,7 @@ fun SearchResults(
                     },
                 )
                 if (result != results.last()) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(
-                            start = 90.dp,
-                            end = 0.dp,
-                            top = 5.dp,
-                            bottom = 5.dp
-                        ),
-                        color = MaterialTheme.colorScheme.outline
-                    )
+                    ListRowDivider()
                 }
             }
         }

@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Immutable
 data class DropDownToggleOption(
@@ -45,12 +46,12 @@ fun OptionDropDown(
     allOptionsKey: Int?,
 ) {
     Box(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(Dimens.space8),
     ) {
         Row(
             modifier = Modifier
                 .clickable { onOpen() }
-                .padding(2.dp),
+                .padding(Dimens.space2),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -75,7 +76,7 @@ fun OptionDropDown(
                     itemsIndexed(options) { _, option ->
                         Row(
                             modifier = Modifier
-                                .padding(8.dp),
+                                .padding(Dimens.space8),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Checkbox(
@@ -110,7 +111,7 @@ fun OptionDropDown(
                         }
                         if (option != options.last()) {
                             HorizontalDivider(
-                                modifier = Modifier.padding(horizontal = 32.dp),
+                                modifier = Modifier.padding(horizontal = Dimens.space34),
                                 color = MaterialTheme.colorScheme.outline,
                             )
                         }

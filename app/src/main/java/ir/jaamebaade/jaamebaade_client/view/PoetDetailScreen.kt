@@ -40,6 +40,10 @@ import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
 import ir.jaamebaade.jaamebaade_client.view.components.poet.ListItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoetDetailViewModel
 import kotlinx.coroutines.launch
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
+
+/** Keeps the shuffle FAB clear of the floating bottom-nav bar. */
+private val randomPoemFabBottomClearance = 58.dp
 
 @Composable
 fun PoetDetailScreen(
@@ -107,7 +111,7 @@ fun PoetDetailScreen(
             state = listState,
             modifier = modifier
                 .nestedScroll(topBarScrollConnection)
-                .padding(top = 8.dp)
+                .padding(top = Dimens.space8)
         ) {
             itemsIndexed(categories) { index, categoryWithCount ->
                 ListItem(
@@ -164,7 +168,7 @@ fun PoetDetailScreen(
         SquareButton(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(end = 12.dp, bottom = 58.dp),
+                .padding(end = Dimens.space12, bottom = randomPoemFabBottomClearance),
             icon = Icons.Default.Shuffle,
             backgroundColor = MaterialTheme.colorScheme.primary,
             tint = MaterialTheme.colorScheme.onPrimary,

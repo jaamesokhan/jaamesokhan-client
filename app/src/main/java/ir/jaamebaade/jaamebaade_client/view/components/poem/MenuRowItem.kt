@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun MenuRowItem(isActive: Boolean = true,
@@ -31,13 +32,13 @@ fun MenuRowItem(isActive: Boolean = true,
         onClick = onClick,
         modifier = Modifier
             .height(64.dp)
-            .padding(horizontal = 26.dp),
+            .padding(horizontal = Dimens.space24),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = Dimens.space8)
         ) {
             if (isActive) {
                 activatedIcon()

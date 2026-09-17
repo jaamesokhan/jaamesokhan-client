@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun SettingsItem(
@@ -26,7 +27,7 @@ fun SettingsItem(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 4.dp)
+            .padding(vertical = Dimens.space8, horizontal = Dimens.space4)
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         color = MaterialTheme.colorScheme.surface
@@ -38,12 +39,12 @@ fun SettingsItem(
                 imageVector = icon,
                 contentDescription = "Settings Icon",
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(Dimens.space10)
                     .size(32.dp),
             )
 
             Text(
-                modifier = Modifier.padding(10.dp),
+                modifier = Modifier.padding(Dimens.space10),
                 text = text,
                 style = MaterialTheme.typography.headlineSmall
             )

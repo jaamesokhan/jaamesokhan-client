@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
 import kotlinx.coroutines.delay
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 
 @Composable
@@ -83,13 +84,13 @@ fun ToastMessage(
                 slideOutHorizontally(animationSpec = tween(300)) { it }
     ) {
         Row(
-            modifier = Modifier.padding(12.dp)
+            modifier = Modifier.padding(Dimens.space12)
         ) {
 
             Row(
                 modifier = modifier
                     .background(color = backgroundColor, shape = RoundedCornerShape(15.dp))
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
+                    .padding(horizontal = Dimens.space12, vertical = Dimens.space8)
                     .fillMaxWidth()
                     .height(72.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -98,7 +99,7 @@ fun ToastMessage(
                     imageVector = icon,
                     contentDescription = type.name,
                     tint = color,
-                    modifier = Modifier.padding(end = 8.dp)
+                    modifier = Modifier.padding(end = Dimens.space8)
                 )
                 Text(
                     text = stringResource(toastMessageId),

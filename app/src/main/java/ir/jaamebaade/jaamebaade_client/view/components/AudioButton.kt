@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun AudioButton(
@@ -112,7 +113,7 @@ fun AudioButton(
 
     Box(
         modifier = modifier
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = Dimens.space8)
             .then(clickableModifier),
         contentAlignment = Alignment.Center
     ) {

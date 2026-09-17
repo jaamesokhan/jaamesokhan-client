@@ -30,6 +30,7 @@ import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButton
 import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButtonStyle
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 
 @Composable
@@ -54,7 +55,7 @@ fun DownloadablePoetItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = Dimens.space16),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
 
@@ -75,7 +76,7 @@ fun DownloadablePoetItem(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(4.dp),
+                    .padding(Dimens.space4),
             ) {
                 Text(
                     text = poet.name,

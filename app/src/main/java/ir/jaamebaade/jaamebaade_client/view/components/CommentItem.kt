@@ -39,6 +39,7 @@ import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.poem.MenuRowItem
 import java.util.Date
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +55,7 @@ fun CommentItem(modifier: Modifier = Modifier, comment: Comment, onShareClicked:
     ) {
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 20.dp)
+                .padding(horizontal = Dimens.space16, vertical = Dimens.space20)
                 .fillMaxWidth()
         ) {
             Row(
@@ -68,7 +69,7 @@ fun CommentItem(modifier: Modifier = Modifier, comment: Comment, onShareClicked:
                 }
                 Box(
                     modifier = Modifier
-                        .padding(horizontal = 4.dp)
+                        .padding(horizontal = Dimens.space4)
                         .weight(0.1f)
                 ) {
                     IconButton(
@@ -86,7 +87,7 @@ fun CommentItem(modifier: Modifier = Modifier, comment: Comment, onShareClicked:
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(vertical = 8.dp)
+                modifier = Modifier.padding(vertical = Dimens.space8)
             ) {
                 Icon(
                     imageVector = Icons.Default.Circle,

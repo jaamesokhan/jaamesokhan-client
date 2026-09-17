@@ -15,8 +15,6 @@ class SharedPrefManager(
     companion object {
         const val POEM_FONT_KEY = "PoemFont"
         const val POEM_FONT_SIZE_KEY = "PoemFontSizeIndex"
-        const val USERNAME_KEY = "Username"
-        const val AUTH_TOKEN_KEY = "AuthToken"
         const val APP_THEME_TYPE_KEY = "AppThemeType"
         const val SHOW_HINT_FOR_HIGHLIGHT_KEY = "ShowHintForHighlight"
         const val NOTIFICATION_PERMISSION_KEY = "NotificationPermission"
@@ -27,21 +25,6 @@ class SharedPrefManager(
 
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("JaameBaadePrefs", Context.MODE_PRIVATE)
-
-    fun saveAuthCredentials(username: String?, token: String?) {
-        sharedPreferences.edit {
-            putString(USERNAME_KEY, username)
-            putString(AUTH_TOKEN_KEY, token)
-        }
-    }
-
-    fun getUsername(): String? {
-        return sharedPreferences.getString(USERNAME_KEY, null)
-    }
-
-    fun getAuthToken(): String? {
-        return sharedPreferences.getString(AUTH_TOKEN_KEY, null)
-    }
 
     fun setShowHintForHighlight(show: Boolean) {
         sharedPreferences.edit {

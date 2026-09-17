@@ -7,8 +7,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ir.jaamebaade.jaamebaade_client.api.AccountApiClient
-import ir.jaamebaade.jaamebaade_client.api.AccountApiService
 import ir.jaamebaade.jaamebaade_client.api.JaameSokhanApiClient
 import ir.jaamebaade.jaamebaade_client.api.JaameSokhanApiService
 import ir.jaamebaade.jaamebaade_client.api.GanjoorApiClient
@@ -34,7 +32,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import java.util.concurrent.TimeUnit
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class RecitationsApiService
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -52,6 +55,26 @@ object AppModule {
             .baseUrl(context.getString(R.string.SERVER_BASE_URL))
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
+            .build()
+            .create<JaameSokhanApiService>()
+    }
+
+    /**
+     * Recitations list must fail fast so the Ganjoor fallback kicks in quickly.
+     */
+    @Provides
+    @Singleton
+    @RecitationsApiService
+    fun provideRecitationsApiService(@ApplicationContext context: Context): JaameSokhanApiService {
+        val fastTimeoutClient = okHttpClient.newBuilder()
+            .connectTimeout(2, TimeUnit.SECONDS)
+            .readTimeout(2, TimeUnit.SECONDS)
+            .writeTimeout(2, TimeUnit.SECONDS)
+            .build()
+        return Retrofit.Builder()
+            .baseUrl(context.getString(R.string.SERVER_BASE_URL))
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(fastTimeoutClient)
             .build()
             .create<JaameSokhanApiService>()
     }
@@ -82,9 +105,10 @@ object AppModule {
     @Singleton
     fun provideJaameSokhanApiClient(
         apiService: JaameSokhanApiService,
+        @RecitationsApiService recitationsApiService: JaameSokhanApiService,
         ganjoorApiClient: GanjoorApiClient
     ): JaameSokhanApiClient {
-        return JaameSokhanApiClient(apiService, ganjoorApiClient)
+        return JaameSokhanApiClient(apiService, recitationsApiService, ganjoorApiClient)
     }
 
     @Provides
@@ -130,25 +154,6 @@ object AppModule {
         }
 
         return instance
-    }
-
-    @Provides
-    @Singleton
-    fun provideAccountApiService(@ApplicationContext context: Context): AccountApiService {
-        return Retrofit.Builder()
-            .baseUrl(context.getString(R.string.SERVER_BASE_URL))
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-            .create<AccountApiService>()
-    }
-
-    @Provides
-    @Singleton
-    fun providesAccountApiClient(
-        apiService: AccountApiService,
-    ): AccountApiClient {
-        return AccountApiClient(apiService)
     }
 
     @Provides

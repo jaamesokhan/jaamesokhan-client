@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun CardHeader(modifier: Modifier  = Modifier, text: String) {
@@ -18,7 +19,7 @@ fun CardHeader(modifier: Modifier  = Modifier, text: String) {
     .background(color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
         Text(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(Dimens.space8),
             text = text,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             style = MaterialTheme.typography.labelSmall,

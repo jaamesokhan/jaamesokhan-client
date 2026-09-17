@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun BottomSheetListItem(
@@ -30,11 +30,11 @@ fun BottomSheetListItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp, vertical = 15.dp),
+                .padding(horizontal = Dimens.space28, vertical = Dimens.space16),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(imageVector = icon, contentDescription = null)
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(Dimens.space10))
             Text(
                 text = text,
                 style = MaterialTheme.typography.headlineLarge

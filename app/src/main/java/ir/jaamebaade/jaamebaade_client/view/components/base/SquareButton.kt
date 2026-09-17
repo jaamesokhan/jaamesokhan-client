@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 enum class ComposableSquareButtonStyle {
     Filled, Outlined
@@ -44,7 +46,7 @@ fun SquareButton(
     backgroundColor: Color,
     size: Int = 89,
     iconSize: Int = size,
-    roundedCornerShapeSize: Int = 25,
+    roundedCornerShapeSize: Int = 20,
     enabled: Boolean = true,
     onLongClick: (() -> Unit)? = null,
     onClick: () -> Unit,
@@ -64,7 +66,7 @@ fun SquareButton(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(roundedCornerShapeSize.dp))
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = Dimens.space12)
             .then(clickableModifier),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -73,7 +75,7 @@ fun SquareButton(
             modifier = Modifier
                 .clip(RoundedCornerShape(roundedCornerShapeSize.dp))
                 .background(backgroundColor)
-                .padding(4.dp)
+                .padding(Dimens.space4)
                 .size(size.dp)
         ) {
             icon?.let {
@@ -98,7 +100,7 @@ fun SquareButton(
             Text(
                 text = it,
                 style = textStyle,
-                modifier = Modifier.padding(top = 4.dp),
+                modifier = Modifier.padding(top = Dimens.space4),
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
             )
@@ -129,14 +131,14 @@ fun ComposableSquareButton(
             .border(
                 width = borderWidth,
                 color = if (style == ComposableSquareButtonStyle.Outlined) borderColor else Color.Transparent,
-                shape = RoundedCornerShape(15.dp)
+                shape = ButtonShape
             ),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
             contentColor = contentColorFinal
         ),
-        shape = RoundedCornerShape(15.dp)
+        shape = ButtonShape
     ) {
         content()
     }

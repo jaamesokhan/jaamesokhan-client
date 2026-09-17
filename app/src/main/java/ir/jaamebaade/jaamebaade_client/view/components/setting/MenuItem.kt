@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 /**
  * This component is used in poet detail screen to show a list of items (category or poem).
@@ -43,14 +44,14 @@ fun MenuItem(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 8.dp),
+                .padding(start = Dimens.space8),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier.padding(start = 20.dp, end = 0.dp)) {
+            Box(modifier = Modifier.padding(start = Dimens.space20, end = 0.dp)) {
                 leadingIcon()
             }
-            Spacer(modifier = Modifier.padding(6.dp))
+            Spacer(modifier = Modifier.padding(Dimens.space6))
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -58,7 +59,7 @@ fun MenuItem(
                 Row(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .padding(end = 20.dp, start = 0.dp)
+                        .padding(end = Dimens.space20, start = 0.dp)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,

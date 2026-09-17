@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
@@ -18,6 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.PillShape
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun CategoryToggleChip(
@@ -30,15 +31,15 @@ fun CategoryToggleChip(
     Row(
         modifier = modifier
             .height(40.dp)
-            .clip(RoundedCornerShape(20.dp))
+            .clip(PillShape)
             .background(if (selected) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.surface)
             .border(
                 width = 1.dp,
                 color = if (selected) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.outline,
-                shape = RoundedCornerShape(20.dp)
+                shape = PillShape
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = Dimens.space16),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {

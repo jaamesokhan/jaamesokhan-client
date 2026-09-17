@@ -27,7 +27,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.LabelWithCount
+import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun CategoryPickerBottomSheet(
@@ -51,7 +53,7 @@ fun CategoryPickerBottomSheet(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { onToggle(labelWithCount.label.id) }
-                            .padding(horizontal = 24.dp, vertical = 8.dp),
+                            .padding(horizontal = Dimens.space24, vertical = Dimens.space8),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(14.dp),
                     ) {
@@ -78,7 +80,7 @@ fun CategoryPickerBottomSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable(onClick = onCreateNew)
-                        .padding(horizontal = 24.dp, vertical = 16.dp),
+                        .padding(horizontal = Dimens.space24, vertical = Dimens.space16),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
@@ -98,12 +100,13 @@ fun CategoryPickerBottomSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                    .padding(horizontal = Dimens.space24, vertical = Dimens.space16),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 OutlinedButton(
                     onClick = onCancel,
                     modifier = Modifier.weight(1f),
+                    shape = ButtonShape,
                 ) {
                     Text(text = stringResource(R.string.CANCEL))
                 }
@@ -111,6 +114,7 @@ fun CategoryPickerBottomSheet(
                     onClick = onConfirm,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                    shape = ButtonShape,
                 ) {
                     Text(text = stringResource(R.string.CONFIRM))
                 }

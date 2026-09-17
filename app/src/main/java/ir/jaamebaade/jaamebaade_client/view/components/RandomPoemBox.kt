@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Autorenew
 import androidx.compose.material3.Card
@@ -30,8 +29,10 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.RandomPoemPreview
 import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
+import ir.jaamebaade.jaamebaade_client.ui.theme.CardShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95Light
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun RandomPoemBox(
@@ -41,16 +42,16 @@ fun RandomPoemBox(
 ) {
     Card(
         modifier = Modifier
-            .padding(vertical = 32.dp)
+            .padding(vertical = Dimens.space34)
             .height(228.dp)
-            .clip(RoundedCornerShape(25.dp))
+            .clip(CardShape)
             .fillMaxWidth(),
         onClick = onCardClick
     ) {
 
         Row(
             modifier = Modifier
-                .clip(RoundedCornerShape(25.dp))
+                .clip(CardShape)
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(
@@ -66,7 +67,7 @@ fun RandomPoemBox(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(16.dp)
+                    .padding(Dimens.space16)
                     .weight(1f)
                     .width(0.dp),
             ) {

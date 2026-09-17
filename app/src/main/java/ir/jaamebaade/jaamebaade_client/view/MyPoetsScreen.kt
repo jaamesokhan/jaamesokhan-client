@@ -38,6 +38,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
 import kotlinx.coroutines.launch
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,7 +84,7 @@ fun MyPoetsScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = Dimens.space16),
     ) {
         if (randomPoetPreviewFetchStatus == Status.SUCCESS) {
             randomPoemPreview?.let {
@@ -124,7 +125,7 @@ fun MyPoetsScreen(
                 item {
                     SquareButton(
                         modifier = if (poets.isEmpty()) {
-                            Modifier.padding(top = 16.dp)
+                            Modifier.padding(top = Dimens.space16)
                         } else {
                             Modifier
                         },

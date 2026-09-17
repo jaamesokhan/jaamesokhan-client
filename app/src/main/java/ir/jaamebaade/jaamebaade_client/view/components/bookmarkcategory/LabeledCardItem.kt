@@ -17,6 +17,10 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Label
 import ir.jaamebaade.jaamebaade_client.view.components.CardItem
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
+
+/** Aligns the label row under CardItem's text column: avatar padding + avatar width + its spacer. */
+private val labelRowStartIndent = Dimens.space20 + 66.dp + Dimens.space8
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -42,7 +46,7 @@ fun LabeledCardItem(
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 94.dp, end = 20.dp, bottom = 12.dp),
+                .padding(start = labelRowStartIndent, end = Dimens.space20, bottom = Dimens.space12),
             horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
