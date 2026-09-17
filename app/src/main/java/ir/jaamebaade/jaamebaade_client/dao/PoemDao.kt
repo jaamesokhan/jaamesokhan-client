@@ -78,6 +78,7 @@ interface PoemDao {
         SELECT COUNT(*)
         FROM poems pm
         JOIN categories c ON c.id = pm.category_id
+        JOIN poets pt ON pt.id = c.poet_id
         WHERE
             (
                 (:categoryId IS NULL
@@ -86,6 +87,7 @@ interface PoemDao {
             OR
                 (c.id IN category_tree)
             )
+        AND (pt.download_status IS NULL OR pt.download_status = 'Downloaded')
     """
     )
     fun getRandomPoemCandidateCount(categoryId: Int?): Int
@@ -116,6 +118,7 @@ interface PoemDao {
             OR
                 (c.id IN category_tree)
             )
+        AND (pt.download_status IS NULL OR pt.download_status = 'Downloaded')
         ORDER BY pm.id
         LIMIT 1 OFFSET :offset
     """
