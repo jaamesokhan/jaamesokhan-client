@@ -2,7 +2,8 @@ package ir.jaamebaade.jaamebaade_client.view.components.base
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -13,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
@@ -31,21 +31,18 @@ fun RectangularButton(
 ) {
     Button(
         modifier = modifier
-            .then(
-                if (buttonWidth != Dp.Unspecified && buttonHeight != Dp.Unspecified) {
-                    Modifier.size(width = buttonWidth, height = buttonHeight)
-                } else Modifier
-            )
+            .then(if (buttonWidth != Dp.Unspecified) Modifier.width(buttonWidth) else Modifier)
+            .then(if (buttonHeight != Dp.Unspecified) Modifier.heightIn(min = buttonHeight) else Modifier)
             .border(
                 width = borderWidth,
                 color = borderColor,
-                shape = ButtonShape
+                shape = MaterialTheme.shapes.large
             ),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor,
         ),
-        shape = ButtonShape,
+        shape = MaterialTheme.shapes.large,
         contentPadding = PaddingValues(horizontal = Dimens.space20, vertical = Dimens.space16)
     ) {
         Text(

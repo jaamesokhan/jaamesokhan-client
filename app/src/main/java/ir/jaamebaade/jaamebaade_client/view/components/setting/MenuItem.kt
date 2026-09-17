@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 /**
@@ -39,7 +38,7 @@ fun MenuItem(
             .height(64.dp)
             .fillMaxWidth(),
         onClick = onClick,
-        color = MaterialTheme.colorScheme.neutralN95
+        color = MaterialTheme.colorScheme.background
     ) {
         Row(
             modifier = Modifier

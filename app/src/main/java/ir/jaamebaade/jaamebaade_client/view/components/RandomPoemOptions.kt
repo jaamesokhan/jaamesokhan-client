@@ -45,8 +45,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.jaamebaade.jaamebaade_client.R
-import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
-import ir.jaamebaade.jaamebaade_client.ui.theme.CardShape
 import ir.jaamebaade.jaamebaade_client.utility.replaceToPersianNumber
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
@@ -93,7 +91,7 @@ fun RandomPoemOptions(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant
             ),
-            shape = CardShape
+            shape = MaterialTheme.shapes.extraLarge
         ) {
             Row(
                 modifier = Modifier
@@ -151,7 +149,7 @@ fun RandomPoemOptions(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant
             ),
-            shape = CardShape
+            shape = MaterialTheme.shapes.extraLarge
         ) {
             Row(
                 modifier = Modifier
@@ -190,7 +188,7 @@ fun RandomPoemOptions(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
-                shape = CardShape
+                shape = MaterialTheme.shapes.extraLarge
             ) {
                 Column(
                     modifier = Modifier
@@ -220,7 +218,7 @@ fun RandomPoemOptions(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        OutlinedButton(onClick = { showTimePicker = true }, shape = ButtonShape) {
+                        OutlinedButton(onClick = { showTimePicker = true }, shape = MaterialTheme.shapes.large) {
                             Text(text = stringResource(id = R.string.CHANGE_TIME))
                         }
                     }
@@ -237,7 +235,7 @@ fun RandomPoemOptions(
 
             BasicAlertDialog(onDismissRequest = { showTimePicker = false }) {
                 Surface(
-                    shape = CardShape,
+                    shape = MaterialTheme.shapes.extraLarge,
                     tonalElevation = 6.dp
                 ) {
                     Column(
@@ -272,7 +270,7 @@ fun RandomPoemOptions(
                                     )
                                     showTimePicker = false
                                 },
-                                shape = ButtonShape
+                                shape = MaterialTheme.shapes.large
                             ) {
                                 Text(text = stringResource(id = R.string.SAVE))
                             }

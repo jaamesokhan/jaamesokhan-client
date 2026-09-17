@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.RandomPoemPreview
 import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
-import ir.jaamebaade.jaamebaade_client.ui.theme.CardShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95Light
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
@@ -44,14 +43,14 @@ fun RandomPoemBox(
         modifier = Modifier
             .padding(vertical = Dimens.space34)
             .height(228.dp)
-            .clip(CardShape)
+            .clip(MaterialTheme.shapes.extraLarge)
             .fillMaxWidth(),
         onClick = onCardClick
     ) {
 
         Row(
             modifier = Modifier
-                .clip(CardShape)
+                .clip(MaterialTheme.shapes.extraLarge)
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(

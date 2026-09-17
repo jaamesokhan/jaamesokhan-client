@@ -28,7 +28,6 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Status
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
 import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
 import ir.jaamebaade.jaamebaade_client.view.components.PoetOptionsBottomSheet
@@ -130,7 +129,7 @@ fun MyPoetsScreen(
                             Modifier
                         },
                         icon = Icons.Filled.Add,
-                        tint = MaterialTheme.colorScheme.neutralN95,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         backgroundColor = MaterialTheme.colorScheme.outlineVariant,
                         contentDescription = stringResource(R.string.ADD_NEW_POET),
                         textStyle = MaterialTheme.typography.headlineSmall,

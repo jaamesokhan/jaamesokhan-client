@@ -80,7 +80,7 @@ fun CardItem(
                             modifier = Modifier.weight(7f),
                             text = it,
                             style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.scrim,
+                            color = MaterialTheme.colorScheme.onBackground,
                             maxLines = if (wrapHeader) Int.MAX_VALUE else 3,
                             overflow = if (wrapHeader) TextOverflow.Clip else TextOverflow.Ellipsis
                         )
