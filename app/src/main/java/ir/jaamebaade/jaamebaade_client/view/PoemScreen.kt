@@ -16,11 +16,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
-import androidx.compose.material.icons.outlined.VolumeUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -246,8 +244,8 @@ fun PoemScreen(
 
     val toggleButtonItems = listOf(
         ToggleButtonItem(
-            checkedImageVector = Icons.Filled.VolumeUp,
-            uncheckedImageVector = Icons.Outlined.VolumeUp,
+            checkedIconId = R.drawable.ic_volume_up,
+            uncheckedIconId = R.drawable.ic_volume_up,
             contentDescription = stringResource(R.string.RECITE),
             checked = audioOptionChecked,
             onClick = { audioOptionChecked = it }
