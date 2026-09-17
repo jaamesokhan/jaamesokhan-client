@@ -47,6 +47,7 @@
     <string name="POEM_NOT_AVAILABLE"> شعر یافت نشد!</string>
     <string name="NO_POET_FOUND">شاعری یافت نشد!</string>
     <string name="NO_HIGHLIGHTS_FOUND">متنی را هایلایت نکرده‌اید!</string>
+    <string name="SLOW_LOAD_HINT">لطفاً کمی صبر کنید…</string>
     <string name="NOTIFICATION_ACCESS_BODY">برای اطلاع از انتشار آخرین نسخه، لطفا به برنامه دسترسی ارسال اعلان بدهید.</string>
     <string name="YES">بله مایلم</string>
     <string name="NOT_NOW">الآن نه</string>

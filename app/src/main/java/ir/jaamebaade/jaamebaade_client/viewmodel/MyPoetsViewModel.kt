@@ -182,14 +182,23 @@ class MyPoetsViewModel @Inject constructor(
         categories: List<Category>,
         parent: CategoryGraphNode? = null,
     ): List<CategoryGraphNode> {
-        val result = mutableListOf<CategoryGraphNode>()
-        categories.filter { it.parentId == (parent?.category?.id ?: 0) }.forEach { category ->
+        // Group once up front instead of filtering the full list at every node:
+        // filtering per node was O(N^2) over total category count across all downloaded poets.
+        val childrenByParentId = categories.groupBy { it.parentId }
+        return buildCategoryGraph(childrenByParentId, parent)
+    }
+
+    private fun buildCategoryGraph(
+        childrenByParentId: Map<Int, List<Category>>,
+        parent: CategoryGraphNode?,
+    ): List<CategoryGraphNode> {
+        val children = childrenByParentId[parent?.category?.id ?: 0] ?: emptyList()
+        return children.map { category ->
             val node = category.toGraphNode(parent = parent)
-            node.subCategories = createCategoryGraph(categories, node)
+            node.subCategories = buildCategoryGraph(childrenByParentId, node)
             updateSelectedForRandomState(node)
-            result.add(node)
+            node
         }
-        return result
     }
 
     private fun updateSelectedForRandomState(node: CategoryGraphNode) {
@@ -214,8 +223,10 @@ class MyPoetsViewModel @Inject constructor(
 
     private fun getAllCategories() {
         viewModelScope.launch {
-            val result = getAllCategoriesFromRepository()
-            categories = createCategoryGraph(result)
+            categories = withContext(Dispatchers.IO) {
+                val result = categoryRepository.getAllCategories()
+                createCategoryGraph(result)
+            }
         }
     }
 
@@ -235,13 +246,6 @@ class MyPoetsViewModel @Inject constructor(
     private suspend fun getAllDownloadedPoets(): List<Poet> {
         val res = withContext(Dispatchers.IO) {
             poetRepository.getAllPoets()
-        }
-        return res
-    }
-
-    private suspend fun getAllCategoriesFromRepository(): List<Category> {
-        val res = withContext(Dispatchers.IO) {
-            categoryRepository.getAllCategories()
         }
         return res
     }

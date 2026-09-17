@@ -32,33 +32,39 @@ interface VerseDao {
     @Query("SELECT * FROM verses WHERE poem_id = :poemId ORDER BY verse_order")
     fun getPoemVersesWithHighlights(poemId: Int): List<VerseWithHighlights>
 
+    // Uses the verses_fts FTS4 index (see AppDatabase.MIGRATION_8_9) instead of a leading-
+    // wildcard LIKE, which forced a full scan of `verses` across every downloaded poet.
+    // Trade-off: FTS matches whole-token prefixes, not arbitrary mid-word substrings like
+    // the old LIKE '%query%' did. `query` must already be built as an FTS MATCH expression
+    // (see VerseRepository.buildFtsMatchQuery).
     @Query(
         """
-            SELECT 
-                v.id AS verse_id, 
-                v.text AS verse_text, 
-                v.poem_id AS verse_poem_id, 
+            SELECT
+                v.id AS verse_id,
+                v.text AS verse_text,
+                v.poem_id AS verse_poem_id,
                 v.verse_order AS verse_verse_order,
                 v.position AS verse_position,
                 v.normalized_text AS verse_normalized_text,
-                p.id AS poem_id, 
-                p.title AS poem_title, 
-                p.category_id AS poem_category_id, 
-                c.id AS category_id, 
-                c.text AS category_text, 
+                p.id AS poem_id,
+                p.title AS poem_title,
+                p.category_id AS poem_category_id,
+                c.id AS category_id,
+                c.text AS category_text,
                 c.poet_id AS category_poet_id,
                 c.parent_id AS category_parent_id,
                 c.random_selected AS category_random_selected,
-                pt.id AS poet_id, 
+                pt.id AS poet_id,
                 pt.name AS poet_name,
                 pt.description AS poet_description,
                 pt.imageUrl AS poet_imageUrl
-            FROM verses v
+            FROM verses_fts fts
+            JOIN verses v ON v.rowid = fts.docid
             JOIN poems p ON v.poem_id = p.id
             JOIN categories c ON p.category_id = c.id
             JOIN poets pt ON c.poet_id = pt.id
-            WHERE c.poet_id IN (:poetIds)
-                AND v.normalized_text LIKE :query
+            WHERE fts.normalized_text MATCH :query
+                AND c.poet_id IN (:poetIds)
         """
     )
     fun searchVerses(query: String, poetIds: List<Int>): List<VersePoemCategoryPoet>
@@ -66,30 +72,31 @@ interface VerseDao {
 
     @Query(
         """
-            SELECT 
-                v.id AS verse_id, 
-                v.text AS verse_text, 
-                v.poem_id AS verse_poem_id, 
+            SELECT
+                v.id AS verse_id,
+                v.text AS verse_text,
+                v.poem_id AS verse_poem_id,
                 v.verse_order AS verse_verse_order,
                 v.position AS verse_position,
                 v.normalized_text AS verse_normalized_text,
-                p.id AS poem_id, 
-                p.title AS poem_title, 
-                p.category_id AS poem_category_id, 
-                c.id AS category_id, 
-                c.text AS category_text, 
+                p.id AS poem_id,
+                p.title AS poem_title,
+                p.category_id AS poem_category_id,
+                c.id AS category_id,
+                c.text AS category_text,
                 c.poet_id AS category_poet_id,
                 c.parent_id AS category_parent_id,
                 c.random_selected AS category_random_selected,
-                pt.id AS poet_id, 
+                pt.id AS poet_id,
                 pt.name AS poet_name,
                 pt.description AS poet_description,
                 pt.imageUrl AS poet_imageUrl
-            FROM verses v
+            FROM verses_fts fts
+            JOIN verses v ON v.rowid = fts.docid
             JOIN poems p ON v.poem_id = p.id
             JOIN categories c ON p.category_id = c.id
             JOIN poets pt ON c.poet_id = pt.id
-            WHERE v.normalized_text LIKE :query
+            WHERE fts.normalized_text MATCH :query
         """
     )
     fun searchVerses(query: String): List<VersePoemCategoryPoet>
