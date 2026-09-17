@@ -14,12 +14,12 @@ room {
 
 android {
     namespace = "ir.jaamebaade.jaamebaade_client"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "ir.jaamebaade.jaamebaade_client"
         minSdk = 27
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 11
         versionName = "2.4"
 
@@ -39,8 +39,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures {
         compose = true
@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.material.color.utilities)
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.material)

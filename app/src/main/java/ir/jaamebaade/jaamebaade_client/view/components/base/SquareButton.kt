@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -131,14 +130,14 @@ fun ComposableSquareButton(
             .border(
                 width = borderWidth,
                 color = if (style == ComposableSquareButtonStyle.Outlined) borderColor else Color.Transparent,
-                shape = ButtonShape
+                shape = MaterialTheme.shapes.large
             ),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
             contentColor = contentColorFinal
         ),
-        shape = ButtonShape
+        shape = MaterialTheme.shapes.large
     ) {
         content()
     }

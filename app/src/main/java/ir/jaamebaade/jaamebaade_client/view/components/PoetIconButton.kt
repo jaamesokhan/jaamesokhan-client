@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
-import ir.jaamebaade.jaamebaade_client.ui.theme.Radius
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
 
 @Composable
@@ -21,7 +20,6 @@ fun PoetIconButton(poet: Poet, onLongClick: () -> Unit, onClick: () -> Unit) {
         backgroundColor = Color.Transparent,
         onClick = onClick,
         onLongClick = onLongClick,
-        roundedCornerShapeSize = Radius.card.value.toInt(),
         iconSize = 65,
         size = 70
     )

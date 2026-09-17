@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
 
 @Composable
 fun HighlightActionButton(
@@ -39,7 +38,7 @@ fun HighlightActionButton(
         null
     }
     Button(
-        shape = ButtonShape,
+        shape = MaterialTheme.shapes.large,
         contentPadding = PaddingValues(vertical = 10.dp, horizontal = 10.dp),
         colors = buttonColors,
         border = border,

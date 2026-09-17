@@ -37,10 +37,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navOptions
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
-import ir.jaamebaade.jaamebaade_client.ui.theme.CardShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
+import ir.jaamebaade.jaamebaade_client.ui.theme.PillShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN70
-import ir.jaamebaade.jaamebaade_client.utility.bottomBorder
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastMessage
 import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
 
@@ -119,7 +118,7 @@ fun Navbar(navController: NavController) {
                     .fillMaxWidth()
                     .padding(horizontal = Dimens.screenGutter)
                     .padding(bottom = Dimens.space16)
-                    .clip(CardShape)
+                    .clip(MaterialTheme.shapes.extraLarge)
                     .navigationBarsPadding(),
             ) {
                 Surface(
@@ -192,21 +191,27 @@ fun NavbarItem(
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .wrapContentWidth()
-                .bottomBorder(
-                    strokeWidth = 12.dp,
-                    color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
-                ),
+                .wrapContentWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Icon(
-                painter = painterResource(id = iconId),
-                contentDescription = contentDescription,
-                modifier = Modifier.size(28.dp),
-                tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.neutralN70
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            Box(
+                modifier = Modifier
+                    .clip(PillShape)
+                    .background(
+                        if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+                    )
+                    .padding(horizontal = 20.dp, vertical = 4.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = iconId),
+                    contentDescription = contentDescription,
+                    modifier = Modifier.size(28.dp),
+                    tint = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.neutralN70
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = contentDescription,
                 style = MaterialTheme.typography.labelSmall,

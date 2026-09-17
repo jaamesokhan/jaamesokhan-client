@@ -1,129 +1,122 @@
 package ir.jaamebaade.jaamebaade_client.ui.theme
 
+import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import com.materialkolor.dynamiccolor.DynamicColor
+import com.materialkolor.dynamiccolor.MaterialDynamicColors
+import com.materialkolor.hct.Hct
+import com.materialkolor.scheme.DynamicScheme
+import com.materialkolor.scheme.SchemeTonalSpot
 
-
-val primaryLight = Color(0xFF5B6642)
-val onPrimaryLight = Color(0xFFFFFFFF)
-val primaryContainerLight = Color(0xFFCCE595)
-val onPrimaryContainerLight = Color(0xFF3E452D)
-val secondaryLight = Color(0xFFBAD982)
-val onSecondaryLight = Color(0xFF333333)
-val secondaryS90Light = Color(0xFFDDE5CF)
-val secondaryS30Light = Color(0xFF6E991F)
-val secondaryS40Light = Color(0xFF83B22D)
-val secondaryS50Light = Color(0xFF9ACC3D)
-val secondaryContainerLight = Color(0xFFDDE5CF)
-val onSecondaryContainerLight = Color(0xFF46660A)
-val primary20Light = Color(0xFF3E452D)
-val primary20Dark = Color(0xFF3E452D)
-val primary90Light = Color(0xFFCCE595)
-val primary90Dark = Color(0xFFCCE595)
+/** The app's brand color. Seeds the whole generated Material 3 tonal palette. */
+val BrandSeed = Color(0xFF5B6642)
 
 /**
- * This is mapped to Gradient/Light in the design system
+ * Fixed brand marker-green pair, used as a highlight-text background (`VerseItem`), the
+ * selected-chip color in bookmark/highlight chips, and the `RandomPoemBox` gradient. Not a
+ * semantic M3 tertiary role — these call sites need a color that stays a legible mid-tone
+ * green under plain body text in both themes, not one that swaps to tone 80/near-white in
+ * dark mode the way a generated `tertiary` role correctly would for its own intended use.
  */
-val tertiaryLight = Color(0xFF718053)
+private val tertiaryMarkerLight = Color(0xFF718053)
+private val onTertiaryMarkerLight = Color(0xFFFFFFFF)
+private val tertiaryContainerMarkerLight = Color(0xFF323825)
+private val onTertiaryContainerMarkerLight = Color(0xFFFFFFFF)
+private val tertiaryMarkerDark = Color(0xFF5B6642)
+private val onTertiaryMarkerDark = Color(0xFFFFFFFF)
+private val tertiaryContainerMarkerDark = Color(0xFF323825)
+private val onTertiaryContainerMarkerDark = Color(0xFFFFFFFF)
 
 /**
- * @see tertiaryLight
+ * Fixed muted-gray pair. Real M3 `outline`/`outlineVariant` are low-contrast border tones
+ * (dark-mode `outlineVariant` is tone 30, nearly as dark as the background itself) — but this
+ * app uses these two roles as its secondary/tertiary body-text and icon color throughout
+ * (~40 call sites: list subtitles, empty-state text, dividers, hint text). Keeping the
+ * original legible gray values here instead of the spec's border tones.
  */
-val onTertiaryLight = Color(0xFFFFFFFF)
+private val outlineLight = Color(0xFFCCCCCC)
+private val outlineVariantLight = Color(0xFF999999)
+private val outlineDark = Color(0xFF3A3A3A)
+private val outlineVariantDark = Color(0xFFADADAD)
+
+/** Builds the TonalSpot dynamic scheme for [BrandSeed] at the given brightness. */
+internal fun brandScheme(isDark: Boolean): DynamicScheme = SchemeTonalSpot(
+    sourceColorHct = Hct.fromInt(BrandSeed.toArgb()),
+    isDark = isDark,
+    contrastLevel = 0.0,
+)
+
+private fun DynamicColor.toColor(scheme: DynamicScheme): Color = Color(getArgb(scheme))
 
 /**
- * This is mapped to Gradient/Dark in the design system
+ * Generates a stock Material 3 tonal [ColorScheme] from [seedColor] using the TonalSpot
+ * algorithm (the same one Material Theme Builder uses by default), so the seed hue stays
+ * dominant as `primary` rather than being shifted away from, as MaterialKolor's own
+ * `PaletteStyle.Expressive` would do.
  */
-val tertiaryContainerLight = Color(0xFF323825)
+fun generateColorScheme(seedColor: Color, isDark: Boolean): ColorScheme {
+    val scheme = SchemeTonalSpot(
+        sourceColorHct = Hct.fromInt(seedColor.toArgb()),
+        isDark = isDark,
+        contrastLevel = 0.0,
+    )
+    val colors = MaterialDynamicColors()
+
+    return ColorScheme(
+        background = colors.background().toColor(scheme),
+        error = colors.error().toColor(scheme),
+        errorContainer = colors.errorContainer().toColor(scheme),
+        inverseOnSurface = colors.inverseOnSurface().toColor(scheme),
+        inversePrimary = colors.inversePrimary().toColor(scheme),
+        inverseSurface = colors.inverseSurface().toColor(scheme),
+        onBackground = colors.onBackground().toColor(scheme),
+        onError = colors.onError().toColor(scheme),
+        onErrorContainer = colors.onErrorContainer().toColor(scheme),
+        onPrimary = colors.onPrimary().toColor(scheme),
+        onPrimaryContainer = colors.onPrimaryContainer().toColor(scheme),
+        onSecondary = colors.onSecondary().toColor(scheme),
+        onSecondaryContainer = colors.onSecondaryContainer().toColor(scheme),
+        onSurface = colors.onSurface().toColor(scheme),
+        onSurfaceVariant = colors.onSurfaceVariant().toColor(scheme),
+        onTertiary = if (isDark) onTertiaryMarkerDark else onTertiaryMarkerLight,
+        onTertiaryContainer = if (isDark) onTertiaryContainerMarkerDark else onTertiaryContainerMarkerLight,
+        outline = if (isDark) outlineDark else outlineLight,
+        outlineVariant = if (isDark) outlineVariantDark else outlineVariantLight,
+        primary = colors.primary().toColor(scheme),
+        primaryContainer = colors.primaryContainer().toColor(scheme),
+        scrim = colors.scrim().toColor(scheme),
+        secondary = colors.secondary().toColor(scheme),
+        secondaryContainer = colors.secondaryContainer().toColor(scheme),
+        surface = colors.surface().toColor(scheme),
+        surfaceTint = colors.surfaceTint().toColor(scheme),
+        surfaceBright = colors.surfaceBright().toColor(scheme),
+        surfaceDim = colors.surfaceDim().toColor(scheme),
+        surfaceContainer = colors.surfaceContainer().toColor(scheme),
+        surfaceContainerHigh = colors.surfaceContainerHigh().toColor(scheme),
+        surfaceContainerHighest = colors.surfaceContainerHighest().toColor(scheme),
+        surfaceContainerLow = colors.surfaceContainerLow().toColor(scheme),
+        surfaceContainerLowest = colors.surfaceContainerLowest().toColor(scheme),
+        surfaceVariant = colors.surfaceVariant().toColor(scheme),
+        tertiary = if (isDark) tertiaryMarkerDark else tertiaryMarkerLight,
+        tertiaryContainer = if (isDark) tertiaryContainerMarkerDark else tertiaryContainerMarkerLight,
+        primaryFixed = colors.primaryFixed().toColor(scheme),
+        primaryFixedDim = colors.primaryFixedDim().toColor(scheme),
+        onPrimaryFixed = colors.onPrimaryFixed().toColor(scheme),
+        onPrimaryFixedVariant = colors.onPrimaryFixedVariant().toColor(scheme),
+        secondaryFixed = colors.secondaryFixed().toColor(scheme),
+        secondaryFixedDim = colors.secondaryFixedDim().toColor(scheme),
+        onSecondaryFixed = colors.onSecondaryFixed().toColor(scheme),
+        onSecondaryFixedVariant = colors.onSecondaryFixedVariant().toColor(scheme),
+        tertiaryFixed = colors.tertiaryFixed().toColor(scheme),
+        tertiaryFixedDim = colors.tertiaryFixedDim().toColor(scheme),
+        onTertiaryFixed = colors.onTertiaryFixed().toColor(scheme),
+        onTertiaryFixedVariant = colors.onTertiaryFixedVariant().toColor(scheme),
+    )
+}
 
 /**
- * @see tertiaryContainerLight
+ * Fixed (theme-independent) near-white neutral tone, for surfaces that always stay light
+ * regardless of app theme (e.g. a card rendered on a fixed light background).
  */
-val onTertiaryContainerLight = Color(0xFFFFFFFF)
-
-val errorLight = Color(0xFFCC3D3D)
-val onErrorLight = Color(0xFFFFFFFF)
-val errorContainerLight = Color(0xFFF0BDBD)
-val onErrorContainerLight = Color(0xFF7A2525)
-val backgroundLight = Color(0xFFF7F7F7)
-val onBackgroundLight = Color(0xFF333333)
-val surfaceLight = Color(0xFFFFFFFF)
-val onSurfaceLight = Color(0xFF666666)
-val surfaceVariantLight = Color(0xFFE6E6E6)
-val onSurfaceVariantLight = Color(0xFF4D4D4D)
-val outlineLight = Color(0xFFCCCCCC)
-val outlineVariantLight = Color(0xFF999999)
-
-// Unused colors
-val scrimLight = Color(0xFF000000)
-val inverseSurfaceLight = Color(0xFF2F3035)
-val inverseOnSurfaceLight = Color(0xFFF1F0F6)
-val inversePrimaryLight = Color(0xFFAAC7FF)
-///////////////
-
-val neutralN20Light = Color(0xFF333333)
-val neutralN50Light = Color(0xFF808080)
-val neutralN70Light = Color(0xFFB3B3B3)
-val neutralN90Light = Color(0xFFE6E6E6)
-val neutralN95Light = Color(0xFFF7F7F7)
-val neutralN100Light = Color(0xFFFFFFFF)
-
-val primaryDark = Color(0xFF889963)
-val onPrimaryDark = Color(0xFFFFFFFF)
-val primaryContainerDark = Color(0xFF50593A)
-val onPrimaryContainerDark = Color(0xFFCCE595)
-val secondaryDark = Color(0xFF46660A)
-val onSecondaryDark = Color(0xFFF7F7F7)
-val secondaryContainerDark = Color(0xFFA5CC5C)
-val onSecondaryContainerDark = Color(0xFF334D04)
-
-/**
- * This is mapped to Gradient/Light in the design system
- */
-val tertiaryDark = Color(0xFF5B6642)
-
-/**
- * @see tertiaryDark
- */
-val onTertiaryDark = Color(0xFFFFFFFF)
-
-/**
- * This is mapped to Gradient/Dark in the design system
- */
-val tertiaryContainerDark = Color(0xFF323825)
-
-/**
- * @see tertiaryContainerDark
- */
-val onTertiaryContainerDark = Color(0xFFFFFFFF)
-
-val errorDark = Color(0xFFDE7D7D)
-val onErrorDark = Color(0xFF511919)
-val errorContainerDark = Color(0xFFA33131)
-val onErrorContainerDark = Color(0xFFF9DDDD)
-val backgroundDark = Color(0xFF1A1A1A)
-val onBackgroundDark = Color(0xFFF7F7F7)
-val surfaceDark = Color(0xFF0D0D0D)
-val onSurfaceDark = Color(0xFF808080)
-val surfaceVariantDark = Color(0xFF333333)
-val onSurfaceVariantDark = Color(0xFFCCCCCC)
-val outlineDark = Color(0xFF3A3A3A)
-val outlineVariantDark = Color(0xFFADADAD)
-
-// Unused colors
-val scrimDark = Color(0xFFFFFFFF)
-val inverseSurfaceDark = Color(0xFFE2E2E8)
-val inverseOnSurfaceDark = Color(0xFF2F3035)
-val inversePrimaryDark = Color(0xFFC1CDE0)
-////////////////
-
-val secondaryS90Dark = Color(0xFFDDE5CF)
-val secondaryS30Dark = Color(0xFF6E991F)
-val secondaryS40Dark = Color(0xFF83B22D)
-val secondaryS50Dark = Color(0xFF9ACC3D)
-val neutralN20Dark = Color(0xFF333333)
-val neutralN50Dark = Color(0xFF808080)
-val neutralN70Dark = Color(0xFFB3B3B3)
-val neutralN90Dark = Color(0XFF2C2C2C)
-val neutralN95Dark = Color(0XFF2C2C2C)
-val neutralN100Dark = Color(0xFFFFFFFF)
-
+val neutralN95Light: Color = Color(brandScheme(isDark = false).neutralPalette.tone(95))

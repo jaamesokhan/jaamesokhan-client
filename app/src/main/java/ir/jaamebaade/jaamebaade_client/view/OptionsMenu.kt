@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
-import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.setting.MenuItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
@@ -42,7 +41,7 @@ fun OptionsMenu(
 ) {
     CustomBottomSheet(
         onDismissRequest = onDismiss,
-        containerColor = MaterialTheme.colorScheme.neutralN95,
+        containerColor = MaterialTheme.colorScheme.background,
     ) {
         val context = LocalContext.current
         Column {
