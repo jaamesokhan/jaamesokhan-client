@@ -51,8 +51,7 @@ val routeMap = mapOf(
     "settingsScreen" to "settingsScreen",
     "searchScreen" to "searchScreen",
     "favoriteScreen" to "favoriteScreen",
-    "bookmarksScreen" to "bookmarksScreen",
-    "highlightsScreen" to "highlightsScreen",
+    "bookmarkCategoriesScreen/{tab}" to "bookmarkCategoriesScreen",
     "notesScreen" to "notesScreen",
 )
 
@@ -62,10 +61,13 @@ data class NavbarItemData(
     private val idleIconId: Int,
     private val selectedIconId: Int,
     val contentDescriptionResId: Int,
+    val tabArg: String? = null,
 ) {
     fun getIcon(isSelected: Boolean): Int {
         return if (isSelected) selectedIconId else idleIconId
     }
+
+    fun targetRoute(): String = tabArg?.let { "$route/$it" } ?: route.toString()
 }
 
 
@@ -78,16 +80,18 @@ val navbarItems = listOf(
         contentDescriptionResId = R.string.MY_POETS_TITLE,
     ),
     NavbarItemData(
-        route = AppRoutes.BOOKMARKS_SCREEN,
+        route = AppRoutes.BOOKMARK_CATEGORIES_SCREEN,
         idleIconId = R.drawable.bookmark,
         selectedIconId = R.drawable.bookmark_selected,
         contentDescriptionResId = R.string.BOOKMARK_TITLE,
+        tabArg = "save",
     ),
     NavbarItemData(
-        route = AppRoutes.HIGHLIGHTS_SCREEN,
+        route = AppRoutes.BOOKMARK_CATEGORIES_SCREEN,
         idleIconId = R.drawable.highlight,
         selectedIconId = R.drawable.highlight_selected,
         contentDescriptionResId = R.string.HIGHLIGHT_TITLE,
+        tabArg = "hi",
     ),
     NavbarItemData(
         route = AppRoutes.NOTES_SCREEN,
@@ -102,6 +106,8 @@ fun Navbar(navController: NavController) {
     val currentRoute = currentRoute(navController, routeMap)
     // TODO : this may not be the best practice to handle this kind of situation
     if (currentRoute in navbarItems.map { it.route.toString() }) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentTabArg = navBackStackEntry?.arguments?.getString("tab")
         val showMessage by ToastManager.showMessage.collectAsState()
 
         Box(
@@ -130,10 +136,13 @@ fun Navbar(navController: NavController) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         navbarItems.forEachIndexed { _, item ->
-                            val isSelected = currentRoute == item.route.toString()
+                            val isSelected = if (item.tabArg != null) {
+                                currentRoute == item.route.toString() && currentTabArg == item.tabArg
+                            } else {
+                                currentRoute == item.route.toString()
+                            }
                             NavbarItem(
-                                route = item.route,
-                                currentRoute = currentRoute,
+                                targetRoute = item.targetRoute(),
                                 iconId = item.getIcon(isSelected = isSelected),
                                 contentDescription = stringResource(item.contentDescriptionResId),
                                 isSelected = isSelected,
@@ -155,8 +164,7 @@ fun Navbar(navController: NavController) {
 
 @Composable
 fun NavbarItem(
-    route: AppRoutes,
-    currentRoute: String?,
+    targetRoute: String,
     iconId: Int,
     contentDescription: String,
     isSelected: Boolean,
@@ -171,13 +179,10 @@ fun NavbarItem(
         contentPadding = PaddingValues(0.dp),
         shape = RectangleShape,
         onClick = {
-            var myInclusive = false
-            if (currentRoute != route.toString()) {
-                if (route == AppRoutes.DOWNLOADABLE_POETS_SCREEN)
-                    myInclusive = true
-                navController.navigate(route.toString(), navOptions {
+            if (!isSelected) {
+                navController.navigate(targetRoute, navOptions {
                     popUpTo(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
-                        inclusive = myInclusive
+                        inclusive = false
                     }
                 })
             }

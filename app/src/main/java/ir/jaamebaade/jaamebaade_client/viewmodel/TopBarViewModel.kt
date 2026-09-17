@@ -62,8 +62,7 @@ class TopBarViewModel @Inject constructor(
         val path = getPath(navStack)
         showHistoryIcon = when (path) {
             AppRoutes.DOWNLOADED_POETS_SCREEN -> true
-            AppRoutes.BOOKMARKS_SCREEN -> true
-            AppRoutes.HIGHLIGHTS_SCREEN -> true
+            AppRoutes.BOOKMARK_CATEGORIES_SCREEN -> true
             AppRoutes.NOTES_SCREEN -> true
             else -> false
         }
@@ -81,8 +80,7 @@ class TopBarViewModel @Inject constructor(
         val path = getPath(navStack)
         showSearchIcon = when (path) {
             AppRoutes.DOWNLOADED_POETS_SCREEN -> true
-            AppRoutes.BOOKMARKS_SCREEN -> true
-            AppRoutes.HIGHLIGHTS_SCREEN -> true
+            AppRoutes.BOOKMARK_CATEGORIES_SCREEN -> true
             AppRoutes.NOTES_SCREEN -> true
             else -> false
         }

@@ -68,6 +68,7 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.primary90
 import ir.jaamebaade.jaamebaade_client.view.components.AudioListItems
 import ir.jaamebaade.jaamebaade_client.view.components.NotesBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
+import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.SaveMomentBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemMoreOptionsList
 import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemOptionItem
 import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenActionHeader
@@ -126,6 +127,7 @@ fun PoemScreen(
     var selectMode by remember { mutableStateOf(false) }
     var poemHeaderRevealFraction by remember { mutableStateOf(1f) }
     val isBookmarked by poemViewModel.isBookmarked.collectAsState()
+    val pendingSaveMomentBookmarkId by poemViewModel.pendingSaveMomentBookmarkId.collectAsState()
 
     val lazyListState = rememberLazyListState()
 
@@ -364,6 +366,13 @@ fun PoemScreen(
         NotesBottomSheet(
             onDismissRequest = { showNotes = false },
             poemId = poemId,
+        )
+    }
+
+    pendingSaveMomentBookmarkId?.let { bookmarkId ->
+        SaveMomentBottomSheet(
+            bookmarkId = bookmarkId,
+            onDismiss = { poemViewModel.dismissSaveMoment() },
         )
     }
 

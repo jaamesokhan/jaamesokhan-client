@@ -10,7 +10,7 @@ import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemPoet
 @Dao
 interface BookmarkDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBookmark(bookmark: Bookmark)
+    fun insertBookmark(bookmark: Bookmark): Long
 
     @Query("SELECT COUNT(*) FROM bookmarks WHERE poem_id = :poemId")
     fun isPoemLiked(poemId: Int): Boolean

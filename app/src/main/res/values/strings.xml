@@ -177,4 +177,29 @@ https://myket.ir/app/ir.jaamebaade.jaamebaade_client
     <string name="OPEN_DOWNLOADED_POET_DESC">باز کردن</string>
     <string name="DOWNLOAD_NEW_POET">افزودن شاعر جدید</string>
     <string name="HIGHLIGHT_HINT_MESSAGE">برای مشاهده معنی کلمات یا هایلایت کردن روی آنها نگه دارید.</string>
+
+    <!--  Bookmark categories  -->
+    <string name="ADD_TO_CATEGORY">افزودن به دسته‌بندی</string>
+    <string name="ADD_TO_CATEGORY_PILL">افزودن به دسته</string>
+    <string name="GO_TO_POEM">رفتن به شعر</string>
+    <string name="REMOVE_FROM_LIST">حذف از فهرست</string>
+    <string name="CATEGORIES">دسته‌بندی‌ها</string>
+    <string name="MANAGE_CATEGORIES_SAVE">دسته‌بندی ذخیره‌ها</string>
+    <string name="MANAGE_CATEGORIES_HIGHLIGHT">دسته‌بندی هایلایت‌ها</string>
+    <string name="NEW_CATEGORY">دسته‌بندی جدید</string>
+    <string name="EDIT_CATEGORY">ویرایش دسته</string>
+    <string name="CATEGORY_NAME_LABEL">نام دسته</string>
+    <string name="CATEGORY_NAME_HINT">مثلاً: شب‌های زمستان</string>
+    <string name="COLOR_LABEL">رنگ</string>
+    <string name="CONFIRM">تأیید</string>
+    <string name="NO_CATEGORY">بدون دسته</string>
+    <string name="ALL_CATEGORIES_CHIP">همه</string>
+    <string name="EMPTY_CATEGORY_TITLE">هنوز چیزی در این دسته نیست</string>
+    <string name="EMPTY_CATEGORY_SUBTITLE">از منوی هر مورد، آن را به این دسته اضافه کنید.</string>
+    <string name="CATEGORY_CREATED_SUCCESS">دسته‌بندی ساخته شد.</string>
+    <string name="CATEGORY_EDITED_SUCCESS">دسته‌بندی ویرایش شد.</string>
+    <string name="CATEGORY_DELETED_SUCCESS">دسته‌بندی حذف شد.</string>
+    <string name="SAVED_TO_CATEGORY_SUCCESS">ذخیره شد.</string>
+    <string name="SAVE_MOMENT_TITLE">در کدام دسته ذخیره شود؟</string>
+    <string name="NEW_CATEGORY_CHIP">دسته جدید</string>
 </resources>

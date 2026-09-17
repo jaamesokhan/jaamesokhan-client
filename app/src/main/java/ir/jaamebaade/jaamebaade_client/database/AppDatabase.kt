@@ -6,19 +6,25 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ir.jaamebaade.jaamebaade_client.dao.BookmarkDao
+import ir.jaamebaade.jaamebaade_client.dao.BookmarkLabelCrossRefDao
 import ir.jaamebaade.jaamebaade_client.dao.CategoryDao
 import ir.jaamebaade.jaamebaade_client.dao.CommentDao
 import ir.jaamebaade.jaamebaade_client.dao.HighlightDao
+import ir.jaamebaade.jaamebaade_client.dao.HighlightLabelCrossRefDao
 import ir.jaamebaade.jaamebaade_client.dao.HistoryItemDao
+import ir.jaamebaade.jaamebaade_client.dao.LabelDao
 import ir.jaamebaade.jaamebaade_client.dao.PoemDao
 import ir.jaamebaade.jaamebaade_client.dao.PoetDao
 import ir.jaamebaade.jaamebaade_client.dao.SearchHistoryDao
 import ir.jaamebaade.jaamebaade_client.dao.VerseDao
 import ir.jaamebaade.jaamebaade_client.model.Bookmark
+import ir.jaamebaade.jaamebaade_client.model.BookmarkLabelCrossRef
 import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.Comment
 import ir.jaamebaade.jaamebaade_client.model.Highlight
+import ir.jaamebaade.jaamebaade_client.model.HighlightLabelCrossRef
 import ir.jaamebaade.jaamebaade_client.model.HistoryRecord
+import ir.jaamebaade.jaamebaade_client.model.Label
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
@@ -29,8 +35,9 @@ import ir.jaamebaade.jaamebaade_client.utility.normalizedForSearch
 @Database(
     entities = [Poet::class, Category::class, Poem::class,
         Verse::class, Highlight::class, Bookmark::class, Comment::class,
-        HistoryRecord::class, SearchHistoryRecord::class, VerseSearch::class],
-    version = 9,
+        HistoryRecord::class, SearchHistoryRecord::class, VerseSearch::class,
+        Label::class, BookmarkLabelCrossRef::class, HighlightLabelCrossRef::class],
+    version = 10,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 3),
@@ -50,6 +57,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun commentDao(): CommentDao
     abstract fun historyDao(): HistoryItemDao
     abstract fun searchHistoryDao(): SearchHistoryDao
+    abstract fun labelDao(): LabelDao
+    abstract fun bookmarkLabelCrossRefDao(): BookmarkLabelCrossRefDao
+    abstract fun highlightLabelCrossRefDao(): HighlightLabelCrossRefDao
 
     companion object {
         val MIGRATION_7_8 = object : Migration(7, 8) {
@@ -104,6 +114,48 @@ abstract class AppDatabase : RoomDatabase() {
                 db.execSQL(
                     "INSERT INTO `verses_fts`(`docid`, `normalized_text`) SELECT `rowid`, `normalized_text` FROM `verses`"
                 )
+            }
+        }
+
+        val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `labels` (
+                        `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                        `name` TEXT NOT NULL,
+                        `color` TEXT NOT NULL,
+                        `type` TEXT NOT NULL,
+                        `created_at` INTEGER NOT NULL DEFAULT 0
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `bookmark_label_cross_refs` (
+                        `bookmark_id` INTEGER NOT NULL,
+                        `label_id` INTEGER NOT NULL,
+                        PRIMARY KEY(`bookmark_id`, `label_id`),
+                        FOREIGN KEY(`bookmark_id`) REFERENCES `bookmarks`(`id`) ON DELETE CASCADE,
+                        FOREIGN KEY(`label_id`) REFERENCES `labels`(`id`) ON DELETE CASCADE
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_bookmark_label_cross_refs_bookmark_id` ON `bookmark_label_cross_refs` (`bookmark_id`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_bookmark_label_cross_refs_label_id` ON `bookmark_label_cross_refs` (`label_id`)")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `highlight_label_cross_refs` (
+                        `highlight_id` INTEGER NOT NULL,
+                        `label_id` INTEGER NOT NULL,
+                        PRIMARY KEY(`highlight_id`, `label_id`),
+                        FOREIGN KEY(`highlight_id`) REFERENCES `highlights`(`id`) ON DELETE CASCADE,
+                        FOREIGN KEY(`label_id`) REFERENCES `labels`(`id`) ON DELETE CASCADE
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_highlight_label_cross_refs_highlight_id` ON `highlight_label_cross_refs` (`highlight_id`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_highlight_label_cross_refs_label_id` ON `highlight_label_cross_refs` (`label_id`)")
             }
         }
     }

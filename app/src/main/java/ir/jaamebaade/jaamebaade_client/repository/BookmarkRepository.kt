@@ -8,9 +8,9 @@ import javax.inject.Inject
 class BookmarkRepository @Inject constructor(appDatabase: AppDatabase) {
     private val db = appDatabase
     private val bookmarkDao = db.bookmarkDao()
-    fun insertBookmark(poemId: Int) {
+    fun insertBookmark(poemId: Int): Int {
         val bookmark = Bookmark(poemId = poemId)
-        bookmarkDao.insertBookmark(bookmark)
+        return bookmarkDao.insertBookmark(bookmark).toInt()
     }
 
     fun isPoemBookmarked(poemId: Int): Boolean {
