@@ -4,8 +4,8 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     id("androidx.room")
-//    id("com.google.gms.google-services")
-//    id("com.google.firebase.crashlytics")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 room {
@@ -17,7 +17,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "ir.jaamebaade.jaamebaade_client_debug"
+        applicationId = "ir.jaamebaade.jaamebaade_client"
         minSdk = 27
         targetSdk = 36
         versionCode = 11
