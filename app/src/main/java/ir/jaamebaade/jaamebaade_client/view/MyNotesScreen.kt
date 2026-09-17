@@ -48,11 +48,13 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
 import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
 import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
 import ir.jaamebaade.jaamebaade_client.view.components.ComposableCardItem
+import ir.jaamebaade.jaamebaade_client.view.components.base.ListRowDivider
 import ir.jaamebaade.jaamebaade_client.view.components.bookmark.BottomSheetListItem
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyNoteViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
 import java.util.Date
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,7 +80,7 @@ fun MyNotesScreen(
 
         Row(
             modifier = Modifier
-                .padding(10.dp)
+                .padding(Dimens.space10)
                 .fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
@@ -88,7 +90,7 @@ fun MyNotesScreen(
                 tint = MaterialTheme.colorScheme.outlineVariant,
                 contentDescription = "",
             )
-            Spacer(modifier = Modifier.padding(3.dp))
+            Spacer(modifier = Modifier.width(Dimens.space8))
             Text(
                 text = stringResource(R.string.NO_NOTE),
                 style = MaterialTheme.typography.headlineLarge,
@@ -113,15 +115,7 @@ fun MyNotesScreen(
                 )
 
                 if (index != notes.size - 1)
-                    HorizontalDivider(
-                        modifier = Modifier.padding(
-                            start = 90.dp,
-                            end = 0.dp,
-                            top = 5.dp,
-                            bottom = 5.dp
-                        ),
-                        color = MaterialTheme.colorScheme.outline
-                    )
+                    ListRowDivider()
 
             }
         }
@@ -145,7 +139,7 @@ fun MyNotesScreen(
                     }
                     HorizontalDivider(
                         color = MaterialTheme.colorScheme.outline,
-                        modifier = Modifier.padding(start = 20.dp, end = 5.dp)
+                        modifier = Modifier.padding(start = Dimens.space20, end = Dimens.space4)
                     )
                     BottomSheetListItem(
                         icon = ImageVector.vectorResource(R.drawable.delete),

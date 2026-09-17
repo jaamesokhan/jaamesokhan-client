@@ -52,6 +52,7 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.wrapper.CategoryGraphNode
 import java.time.LocalTime
 import java.util.Locale
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,7 +77,7 @@ fun RandomPoemOptions(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 24.dp)
+            .padding(horizontal = Dimens.space16, vertical = Dimens.space24)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -97,7 +98,7 @@ fun RandomPoemOptions(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                    .padding(horizontal = Dimens.space20, vertical = Dimens.space16),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -130,13 +131,13 @@ fun RandomPoemOptions(
                     .fillMaxWidth()
                     .clip(MaterialTheme.shapes.medium)
                     .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
+                    .padding(horizontal = Dimens.space12, vertical = Dimens.space8)
             ) {
                 Text(
                     text = stringResource(id = R.string.RANDOM_POEM_CATEGORY_DESCRIPTION),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = Dimens.space8)
                 )
                 RecursiveCheckList(categories = poetsWithCategories!!, onChange = {
                     downloadedPoetViewModel.saveSelectedCategoriesForRandomPoem()
@@ -155,7 +156,7 @@ fun RandomPoemOptions(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                    .padding(horizontal = Dimens.space20, vertical = Dimens.space16),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -194,7 +195,7 @@ fun RandomPoemOptions(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 16.dp),
+                        .padding(horizontal = Dimens.space20, vertical = Dimens.space16),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Row(
@@ -242,13 +243,13 @@ fun RandomPoemOptions(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(24.dp),
+                            .padding(Dimens.space24),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
                             text = stringResource(id = R.string.CHANGE_TIME),
                             style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(bottom = 16.dp)
+                            modifier = Modifier.padding(bottom = Dimens.space16)
                         )
                         TimePicker(
                             state = pickerState,
@@ -256,7 +257,7 @@ fun RandomPoemOptions(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 16.dp),
+                                .padding(top = Dimens.space16),
                             horizontalArrangement = Arrangement.End
                         ) {
                             TextButton(onClick = { showTimePicker = false }) {

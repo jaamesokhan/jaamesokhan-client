@@ -131,7 +131,7 @@ fun Navbar(navController: NavController) {
                             .fillMaxWidth()
                             .height(88.dp)
                             .background(color = MaterialTheme.colorScheme.surface)
-                            .padding(horizontal = 8.dp),
+                            .padding(horizontal = Dimens.space8),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {

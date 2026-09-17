@@ -77,6 +77,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.poem.ToggleButtonItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
 import kotlinx.coroutines.delay
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -409,7 +410,7 @@ fun PoemScreen(
         LazyColumn(
             modifier = Modifier
                 .nestedScroll(poemHeaderScrollConnection)
-                .padding(10.dp),
+                .padding(Dimens.space10),
             state = lazyListState
         ) {
             itemsIndexed(versesWithHighlights) { index, verseWithHighlights ->
@@ -471,7 +472,7 @@ private fun HighlightHintMessage(viewModel: PoemViewModel) {
     Row(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.primary90)
-            .padding(vertical = 8.dp)
+            .padding(vertical = Dimens.space8)
             .fillMaxWidth(),
 
         verticalAlignment = Alignment.CenterVertically,
@@ -479,7 +480,7 @@ private fun HighlightHintMessage(viewModel: PoemViewModel) {
     ) {
         Row(
             modifier = Modifier
-                .padding(start = 12.dp)
+                .padding(start = Dimens.space12)
                 .weight(2.0f),
             verticalAlignment = Alignment.CenterVertically,
         ) {

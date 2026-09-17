@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.ui.theme.PillShape
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun CategoryToggleChip(
@@ -38,7 +39,7 @@ fun CategoryToggleChip(
                 shape = PillShape
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = Dimens.space16),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {

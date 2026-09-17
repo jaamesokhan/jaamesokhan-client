@@ -35,6 +35,7 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.poem.HighlightActionButton
 import ir.jaamebaade.jaamebaade_client.viewmodel.SelectionOptionViewModel
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun SelectionBottomSheet(
@@ -60,10 +61,10 @@ fun SelectionBottomSheet(
             failureCallBack = {
                 changeMeaningFetchStatus(Status.FAILED)
             })
-        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp)) {
+        Column(modifier = Modifier.padding(horizontal = Dimens.space16, vertical = Dimens.space24)) {
             Row(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(Dimens.space8)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Absolute.Left,
             ) {
@@ -96,7 +97,7 @@ fun SelectionBottomSheet(
                 }
             }
             Row(
-                modifier = Modifier.padding(bottom = 8.dp),
+                modifier = Modifier.padding(bottom = Dimens.space8),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -130,7 +131,7 @@ fun SelectionBottomSheet(
                         color = MaterialTheme.colorScheme.outlineVariant,
                         modifier = Modifier
                             .padding(
-                                bottom = 32.dp
+                                bottom = Dimens.space34
                             )
                             .verticalScroll(rememberScrollState()),
                     )

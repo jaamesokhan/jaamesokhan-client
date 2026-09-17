@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.ui.theme.ChipShape
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun CategoryFilterChip(
@@ -39,7 +40,7 @@ fun CategoryFilterChip(
             .background(background)
             .border(1.dp, borderColor, ChipShape)
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = Dimens.space12),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
@@ -64,7 +65,7 @@ fun AddCategoryChip(
             .height(34.dp)
             .dashedBorder(MaterialTheme.colorScheme.outline, cornerRadius = 17.dp)
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = Dimens.space12),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {

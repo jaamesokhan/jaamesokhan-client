@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -46,8 +45,10 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
 import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
 import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
 import ir.jaamebaade.jaamebaade_client.view.components.ComposableCardItem
+import ir.jaamebaade.jaamebaade_client.view.components.base.ListRowDivider
 import ir.jaamebaade.jaamebaade_client.viewmodel.HistoryViewModel
 import java.util.Date
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,7 +86,7 @@ fun HistoryScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 12.dp)
+                .padding(horizontal = Dimens.space8, vertical = Dimens.space12)
                 .background(color = MaterialTheme.colorScheme.surface),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -118,7 +119,7 @@ fun HistoryScreen(
         if (poemHistory.value.isEmpty()) {
             Row(
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(Dimens.space10)
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background),
                 verticalAlignment = Alignment.CenterVertically,
@@ -142,7 +143,7 @@ fun HistoryScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(end = 12.dp)
+                    .padding(end = Dimens.space12)
             ) {
                 itemsIndexed(
                     items = poemHistory.value, key = { _, item ->
@@ -158,15 +159,7 @@ fun HistoryScreen(
                     )
 
                     if (index != poemHistory.value.size - 1)
-                        HorizontalDivider(
-                            modifier = Modifier.padding(
-                                start = 90.dp,
-                                end = 0.dp,
-                                top = 5.dp,
-                                bottom = 5.dp
-                            ),
-                            color = MaterialTheme.colorScheme.outline
-                        )
+                        ListRowDivider()
                 }
             }
         }

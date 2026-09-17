@@ -51,6 +51,7 @@ import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
 import ir.jaamebaade.jaamebaade_client.view.components.base.NotFoundBox
 import ir.jaamebaade.jaamebaade_client.view.components.search.DropDownToggleOption
 import ir.jaamebaade.jaamebaade_client.view.components.search.OptionDropDown
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun SearchBar(
@@ -91,7 +92,7 @@ fun SearchBar(
             },
             modifier = modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(Dimens.space16)
                 .background(Color.Transparent),
             shape = RoundedCornerShape(15.dp),
             colors = TextFieldDefaults.colors(
@@ -153,7 +154,7 @@ fun SearchBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = Dimens.space16),
             horizontalArrangement = Arrangement.Absolute.Left
         ) {
             OptionDropDown(
@@ -199,7 +200,7 @@ fun SearchBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surface)
-                    .padding(8.dp)
+                    .padding(Dimens.space8)
 
             )
         }
@@ -217,7 +218,7 @@ fun SearchHistoryList(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 32.dp)
+            .padding(horizontal = Dimens.space34)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

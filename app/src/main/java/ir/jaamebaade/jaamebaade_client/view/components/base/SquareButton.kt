@@ -27,6 +27,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 enum class ComposableSquareButtonStyle {
     Filled, Outlined
@@ -65,7 +66,7 @@ fun SquareButton(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(roundedCornerShapeSize.dp))
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = Dimens.space12)
             .then(clickableModifier),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -74,7 +75,7 @@ fun SquareButton(
             modifier = Modifier
                 .clip(RoundedCornerShape(roundedCornerShapeSize.dp))
                 .background(backgroundColor)
-                .padding(4.dp)
+                .padding(Dimens.space4)
                 .size(size.dp)
         ) {
             icon?.let {
@@ -99,7 +100,7 @@ fun SquareButton(
             Text(
                 text = it,
                 style = textStyle,
-                modifier = Modifier.padding(top = 4.dp),
+                modifier = Modifier.padding(top = Dimens.space4),
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
             )

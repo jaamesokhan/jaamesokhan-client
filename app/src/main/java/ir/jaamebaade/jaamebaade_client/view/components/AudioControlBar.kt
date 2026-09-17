@@ -67,6 +67,7 @@ import ir.jaamebaade.jaamebaade_client.utility.replaceToPersianNumber
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -166,7 +167,7 @@ fun AudioControlBar(navController: NavController, viewModel: AppNavHostViewModel
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
+                    .padding(horizontal = Dimens.space8),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
@@ -273,7 +274,7 @@ private fun AudioProgressControls(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = Dimens.space12),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Box(
@@ -460,7 +461,7 @@ private fun AudioControlBottomSheetContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
+            .padding(horizontal = Dimens.space16, vertical = Dimens.space4),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Row(
@@ -498,7 +499,7 @@ private fun AudioControlBottomSheetContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp),
+                .padding(bottom = Dimens.space8),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {

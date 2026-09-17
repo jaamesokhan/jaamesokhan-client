@@ -28,6 +28,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButt
 import ir.jaamebaade.jaamebaade_client.view.components.base.ComposableSquareButtonStyle
 import ir.jaamebaade.jaamebaade_client.view.components.base.RectangularButton
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 enum class PoetInfoButtonType {
     ADD, OPEN, LOADING, FAILED, DELETE
@@ -54,7 +55,7 @@ fun PoetBottomSheetContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 12.dp)
+                    .padding(horizontal = Dimens.space8, vertical = Dimens.space12)
                     .background(color = MaterialTheme.colorScheme.surface),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -78,13 +79,13 @@ fun PoetBottomSheetContent(
         Column(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.background)
-                .padding(vertical = 24.dp)
+                .padding(vertical = Dimens.space24)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(4.dp)
+                    .padding(Dimens.space4)
             ) {
                 SquareImage(
                     imageUrl = poet.imageUrl,
@@ -95,7 +96,7 @@ fun PoetBottomSheetContent(
                     text = poet.name,
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(Dimens.space16),
                 )
                 when (buttonType) {
                     PoetInfoButtonType.ADD -> {
@@ -139,7 +140,7 @@ fun PoetBottomSheetContent(
                     text = poet.description,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(horizontal = 26.dp, vertical = 16.dp),
+                    modifier = Modifier.padding(horizontal = Dimens.space24, vertical = Dimens.space16),
                 )
             }
         }

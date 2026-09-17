@@ -21,6 +21,7 @@ import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.Poet
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun BookmarkItem(
@@ -34,12 +35,12 @@ fun BookmarkItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(Dimens.space8)
             .clickable { navController.navigate("${AppRoutes.POEM}/${poet.id}/${poem.id}/-1") }) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(5.dp),
+                .padding(Dimens.space4),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {

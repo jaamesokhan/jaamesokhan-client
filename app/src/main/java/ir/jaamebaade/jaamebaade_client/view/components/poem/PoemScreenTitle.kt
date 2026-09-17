@@ -35,6 +35,7 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun PoemScreenTitle(
@@ -50,11 +51,11 @@ fun PoemScreenTitle(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 14.dp, vertical = 4.dp),
+            .padding(horizontal = Dimens.space14, vertical = Dimens.space4),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SquareImage(
-            modifier = Modifier.padding(bottom = 8.dp),
+            modifier = Modifier.padding(bottom = Dimens.space8),
             imageUrl = poemPath.poet.imageUrl,
             contentDescription = poemPath.poet.name,
             size = 88,
@@ -98,7 +99,7 @@ fun PoemScreenTitle(
                         onDragCancel = { totalDragX = 0f }
                     )
                 }
-                .padding(vertical = 4.dp, horizontal = 10.dp),
+                .padding(vertical = Dimens.space4, horizontal = Dimens.space10),
         ) {
             IconButton(
                 modifier = Modifier

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun PoetInformationBox(
@@ -31,13 +32,13 @@ fun PoetInformationBox(
 
     Column(
         modifier = modifier
-            .padding(horizontal = 24.dp)
-            .padding(bottom = 30.dp)
+            .padding(horizontal = Dimens.space24)
+            .padding(bottom = Dimens.space28)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 12.dp),
+                .padding(bottom = Dimens.space12),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SquareImage(
@@ -49,7 +50,7 @@ fun PoetInformationBox(
                 text = poet.name,
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(top = 8.dp)
+                modifier = Modifier.padding(top = Dimens.space8)
             )
         }
 

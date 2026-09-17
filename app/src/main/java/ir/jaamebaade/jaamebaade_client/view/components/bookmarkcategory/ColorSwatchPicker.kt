@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.model.CATEGORY_COLOR_PALETTE
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun ColorSwatchPicker(
@@ -34,7 +35,7 @@ fun ColorSwatchPicker(
                     .background(hex.toComposeColor())
                     .then(
                         if (isSelected) Modifier
-                            .padding(2.dp)
+                            .padding(Dimens.space2)
                             .border(2.dp, MaterialTheme.colorScheme.tertiary, CircleShape)
                         else Modifier
                     )

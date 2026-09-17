@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun SettingListItem(
@@ -43,7 +44,7 @@ fun SettingListItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier.padding(start = 16.dp)) {
+            Box(modifier = Modifier.padding(start = Dimens.space16)) {
                 leadingIcon()
             }
             Spacer(modifier = Modifier.width(12.dp))
@@ -54,7 +55,7 @@ fun SettingListItem(
                 Row(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .padding(end = 20.dp)
+                        .padding(end = Dimens.space20)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,

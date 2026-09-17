@@ -32,6 +32,7 @@ import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
 import ir.jaamebaade.jaamebaade_client.ui.theme.CardShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN95Light
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun RandomPoemBox(
@@ -41,7 +42,7 @@ fun RandomPoemBox(
 ) {
     Card(
         modifier = Modifier
-            .padding(vertical = 32.dp)
+            .padding(vertical = Dimens.space34)
             .height(228.dp)
             .clip(CardShape)
             .fillMaxWidth(),
@@ -66,7 +67,7 @@ fun RandomPoemBox(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(16.dp)
+                    .padding(Dimens.space16)
                     .weight(1f)
                     .width(0.dp),
             ) {

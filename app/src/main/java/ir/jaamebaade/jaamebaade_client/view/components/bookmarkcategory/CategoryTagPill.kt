@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.ui.theme.PillShape
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun CategoryTagPill(
@@ -28,7 +29,7 @@ fun CategoryTagPill(
             .clip(PillShape)
             .background(MaterialTheme.colorScheme.surface)
             .border(1.dp, MaterialTheme.colorScheme.surfaceVariant, PillShape)
-            .padding(horizontal = 9.dp),
+            .padding(horizontal = Dimens.space8),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
@@ -48,7 +49,7 @@ fun AddToCategoryPill(
             .height(26.dp)
             .dashedBorder(MaterialTheme.colorScheme.outline, cornerRadius = 13.dp)
             .clickable(onClick = onClick)
-            .padding(horizontal = 9.dp),
+            .padding(horizontal = Dimens.space8),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(text = text, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.outlineVariant)

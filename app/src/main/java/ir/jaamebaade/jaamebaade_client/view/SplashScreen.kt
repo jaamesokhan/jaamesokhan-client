@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import kotlinx.coroutines.delay
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 // How long the splash screen waits before assuming the load is taking unusually long
 // (e.g. opening a big local DB after many poets were downloaded) and surfacing a hint
@@ -64,7 +65,7 @@ fun SplashScreen() {
                 enter = fadeIn(),
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(bottom = 48.dp)
+                    .padding(bottom = Dimens.space34)
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator(
@@ -73,7 +74,7 @@ fun SplashScreen() {
                     )
                     Text(
                         text = stringResource(id = R.string.SLOW_LOAD_HINT),
-                        modifier = Modifier.padding(top = 12.dp),
+                        modifier = Modifier.padding(top = Dimens.space12),
                         color = MaterialTheme.colorScheme.onBackground,
                     )
                 }

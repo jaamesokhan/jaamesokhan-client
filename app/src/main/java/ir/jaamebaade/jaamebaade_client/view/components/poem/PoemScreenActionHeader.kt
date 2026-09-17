@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareToggleIconButton
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Immutable
 data class ToggleButtonItem(
@@ -34,7 +35,7 @@ fun PoemScreenActionHeader(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .width(190.dp)
-                .padding(vertical = 16.dp, horizontal = 20.dp)
+                .padding(vertical = Dimens.space16, horizontal = Dimens.space20)
         ) {
 
             toggleButtonItems.forEach { item ->

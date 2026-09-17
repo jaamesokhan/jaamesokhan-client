@@ -62,6 +62,7 @@ import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.TopBarViewModel
 import kotlinx.coroutines.launch
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -248,7 +249,7 @@ private fun TopBarTitleRow(
                 )
             }
         }
-        Row(modifier = Modifier.padding(horizontal = 12.dp)) {
+        Row(modifier = Modifier.padding(horizontal = Dimens.space12)) {
             if (showHistory) {
                 IconButton(onClick = onHistoryClick) {
                     Icon(

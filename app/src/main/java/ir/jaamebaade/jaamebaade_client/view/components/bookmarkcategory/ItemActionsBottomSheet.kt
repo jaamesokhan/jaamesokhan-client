@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.bookmark.BottomSheetListItem
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun ItemActionsBottomSheet(
@@ -35,7 +36,7 @@ fun ItemActionsBottomSheet(
             )
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.padding(start = 20.dp, end = 5.dp)
+                modifier = Modifier.padding(start = Dimens.space20, end = Dimens.space4)
             )
             BottomSheetListItem(
                 icon = Icons.AutoMirrored.Filled.ArrowForward,
@@ -44,7 +45,7 @@ fun ItemActionsBottomSheet(
             )
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.padding(start = 20.dp, end = 5.dp)
+                modifier = Modifier.padding(start = Dimens.space20, end = Dimens.space4)
             )
             BottomSheetListItem(
                 icon = Icons.Outlined.Share,
@@ -53,7 +54,7 @@ fun ItemActionsBottomSheet(
             )
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.padding(start = 20.dp, end = 5.dp)
+                modifier = Modifier.padding(start = Dimens.space20, end = Dimens.space4)
             )
             BottomSheetListItem(
                 icon = ImageVector.vectorResource(R.drawable.delete),

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun CardItem(
@@ -51,7 +52,7 @@ fun CardItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp),
+                .padding(vertical = Dimens.space12),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -61,7 +62,7 @@ fun CardItem(
                 contentDescription = null,
                 size = 66,
                 roundedCornerShapeSize = 20,
-                modifier = Modifier.padding(start = 20.dp, end = 0.dp)
+                modifier = Modifier.padding(start = Dimens.space20, end = 0.dp)
             )
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -88,7 +89,7 @@ fun CardItem(
                     icon?.let {
                         IconButton(
                             modifier = Modifier
-                                .padding(end = 5.dp)
+                                .padding(end = Dimens.space4)
                                 .weight(1f),
                             onClick = onIconClick
                         ) {
@@ -151,7 +152,7 @@ fun ComposableCardItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp),
+                .padding(vertical = Dimens.space12),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
 
@@ -161,7 +162,7 @@ fun ComposableCardItem(
                 contentDescription = null,
                 size = 66,
                 roundedCornerShapeSize = 20,
-                modifier = Modifier.padding(start = 20.dp, end = 0.dp)
+                modifier = Modifier.padding(start = Dimens.space20, end = 0.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column(
@@ -170,7 +171,7 @@ fun ComposableCardItem(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
-                       // .padding(end = 12.dp),
+                       // .padding(end = Dimens.space12),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -186,7 +187,7 @@ fun ComposableCardItem(
                     if (icon != null) {
                         IconButton(
                             modifier = Modifier
-                                .padding(end = 5.dp)
+                                .padding(end = Dimens.space4)
                                 .weight(1f),
                             onClick = onIconClick
                         ) {

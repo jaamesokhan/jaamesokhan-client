@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -58,6 +57,7 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.neutralN70
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
 import ir.jaamebaade.jaamebaade_client.view.components.LoadingIndicator
+import ir.jaamebaade.jaamebaade_client.view.components.base.ListRowDivider
 import ir.jaamebaade.jaamebaade_client.view.components.DownloadablePoetItem
 import ir.jaamebaade.jaamebaade_client.view.components.ServerFailure
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoetViewModel
@@ -65,6 +65,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import ir.jaamebaade.jaamebaade_client.view.components.PoetBottomSheetContent
 import ir.jaamebaade.jaamebaade_client.view.components.PoetInfoButtonType
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun DownloadablePoetsScreen(
@@ -89,7 +90,7 @@ fun DownloadablePoetsScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(Dimens.space16)
                 .background(Color.Transparent),
             shape = RoundedCornerShape(15.dp),
             colors = TextFieldDefaults.colors(
@@ -215,15 +216,7 @@ private fun DownloadablePoetsList(
                     clickedPoet = poet
                 })
             if (index != poets.size - 1) {
-                HorizontalDivider(
-                    modifier = Modifier.padding(
-                        start = 90.dp,
-                        end = 0.dp,
-                        top = 5.dp,
-                        bottom = 5.dp
-                    ),
-                    color = MaterialTheme.colorScheme.outline
-                )
+                ListRowDivider()
             }
         }
         item {

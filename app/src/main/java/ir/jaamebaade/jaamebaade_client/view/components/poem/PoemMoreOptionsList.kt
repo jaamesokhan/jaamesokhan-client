@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Immutable
 data class PoemOptionItem(
@@ -21,8 +22,8 @@ data class PoemOptionItem(
 fun PoemMoreOptionsList(optionsList: List<PoemOptionItem>) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 8.dp)
-            .padding(bottom = 32.dp)
+            .padding(horizontal = Dimens.space8)
+            .padding(bottom = Dimens.space34)
     ) {
         optionsList.forEach { item ->
             MenuRowItem(

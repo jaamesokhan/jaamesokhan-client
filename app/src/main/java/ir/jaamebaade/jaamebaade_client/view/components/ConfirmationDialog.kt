@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.ui.theme.ButtonShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.CardShape
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun ConfirmationDialog(
@@ -23,7 +24,7 @@ fun ConfirmationDialog(
         text = { Text(message) },
         confirmButton = {
             Button(
-                modifier = Modifier.padding(8.dp, 0.dp),
+                modifier = Modifier.padding(Dimens.space8, 0.dp),
                 shape = ButtonShape,
                 onClick = {
                     onConfirm()
@@ -34,7 +35,7 @@ fun ConfirmationDialog(
         },
         dismissButton = {
             Button(
-                modifier = Modifier.padding(8.dp, 0.dp),
+                modifier = Modifier.padding(Dimens.space8, 0.dp),
                 shape = ButtonShape,
                 onClick = {
                     onDismiss()

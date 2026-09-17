@@ -41,6 +41,7 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS40
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.viewmodel.CommentViewModel
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +68,7 @@ fun NotesBottomSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 12.dp)
+                    .padding(horizontal = Dimens.space8, vertical = Dimens.space12)
                     .background(color = MaterialTheme.colorScheme.surface),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -119,7 +120,7 @@ fun NotesBottomSheet(
                             HorizontalDivider(
                                 color = MaterialTheme.colorScheme.outline,
                                 modifier = Modifier
-                                    .padding(horizontal = 32.dp)
+                                    .padding(horizontal = Dimens.space34)
                             )
                         }
                     }

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.LabelWithCount
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun ManageCategoriesBottomSheet(
@@ -44,7 +45,7 @@ fun ManageCategoriesBottomSheet(
                 text = title,
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                modifier = Modifier.padding(horizontal = Dimens.space24, vertical = Dimens.space8),
             )
             Column(
                 modifier = Modifier
@@ -55,7 +56,7 @@ fun ManageCategoriesBottomSheet(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 24.dp, vertical = 8.dp),
+                            .padding(horizontal = Dimens.space24, vertical = Dimens.space8),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
@@ -93,7 +94,7 @@ fun ManageCategoriesBottomSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                    .padding(horizontal = Dimens.space24, vertical = Dimens.space16),
             ) {
                 Button(
                     onClick = onCreateNew,
@@ -104,7 +105,7 @@ fun ManageCategoriesBottomSheet(
                     Icon(
                         imageVector = Icons.Filled.Add,
                         contentDescription = null,
-                        modifier = Modifier.padding(start = 8.dp),
+                        modifier = Modifier.padding(start = Dimens.space8),
                     )
                 }
             }

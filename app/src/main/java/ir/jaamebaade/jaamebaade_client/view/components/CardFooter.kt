@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @Composable
 fun CardFooter(modifier: Modifier = Modifier, text: String) {
@@ -20,7 +21,7 @@ fun CardFooter(modifier: Modifier = Modifier, text: String) {
     ) {
         Text(
             modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 2.dp)
+                .padding(horizontal = Dimens.space8, vertical = Dimens.space2)
                 .align(Alignment.CenterEnd),
             text = text,
             color = MaterialTheme.colorScheme.onBackground,
