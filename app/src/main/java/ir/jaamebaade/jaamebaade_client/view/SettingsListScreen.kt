@@ -28,13 +28,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
+import ir.jaamebaade.jaamebaade_client.repository.RandomPoemLayoutRepository
 import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.setting.CustomRadioButton
 import ir.jaamebaade.jaamebaade_client.view.components.setting.SettingListItem
+import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemLayoutPicker
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemOptions
+import ir.jaamebaade.jaamebaade_client.view.components.rememberSampleRandomPoemPreview
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,15 +46,26 @@ fun SettingsListScreen(
     modifier: Modifier = Modifier,
     fontRepository: FontRepository,
     themeRepository: ThemeRepository,
-    openRandomSettings: Boolean = false
+    randomPoemLayoutRepository: RandomPoemLayoutRepository,
+    openRandomSettings: Boolean = false,
+    openRandomLayout: Boolean = false,
 ) {
     var selectedPoemFontFamily by remember { mutableStateOf(fontRepository.poemFontFamily.value) }
     var selectedPoemFontSize by remember { mutableStateOf(fontRepository.poemFontSize.value) }
     var selectedTheme by remember { mutableStateOf(themeRepository.appTheme.value) }
-    var selectedSettingItem by remember(openRandomSettings) {
-        mutableStateOf<SettingItem?>(if (openRandomSettings) SettingItem.RANDOM_POEM else null)
+    var selectedRandomPoemLayout by remember { mutableStateOf(randomPoemLayoutRepository.layout.value) }
+    var selectedSettingItem by remember(openRandomSettings, openRandomLayout) {
+        mutableStateOf<SettingItem?>(
+            when {
+                openRandomSettings -> SettingItem.RANDOM_POEM
+                openRandomLayout -> SettingItem.RANDOM_POEM_LAYOUT
+                else -> null
+            }
+        )
     }
-    var showBottomSheet by remember(openRandomSettings) { mutableStateOf(openRandomSettings) }
+    var showBottomSheet by remember(openRandomSettings, openRandomLayout) {
+        mutableStateOf(openRandomSettings || openRandomLayout)
+    }
     Column(modifier = modifier.fillMaxWidth()) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -117,6 +131,25 @@ fun SettingsListScreen(
                 }, onClick = {
                     showBottomSheet = true
                     selectedSettingItem = SettingItem.RANDOM_POEM
+                }
+            )
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = Dimens.space4, horizontal = Dimens.space8),
+                color = MaterialTheme.colorScheme.outline
+            )
+
+            SettingListItem(
+                "${stringResource(R.string.RANDOM_POEM_LAYOUT)} ${selectedRandomPoemLayout.displayName}",
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.poem),
+                        contentDescription = stringResource(R.string.RANDOM_POEM_LAYOUT),
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }, onClick = {
+                    showBottomSheet = true
+                    selectedSettingItem = SettingItem.RANDOM_POEM_LAYOUT
                 }
             )
             HorizontalDivider(
@@ -223,6 +256,17 @@ fun SettingsListScreen(
                         RandomPoemOptions()
                     }
 
+                    SettingItem.RANDOM_POEM_LAYOUT -> {
+                        RandomPoemLayoutPicker(
+                            selected = selectedRandomPoemLayout,
+                            samplePoem = rememberSampleRandomPoemPreview(),
+                            onSelect = { layout ->
+                                selectedRandomPoemLayout = layout
+                                randomPoemLayoutRepository.setLayout(layout)
+                            },
+                        )
+                    }
+
                     null -> {
                         // Do nothing
                     }
@@ -235,5 +279,5 @@ fun SettingsListScreen(
 
 
 enum class SettingItem {
-    FONT, FONT_SIZE, THEME, RANDOM_POEM
+    FONT, FONT_SIZE, THEME, RANDOM_POEM, RANDOM_POEM_LAYOUT
 }

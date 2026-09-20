@@ -30,6 +30,7 @@ import androidx.navigation.navArgument
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
+import ir.jaamebaade.jaamebaade_client.repository.RandomPoemLayoutRepository
 import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.JaamebaadeclientTheme
@@ -57,6 +58,7 @@ import kotlin.time.Duration.Companion.seconds
 fun AppNavHost(
     fontRepository: FontRepository,
     themeRepository: ThemeRepository,
+    randomPoemLayoutRepository: RandomPoemLayoutRepository,
     sharedPrefManager: SharedPrefManager,
     requestPermissionLauncher: (String) -> Unit,
     startDestination: String?,
@@ -159,9 +161,13 @@ fun AppNavHost(
                             )
                         }
                         animatedComposable(
-                            route = "${AppRoutes.SETTINGS_SCREEN}?openRandomSettings={openRandomSettings}",
+                            route = "${AppRoutes.SETTINGS_SCREEN}?openRandomSettings={openRandomSettings}&openRandomLayout={openRandomLayout}",
                             arguments = listOf(
                                 navArgument("openRandomSettings") {
+                                    type = NavType.BoolType
+                                    defaultValue = false
+                                },
+                                navArgument("openRandomLayout") {
                                     type = NavType.BoolType
                                     defaultValue = false
                                 }
@@ -169,11 +175,15 @@ fun AppNavHost(
                         ) { backStackEntry ->
                             val openRandomSettings =
                                 backStackEntry.arguments?.getBoolean("openRandomSettings") ?: false
+                            val openRandomLayout =
+                                backStackEntry.arguments?.getBoolean("openRandomLayout") ?: false
                             SettingsListScreen(
                                 modifier = Modifier.padding(innerPadding),
                                 fontRepository = fontRepository,
                                 themeRepository = themeRepository,
-                                openRandomSettings = openRandomSettings
+                                randomPoemLayoutRepository = randomPoemLayoutRepository,
+                                openRandomSettings = openRandomSettings,
+                                openRandomLayout = openRandomLayout,
                             )
                         }
                         animatedComposable(route = AppRoutes.SEARCH_SCREEN.toString()) {

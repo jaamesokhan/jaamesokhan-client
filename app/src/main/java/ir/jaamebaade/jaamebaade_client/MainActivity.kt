@@ -11,6 +11,7 @@ import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
 import ir.jaamebaade.jaamebaade_client.notifications.NotificationService
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
+import ir.jaamebaade.jaamebaade_client.repository.RandomPoemLayoutRepository
 import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import javax.inject.Inject
@@ -23,6 +24,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var themeRepository: ThemeRepository
+
+    @Inject
+    lateinit var randomPoemLayoutRepository: RandomPoemLayoutRepository
 
     @Inject
     lateinit var sharedPrefManager: SharedPrefManager
@@ -45,6 +49,7 @@ class MainActivity : ComponentActivity() {
             AppNavHost(
                 fontRepository,
                 themeRepository,
+                randomPoemLayoutRepository,
                 sharedPrefManager,
                 requestPermissionLauncher::launch,
                 startDestination,

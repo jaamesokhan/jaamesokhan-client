@@ -106,6 +106,14 @@
     <string name="CLOSE">بستن</string>
     <string name="RANDOM_POEM">شعر تصادفی</string>
     <string name="RANDOM_POEM_OPTIONS">تنظیمات شعر تصادفی</string>
+    <string name="RANDOM_POEM_LAYOUT">چیدمان شعر تصادفی:</string>
+    <string name="RANDOM_POEM_ANOTHER">شعر دیگر</string>
+    <string name="RANDOM_POEM_LAYOUT_INTRO_TITLE">چیدمان برای شعر تصادفی</string>
+    <string name="RANDOM_POEM_LAYOUT_INTRO_BODY">می‌توانید ظاهر کارت شعر تصادفی صفحه اصلی را از میان چند طرح انتخاب کنید، یا آن را کاملاً پنهان کنید.</string>
+    <string name="RANDOM_POEM_LAYOUT_INTRO_CONFIRM">انتخاب چیدمان</string>
+    <string name="RANDOM_POEM_LAYOUT_INTRO_DISMISS">بعداً</string>
+    <string name="RANDOM_POEM_SAMPLE_POET">فردوسی</string>
+    <string name="RANDOM_POEM_SAMPLE_BOOK">شاهنامه</string>
     <string name="CATEGORY">دسته‌بندی</string>
     <string name="POEM">شعر</string>
     <string name="INTRO_TO_FRIEND">معرفی به دوستان</string>
