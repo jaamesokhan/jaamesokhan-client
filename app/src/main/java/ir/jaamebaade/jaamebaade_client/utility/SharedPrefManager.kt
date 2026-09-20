@@ -7,6 +7,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
+import ir.jaamebaade.jaamebaade_client.ui.theme.RandomPoemLayoutType
 import java.time.LocalTime
 
 class SharedPrefManager(
@@ -16,6 +17,8 @@ class SharedPrefManager(
         const val POEM_FONT_KEY = "PoemFont"
         const val POEM_FONT_SIZE_KEY = "PoemFontSizeIndex"
         const val APP_THEME_TYPE_KEY = "AppThemeType"
+        const val RANDOM_POEM_LAYOUT_KEY = "RandomPoemLayout"
+        const val RANDOM_POEM_LAYOUT_INTRO_SEEN_KEY = "RandomPoemLayoutIntroSeen"
         const val SHOW_HINT_FOR_HIGHLIGHT_KEY = "ShowHintForHighlight"
         const val NOTIFICATION_PERMISSION_KEY = "NotificationPermission"
         const val IS_SCHEDULED_NOTIFICATIONS_ENABLED_KEY = "IsScheduledNotificationsEnabled"
@@ -71,6 +74,26 @@ class SharedPrefManager(
                 AppThemeType.valueOf(it)
             } ?: AppThemeType.SYSTEM_AUTO
         return savedTheme
+    }
+
+    fun setRandomPoemLayout(layout: RandomPoemLayoutType) {
+        sharedPreferences.edit {
+            putString(RANDOM_POEM_LAYOUT_KEY, layout.name)
+        }
+    }
+
+    fun getRandomPoemLayout(): RandomPoemLayoutType {
+        val savedLayout = sharedPreferences.getString(RANDOM_POEM_LAYOUT_KEY, null)
+        return RandomPoemLayoutType.entries.find { it.name == savedLayout }
+            ?: RandomPoemLayoutType.CLASSIC
+    }
+
+    fun setRandomPoemLayoutIntroSeen(seen: Boolean) {
+        sharedPreferences.edit { putBoolean(RANDOM_POEM_LAYOUT_INTRO_SEEN_KEY, seen) }
+    }
+
+    fun getRandomPoemLayoutIntroSeen(): Boolean {
+        return sharedPreferences.getBoolean(RANDOM_POEM_LAYOUT_INTRO_SEEN_KEY, false)
     }
 
     fun setNotificationPermissionPreference(preference: Boolean) {

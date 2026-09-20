@@ -19,6 +19,7 @@ import ir.jaamebaade.jaamebaade_client.notifications.ExactAlarmScheduler
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
+import ir.jaamebaade.jaamebaade_client.repository.RandomPoemLayoutRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatus
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatusManager
@@ -39,7 +40,20 @@ class MyPoetsViewModel @Inject constructor(
     private val verseRepository: VerseRepository,
     private val downloadStatusManager: DownloadStatusManager,
     private val sharedPrefManager: SharedPrefManager,
+    randomPoemLayoutRepository: RandomPoemLayoutRepository,
 ) : ViewModel() {
+    val randomPoemLayout = randomPoemLayoutRepository.layout
+
+    var showRandomPoemLayoutIntro by mutableStateOf(
+        !sharedPrefManager.getRandomPoemLayoutIntroSeen()
+    )
+        private set
+
+    fun dismissRandomPoemLayoutIntro() {
+        showRandomPoemLayoutIntro = false
+        sharedPrefManager.setRandomPoemLayoutIntroSeen(true)
+    }
+
     var poets by mutableStateOf<List<Poet>?>(null)
         private set
 

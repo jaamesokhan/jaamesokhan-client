@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,10 +29,12 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Status
+import ir.jaamebaade.jaamebaade_client.ui.theme.RandomPoemLayoutType
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
 import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
 import ir.jaamebaade.jaamebaade_client.view.components.PoetOptionsBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemBox
+import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemLayoutIntroDialog
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
@@ -51,19 +54,37 @@ fun MyPoetsScreen(
     val coroutineScope = rememberCoroutineScope()
     var randomPoetPreviewFetchStatus by remember { mutableStateOf(Status.LOADING) }
     val randomPoemPreview = viewModel.randomPoemPreview
+    val randomPoemLayout by viewModel.randomPoemLayout.collectAsState()
 
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedPoet by remember { mutableStateOf<Poet?>(null) }
 
     val context = LocalContext.current
+    val showRandomPoem = randomPoemLayout != RandomPoemLayoutType.HIDDEN
+
     LaunchedEffect(Unit) {
-        viewModel.getRandomPoem(onSuccess = { randomPoetPreviewFetchStatus = Status.SUCCESS })
         viewModel.startScheduler(context)
+    }
+
+    LaunchedEffect(showRandomPoem) {
+        if (showRandomPoem) {
+            viewModel.getRandomPoem(onSuccess = { randomPoetPreviewFetchStatus = Status.SUCCESS })
+        }
     }
 
     LaunchedEffect(key1 = poets) {
         if (poets != null) fetchStatus = Status.SUCCESS
+    }
+
+    if (viewModel.showRandomPoemLayoutIntro && !poets.isNullOrEmpty()) {
+        RandomPoemLayoutIntroDialog(
+            onChooseLayout = {
+                viewModel.dismissRandomPoemLayoutIntro()
+                navController.navigate("${AppRoutes.SETTINGS_SCREEN}?openRandomLayout=true")
+            },
+            onDismiss = viewModel::dismissRandomPoemLayoutIntro,
+        )
     }
 
     if (showBottomSheet && selectedPoet != null) {
@@ -85,9 +106,9 @@ fun MyPoetsScreen(
             .fillMaxSize()
             .padding(horizontal = Dimens.space16),
     ) {
-        if (randomPoetPreviewFetchStatus == Status.SUCCESS) {
+        if (showRandomPoem && randomPoetPreviewFetchStatus == Status.SUCCESS) {
             randomPoemPreview?.let {
-                RandomPoemBox(randomPoemPreview = it, onCardClick = {
+                RandomPoemBox(randomPoemPreview = it, layout = randomPoemLayout, onCardClick = {
                     if (viewModel.poets?.find { poet -> randomPoemPreview.poemPath.poet.id == poet.id } != null) {
                         navController.navigate("${AppRoutes.POEM}/${randomPoemPreview.poemPath.poet.id}/${randomPoemPreview.poemPath.poem.id}/-1")
                     } else {
