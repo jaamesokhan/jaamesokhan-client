@@ -16,14 +16,14 @@ class GanjoorApiClient @Inject constructor(
             val res = ganjoorAudioApiService.getAllRecitations(poemId).body()
             val audioLinks = mutableListOf<AudioData>()
             res?.let {
-                val recitationsMap = it["recitations"] as? List<Map<String, String>>
-                recitationsMap?.forEach { recitation ->
-                    recitation["mp3Url"]?.let { mp3Url ->
+                val recitations = (it["recitations"] as? List<*>)?.filterIsInstance<Map<*, *>>()
+                recitations?.forEach { recitation ->
+                    (recitation["mp3Url"] as? String)?.let { mp3Url ->
                         audioLinks.add(
                             AudioData(
-                                artistName = recitation["audioArtist"] ?: "",
+                                artistName = recitation["audioArtist"] as? String ?: "",
                                 poemId = poemId,
-                                syncFileUrl = recitation["xmlText"],
+                                syncFileUrl = recitation["xmlText"] as? String,
                                 audioFileUrl = mp3Url
                             )
                         )

@@ -57,7 +57,8 @@ interface VerseDao {
                 pt.id AS poet_id,
                 pt.name AS poet_name,
                 pt.description AS poet_description,
-                pt.imageUrl AS poet_imageUrl
+                pt.imageUrl AS poet_imageUrl,
+                pt.download_status AS poet_download_status
             FROM verses_fts fts
             JOIN verses v ON v.rowid = fts.docid
             JOIN poems p ON v.poem_id = p.id
@@ -90,7 +91,8 @@ interface VerseDao {
                 pt.id AS poet_id,
                 pt.name AS poet_name,
                 pt.description AS poet_description,
-                pt.imageUrl AS poet_imageUrl
+                pt.imageUrl AS poet_imageUrl,
+                pt.download_status AS poet_download_status
             FROM verses_fts fts
             JOIN verses v ON v.rowid = fts.docid
             JOIN poems p ON v.poem_id = p.id

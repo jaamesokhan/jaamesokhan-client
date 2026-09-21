@@ -37,7 +37,7 @@ import javax.inject.Inject
 class PoetViewModel @Inject constructor(
     private val poetDataManager: PoetDataManager,
     private val jaameSokhanApiClient: JaameSokhanApiClient,
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val categoryRepository: CategoryRepository,
     private val poetRepository: PoetRepository,
     private val poemRepository: PoemRepository,

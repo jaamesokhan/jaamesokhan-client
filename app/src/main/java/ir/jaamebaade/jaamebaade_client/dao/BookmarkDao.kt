@@ -33,7 +33,8 @@ interface BookmarkDao {
             poets.id AS poet_id, 
             poets.name AS poet_name,
             poets.description AS poet_description,
-            poets.imageUrl AS poet_imageUrl
+            poets.imageUrl AS poet_imageUrl,
+            poets.download_status AS poet_download_status
         FROM bookmarks
         INNER JOIN poems ON bookmarks.poem_id = poems.id
         INNER JOIN categories on poems.category_id = categories.id

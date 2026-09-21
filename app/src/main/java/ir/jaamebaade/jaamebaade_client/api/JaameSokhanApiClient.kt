@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class JaameSokhanApiClient @Inject constructor(
     private val jaameSokhanApiService: JaameSokhanApiService,
-    @RecitationsApiService private val recitationsApiService: JaameSokhanApiService,
+    @param:RecitationsApiService private val recitationsApiService: JaameSokhanApiService,
     private val ganjoorApiClient: GanjoorApiClient,
 ) {
     suspend fun getAllRecitations(

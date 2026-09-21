@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view.components.poem
 
+import android.content.ClipData
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -17,13 +18,15 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
@@ -37,7 +40,8 @@ fun PoemScreenBottomToolBar(
     onSelectModeOffToggled: () -> Unit,
 ) {
 
-    val clipboardManager = LocalClipboardManager.current
+    val clipboard = LocalClipboard.current
+    val scope = rememberCoroutineScope()
     AnimatedVisibility(
         visible = selectMode,
         enter = slideInHorizontally(animationSpec = tween(durationMillis = 200)),
@@ -84,7 +88,11 @@ fun PoemScreenBottomToolBar(
                     selectedVerses.sortBy { it.verse.verseOrder }
                     val textToCopy =
                         selectedVerses.joinToString(separator = "\n") { it.verse.text }
-                    clipboardManager.setText(AnnotatedString(textToCopy))
+                    scope.launch {
+                        clipboard.setClipEntry(
+                            ClipEntry(ClipData.newPlainText(null, textToCopy))
+                        )
+                    }
                     selectedVerses.clear()
                     onSelectModeOffToggled()
                 }
