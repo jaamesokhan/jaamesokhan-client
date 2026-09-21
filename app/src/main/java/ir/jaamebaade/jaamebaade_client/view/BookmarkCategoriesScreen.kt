@@ -34,6 +34,7 @@ import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.BookmarkCategoryItem
 import ir.jaamebaade.jaamebaade_client.model.MergedHighlight
+import ir.jaamebaade.jaamebaade_client.utility.toPersianNumber
 import ir.jaamebaade.jaamebaade_client.view.components.base.ListRowDivider
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.AddCategoryChip
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.CategoryFilterChip
@@ -82,7 +83,7 @@ fun BookmarkCategoriesScreen(
             item {
                 CategoryFilterChip(
                     name = stringResource(R.string.ALL_CATEGORIES_CHIP),
-                    count = viewModel.items.size.toString(),
+                    count = viewModel.items.size.toPersianNumber(),
                     color = null,
                     selected = viewModel.activeFilterLabelId == null,
                     onClick = { viewModel.selectFilter(null) },
@@ -91,7 +92,7 @@ fun BookmarkCategoriesScreen(
             items(viewModel.labels) { labelWithCount ->
                 CategoryFilterChip(
                     name = labelWithCount.label.name,
-                    count = labelWithCount.itemCount.toString(),
+                    count = labelWithCount.itemCount.toPersianNumber(),
                     color = labelWithCount.label.color,
                     selected = viewModel.activeFilterLabelId == labelWithCount.label.id,
                     onClick = { viewModel.selectFilter(labelWithCount.label.id) },
