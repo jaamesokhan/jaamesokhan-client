@@ -106,7 +106,8 @@ interface PoemDao {
         pt.id AS poet_id,
         pt.name AS poet_name,
         pt.description AS poet_description,
-        pt.imageUrl AS poet_imageUrl
+        pt.imageUrl AS poet_imageUrl,
+        pt.download_status AS poet_download_status
         FROM poems pm
         JOIN categories c ON c.id = pm.category_id
         JOIN poets pt ON pt.id = c.poet_id
@@ -134,7 +135,8 @@ interface PoemDao {
         pt.id AS poet_id,
         pt.name AS poet_name,
         pt.description AS poet_description,
-        pt.imageUrl AS poet_imageUrl
+        pt.imageUrl AS poet_imageUrl,
+        pt.download_status AS poet_download_status
         FROM poems pm
         JOIN categories c ON c.id = pm.category_id
         JOIN poets pt ON pt.id = c.poet_id

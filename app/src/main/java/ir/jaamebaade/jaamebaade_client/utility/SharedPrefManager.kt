@@ -11,7 +11,7 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.RandomPoemLayoutType
 import java.time.LocalTime
 
 class SharedPrefManager(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
     companion object {
         const val POEM_FONT_KEY = "PoemFont"

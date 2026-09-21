@@ -42,7 +42,8 @@ interface HighlightDao {
                 pt.id AS poet_id, 
                 pt.name AS poet_name,
                 pt.description AS poet_description,
-                pt.imageUrl AS poet_imageUrl
+                pt.imageUrl AS poet_imageUrl,
+                pt.download_status AS poet_download_status
             FROM highlights hg
             JOIN verses v ON hg.verse_id = v.id
             JOIN poems p ON v.poem_id = p.id
