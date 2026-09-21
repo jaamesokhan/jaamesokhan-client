@@ -236,7 +236,17 @@ class BookmarkCategoriesViewModel @AssistedInject constructor(
 
     fun openManage() {
         activeItemId = null
-        sheet = BookmarkCategorySheetType.MANAGE
+        if (labels.isEmpty()) {
+            openNewCategory(null)
+        } else {
+            sheet = BookmarkCategorySheetType.MANAGE
+        }
+    }
+
+    private fun sheetAfterNewCategory(): BookmarkCategorySheetType = when {
+        activeItemId != null -> BookmarkCategorySheetType.PICKER
+        labels.isEmpty() -> BookmarkCategorySheetType.NONE
+        else -> BookmarkCategorySheetType.MANAGE
     }
 
     fun openNewCategory(editing: Label?) {
@@ -248,7 +258,7 @@ class BookmarkCategoriesViewModel @AssistedInject constructor(
 
     fun cancelNewCategory() {
         editingLabel = null
-        sheet = if (activeItemId != null) BookmarkCategorySheetType.PICKER else BookmarkCategorySheetType.MANAGE
+        sheet = sheetAfterNewCategory()
     }
 
     fun onDraftNameChange(value: String) {
@@ -277,7 +287,7 @@ class BookmarkCategoriesViewModel @AssistedInject constructor(
             editingLabel = null
             draftName = ""
             draftColor = CATEGORY_COLOR_PALETTE.first()
-            sheet = if (activeItemId != null) BookmarkCategorySheetType.PICKER else BookmarkCategorySheetType.MANAGE
+            sheet = sheetAfterNewCategory()
             loadLabels()
         }
     }
