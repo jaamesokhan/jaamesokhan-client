@@ -27,6 +27,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.LabelWithCount
+import ir.jaamebaade.jaamebaade_client.utility.toPersianNumber
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
@@ -82,7 +83,7 @@ fun ManageCategoriesBottomSheet(
                                 modifier = Modifier.weight(1f),
                             )
                             Text(
-                                text = labelWithCount.itemCount.toString(),
+                                text = labelWithCount.itemCount.toPersianNumber(),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.outlineVariant,
                             )
