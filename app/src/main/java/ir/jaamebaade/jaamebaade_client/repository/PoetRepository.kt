@@ -18,5 +18,7 @@ class PoetRepository @Inject constructor(appDatabase: AppDatabase) {
 
     fun updatePoetDownloadStatus(poet: Poet) = poetDao.update(poet)
 
+    fun updatePoetImageUrl(poetId: Int, imageUrl: String?) = poetDao.updateImageUrl(poetId, imageUrl)
+
     fun getAllPoetsCount() = poetDao.getAllPoetsCount()
 }

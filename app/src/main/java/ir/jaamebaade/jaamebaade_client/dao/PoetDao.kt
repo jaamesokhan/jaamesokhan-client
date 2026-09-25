@@ -22,6 +22,9 @@ interface PoetDao {
     @Update
     fun update(poet: Poet)
 
+    @Query("UPDATE poets SET imageUrl = :imageUrl WHERE id = :poetId")
+    fun updateImageUrl(poetId: Int, imageUrl: String?)
+
     @Query("SELECT * FROM poets WHERE id = :poetId")
     fun getPoetById(poetId: Int): Poet
 

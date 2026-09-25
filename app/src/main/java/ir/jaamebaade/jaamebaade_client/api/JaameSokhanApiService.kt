@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.api
 import ir.jaamebaade.jaamebaade_client.api.request.WordRequest
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
 import ir.jaamebaade.jaamebaade_client.api.response.DictionaryResponse
+import ir.jaamebaade.jaamebaade_client.api.response.PoetImageResponse
 import ir.jaamebaade.jaamebaade_client.api.response.PoetListResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -20,6 +21,9 @@ interface JaameSokhanApiService {
         @Query("size") size: Int,
         @Query("name") name: String? = null
     ): Response<PoetListResponse>
+
+    @GET("/api/v1/poet/images")
+    suspend fun getPoetImages(@Query("ids") ids: String): Response<List<PoetImageResponse>>
 
     @GET("/api/v1/poet/download/{id}")
     fun downloadPoet(@Path("id") id: String): Call<ResponseBody>
