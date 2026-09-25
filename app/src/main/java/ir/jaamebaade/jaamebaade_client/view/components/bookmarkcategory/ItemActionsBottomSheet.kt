@@ -58,7 +58,7 @@ fun ItemActionsBottomSheet(
             )
             BottomSheetListItem(
                 icon = ImageVector.vectorResource(R.drawable.delete),
-                text = stringResource(R.string.REMOVE_FROM_LIST),
+                text = stringResource(R.string.DELETE),
                 contentColor = MaterialTheme.colorScheme.error,
                 onClick = onRemove,
             )

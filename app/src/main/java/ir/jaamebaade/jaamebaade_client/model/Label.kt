@@ -10,7 +10,8 @@ enum class LabelType(val value: String) {
 }
 
 val CATEGORY_COLOR_PALETTE = listOf(
-    "#bad982", "#cce595", "#9acc3d", "#718053", "#cc3d3d", "#cccccc"
+    "#bad982", "#cce595", "#9acc3d", "#718053", "#cc3d3d", "#cccccc",
+    "#ccb23d", "#cc7a3d", "#3dbdab", "#3d7fcc", "#8a3dcc", "#cc3d8a",
 )
 
 @Entity(tableName = "labels")

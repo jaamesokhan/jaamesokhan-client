@@ -38,6 +38,7 @@ interface HighlightDao {
                 hg.verse_id  AS highlight_verse_id,
                 hg.created_at AS highlight_created_at,
                 hg.color AS highlight_color,
+                hg.group_id AS highlight_group_id,
                 v.id AS verse_id,
                 v.text AS verse_text, 
                 v.poem_id AS verse_poem_id, 

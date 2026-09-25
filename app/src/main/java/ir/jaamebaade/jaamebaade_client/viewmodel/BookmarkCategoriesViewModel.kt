@@ -18,8 +18,8 @@ import ir.jaamebaade.jaamebaade_client.model.HighlightVersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.Label
 import ir.jaamebaade.jaamebaade_client.model.LabelType
 import ir.jaamebaade.jaamebaade_client.model.LabelWithCount
+import ir.jaamebaade.jaamebaade_client.model.MergedHighlight
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
-import ir.jaamebaade.jaamebaade_client.model.toMergedHighlight
 import ir.jaamebaade.jaamebaade_client.repository.BookmarkRepository
 import ir.jaamebaade.jaamebaade_client.repository.CategoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.HighlightRepository
@@ -165,18 +165,15 @@ class BookmarkCategoriesViewModel @AssistedInject constructor(
         }
         if (raw.isEmpty()) return emptyList()
 
-        val sorted = raw.sortedBy { it.versePath.verse!!.id }
-        val merged = mutableListOf(sorted[0].toMergedHighlight())
-        for (i in 1 until sorted.size) {
-            val last = merged.last()
-            if (sorted[i].versePath.verse!!.id == last.highlights.last().verseId + 1L &&
-                sorted[i].versePath.poem.id == last.poem.id
-            ) {
-                last.highlights.add(sorted[i].highlight)
-                last.verses.add(sorted[i].versePath.verse!!)
-            } else {
-                merged.add(sorted[i].toMergedHighlight())
-            }
+        val merged = raw.groupBy { it.highlight.groupId }.values.map { group ->
+            val sorted = group.sortedBy { it.versePath.verse!!.id }
+            MergedHighlight(
+                highlights = sorted.map { it.highlight }.toMutableList(),
+                verses = sorted.map { it.versePath.verse!! }.toMutableList(),
+                poem = sorted.first().versePath.poem,
+                categories = sorted.first().versePath.categories,
+                poet = sorted.first().versePath.poet,
+            )
         }
         val ordered = merged.sortedBy { it.highlights.first().createdAt }
 

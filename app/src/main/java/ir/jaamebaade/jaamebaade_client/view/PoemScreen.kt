@@ -685,34 +685,18 @@ private fun buildSelectedText(
 }
 
 /**
- * Given one tapped [Highlight], collects every highlight that belongs to the same logical
- * multi-verse highlight — a run of consecutive verse ids, each with a highlight, matching the
- * exact grouping rule BookmarkCategoriesScreen already uses to merge highlights for display.
- * Tapping any part of a merged highlight should act on the whole thing, not just that one row.
+ * Given one tapped [Highlight], collects every highlight sharing its [Highlight.groupId] — all
+ * the rows one multi-verse selection created together, matching the same key
+ * BookmarkCategoriesViewModel uses to merge highlights for display. Tapping any part of a
+ * multi-verse highlight should act on the whole thing, not just that one row.
  */
 private fun resolveHighlightGroup(
     verses: List<VerseWithHighlights>,
     tapped: Highlight,
-): List<Highlight> {
-    val tappedIndex = verses.indexOfFirst { it.verse.id == tapped.verseId }
-    if (tappedIndex == -1) return listOf(tapped)
-
-    val group = mutableListOf(tapped)
-
-    var i = tappedIndex - 1
-    while (i >= 0 && verses[i].verse.id == verses[i + 1].verse.id - 1L && verses[i].highlights.isNotEmpty()) {
-        group.addAll(0, verses[i].highlights)
-        i--
-    }
-
-    var j = tappedIndex + 1
-    while (j < verses.size && verses[j].verse.id == verses[j - 1].verse.id + 1L && verses[j].highlights.isNotEmpty()) {
-        group.addAll(verses[j].highlights)
-        j++
-    }
-
-    return group
-}
+): List<Highlight> =
+    verses.flatMap { it.highlights }
+        .filter { it.groupId == tapped.groupId }
+        .sortedBy { it.verseId }
 
 /**
  * Resolves drag endpoints into per-verse spans using the full verse list, not just whichever

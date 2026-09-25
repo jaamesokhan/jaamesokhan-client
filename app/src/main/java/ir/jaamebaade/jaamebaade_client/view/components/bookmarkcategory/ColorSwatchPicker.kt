@@ -4,7 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -16,15 +17,17 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.model.CATEGORY_COLOR_PALETTE
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ColorSwatchPicker(
     selectedColor: String,
     onSelect: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    FlowRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         CATEGORY_COLOR_PALETTE.forEach { hex ->
             val isSelected = hex.equals(selectedColor, ignoreCase = true)

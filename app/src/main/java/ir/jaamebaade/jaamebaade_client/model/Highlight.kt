@@ -24,4 +24,9 @@ data class Highlight(
     @ColumnInfo(name = "created_at", defaultValue = "0") val createdAt: Long = System.currentTimeMillis(),
     // ARGB Int, matches ir.jaamebaade.jaamebaade_client.ui.theme.HighlightColors.Default (Green).
     @ColumnInfo(name = "color", defaultValue = "-7356565") val color: Int = -7356565,
+    // Rows inserted together by one PoemViewModel.highlight() call (a single multi-verse
+    // selection) share this id, so recoloring/removing/merging acts on exactly that group
+    // instead of guessing from verse-id adjacency, which can't tell two unrelated highlights
+    // on neighboring verses apart from one real multi-verse highlight.
+    @ColumnInfo(name = "group_id", defaultValue = "") val groupId: String = "",
 )
