@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
@@ -106,22 +107,23 @@ fun MyPoetsScreen(
             .fillMaxSize()
             .padding(horizontal = Dimens.space16),
     ) {
-        if (showRandomPoem && randomPoetPreviewFetchStatus == Status.SUCCESS) {
-            randomPoemPreview?.let {
-                RandomPoemBox(randomPoemPreview = it, layout = randomPoemLayout, onCardClick = {
-                    if (viewModel.poets?.find { poet -> randomPoemPreview.poemPath.poet.id == poet.id } != null) {
-                        navController.navigate("${AppRoutes.POEM}/${randomPoemPreview.poemPath.poet.id}/${randomPoemPreview.poemPath.poem.id}/-1")
-                    } else {
-                        ToastManager.showToast(R.string.POEM_NOT_AVAILABLE, ToastType.ERROR)
-                    }
-                }) {
-                    viewModel.getRandomPoem(refresh = true, onSuccess = {})
-                }
-            }
-        }
-
         if (fetchStatus == Status.SUCCESS) {
             LazyVerticalGrid(columns = GridCells.Fixed(3)) {
+                if (showRandomPoem && randomPoetPreviewFetchStatus == Status.SUCCESS) {
+                    randomPoemPreview?.let {
+                        item(span = { GridItemSpan(maxLineSpan) }) {
+                            RandomPoemBox(randomPoemPreview = it, layout = randomPoemLayout, onCardClick = {
+                                if (viewModel.poets?.find { poet -> randomPoemPreview.poemPath.poet.id == poet.id } != null) {
+                                    navController.navigate("${AppRoutes.POEM}/${randomPoemPreview.poemPath.poet.id}/${randomPoemPreview.poemPath.poem.id}/-1")
+                                } else {
+                                    ToastManager.showToast(R.string.POEM_NOT_AVAILABLE, ToastType.ERROR)
+                                }
+                            }) {
+                                viewModel.getRandomPoem(refresh = true, onSuccess = {})
+                            }
+                        }
+                    }
+                }
                 if (poets!!.isNotEmpty()) {
                     items(poets) { poet ->
                         PoetIconButton(poet = poet, onLongClick = {

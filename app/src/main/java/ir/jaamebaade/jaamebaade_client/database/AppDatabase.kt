@@ -31,13 +31,14 @@ import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
 import ir.jaamebaade.jaamebaade_client.model.Verse
 import ir.jaamebaade.jaamebaade_client.model.VerseSearch
 import ir.jaamebaade.jaamebaade_client.utility.normalizedForSearch
+import java.util.UUID
 
 @Database(
     entities = [Poet::class, Category::class, Poem::class,
         Verse::class, Highlight::class, Bookmark::class, Comment::class,
         HistoryRecord::class, SearchHistoryRecord::class, VerseSearch::class,
         Label::class, BookmarkLabelCrossRef::class, HighlightLabelCrossRef::class],
-    version = 11,
+    version = 12,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 3),
@@ -158,6 +159,66 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_highlight_label_cross_refs_highlight_id` ON `highlight_label_cross_refs` (`highlight_id`)")
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_highlight_label_cross_refs_label_id` ON `highlight_label_cross_refs` (`label_id`)")
+            }
+        }
+
+        // Adds highlights.group_id: rows inserted by one PoemViewModel.highlight() call (a
+        // single multi-verse selection) now share an explicit id, so grouping for
+        // recolor/remove/merge no longer has to guess from verse-id adjacency, which
+        // couldn't distinguish one real multi-verse highlight from two unrelated highlights
+        // that happened to land on neighboring verses.
+        val MIGRATION_11_12 = object : Migration(11, 12) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE highlights ADD COLUMN group_id TEXT NOT NULL DEFAULT ''")
+
+                // Best-effort reconstruction for existing rows: a run of same-color highlights
+                // on consecutive verse ids within the same poem was the old (buggy) definition
+                // of "one logical highlight", so it's the closest available signal for what
+                // was actually created together before this migration.
+                val cursor = db.query(
+                    """
+                    SELECT hg.id AS id, hg.color AS color, v.poem_id AS poem_id, v.id AS verse_id
+                    FROM highlights hg
+                    JOIN verses v ON hg.verse_id = v.id
+                    ORDER BY v.poem_id ASC, v.id ASC
+                    """.trimIndent()
+                )
+                val updateStatement = db.compileStatement("UPDATE highlights SET group_id = ? WHERE id = ?")
+                try {
+                    val idIndex = cursor.getColumnIndexOrThrow("id")
+                    val colorIndex = cursor.getColumnIndexOrThrow("color")
+                    val poemIdIndex = cursor.getColumnIndexOrThrow("poem_id")
+                    val verseIdIndex = cursor.getColumnIndexOrThrow("verse_id")
+
+                    var groupId = ""
+                    var prevPoemId: Long? = null
+                    var prevVerseId: Long? = null
+                    var prevColor: Long? = null
+
+                    while (cursor.moveToNext()) {
+                        val id = cursor.getLong(idIndex)
+                        val color = cursor.getLong(colorIndex)
+                        val poemId = cursor.getLong(poemIdIndex)
+                        val verseId = cursor.getLong(verseIdIndex)
+
+                        val continuesGroup = prevPoemId == poemId && prevVerseId != null &&
+                            verseId == prevVerseId + 1 && prevColor == color
+                        if (!continuesGroup) {
+                            groupId = UUID.randomUUID().toString()
+                        }
+
+                        updateStatement.bindString(1, groupId)
+                        updateStatement.bindLong(2, id)
+                        updateStatement.executeUpdateDelete()
+                        updateStatement.clearBindings()
+
+                        prevPoemId = poemId
+                        prevVerseId = verseId
+                        prevColor = color
+                    }
+                } finally {
+                    cursor.close()
+                }
             }
         }
     }

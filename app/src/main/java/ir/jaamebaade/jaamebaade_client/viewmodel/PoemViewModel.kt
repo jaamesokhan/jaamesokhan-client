@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.UUID
 
 @HiltViewModel(assistedFactory = PoemViewModel.VerseViewModelFactory::class)
 class PoemViewModel @AssistedInject constructor(
@@ -204,12 +205,14 @@ class PoemViewModel @AssistedInject constructor(
         selection: Map<Long, CharSpan>,
         color: Int,
     ): Map<Long, Highlight> = withContext(Dispatchers.IO) {
+        val groupId = UUID.randomUUID().toString()
         selection.mapValues { (verseId, span) ->
             val highlight = Highlight(
                 verseId = verseId,
                 startIndex = span.start,
                 endIndex = span.end,
                 color = color,
+                groupId = groupId,
             )
             val id = highlightRepository.insertHighlight(highlight)
             highlight.copy(id = id.toInt())
