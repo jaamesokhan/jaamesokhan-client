@@ -4,6 +4,7 @@ import android.util.Log
 import ir.jaamebaade.jaamebaade_client.RecitationsApiService
 import ir.jaamebaade.jaamebaade_client.api.request.WordRequest
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
+import ir.jaamebaade.jaamebaade_client.api.response.PoetImageResponse
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -37,6 +38,16 @@ class JaameSokhanApiClient @Inject constructor(
     suspend fun getPoets(page: Int, size: Int, name: String? = null): List<Poet>? {
         val res = jaameSokhanApiService.getPoets(page, size, name).body()
         return res?.content
+    }
+
+    suspend fun getPoetImages(ids: List<Int>): List<PoetImageResponse>? {
+        return try {
+            val response = jaameSokhanApiService.getPoetImages(ids.joinToString(","))
+            if (response.isSuccessful) response.body() else null
+        } catch (e: Exception) {
+            Log.e("JaameSokhanApiClient", "Failed to get poet images: ${e.message}")
+            null
+        }
     }
 
     fun downloadPoet(id: String): Response<ResponseBody> {

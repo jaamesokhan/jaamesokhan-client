@@ -13,6 +13,7 @@ import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.repository.PoemRepository
 import ir.jaamebaade.jaamebaade_client.repository.PoetRepository
+import ir.jaamebaade.jaamebaade_client.utility.PoetImageSyncer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -25,6 +26,7 @@ class AppNavHostViewModel @Inject constructor(
     private val poemRepository: PoemRepository,
     private val poetRepository: PoetRepository,
     private val audioSessionManager: AudioSessionManager,
+    private val poetImageSyncer: PoetImageSyncer,
 ) : ViewModel() {
 
 
@@ -60,6 +62,7 @@ class AppNavHostViewModel @Inject constructor(
 
     init {
         hasDownloadedAnyPoets()
+        viewModelScope.launch { poetImageSyncer.syncOnce() }
         audioSessionManager.setPlaybackController(object : AudioSessionManager.PlaybackController {
             override fun onPlay() {
                 viewModelScope.launch {
