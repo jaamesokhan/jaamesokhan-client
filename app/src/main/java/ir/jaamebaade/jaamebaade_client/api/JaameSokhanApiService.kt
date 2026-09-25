@@ -26,7 +26,7 @@ interface JaameSokhanApiService {
 
     @POST("/api/v1/dictionary/meaning")
     suspend fun getMeaning(@Body request: WordRequest): Response<DictionaryResponse>
-    @GET("/api/v1/recitations/{poemId}")
+    @GET("/api/v2/recitations/{poemId}")
     suspend fun getAllRecitations(
         @Path("poemId") poemId: Int,
     ): Response<List<AudioData>>
