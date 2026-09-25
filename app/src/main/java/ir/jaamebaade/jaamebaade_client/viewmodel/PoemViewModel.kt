@@ -145,9 +145,11 @@ class PoemViewModel @AssistedInject constructor(
      * Inserts one [Highlight] row per verse in [selection] (full range for verses in the
      * middle of a multi-verse selection, partial range for the first/last verse touched).
      * MyHighlightScreen already merges any run of highlights on consecutive verse ids in the
-     * same poem into one logical highlight, so no further grouping is needed here.
+     * same poem into one logical highlight, so no further grouping is needed here. Hands the
+     * inserted rows (with their real DB ids) back via [onCommitted], so the caller can offer
+     * further adjustment (color change, categorization, removal) on this specific highlight.
      */
-    fun highlight(selection: Map<Long, CharSpan>, color: Int) {
+    fun highlight(selection: Map<Long, CharSpan>, color: Int, onCommitted: (List<Highlight>) -> Unit) {
         if (selection.isEmpty()) return
         viewModelScope.launch {
             val inserted = addHighlightsToRepository(selection, color)
@@ -159,6 +161,42 @@ class PoemViewModel @AssistedInject constructor(
                     verseWithHighlights
                 }
             }
+            onCommitted(inserted.values.toList())
+        }
+    }
+
+    /** Updates [highlights] (all rows belonging to one logical multi-verse highlight) to [color]. */
+    fun updateHighlightColor(highlights: List<Highlight>, color: Int, onDone: (List<Highlight>) -> Unit) {
+        if (highlights.isEmpty()) return
+        viewModelScope.launch {
+            val recolored = highlights.map { it.copy(color = color) }
+            withContext(Dispatchers.IO) {
+                highlightRepository.updateHighlights(recolored)
+            }
+            val recoloredById = recolored.associateBy { it.id }
+            _verses.value = _verses.value.map { verseWithHighlights ->
+                verseWithHighlights.copy(
+                    highlights = verseWithHighlights.highlights.map { recoloredById[it.id] ?: it }
+                )
+            }
+            onDone(recolored)
+        }
+    }
+
+    /** Deletes all rows belonging to one logical multi-verse highlight. */
+    fun removeHighlights(highlights: List<Highlight>, onDone: () -> Unit) {
+        if (highlights.isEmpty()) return
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                highlightRepository.deleteHighlights(highlights)
+            }
+            val removedIds = highlights.map { it.id }.toSet()
+            _verses.value = _verses.value.map { verseWithHighlights ->
+                verseWithHighlights.copy(
+                    highlights = verseWithHighlights.highlights.filterNot { it.id in removedIds }
+                )
+            }
+            onDone()
         }
     }
 
@@ -173,8 +211,8 @@ class PoemViewModel @AssistedInject constructor(
                 endIndex = span.end,
                 color = color,
             )
-            highlightRepository.insertHighlight(highlight)
-            highlight
+            val id = highlightRepository.insertHighlight(highlight)
+            highlight.copy(id = id.toInt())
         }
     }
 

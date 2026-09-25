@@ -47,6 +47,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -71,11 +72,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.CharSpan
+import ir.jaamebaade.jaamebaade_client.model.Highlight
+import ir.jaamebaade.jaamebaade_client.model.LabelType
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
+import ir.jaamebaade.jaamebaade_client.ui.theme.HighlightColors
 import ir.jaamebaade.jaamebaade_client.ui.theme.SheetTopShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.primary20
 import ir.jaamebaade.jaamebaade_client.ui.theme.primary90
@@ -83,6 +87,7 @@ import ir.jaamebaade.jaamebaade_client.view.components.AudioListItems
 import ir.jaamebaade.jaamebaade_client.view.components.NotesBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.SelectionBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.SelectionEndpoints
+import ir.jaamebaade.jaamebaade_client.view.components.HighlightAdjustmentToolbar
 import ir.jaamebaade.jaamebaade_client.view.components.SelectionToolbar
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
 import ir.jaamebaade.jaamebaade_client.view.components.VerseSelectionController
@@ -173,6 +178,8 @@ fun PoemScreen(
     var pendingSelection by remember { mutableStateOf<Map<Long, CharSpan>?>(null) }
     var selectionToolbarPosition by remember { mutableStateOf(Offset.Zero) }
     var showMeaningSheet by remember { mutableStateOf(false) }
+    var committedHighlights by remember { mutableStateOf<List<Highlight>?>(null) }
+    var showHighlightCategoryPicker by remember { mutableStateOf(false) }
     val selectionOptionViewModel: SelectionOptionViewModel = hiltViewModel()
     val selectionMeaning by selectionOptionViewModel.apiResult
     var selectionMeaningFetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
@@ -182,6 +189,8 @@ fun PoemScreen(
         pendingSelection = null
         showMeaningSheet = false
         selectionMeaningFetchStatus = Status.NOT_STARTED
+        committedHighlights = null
+        showHighlightCategoryPicker = false
     }
 
     LaunchedEffect(isDraggingSelection) {
@@ -436,7 +445,8 @@ fun PoemScreen(
 
     pendingSaveMomentBookmarkId?.let { bookmarkId ->
         SaveMomentBottomSheet(
-            bookmarkId = bookmarkId,
+            labelType = LabelType.BOOKMARK,
+            targetIds = listOf(bookmarkId),
             onDismiss = { poemViewModel.dismissSaveMoment() },
         )
     }
@@ -544,48 +554,72 @@ fun PoemScreen(
         }
     }
 
-    pendingSelection?.let { selection ->
-        val orderedSelectedVerses = versesWithHighlights
-            .filter { selection.containsKey(it.verse.id) }
-            .sortedBy { it.verse.id }
-        val selectedText = orderedSelectedVerses.joinToString("\n") { verseWithHighlights ->
-            val span = selection.getValue(verseWithHighlights.verse.id)
-            val text = verseWithHighlights.verse.text
-            text.substring(span.start.coerceIn(0, text.length), span.end.coerceIn(0, text.length))
+    if (showMeaningSheet && pendingSelection != null) {
+        val selection = pendingSelection!!
+        val selectedText = buildSelectedText(versesWithHighlights, selection)
+        SelectionBottomSheet(
+            viewModel = selectionOptionViewModel,
+            selectedText = selectedText,
+            changeMeaningFetchStatus = { selectionMeaningFetchStatus = it },
+            currentMeaningFetchStatus = selectionMeaningFetchStatus,
+            meaning = selectionMeaning,
+            onDismiss = { dismissSelection() }
+        )
+    } else if (committedHighlights != null) {
+        val highlights = committedHighlights!!
+        val positionProvider = remember(selectionToolbarPosition) {
+            SelectionToolbarPositionProvider(selectionToolbarPosition)
         }
-
-        if (showMeaningSheet) {
-            SelectionBottomSheet(
-                viewModel = selectionOptionViewModel,
-                selectedText = selectedText,
-                changeMeaningFetchStatus = { selectionMeaningFetchStatus = it },
-                currentMeaningFetchStatus = selectionMeaningFetchStatus,
-                meaning = selectionMeaning,
-                onDismiss = { dismissSelection() }
+        Popup(
+            popupPositionProvider = positionProvider,
+            onDismissRequest = { dismissSelection() },
+        ) {
+            HighlightAdjustmentToolbar(
+                currentColor = highlights.firstOrNull()?.color ?: HighlightColors.Default.toArgb(),
+                onColorSelected = { color ->
+                    poemViewModel.updateHighlightColor(highlights, color) { updated ->
+                        committedHighlights = updated
+                    }
+                },
+                onCategoryClick = { showHighlightCategoryPicker = true },
+                onRemove = {
+                    poemViewModel.removeHighlights(highlights) { dismissSelection() }
+                },
             )
-        } else {
-            val positionProvider = remember(selectionToolbarPosition) {
-                SelectionToolbarPositionProvider(selectionToolbarPosition)
-            }
-            Popup(
-                popupPositionProvider = positionProvider,
-                onDismissRequest = { dismissSelection() },
-            ) {
-                SelectionToolbar(
-                    onHighlight = { color ->
-                        poemViewModel.highlight(selection, color)
-                        dismissSelection()
-                    },
-                    onCopy = {
-                        val clipboard =
-                            context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val clip = ClipData.newPlainText("جام سخن", selectedText)
-                        clipboard.setPrimaryClip(clip)
-                        dismissSelection()
-                    },
-                    onMeaning = { showMeaningSheet = true },
-                )
-            }
+        }
+        if (showHighlightCategoryPicker) {
+            SaveMomentBottomSheet(
+                labelType = LabelType.HIGHLIGHT,
+                targetIds = highlights.map { it.id },
+                onDismiss = { showHighlightCategoryPicker = false },
+            )
+        }
+    } else if (pendingSelection != null) {
+        val selection = pendingSelection!!
+        val selectedText = buildSelectedText(versesWithHighlights, selection)
+        val positionProvider = remember(selectionToolbarPosition) {
+            SelectionToolbarPositionProvider(selectionToolbarPosition)
+        }
+        Popup(
+            popupPositionProvider = positionProvider,
+            onDismissRequest = { dismissSelection() },
+        ) {
+            SelectionToolbar(
+                onHighlight = {
+                    poemViewModel.highlight(selection, HighlightColors.Default.toArgb()) { inserted ->
+                        committedHighlights = inserted
+                    }
+                    pendingSelection = null
+                },
+                onCopy = {
+                    val clipboard =
+                        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip = ClipData.newPlainText("جام سخن", selectedText)
+                    clipboard.setPrimaryClip(clip)
+                    dismissSelection()
+                },
+                onMeaning = { showMeaningSheet = true },
+            )
         }
     }
 
@@ -615,6 +649,21 @@ private class SelectionToolbarPositionProvider(
             .toInt()
             .coerceIn(0, (windowSize.height - popupContentSize.height).coerceAtLeast(0))
         return IntOffset(x, y)
+    }
+}
+
+/** Joins the selected verse-local spans into the plain text shown/copied for a selection. */
+private fun buildSelectedText(
+    verses: List<VerseWithHighlights>,
+    selection: Map<Long, CharSpan>,
+): String {
+    val orderedSelectedVerses = verses
+        .filter { selection.containsKey(it.verse.id) }
+        .sortedBy { it.verse.id }
+    return orderedSelectedVerses.joinToString("\n") { verseWithHighlights ->
+        val span = selection.getValue(verseWithHighlights.verse.id)
+        val text = verseWithHighlights.verse.text
+        text.substring(span.start.coerceIn(0, text.length), span.end.coerceIn(0, text.length))
     }
 }
 

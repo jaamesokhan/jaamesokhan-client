@@ -17,10 +17,17 @@ import javax.inject.Inject
 
 enum class SaveMomentSheet { NONE, NEW_CATEGORY }
 
+/**
+ * Drives the "which category should this be saved in?" prompt for either a bookmark (one
+ * target id) or a highlight (one id per verse the highlight spans — [confirm] applies the
+ * chosen labels to all of them so a multi-verse highlight stays consistently categorized).
+ */
 @HiltViewModel
 class SaveMomentViewModel @Inject constructor(
     private val labelRepository: LabelRepository,
 ) : ViewModel() {
+
+    private var labelType: LabelType = LabelType.BOOKMARK
 
     var labels by mutableStateOf<List<Label>>(emptyList())
         private set
@@ -37,9 +44,10 @@ class SaveMomentViewModel @Inject constructor(
     var draftColor by mutableStateOf(CATEGORY_COLOR_PALETTE.first())
         private set
 
-    fun load() {
+    fun load(type: LabelType) {
+        labelType = type
         viewModelScope.launch {
-            labels = withContext(Dispatchers.IO) { labelRepository.getLabels(LabelType.BOOKMARK) }
+            labels = withContext(Dispatchers.IO) { labelRepository.getLabels(type) }
             selected = emptySet()
         }
     }
@@ -71,7 +79,7 @@ class SaveMomentViewModel @Inject constructor(
         if (name.isEmpty()) return
         viewModelScope.launch {
             val created = withContext(Dispatchers.IO) {
-                labelRepository.createLabel(name, draftColor, LabelType.BOOKMARK)
+                labelRepository.createLabel(name, draftColor, labelType)
             }
             labels = labels + created
             selected = selected + created.id
@@ -79,10 +87,17 @@ class SaveMomentViewModel @Inject constructor(
         }
     }
 
-    fun confirm(bookmarkId: Int, onDone: () -> Unit) {
+    fun confirm(targetIds: List<Int>, onDone: () -> Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                selected.forEach { labelId -> labelRepository.assignBookmarkLabel(bookmarkId, labelId) }
+                selected.forEach { labelId ->
+                    targetIds.forEach { targetId ->
+                        when (labelType) {
+                            LabelType.BOOKMARK -> labelRepository.assignBookmarkLabel(targetId, labelId)
+                            LabelType.HIGHLIGHT -> labelRepository.assignHighlightLabel(targetId, labelId)
+                        }
+                    }
+                }
             }
             onDone()
         }
