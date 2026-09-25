@@ -71,7 +71,7 @@ fun HighlightAdjustmentToolbar(
             )
             SelectionToolbarDivider()
             SelectionToolbarItem(
-                painter = painterResource(R.drawable.delete),
+                painter = painterResource(R.drawable.eraser),
                 text = stringResource(R.string.DELETE),
                 tint = MaterialTheme.colorScheme.error,
                 onClick = onRemove,
