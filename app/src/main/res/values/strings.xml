@@ -177,6 +177,8 @@ https://myket.ir/app/ir.jaamebaade.jaamebaade_client
     <string name="APP_THEME">تم برنامه</string>
     <string name="FONT">فونت</string>
     <string name="FONT_SIZE">اندازه قلم</string>
+    <string name="FONT_SIZE_SAMPLE_LETTER">آ</string>
+    <string name="RESET_TO_DEFAULT">بازگشت به پیش‌فرض</string>
     <string name="THEME_SETTING_STR">حالت</string>
     <string name="GITHUB">Github</string>
     <string name="WEBSITE">سایت جام سخن</string>

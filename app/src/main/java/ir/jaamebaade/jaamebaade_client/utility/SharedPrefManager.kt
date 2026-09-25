@@ -7,6 +7,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
+import ir.jaamebaade.jaamebaade_client.ui.theme.PoemFontSize
 import ir.jaamebaade.jaamebaade_client.ui.theme.RandomPoemLayoutType
 import java.time.LocalTime
 
@@ -16,6 +17,7 @@ class SharedPrefManager(
     companion object {
         const val POEM_FONT_KEY = "PoemFont"
         const val POEM_FONT_SIZE_KEY = "PoemFontSizeIndex"
+        const val POEM_FONT_SIZE_PERCENT_KEY = "PoemFontSizePercent"
         const val APP_THEME_TYPE_KEY = "AppThemeType"
         const val RANDOM_POEM_LAYOUT_KEY = "RandomPoemLayout"
         const val RANDOM_POEM_LAYOUT_INTRO_SEEN_KEY = "RandomPoemLayoutIntroSeen"
@@ -45,9 +47,9 @@ class SharedPrefManager(
         }
     }
 
-    fun savePoemFontSizeIndex(fontSizeIndex: Int) {
+    fun savePoemFontSizePercent(percent: Int) {
         sharedPreferences.edit {
-            putInt(POEM_FONT_SIZE_KEY, fontSizeIndex)
+            putInt(POEM_FONT_SIZE_PERCENT_KEY, percent)
         }
     }
 
@@ -58,8 +60,13 @@ class SharedPrefManager(
 
     }
 
-    fun getPoemFontSizeIndex(): Int {
-        return sharedPreferences.getInt(POEM_FONT_SIZE_KEY, 1)
+    fun getPoemFontSizePercent(): Int {
+        if (sharedPreferences.contains(POEM_FONT_SIZE_PERCENT_KEY)) {
+            return PoemFontSize.coerce(
+                sharedPreferences.getInt(POEM_FONT_SIZE_PERCENT_KEY, PoemFontSize.DEFAULT_PERCENT)
+            )
+        }
+        return PoemFontSize.fromLegacyIndex(sharedPreferences.getInt(POEM_FONT_SIZE_KEY, 1))
     }
 
     fun setThemePreference(appThemeType: AppThemeType) {

@@ -16,6 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,7 +34,9 @@ import ir.jaamebaade.jaamebaade_client.repository.ThemeRepository
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
+import ir.jaamebaade.jaamebaade_client.utility.toPersianNumber
 import ir.jaamebaade.jaamebaade_client.view.components.setting.CustomRadioButton
+import ir.jaamebaade.jaamebaade_client.view.components.setting.FontSizeSlider
 import ir.jaamebaade.jaamebaade_client.view.components.setting.SettingListItem
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemLayoutPicker
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemOptions
@@ -51,7 +54,7 @@ fun SettingsListScreen(
     openRandomLayout: Boolean = false,
 ) {
     var selectedPoemFontFamily by remember { mutableStateOf(fontRepository.poemFontFamily.value) }
-    var selectedPoemFontSize by remember { mutableStateOf(fontRepository.poemFontSize.value) }
+    var selectedPoemFontSizePercent by remember { mutableIntStateOf(fontRepository.poemFontSizePercent.value) }
     var selectedTheme by remember { mutableStateOf(themeRepository.appTheme.value) }
     var selectedRandomPoemLayout by remember { mutableStateOf(randomPoemLayoutRepository.layout.value) }
     var selectedSettingItem by remember(openRandomSettings, openRandomLayout) {
@@ -78,7 +81,10 @@ fun SettingsListScreen(
             ) {
                 val myTextStyle = TextStyle(
                     fontFamily = selectedPoemFontFamily.fontFamily,
-                    fontSize = fontRepository.getPoemFontNumberFromSize(selectedPoemFontSize),
+                    fontSize = fontRepository.getPoemFontSizeFromPercent(
+                        selectedPoemFontSizePercent,
+                        selectedPoemFontFamily
+                    ),
                     color = MaterialTheme.colorScheme.onBackground,
                 )
                 Text(style = myTextStyle, text = stringResource(R.string.SETTING_VERSE_ONE_1))
@@ -178,7 +184,7 @@ fun SettingsListScreen(
                 color = MaterialTheme.colorScheme.outline
             )
             SettingListItem(
-                "${stringResource(R.string.FONT_SIZE)} ${selectedPoemFontSize.displayName}",
+                "${stringResource(R.string.FONT_SIZE)} ${selectedPoemFontSizePercent.toPersianNumber()}٪",
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.font_size),
@@ -225,17 +231,13 @@ fun SettingsListScreen(
 
 
                     SettingItem.FONT_SIZE -> {
-                        fontRepository.getAvailableFontSizes().forEachIndexed { index, fontSize ->
-                            fun onFontSizeClick() {
-                                selectedPoemFontSize = fontSize
-                                fontRepository.setPoemFontSize(fontSize)
-                            }
-                            CustomRadioButton(
-                                title = fontRepository.getFontNameFromSize(fontSize),
-                                showDivider = index != fontRepository.getAvailableFontSizes().lastIndex,
-                                isSelected = fontSize == selectedPoemFontSize,
-                            ) { onFontSizeClick() }
-                        }
+                        FontSizeSlider(
+                            percent = selectedPoemFontSizePercent,
+                            onPercentChange = { selectedPoemFontSizePercent = it },
+                            onPercentChangeFinished = {
+                                fontRepository.setPoemFontSizePercent(selectedPoemFontSizePercent)
+                            },
+                        )
                     }
 
                     SettingItem.THEME -> {

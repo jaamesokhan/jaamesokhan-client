@@ -17,30 +17,22 @@ class FontRepository @Inject constructor(
     private val _poemFontFamily = MutableStateFlow(CustomFonts.getDefaultFont())
     val poemFontFamily : StateFlow<CustomFont> get() = _poemFontFamily
 
-    private val _poemFontSize = MutableStateFlow(PoemFontSize.fromOrdinal(sharedPrefManager.getPoemFontSizeIndex()))
-    val poemFontSize: StateFlow<PoemFontSize> get() = _poemFontSize
+    private val _poemFontSizePercent = MutableStateFlow(sharedPrefManager.getPoemFontSizePercent())
+    val poemFontSizePercent: StateFlow<Int> get() = _poemFontSizePercent
 
     init {
-        _poemFontSize.value = PoemFontSize.fromOrdinal(sharedPrefManager.getPoemFontSizeIndex())
         _poemFontFamily.value = sharedPrefManager.getPoemFont()
     }
 
 
-    fun setPoemFontSize(size: PoemFontSize) {
-        _poemFontSize.value = size
-        sharedPrefManager.savePoemFontSizeIndex(size.ordinal)
+    fun setPoemFontSizePercent(percent: Int) {
+        val coerced = PoemFontSize.coerce(percent)
+        _poemFontSizePercent.value = coerced
+        sharedPrefManager.savePoemFontSizePercent(coerced)
     }
 
-    fun getAvailableFontSizes(): List<PoemFontSize> = PoemFontSize.entries
-
-    fun getFontNameFromSize(size: PoemFontSize): String = size.displayName
-
-    fun getPoemFontNumberFromSize(size: PoemFontSize): TextUnit {
-        return when (size) {
-            PoemFontSize.SMALL -> _poemFontFamily.value.specs.body.small.fontSize
-            PoemFontSize.MEDIUM -> _poemFontFamily.value.specs.body.medium.fontSize
-            PoemFontSize.LARGE -> _poemFontFamily.value.specs.body.large.fontSize
-        }
+    fun getPoemFontSizeFromPercent(percent: Int, font: CustomFont = _poemFontFamily.value): TextUnit {
+        return font.specs.body.medium.fontSize * (percent / 100f)
     }
 
     fun setPoemFontFamily(family: CustomFont) {
@@ -54,6 +46,6 @@ class FontRepository @Inject constructor(
     }
 
     fun getPoemFontSize(): TextUnit {
-        return getPoemFontNumberFromSize(poemFontSize.value)
+        return getPoemFontSizeFromPercent(poemFontSizePercent.value)
     }
 }
