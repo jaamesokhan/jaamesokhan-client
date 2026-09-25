@@ -1,0 +1,9 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:autoMirrored="true" android:height="24dp" android:viewportHeight="24" android:viewportWidth="24" android:width="24dp">
+
+    <group android:pivotX="12" android:pivotY="12" android:rotation="-35">
+
+        <path android:fillColor="#333333" android:pathData="M8,7 L19,7 L19,17 L5,17 L5,11 Z"/>
+
+    </group>
+
+</vector>

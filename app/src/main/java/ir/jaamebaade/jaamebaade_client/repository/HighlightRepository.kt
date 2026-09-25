@@ -7,7 +7,9 @@ import javax.inject.Inject
 class HighlightRepository @Inject constructor(appDatabase: AppDatabase) {
     private val db = appDatabase
     private val highlightDao = db.highlightDao()
-    fun insertHighlight(highlight: Highlight) = highlightDao.insertHighlight(highlight)
+    fun insertHighlight(highlight: Highlight): Long = highlightDao.insertHighlight(highlight)
+    fun updateHighlights(highlights: List<Highlight>) = highlightDao.updateHighlights(highlights)
     fun deleteHighlight(highlight: Highlight) = highlightDao.deleteHighlight(highlight)
+    fun deleteHighlights(highlights: List<Highlight>) = highlightDao.deleteHighlights(highlights)
     fun getAllHighlightsWithVersePoemPoet() = highlightDao.getHighlightsWithVersePoemPoet()
 }

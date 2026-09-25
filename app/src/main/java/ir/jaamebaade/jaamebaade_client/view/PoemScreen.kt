@@ -1,8 +1,14 @@
 package ir.jaamebaade.jaamebaade_client.view
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,31 +48,50 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupPositionProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
+import ir.jaamebaade.jaamebaade_client.model.CharSpan
+import ir.jaamebaade.jaamebaade_client.model.Highlight
+import ir.jaamebaade.jaamebaade_client.model.LabelType
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VerseWithHighlights
 import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
 import ir.jaamebaade.jaamebaade_client.repository.FontRepository
+import ir.jaamebaade.jaamebaade_client.ui.theme.HighlightColors
 import ir.jaamebaade.jaamebaade_client.ui.theme.SheetTopShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.primary20
 import ir.jaamebaade.jaamebaade_client.ui.theme.primary90
 import ir.jaamebaade.jaamebaade_client.view.components.AudioListItems
 import ir.jaamebaade.jaamebaade_client.view.components.NotesBottomSheet
+import ir.jaamebaade.jaamebaade_client.view.components.SelectionBottomSheet
+import ir.jaamebaade.jaamebaade_client.view.components.SelectionEndpoints
+import ir.jaamebaade.jaamebaade_client.view.components.HighlightAdjustmentToolbar
+import ir.jaamebaade.jaamebaade_client.view.components.SelectionToolbar
 import ir.jaamebaade.jaamebaade_client.view.components.VerseItem
+import ir.jaamebaade.jaamebaade_client.view.components.VerseSelectionController
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.SaveMomentBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemMoreOptionsList
 import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemOptionItem
@@ -76,8 +101,10 @@ import ir.jaamebaade.jaamebaade_client.view.components.poem.PoemScreenTitle
 import ir.jaamebaade.jaamebaade_client.view.components.poem.ToggleButtonItem
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.PoemViewModel
-import kotlinx.coroutines.delay
+import ir.jaamebaade.jaamebaade_client.viewmodel.SelectionOptionViewModel
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -144,6 +171,53 @@ fun PoemScreen(
     val selectedVerses = remember { mutableStateListOf<VerseWithHighlights>() }
     val collapseRangePx = with(LocalDensity.current) { 150.dp.toPx() }
     var collapsedPoemHeaderOffsetPx by remember(poemId) { mutableFloatStateOf(0f) }
+
+    val selectionController = remember { VerseSelectionController() }
+    var lazyColumnCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+    var isDraggingSelection by remember { mutableStateOf(false) }
+    var currentDragWindowPosition by remember { mutableStateOf(Offset.Zero) }
+    var pendingSelection by remember { mutableStateOf<Map<Long, CharSpan>?>(null) }
+    var selectionToolbarPosition by remember { mutableStateOf(Offset.Zero) }
+    var showMeaningSheet by remember { mutableStateOf(false) }
+    var committedHighlights by remember { mutableStateOf<List<Highlight>?>(null) }
+    var showHighlightCategoryPicker by remember { mutableStateOf(false) }
+    val selectionOptionViewModel: SelectionOptionViewModel = hiltViewModel()
+    val selectionMeaning by selectionOptionViewModel.apiResult
+    var selectionMeaningFetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
+    val selectionEdgeScrollPx = with(LocalDensity.current) { 56.dp.toPx() }
+
+    fun dismissSelection() {
+        pendingSelection = null
+        showMeaningSheet = false
+        selectionMeaningFetchStatus = Status.NOT_STARTED
+        committedHighlights = null
+        showHighlightCategoryPicker = false
+    }
+
+    LaunchedEffect(isDraggingSelection) {
+        if (!isDraggingSelection) return@LaunchedEffect
+        while (isActive && isDraggingSelection) {
+            val coordinates = lazyColumnCoordinates
+            if (coordinates != null) {
+                val localY = coordinates.windowToLocal(currentDragWindowPosition).y
+                val height = coordinates.size.height
+                val scrollAmount = when {
+                    localY < selectionEdgeScrollPx ->
+                        -(selectionEdgeScrollPx - localY).coerceAtLeast(0f) * 0.5f
+
+                    localY > height - selectionEdgeScrollPx ->
+                        (localY - (height - selectionEdgeScrollPx)).coerceAtLeast(0f) * 0.5f
+
+                    else -> 0f
+                }
+                if (scrollAmount != 0f) {
+                    lazyListState.scrollBy(scrollAmount)
+                    selectionController.extendTo(currentDragWindowPosition)
+                }
+            }
+            delay(16)
+        }
+    }
 
     fun updatePoemHeaderReveal(collapsedOffsetPx: Float) {
         collapsedPoemHeaderOffsetPx = collapsedOffsetPx.coerceIn(0f, collapseRangePx)
@@ -372,7 +446,8 @@ fun PoemScreen(
 
     pendingSaveMomentBookmarkId?.let { bookmarkId ->
         SaveMomentBottomSheet(
-            bookmarkId = bookmarkId,
+            labelType = LabelType.BOOKMARK,
+            targetIds = listOf(bookmarkId),
             onDismiss = { poemViewModel.dismissSaveMoment() },
         )
     }
@@ -410,6 +485,56 @@ fun PoemScreen(
         LazyColumn(
             modifier = Modifier
                 .nestedScroll(poemHeaderScrollConnection)
+                .onGloballyPositioned { lazyColumnCoordinates = it }
+                .pointerInput(selectMode) {
+                    if (selectMode) return@pointerInput
+                    detectDragGesturesAfterLongPress(
+                        onDragStart = { offset ->
+                            val coordinates = lazyColumnCoordinates ?: return@detectDragGesturesAfterLongPress
+                            val windowPosition = coordinates.localToWindow(offset)
+                            currentDragWindowPosition = windowPosition
+                            isDraggingSelection = selectionController.start(windowPosition)
+                        },
+                        onDrag = { change, _ ->
+                            change.consume()
+                            val coordinates = lazyColumnCoordinates ?: return@detectDragGesturesAfterLongPress
+                            val windowPosition = coordinates.localToWindow(change.position)
+                            currentDragWindowPosition = windowPosition
+                            selectionController.extendTo(windowPosition)
+                        },
+                        onDragEnd = {
+                            isDraggingSelection = false
+                            val endpoints = selectionController.end()
+                            val result = endpoints?.let { resolveSelection(versesWithHighlights, it) }
+                            val totalSelectedChars =
+                                result?.values?.sumOf { (it.end - it.start).coerceAtLeast(0) } ?: 0
+                            if (result != null && totalSelectedChars > 0) {
+                                selectionToolbarPosition = currentDragWindowPosition
+                                pendingSelection = result
+                            }
+                        },
+                        onDragCancel = {
+                            isDraggingSelection = false
+                            selectionController.cancel()
+                        }
+                    )
+                }
+                .pointerInput(selectMode, versesWithHighlights) {
+                    if (selectMode) return@pointerInput
+                    detectTapGestures(onTap = { offset ->
+                        val coordinates = lazyColumnCoordinates ?: return@detectTapGestures
+                        val windowPosition = coordinates.localToWindow(offset)
+                        val (verseId, charOffset) = selectionController.exactHitTest(windowPosition)
+                            ?: return@detectTapGestures
+                        val tapped = versesWithHighlights
+                            .find { it.verse.id == verseId }
+                            ?.highlights
+                            ?.find { charOffset >= it.startIndex && charOffset < it.endIndex }
+                            ?: return@detectTapGestures
+                        committedHighlights = resolveHighlightGroup(versesWithHighlights, tapped)
+                        selectionToolbarPosition = windowPosition
+                    })
+                }
                 .padding(Dimens.space10),
             state = lazyListState
         ) {
@@ -437,16 +562,81 @@ fun PoemScreen(
                     onClick = {
                         if (selectMode) onClick(isSelected, verseWithHighlights)
                     },
-                    verseStyle = verseStyle
-                ) { startIndex, endIndex ->
-                    poemViewModel.highlight(
-                        verseWithHighlights.verse.id,
-                        startIndex,
-                        endIndex
-                    )
-                }
+                    verseStyle = verseStyle,
+                    selectionController = selectionController,
+                    pendingSelectionSpan = pendingSelection?.get(verseWithHighlights.verse.id),
+                )
 
             }
+        }
+    }
+
+    if (showMeaningSheet && pendingSelection != null) {
+        val selection = pendingSelection!!
+        val selectedText = buildSelectedText(versesWithHighlights, selection)
+        SelectionBottomSheet(
+            viewModel = selectionOptionViewModel,
+            selectedText = selectedText,
+            changeMeaningFetchStatus = { selectionMeaningFetchStatus = it },
+            currentMeaningFetchStatus = selectionMeaningFetchStatus,
+            meaning = selectionMeaning,
+            onDismiss = { dismissSelection() }
+        )
+    } else if (committedHighlights != null) {
+        val highlights = committedHighlights!!
+        val positionProvider = remember(selectionToolbarPosition) {
+            SelectionToolbarPositionProvider(selectionToolbarPosition)
+        }
+        Popup(
+            popupPositionProvider = positionProvider,
+            onDismissRequest = { dismissSelection() },
+        ) {
+            HighlightAdjustmentToolbar(
+                currentColor = highlights.firstOrNull()?.color ?: HighlightColors.Default.toArgb(),
+                onColorSelected = { color ->
+                    poemViewModel.updateHighlightColor(highlights, color) { updated ->
+                        committedHighlights = updated
+                    }
+                },
+                onCategoryClick = { showHighlightCategoryPicker = true },
+                onRemove = {
+                    poemViewModel.removeHighlights(highlights) { dismissSelection() }
+                },
+            )
+        }
+        if (showHighlightCategoryPicker) {
+            SaveMomentBottomSheet(
+                labelType = LabelType.HIGHLIGHT,
+                targetIds = highlights.map { it.id },
+                onDismiss = { showHighlightCategoryPicker = false },
+            )
+        }
+    } else if (pendingSelection != null) {
+        val selection = pendingSelection!!
+        val selectedText = buildSelectedText(versesWithHighlights, selection)
+        val positionProvider = remember(selectionToolbarPosition) {
+            SelectionToolbarPositionProvider(selectionToolbarPosition)
+        }
+        Popup(
+            popupPositionProvider = positionProvider,
+            onDismissRequest = { dismissSelection() },
+        ) {
+            SelectionToolbar(
+                onHighlight = {
+                    poemViewModel.highlight(selection, HighlightColors.Default.toArgb()) { inserted ->
+                        committedHighlights = inserted
+                    }
+                    pendingSelection = null
+                },
+                onCopy = {
+                    val clipboard =
+                        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip = ClipData.newPlainText("جام سخن", selectedText)
+                    clipboard.setPrimaryClip(clip)
+                    dismissSelection()
+                },
+                onMeaning = { showMeaningSheet = true },
+            )
         }
     }
 
@@ -454,6 +644,111 @@ fun PoemScreen(
         selectMode = false
         selectedVerses.clear()
     }
+}
+
+/** Anchors [SelectionToolbar] just above wherever the selection drag ended, clamped to stay
+ * fully on screen. [windowPosition] is already in window coordinates, which is what
+ * [PopupPositionProvider] expects. */
+private class SelectionToolbarPositionProvider(
+    private val windowPosition: Offset,
+) : PopupPositionProvider {
+    override fun calculatePosition(
+        anchorBounds: IntRect,
+        windowSize: IntSize,
+        layoutDirection: LayoutDirection,
+        popupContentSize: IntSize,
+    ): IntOffset {
+        val gapPx = 24
+        val x = (windowPosition.x - popupContentSize.width / 2)
+            .toInt()
+            .coerceIn(0, (windowSize.width - popupContentSize.width).coerceAtLeast(0))
+        val y = (windowPosition.y - popupContentSize.height - gapPx)
+            .toInt()
+            .coerceIn(0, (windowSize.height - popupContentSize.height).coerceAtLeast(0))
+        return IntOffset(x, y)
+    }
+}
+
+/** Joins the selected verse-local spans into the plain text shown/copied for a selection. */
+private fun buildSelectedText(
+    verses: List<VerseWithHighlights>,
+    selection: Map<Long, CharSpan>,
+): String {
+    val orderedSelectedVerses = verses
+        .filter { selection.containsKey(it.verse.id) }
+        .sortedBy { it.verse.id }
+    return orderedSelectedVerses.joinToString("\n") { verseWithHighlights ->
+        val span = selection.getValue(verseWithHighlights.verse.id)
+        val text = verseWithHighlights.verse.text
+        text.substring(span.start.coerceIn(0, text.length), span.end.coerceIn(0, text.length))
+    }
+}
+
+/**
+ * Given one tapped [Highlight], collects every highlight that belongs to the same logical
+ * multi-verse highlight — a run of consecutive verse ids, each with a highlight, matching the
+ * exact grouping rule BookmarkCategoriesScreen already uses to merge highlights for display.
+ * Tapping any part of a merged highlight should act on the whole thing, not just that one row.
+ */
+private fun resolveHighlightGroup(
+    verses: List<VerseWithHighlights>,
+    tapped: Highlight,
+): List<Highlight> {
+    val tappedIndex = verses.indexOfFirst { it.verse.id == tapped.verseId }
+    if (tappedIndex == -1) return listOf(tapped)
+
+    val group = mutableListOf(tapped)
+
+    var i = tappedIndex - 1
+    while (i >= 0 && verses[i].verse.id == verses[i + 1].verse.id - 1L && verses[i].highlights.isNotEmpty()) {
+        group.addAll(0, verses[i].highlights)
+        i--
+    }
+
+    var j = tappedIndex + 1
+    while (j < verses.size && verses[j].verse.id == verses[j - 1].verse.id + 1L && verses[j].highlights.isNotEmpty()) {
+        group.addAll(verses[j].highlights)
+        j++
+    }
+
+    return group
+}
+
+/**
+ * Resolves drag endpoints into per-verse spans using the full verse list, not just whichever
+ * verses happen to be composed right now — a long drag can scroll the anchor (or any verse in
+ * between) out of the LazyColumn's composition window well before the drag ends.
+ */
+private fun resolveSelection(
+    verses: List<VerseWithHighlights>,
+    endpoints: SelectionEndpoints,
+): Map<Long, CharSpan>? {
+    val anchorIdx = verses.indexOfFirst { it.verse.id == endpoints.anchorVerseId }
+    val currentIdx = verses.indexOfFirst { it.verse.id == endpoints.currentVerseId }
+    if (anchorIdx == -1 || currentIdx == -1) return null
+
+    if (anchorIdx == currentIdx) {
+        val lo = minOf(endpoints.anchorWordStart, endpoints.currentWordStart)
+        val hi = maxOf(endpoints.anchorWordEnd, endpoints.currentWordEnd)
+        return mapOf(endpoints.anchorVerseId to CharSpan(lo, hi))
+    }
+
+    val forward = anchorIdx < currentIdx
+    val lowIdx = if (forward) anchorIdx else currentIdx
+    val highIdx = if (forward) currentIdx else anchorIdx
+    val lowStart = if (forward) endpoints.anchorWordStart else endpoints.currentWordStart
+    val highEnd = if (forward) endpoints.currentWordEnd else endpoints.anchorWordEnd
+
+    val result = mutableMapOf<Long, CharSpan>()
+    for (i in lowIdx..highIdx) {
+        val verse = verses[i].verse
+        result[verse.id] = when (i) {
+            lowIdx -> CharSpan(lowStart, verse.text.length)
+            highIdx -> CharSpan(0, highEnd)
+            else -> CharSpan(0, verse.text.length)
+        }
+    }
+    return result
 }
 
 private fun Modifier.verticalReveal(fraction: Float): Modifier = this

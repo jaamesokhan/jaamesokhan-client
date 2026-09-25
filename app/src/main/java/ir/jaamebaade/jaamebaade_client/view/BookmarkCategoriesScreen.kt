@@ -148,7 +148,7 @@ fun BookmarkCategoriesScreen(
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 itemsIndexed(items = visibleItems, key = { _, item -> item.id }) { index, item ->
                     val headerText = if (tab == BookmarkCategoryTab.HIGHLIGHT && item.highlightSource != null) {
-                        createMergedHighlightItemHeader(item.highlightSource, MaterialTheme.colorScheme.tertiary)
+                        createMergedHighlightItemHeader(item.highlightSource)
                     } else {
                         AnnotatedString(item.pathText)
                     }
@@ -247,10 +247,7 @@ fun BookmarkCategoriesScreen(
     }
 }
 
-private fun createMergedHighlightItemHeader(
-    mergedHighlight: MergedHighlight,
-    highlightedTextColor: Color,
-): AnnotatedString {
+private fun createMergedHighlightItemHeader(mergedHighlight: MergedHighlight): AnnotatedString {
     var res = AnnotatedString("")
     mergedHighlight.highlights.zip(mergedHighlight.verses)
         .forEach { (highlight, verse) ->
@@ -261,7 +258,7 @@ private fun createMergedHighlightItemHeader(
                     append(verse.text.plus("\n"))
                 }
                 addStyle(
-                    style = SpanStyle(background = highlightedTextColor),
+                    style = SpanStyle(background = Color(highlight.color)),
                     start = highlight.startIndex,
                     end = highlight.endIndex
                 )

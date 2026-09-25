@@ -1,14 +1,9 @@
 package ir.jaamebaade.jaamebaade_client.view.components
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,36 +12,28 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Status
-import ir.jaamebaade.jaamebaade_client.model.Verse
+import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
-import ir.jaamebaade.jaamebaade_client.view.components.poem.HighlightActionButton
 import ir.jaamebaade.jaamebaade_client.viewmodel.SelectionOptionViewModel
-import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 
+/** Word/phrase-meaning lookup for the current selection. Highlight/Copy are handled by
+ * [SelectionToolbar] before this ever opens — this sheet is meaning-only, since a dictionary
+ * entry needs more room than a floating toolbar can offer. */
 @Composable
 fun SelectionBottomSheet(
     viewModel: SelectionOptionViewModel,
-    verse: Verse,
-    startIndex: Int,
-    endIndex: Int,
+    selectedText: String,
     changeMeaningFetchStatus: (status: Status) -> Unit,
     currentMeaningFetchStatus: Status,
-    highlightCallBack: (startIndex: Int, endIndex: Int) -> Unit,
-    context: Context,
     meaning: String,
     onDismiss: () -> Unit,
 ) {
@@ -54,7 +41,7 @@ fun SelectionBottomSheet(
         onDismissRequest = onDismiss,
     ) {
         viewModel.getWordMeaning(
-            word = verse.text.substring(startIndex, endIndex),
+            word = selectedText,
             successCallBack = {
                 changeMeaningFetchStatus(Status.SUCCESS)
             },
@@ -62,40 +49,6 @@ fun SelectionBottomSheet(
                 changeMeaningFetchStatus(Status.FAILED)
             })
         Column(modifier = Modifier.padding(horizontal = Dimens.space16, vertical = Dimens.space24)) {
-            Row(
-                modifier = Modifier
-                    .padding(Dimens.space8)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Absolute.Left,
-            ) {
-                HighlightActionButton(
-                    painter = painterResource(R.drawable.highlight),
-                    text = stringResource(R.string.HIGHLIGHT),
-                ) {
-                    highlightCallBack(
-                        startIndex,
-                        endIndex
-                    )
-                    onDismiss()
-                }
-
-                Spacer(modifier = Modifier.width(12.dp))
-
-                HighlightActionButton(
-                    painter = rememberVectorPainter(image = Icons.Default.ContentCopy),
-                    text = stringResource(R.string.COPY),
-                    outlined = true,
-                ) {
-                    val clipboard =
-                        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip = ClipData.newPlainText(
-                        "جام سخن",
-                        verse.text.substring(startIndex, endIndex)
-                    )
-                    clipboard.setPrimaryClip(clip)
-                    onDismiss()
-                }
-            }
             Row(
                 modifier = Modifier.padding(bottom = Dimens.space8),
                 verticalAlignment = Alignment.CenterVertically,
@@ -108,7 +61,7 @@ fun SelectionBottomSheet(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = verse.text.substring(startIndex, endIndex),
+                    text = selectedText,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.headlineLarge,
                 )

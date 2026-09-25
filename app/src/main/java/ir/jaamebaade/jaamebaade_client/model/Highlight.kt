@@ -22,4 +22,6 @@ data class Highlight(
     @ColumnInfo(name = "start_index") val startIndex: Int,
     @ColumnInfo(name = "end_index") val endIndex: Int,
     @ColumnInfo(name = "created_at", defaultValue = "0") val createdAt: Long = System.currentTimeMillis(),
+    // ARGB Int, matches ir.jaamebaade.jaamebaade_client.ui.theme.HighlightColors.Default (Green).
+    @ColumnInfo(name = "color", defaultValue = "-7356565") val color: Int = -7356565,
 )

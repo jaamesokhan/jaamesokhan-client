@@ -12,35 +12,24 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import ir.jaamebaade.jaamebaade_client.model.CharSpan
 import ir.jaamebaade.jaamebaade_client.model.Highlight
-import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.Verse
 import ir.jaamebaade.jaamebaade_client.utility.toPersianNumber
-import ir.jaamebaade.jaamebaade_client.viewmodel.SelectionOptionViewModel
 
 
 @Composable
 fun VerseItem(
     modifier: Modifier = Modifier,
-    viewModel: SelectionOptionViewModel = hiltViewModel(),
     verse: Verse,
     index: Int,
     showVerseNumber: Boolean,
@@ -49,62 +38,38 @@ fun VerseItem(
     onClick: () -> Unit,
     highlights: List<Highlight>,
     verseStyle: SpanStyle,
-    highlightCallBack: (startIndex: Int, endIndex: Int) -> Unit,
-
+    selectionController: VerseSelectionController,
+    pendingSelectionSpan: CharSpan? = null,
     ) {
     val paddingFromStart = 14.dp
-    var showDialog by remember { mutableStateOf(false) }
-    var startIndex by remember { mutableIntStateOf(0) }
-    var endIndex by remember { mutableIntStateOf(0) }
-    var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
-    val meaning by viewModel.apiResult
-    var meaningFetchStatus by remember { mutableStateOf(Status.NOT_STARTED) }
+    val liveSelectionColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)
+    // While a drag is active, the controller tracks the live in-progress span. Once it ends,
+    // that clears — but the toolbar/bottom sheet for the confirmed selection is still open, so
+    // fall back to the resolved pending span (passed down by the caller) to keep it visible.
+    val liveSelection = selectionController.selection[verse.id] ?: pendingSelectionSpan
 
-    var annotatedString by remember { mutableStateOf<AnnotatedString?>(null) }
-    val highlightColor = MaterialTheme.colorScheme.tertiary
+    val annotatedString = buildAnnotatedString {
+        withStyle(verseStyle) {
+            append(verse.text)
 
-    val context = LocalContext.current
-
-    fun changeMeaningFetchStatus(status: Status) {
-        meaningFetchStatus = status
-    }
-
-    LaunchedEffect(key1 = highlights) {
-        annotatedString = buildAnnotatedString {
-
-            withStyle(verseStyle)
-            {
-                append(verse.text)
-
-
-                highlights.forEach {
-                    addStyle(
-                        style = SpanStyle(
-                            background = highlightColor,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        start = it.startIndex,
-                        end = it.endIndex,
-                    )
-                }
+            highlights.forEach {
+                addStyle(
+                    style = SpanStyle(
+                        background = Color(it.color),
+                        fontWeight = FontWeight.Bold
+                    ),
+                    start = it.startIndex,
+                    end = it.endIndex,
+                )
             }
-        }
 
-        textFieldValue = TextFieldValue(annotatedString!!)
-    }
-    if (showDialog) {
-        SelectionBottomSheet(
-            viewModel = viewModel,
-            verse = verse,
-            startIndex = startIndex,
-            endIndex = endIndex,
-            changeMeaningFetchStatus = ::changeMeaningFetchStatus,
-            currentMeaningFetchStatus = meaningFetchStatus,
-            highlightCallBack = highlightCallBack,
-            context = context,
-            meaning = meaning
-        ) {
-            showDialog = false
+            liveSelection?.let {
+                addStyle(
+                    style = SpanStyle(background = liveSelectionColor),
+                    start = it.start,
+                    end = it.end,
+                )
+            }
         }
     }
 
@@ -135,20 +100,16 @@ fun VerseItem(
                 Spacer(modifier = Modifier.width(paddingFromStart))
             }
         }
-        VerseTextField(
-            textFieldValue,
-            onValueChange = {
-                textFieldValue = it
-            }
-        ) {
-            if (it.selection.start != it.selection.end) {
-                startIndex = it.selection.min
-                endIndex = it.selection.max
-                showDialog = true
-                // Clear the selection
-                textFieldValue = it.copy(selection = TextRange(0))
-            }
-        }
+        VerseText(
+            verseId = verse.id,
+            index = index,
+            annotatedString = annotatedString,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground
+            ),
+            selectionController = selectionController,
+        )
     }
     if (verse.position % 2 == 1)
         Spacer(modifier = Modifier.height(20.dp))

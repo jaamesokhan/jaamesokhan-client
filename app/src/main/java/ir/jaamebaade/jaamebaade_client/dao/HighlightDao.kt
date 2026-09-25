@@ -5,13 +5,17 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import ir.jaamebaade.jaamebaade_client.model.Highlight
 import ir.jaamebaade.jaamebaade_client.model.HighlightVersePoemPoet
 
 @Dao
 interface HighlightDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertHighlight(highlight: Highlight)
+    fun insertHighlight(highlight: Highlight): Long
+
+    @Update
+    fun updateHighlights(highlights: List<Highlight>)
 
     @Query("SELECT * FROM highlights")
     fun getAll(): List<Highlight>
@@ -22,6 +26,9 @@ interface HighlightDao {
     @Delete
     fun deleteHighlight(highlight: Highlight)
 
+    @Delete
+    fun deleteHighlights(highlights: List<Highlight>)
+
     @Query(
         """
             SELECT 
@@ -30,7 +37,8 @@ interface HighlightDao {
                 hg.end_index AS highlight_end_index,
                 hg.verse_id  AS highlight_verse_id,
                 hg.created_at AS highlight_created_at,
-                v.id AS verse_id, 
+                hg.color AS highlight_color,
+                v.id AS verse_id,
                 v.text AS verse_text, 
                 v.poem_id AS verse_poem_id, 
                 v.verse_order AS verse_verse_order,

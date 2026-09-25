@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ir.jaamebaade.jaamebaade_client.R
+import ir.jaamebaade.jaamebaade_client.model.LabelType
 import ir.jaamebaade.jaamebaade_client.viewmodel.SaveMomentSheet
 import ir.jaamebaade.jaamebaade_client.viewmodel.SaveMomentViewModel
 import ir.jaamebaade.jaamebaade_client.view.components.base.CustomBottomSheet
@@ -26,12 +27,13 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SaveMomentBottomSheet(
-    bookmarkId: Int,
+    labelType: LabelType,
+    targetIds: List<Int>,
     onDismiss: () -> Unit,
     viewModel: SaveMomentViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(bookmarkId) {
-        viewModel.load()
+    LaunchedEffect(targetIds) {
+        viewModel.load(labelType)
     }
 
     if (viewModel.sheet == SaveMomentSheet.NEW_CATEGORY) {
@@ -90,7 +92,7 @@ fun SaveMomentBottomSheet(
                     Text(text = stringResource(R.string.NO_CATEGORY))
                 }
                 Button(
-                    onClick = { viewModel.confirm(bookmarkId, onDismiss) },
+                    onClick = { viewModel.confirm(targetIds, onDismiss) },
                     modifier = Modifier.weight(1f),
                 ) {
                     Text(text = stringResource(R.string.SAVE))
