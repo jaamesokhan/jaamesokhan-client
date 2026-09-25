@@ -9,7 +9,11 @@ class CustomFont(
     val displayName: String,
     val fontFamily: FontFamily,
     val specs: CustomFontSpecs,
-)
+    /** File name in the user fonts directory, or null for built-in fonts. */
+    val fileName: String? = null,
+) {
+    val isUserFont: Boolean get() = fileName != null
+}
 
 class CustomFontSpecs(
     val label: CustomFontAttributes,

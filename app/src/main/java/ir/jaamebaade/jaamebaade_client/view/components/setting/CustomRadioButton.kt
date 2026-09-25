@@ -32,6 +32,7 @@ fun CustomRadioButton(
     title: String,
     showDivider: Boolean,
     isSelected: Boolean,
+    trailingContent: (@Composable () -> Unit)? = null,
     onClick: () -> Unit
 ) {
     Surface(
@@ -87,6 +88,15 @@ fun CustomRadioButton(
                     style = MaterialTheme.typography.headlineLarge,
                     color = MaterialTheme.colorScheme.onBackground
                 )
+                if (trailingContent != null) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .padding(end = Dimens.space8)
+                    ) {
+                        trailingContent()
+                    }
+                }
                 if (showDivider) {
                     HorizontalDivider(
                         modifier = Modifier.align(Alignment.BottomEnd),

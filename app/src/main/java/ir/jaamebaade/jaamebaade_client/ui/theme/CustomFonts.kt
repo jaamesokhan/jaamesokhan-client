@@ -5,6 +5,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import ir.jaamebaade.jaamebaade_client.R
+import java.io.File
 
 object CustomFonts {
     val Nastaliq = CustomFont(
@@ -463,5 +464,18 @@ object CustomFonts {
 
     fun getAllFonts(): List<CustomFont> {
         return listOf(Nastaliq, Vazirmatn, Dana, Serif)
+    }
+
+    const val USER_FONT_PREFIX = "user:"
+
+    /** Builds a poem font from a font file imported by the user. */
+    fun fromUserFile(file: File): CustomFont {
+        return CustomFont(
+            name = USER_FONT_PREFIX + file.name,
+            displayName = file.nameWithoutExtension,
+            fontFamily = FontFamily(Font(file)),
+            specs = Vazirmatn.specs,
+            fileName = file.name,
+        )
     }
 }

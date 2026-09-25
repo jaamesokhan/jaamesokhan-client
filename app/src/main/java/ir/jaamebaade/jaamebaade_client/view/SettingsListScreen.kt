@@ -1,5 +1,24 @@
 package ir.jaamebaade.jaamebaade_client.view
 
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
+import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
+import ir.jaamebaade.jaamebaade_client.utility.UserFontStorage
+import ir.jaamebaade.jaamebaade_client.view.components.ConfirmationDialog
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -51,6 +70,29 @@ fun SettingsListScreen(
     openRandomLayout: Boolean = false,
 ) {
     var selectedPoemFontFamily by remember { mutableStateOf(fontRepository.poemFontFamily.value) }
+    val userFonts by fontRepository.userFonts.collectAsState()
+    var fontPendingDeletion by remember { mutableStateOf<CustomFont?>(null) }
+    var isImportingFont by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val fontPickerLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        isImportingFont = true
+        coroutineScope.launch {
+            val messageRes = when (fontRepository.importUserFont(uri)) {
+                is UserFontStorage.ImportResult.Success -> {
+                    selectedPoemFontFamily = fontRepository.poemFontFamily.value
+                    R.string.USER_FONT_ADDED
+                }
+                UserFontStorage.ImportResult.TooLarge -> R.string.USER_FONT_TOO_LARGE
+                UserFontStorage.ImportResult.InvalidFile -> R.string.USER_FONT_INVALID
+            }
+            isImportingFont = false
+            Toast.makeText(context, context.getString(messageRes), Toast.LENGTH_SHORT).show()
+        }
+    }
     var selectedPoemFontSize by remember { mutableStateOf(fontRepository.poemFontSize.value) }
     var selectedTheme by remember { mutableStateOf(themeRepository.appTheme.value) }
     var selectedRandomPoemLayout by remember { mutableStateOf(randomPoemLayoutRepository.layout.value) }
@@ -208,19 +250,37 @@ fun SettingsListScreen(
             Column(modifier = sheetModifier) {
                 when (selectedSettingItem) {
                     SettingItem.FONT -> {
-                        CustomFonts.getAllFonts().forEachIndexed { index, customFont ->
+                        val allFonts = CustomFonts.getAllFonts() + userFonts
+                        allFonts.forEach { customFont ->
                             fun onFontClick() {
                                 selectedPoemFontFamily = customFont
                                 fontRepository.setPoemFontFamily(customFont)
                             }
                             CustomRadioButton(
                                 title = customFont.displayName,
-                                showDivider = index != CustomFonts.getAllFonts().lastIndex,
-                                isSelected = customFont == selectedPoemFontFamily,
+                                showDivider = true,
+                                isSelected = customFont.name == selectedPoemFontFamily.name,
+                                trailingContent = if (customFont.isUserFont) {
+                                    {
+                                        IconButton(onClick = { fontPendingDeletion = customFont }) {
+                                            Icon(
+                                                imageVector = Icons.Outlined.Delete,
+                                                contentDescription = stringResource(R.string.DELETE),
+                                                tint = MaterialTheme.colorScheme.onBackground,
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    null
+                                },
                             ) { onFontClick() }
-
                         }
-
+                        AddUserFontItem(
+                            isImporting = isImportingFont,
+                            onClick = {
+                                fontPickerLauncher.launch(FONT_MIME_TYPES)
+                            },
+                        )
                     }
 
 
@@ -275,7 +335,59 @@ fun SettingsListScreen(
         }
 
     }
+    fontPendingDeletion?.let { font ->
+        ConfirmationDialog(
+            message = stringResource(R.string.USER_FONT_DELETE_CONFIRM, font.displayName),
+            onConfirm = {
+                fontRepository.deleteUserFont(font)
+                selectedPoemFontFamily = fontRepository.poemFontFamily.value
+                fontPendingDeletion = null
+            },
+            onDismiss = { fontPendingDeletion = null },
+        )
+    }
 }
+
+@Composable
+private fun AddUserFontItem(
+    isImporting: Boolean,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(64.dp)
+            .clickable(enabled = !isImporting, onClick = onClick)
+            .padding(horizontal = Dimens.space16),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (isImporting) {
+            CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
+        } else {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+            )
+        }
+        Spacer(modifier = Modifier.width(Dimens.space16))
+        Text(
+            text = stringResource(R.string.USER_FONT_ADD),
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.primary,
+        )
+    }
+}
+
+private val FONT_MIME_TYPES = arrayOf(
+    "font/ttf",
+    "font/otf",
+    "font/sfnt",
+    "application/x-font-ttf",
+    "application/x-font-otf",
+    "application/font-sfnt",
+    "application/octet-stream",
+)
 
 
 enum class SettingItem {

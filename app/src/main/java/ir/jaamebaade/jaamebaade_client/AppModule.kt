@@ -27,6 +27,7 @@ import ir.jaamebaade.jaamebaade_client.repository.SearchHistoryRepository
 import ir.jaamebaade.jaamebaade_client.repository.VerseRepository
 import ir.jaamebaade.jaamebaade_client.utility.DownloadStatusManager
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
+import ir.jaamebaade.jaamebaade_client.utility.UserFontStorage
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -195,8 +196,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFontRepository(sharedPrefManager: SharedPrefManager): FontRepository {
-        return FontRepository(sharedPrefManager)
+    fun provideUserFontStorage(@ApplicationContext context: Context): UserFontStorage {
+        return UserFontStorage(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFontRepository(
+        sharedPrefManager: SharedPrefManager,
+        userFontStorage: UserFontStorage,
+    ): FontRepository {
+        return FontRepository(sharedPrefManager, userFontStorage)
     }
 
     @Provides

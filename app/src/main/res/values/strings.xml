@@ -177,6 +177,11 @@ https://myket.ir/app/ir.jaamebaade.jaamebaade_client
     <string name="APP_THEME">تم برنامه</string>
     <string name="FONT">فونت</string>
     <string name="FONT_SIZE">اندازه قلم</string>
+    <string name="USER_FONT_ADD">افزودن قلم از فایل</string>
+    <string name="USER_FONT_ADDED">قلم با موفقیت افزوده شد.</string>
+    <string name="USER_FONT_INVALID">این فایل یک قلم معتبر (ttf یا otf) نیست.</string>
+    <string name="USER_FONT_TOO_LARGE">حجم فایل قلم بیش از ۲۰ مگابایت است.</string>
+    <string name="USER_FONT_DELETE_CONFIRM">قلم «%1$s» حذف شود؟</string>
     <string name="THEME_SETTING_STR">حالت</string>
     <string name="GITHUB">Github</string>
     <string name="WEBSITE">سایت جام سخن</string>
