@@ -158,6 +158,23 @@ class VerseSelectionController {
         }
     }
 
+    /**
+     * Precise hit-test for a tap — unlike [hitTest], this never snaps to the nearest verse when
+     * the position isn't exactly over one, since a tap on empty padding should do nothing rather
+     * than act on whichever verse happens to be closest.
+     */
+    fun exactHitTest(windowPosition: Offset): Pair<Long, Int>? {
+        for ((verseId, info) in verseLayouts) {
+            val local = info.coordinates.windowToLocal(windowPosition)
+            val size = info.coordinates.size
+            if (local.x >= 0f && local.x <= size.width && local.y >= 0f && local.y <= size.height) {
+                val offset = info.layoutResult.getOffsetForPosition(local).coerceIn(0, info.text.length)
+                return verseId to offset
+            }
+        }
+        return null
+    }
+
     private fun hitTest(windowPosition: Offset): Hit? {
         if (verseLayouts.isEmpty()) return null
 

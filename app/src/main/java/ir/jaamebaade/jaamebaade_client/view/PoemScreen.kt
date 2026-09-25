@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -518,6 +519,22 @@ fun PoemScreen(
                         }
                     )
                 }
+                .pointerInput(selectMode, versesWithHighlights) {
+                    if (selectMode) return@pointerInput
+                    detectTapGestures(onTap = { offset ->
+                        val coordinates = lazyColumnCoordinates ?: return@detectTapGestures
+                        val windowPosition = coordinates.localToWindow(offset)
+                        val (verseId, charOffset) = selectionController.exactHitTest(windowPosition)
+                            ?: return@detectTapGestures
+                        val tapped = versesWithHighlights
+                            .find { it.verse.id == verseId }
+                            ?.highlights
+                            ?.find { charOffset >= it.startIndex && charOffset < it.endIndex }
+                            ?: return@detectTapGestures
+                        committedHighlights = resolveHighlightGroup(versesWithHighlights, tapped)
+                        selectionToolbarPosition = windowPosition
+                    })
+                }
                 .padding(Dimens.space10),
             state = lazyListState
         ) {
@@ -665,6 +682,36 @@ private fun buildSelectedText(
         val text = verseWithHighlights.verse.text
         text.substring(span.start.coerceIn(0, text.length), span.end.coerceIn(0, text.length))
     }
+}
+
+/**
+ * Given one tapped [Highlight], collects every highlight that belongs to the same logical
+ * multi-verse highlight — a run of consecutive verse ids, each with a highlight, matching the
+ * exact grouping rule BookmarkCategoriesScreen already uses to merge highlights for display.
+ * Tapping any part of a merged highlight should act on the whole thing, not just that one row.
+ */
+private fun resolveHighlightGroup(
+    verses: List<VerseWithHighlights>,
+    tapped: Highlight,
+): List<Highlight> {
+    val tappedIndex = verses.indexOfFirst { it.verse.id == tapped.verseId }
+    if (tappedIndex == -1) return listOf(tapped)
+
+    val group = mutableListOf(tapped)
+
+    var i = tappedIndex - 1
+    while (i >= 0 && verses[i].verse.id == verses[i + 1].verse.id - 1L && verses[i].highlights.isNotEmpty()) {
+        group.addAll(0, verses[i].highlights)
+        i--
+    }
+
+    var j = tappedIndex + 1
+    while (j < verses.size && verses[j].verse.id == verses[j - 1].verse.id + 1L && verses[j].highlights.isNotEmpty()) {
+        group.addAll(verses[j].highlights)
+        j++
+    }
+
+    return group
 }
 
 /**
