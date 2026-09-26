@@ -633,14 +633,23 @@ fun PoemScreen(
                         context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val clip = ClipData.newPlainText("جام سخن", selectedText)
                     clipboard.setPrimaryClip(clip)
+                    poemViewModel.onVersesCopied(selection.size, source = "text_selection")
                     dismissSelection()
                 },
-                onMeaning = { showMeaningSheet = true },
+                onMeaning = {
+                    showMeaningSheet = true
+                    poemViewModel.onDictionaryLookup()
+                },
             )
         }
     }
 
-    PoemScreenBottomToolBar(selectMode, modifier, selectedVerses) {
+    PoemScreenBottomToolBar(
+        selectMode,
+        modifier,
+        selectedVerses,
+        onVersesCopied = { poemViewModel.onVersesCopied(it, source = "verse_select_mode") },
+    ) {
         selectMode = false
         selectedVerses.clear()
     }

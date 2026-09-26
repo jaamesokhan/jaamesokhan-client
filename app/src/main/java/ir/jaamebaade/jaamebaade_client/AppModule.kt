@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.api.JaameSokhanApiClient
 import ir.jaamebaade.jaamebaade_client.api.JaameSokhanApiService
 import ir.jaamebaade.jaamebaade_client.api.GanjoorApiClient
@@ -195,8 +196,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFontRepository(sharedPrefManager: SharedPrefManager): FontRepository {
-        return FontRepository(sharedPrefManager)
+    fun provideFontRepository(
+        sharedPrefManager: SharedPrefManager,
+        analytics: AnalyticsLogger,
+    ): FontRepository {
+        return FontRepository(sharedPrefManager, analytics)
     }
 
     @Provides

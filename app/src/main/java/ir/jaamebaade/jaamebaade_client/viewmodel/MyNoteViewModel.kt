@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.viewmodel
 
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.model.Comment
 import ir.jaamebaade.jaamebaade_client.model.CommentPoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MyNoteViewModel @Inject constructor(
     private val noteRepository: CommentRepository,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val analytics: AnalyticsLogger,
 ) : ViewModel() {
     var notes by mutableStateOf<List<CommentPoemCategoriesPoet>>(emptyList())
         private set
@@ -38,6 +40,7 @@ class MyNoteViewModel @Inject constructor(
                 it.remove(commentPoemCategoriesPoet)
             }
             deleteCommentFromRepository(commentPoemCategoriesPoet.comment)
+            analytics.logNoteDelete(source = "my_notes")
         }
     }
 
@@ -50,6 +53,7 @@ class MyNoteViewModel @Inject constructor(
         }
         val shareIntent = Intent.createChooser(sendIntent, null)
         context.startActivity(shareIntent)
+        analytics.logShare(contentType = "note", itemId = note.comment.poemId)
     }
 
     private suspend fun deleteCommentFromRepository(comment: Comment) {

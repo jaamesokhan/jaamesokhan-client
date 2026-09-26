@@ -11,6 +11,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.model.Comment
 import ir.jaamebaade.jaamebaade_client.repository.CommentRepository
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +22,7 @@ import kotlinx.coroutines.withContext
 class CommentViewModel @AssistedInject constructor(
     @Assisted("poemId") private val poemId: Int,
     private val commentRepository: CommentRepository,
+    private val analytics: AnalyticsLogger,
 ) : ViewModel() {
     var comments by mutableStateOf<List<Comment>>(emptyList())
         private set
@@ -40,6 +42,7 @@ class CommentViewModel @AssistedInject constructor(
         viewModelScope.launch {
             val comment = Comment(poemId = poemId, text = text)
             addCommentToRepository(comment)
+            analytics.logNoteAdd(poemId, length = text.length)
         }
     }
 
@@ -55,12 +58,14 @@ class CommentViewModel @AssistedInject constructor(
 
             val shareIntent = Intent.createChooser(sendIntent, null)
             context.startActivity(shareIntent)
+            analytics.logShare(contentType = "note", itemId = comment.poemId)
         }
     }
 
     fun deleteComment(comment: Comment) {
         viewModelScope.launch {
             deleteCommentFromRepository(comment)
+            analytics.logNoteDelete(source = "poem")
         }
     }
 

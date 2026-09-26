@@ -78,6 +78,7 @@ fun AudioListItems(
                 }
             }, {
                 appNavHostViewModel.changePlayStatus(Status.FAILED)
+                appNavHostViewModel.analytics.logRecitationError(it.poemId)
                 appNavHostViewModel.onPlaybackError()
                 ToastManager.showToast(R.string.RECITATION_FETCH_FAILED, ToastType.ERROR)
             })

@@ -50,6 +50,10 @@
         <receiver
             android:name=".audio.AudioNotificationReceiver"
             android:exported="false" />
+
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
     </application>
 
 </manifest>
