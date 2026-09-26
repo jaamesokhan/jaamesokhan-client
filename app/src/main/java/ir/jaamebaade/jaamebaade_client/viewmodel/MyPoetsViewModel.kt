@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.jaamebaade.jaamebaade_client.R
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.Poem
 import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
@@ -41,6 +42,7 @@ class MyPoetsViewModel @Inject constructor(
     private val downloadStatusManager: DownloadStatusManager,
     private val sharedPrefManager: SharedPrefManager,
     randomPoemLayoutRepository: RandomPoemLayoutRepository,
+    private val analytics: AnalyticsLogger,
 ) : ViewModel() {
     val randomPoemLayout = randomPoemLayoutRepository.layout
 
@@ -90,6 +92,7 @@ class MyPoetsViewModel @Inject constructor(
     fun setScheduledNotificationsEnabled(context: Context, enabled: Boolean) {
         isScheduledNotificationsEnabled = enabled
         sharedPrefManager.setIsScheduledNotificationsEnabled(enabled)
+        analytics.logSettingChanged(AnalyticsLogger.UserProperties.DAILY_POEM_NOTIFICATION, enabled.toString())
         if (enabled) {
             sharedPrefManager.setIsScheduledNotificationsSetUp(true)
             ExactAlarmScheduler.cancel(context)
@@ -116,12 +119,15 @@ class MyPoetsViewModel @Inject constructor(
                 poetRepository.deletePoet(selectedPoet)
                 changeDownloadStatusToNotDownloaded(selectedPoet.id.toString())
                 poets = poets!!.toMutableList().also { it.remove(selectedPoet) }
+                analytics.logPoetDelete(selectedPoet.id, selectedPoet.name)
+                analytics.setDownloadedPoetsCount(poets!!.size)
                 onSuccess()
             }
         }
     }
 
     fun getRandomPoem(refresh: Boolean = false, onSuccess: () -> Unit) {
+        if (refresh) analytics.logRandomPoemRefresh()
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val poemWithPoet = poemRepository.getRandomPoem()

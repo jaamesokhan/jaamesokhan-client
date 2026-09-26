@@ -68,6 +68,18 @@ fun AppNavHost(
     val navController =
         rememberNavController()
 
+    LaunchedEffect(navController) {
+        navController.currentBackStackEntryFlow.collect { entry ->
+            entry.destination.route?.let {
+                appNavHostViewModel.analytics.logScreenView(it.substringBefore('/').substringBefore('?'))
+            }
+        }
+    }
+
+    LaunchedEffect(startDestination) {
+        startDestination?.let { appNavHostViewModel.analytics.logNotificationOpened(it.substringBefore('/')) }
+    }
+
     val appTheme by themeRepository.appTheme.collectAsState()
 
     var showPermissionRationale by remember { mutableStateOf(sharedPrefManager.getNotificationPermissionPreference()) }

@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.SearchHistoryRecord
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
@@ -30,7 +31,8 @@ class SearchViewModel @Inject constructor(
     private val verseRepository: VerseRepository,
     private val poetRepository: PoetRepository,
     private val categoryRepository: CategoryRepository,
-    private val searchHistoryRepository: SearchHistoryRepository
+    private val searchHistoryRepository: SearchHistoryRepository,
+    private val analytics: AnalyticsLogger,
 ) : ViewModel() {
     var query by mutableStateOf("")
 
@@ -63,6 +65,7 @@ class SearchViewModel @Inject constructor(
             }
             saveSearchHistory(query)
             runSearchOnDatabase(callBack)
+            analytics.logSearch(query, resultCount = results.size, poetFilterCount = poetFilter.size)
         }
     }
 
