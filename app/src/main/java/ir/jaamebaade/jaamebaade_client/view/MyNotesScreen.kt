@@ -2,6 +2,7 @@ package ir.jaamebaade.jaamebaade_client.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,10 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,8 +47,8 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.SheetTopShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
 import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
 import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
-import ir.jaamebaade.jaamebaade_client.view.components.ComposableCardItem
-import ir.jaamebaade.jaamebaade_client.view.components.base.ListRowDivider
+import ir.jaamebaade.jaamebaade_client.view.components.CollectionCardItem
+import ir.jaamebaade.jaamebaade_client.view.components.collectionCardBodyStyle
 import ir.jaamebaade.jaamebaade_client.view.components.bookmark.BottomSheetListItem
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyNoteViewModel
@@ -98,10 +98,14 @@ fun MyNotesScreen(
             )
         }
     } else {
-        LazyColumn(modifier = modifier.fillMaxSize()) {
-            itemsIndexed(
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(Dimens.space12),
+            contentPadding = PaddingValues(top = Dimens.space14, bottom = Dimens.space16),
+        ) {
+            items(
                 items = notes,
-                key = { _, item -> item.comment.id }) { index, note ->
+                key = { item -> item.comment.id }) { note ->
                 MyNoteCardItem(
                     modifier = Modifier.animateItem(),
                     note = note,
@@ -113,9 +117,6 @@ fun MyNotesScreen(
                         showBottomSheet = true
                     },
                 )
-
-                if (index != notes.size - 1)
-                    ListRowDivider()
 
             }
         }
@@ -164,50 +165,36 @@ fun MyNoteCardItem(
     onClick: () -> Unit = {},
     onIconClick: () -> Unit = {},
 ) {
-    ComposableCardItem(
+    CollectionCardItem(
         modifier = modifier,
+        pathText = createPoemPath(note.path.categories, note.path.poem),
         imageUrl = note.path.poet.imageUrl,
-        header = {
-            Text(
-                text = note.comment.text.trim(),
-                style = MaterialTheme.typography.headlineMedium,
-            )
-        },
-        body = {
-            Text(
-                text = createPoemPath(note.path.categories, note.path.poem),
-                style = MaterialTheme.typography.headlineSmall,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 3,
-                color = MaterialTheme.colorScheme.outlineVariant,
-            )
-        },
-        footer =
-            {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.Circle,
-                        tint = MaterialTheme.colorScheme.secondaryS50,
-                        contentDescription = null,
-                        modifier = Modifier.size(8.dp),
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = Date(note.comment.createdAt).convertToJalali()
-                            .toLocalFormatWithHour(),
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.outlineVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-
-            },
-        icon = Icons.Filled.MoreVert,
-        iconDescription = stringResource(R.string.MORE),
         onClick = onClick,
-        onIconClick = onIconClick
-    )
+        onMoreClick = onIconClick,
+    ) {
+        Text(
+            text = note.comment.text.trim(),
+            style = collectionCardBodyStyle(),
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Default.Circle,
+                tint = MaterialTheme.colorScheme.secondaryS50,
+                contentDescription = null,
+                modifier = Modifier.size(8.dp),
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = Date(note.comment.createdAt).convertToJalali()
+                    .toLocalFormatWithHour(),
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.outlineVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
 }
 
 private fun createPoemPath(categories: List<Category>, poem: Poem) =

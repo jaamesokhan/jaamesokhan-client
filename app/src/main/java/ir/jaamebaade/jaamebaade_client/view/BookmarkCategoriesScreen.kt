@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
@@ -35,7 +34,6 @@ import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.BookmarkCategoryItem
 import ir.jaamebaade.jaamebaade_client.model.MergedHighlight
 import ir.jaamebaade.jaamebaade_client.utility.toPersianNumber
-import ir.jaamebaade.jaamebaade_client.view.components.base.ListRowDivider
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.AddCategoryChip
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.CategoryFilterChip
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.CategoryPickerBottomSheet
@@ -145,19 +143,24 @@ fun BookmarkCategoriesScreen(
                 }
             }
         } else {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                itemsIndexed(items = visibleItems, key = { _, item -> item.id }) { index, item ->
-                    val headerText = if (tab == BookmarkCategoryTab.HIGHLIGHT && item.highlightSource != null) {
-                        createMergedHighlightItemHeader(item.highlightSource)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(Dimens.space12),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = Dimens.space16),
+            ) {
+                items(items = visibleItems, key = { item -> item.id }) { item ->
+                    val isHighlight = tab == BookmarkCategoryTab.HIGHLIGHT && item.highlightSource != null
+                    val bodyText = if (isHighlight) {
+                        createMergedHighlightItemHeader(item.highlightSource!!)
                     } else {
-                        AnnotatedString(item.pathText)
+                        AnnotatedString(item.previewText)
                     }
-                    val bodyText = if (tab == BookmarkCategoryTab.HIGHLIGHT) item.pathText else item.previewText
 
                     LabeledCardItem(
                         modifier = Modifier.animateItem(),
-                        headerText = headerText,
+                        pathText = item.pathText,
                         bodyText = bodyText,
+                        bodyMaxLines = if (isHighlight) Int.MAX_VALUE else 1,
                         imageUrl = item.imageUrl,
                         labels = item.labels,
                         onClick = {
@@ -171,9 +174,6 @@ fun BookmarkCategoriesScreen(
                         onMoreClick = { viewModel.openItemActions(item.id) },
                         onAddToCategoryClick = { viewModel.openItemActions(item.id) },
                     )
-                    if (index != visibleItems.size - 1) {
-                        ListRowDivider()
-                    }
                 }
             }
         }
