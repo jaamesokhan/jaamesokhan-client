@@ -45,6 +45,7 @@ class MyPoetsViewModel @Inject constructor(
     private val analytics: AnalyticsLogger,
 ) : ViewModel() {
     val randomPoemLayout = randomPoemLayoutRepository.layout
+    val isAnalyticsConsentPending = analytics.isConsentPending
 
     var showRandomPoemLayoutIntro by mutableStateOf(
         !sharedPrefManager.getRandomPoemLayoutIntroSeen()

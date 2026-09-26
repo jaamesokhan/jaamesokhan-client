@@ -35,3 +35,7 @@ All events are emitted through `analytics/AnalyticsLogger.kt`.
 `downloaded_poets_count`, `app_theme`, `poem_font`, `poem_font_size`, `random_poem_layout`, `daily_poem_notification`
 
 To use custom params in reports (e.g. top poets by `poem_view`), register them as custom dimensions/metrics in the Firebase console → Analytics → Custom definitions. User properties must be registered there too.
+
+## Consent
+
+Collection is disabled by default (`firebase_analytics_collection_enabled=false` in the manifest). On first launch `AnalyticsConsentDialog` asks the user; the answer is stored in `SharedPrefManager` and applied via `setAnalyticsCollectionEnabled`. Nothing is sent until the user accepts.

@@ -56,6 +56,7 @@ fun MyPoetsScreen(
     var randomPoetPreviewFetchStatus by remember { mutableStateOf(Status.LOADING) }
     val randomPoemPreview = viewModel.randomPoemPreview
     val randomPoemLayout by viewModel.randomPoemLayout.collectAsState()
+    val isAnalyticsConsentPending by viewModel.isAnalyticsConsentPending.collectAsState()
 
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -78,7 +79,7 @@ fun MyPoetsScreen(
         if (poets != null) fetchStatus = Status.SUCCESS
     }
 
-    if (viewModel.showRandomPoemLayoutIntro && !poets.isNullOrEmpty()) {
+    if (viewModel.showRandomPoemLayoutIntro && !isAnalyticsConsentPending && !poets.isNullOrEmpty()) {
         RandomPoemLayoutIntroDialog(
             onChooseLayout = {
                 viewModel.dismissRandomPoemLayoutIntro()

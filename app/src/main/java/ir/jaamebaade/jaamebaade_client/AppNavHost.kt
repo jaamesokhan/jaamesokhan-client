@@ -48,6 +48,7 @@ import ir.jaamebaade.jaamebaade_client.view.SearchScreen
 import ir.jaamebaade.jaamebaade_client.view.SettingsListScreen
 import ir.jaamebaade.jaamebaade_client.view.SplashScreen
 import ir.jaamebaade.jaamebaade_client.view.components.AboutUsScreen
+import ir.jaamebaade.jaamebaade_client.view.components.AnalyticsConsentDialog
 import ir.jaamebaade.jaamebaade_client.view.components.Navbar
 import ir.jaamebaade.jaamebaade_client.view.components.TopBar
 import ir.jaamebaade.jaamebaade_client.viewmodel.AppNavHostViewModel
@@ -81,6 +82,7 @@ fun AppNavHost(
     }
 
     val appTheme by themeRepository.appTheme.collectAsState()
+    val isAnalyticsConsentPending by appNavHostViewModel.analytics.isConsentPending.collectAsState()
 
     var showPermissionRationale by remember { mutableStateOf(sharedPrefManager.getNotificationPermissionPreference()) }
 
@@ -118,6 +120,12 @@ fun AppNavHost(
             if (fetchStatus == Status.LOADING) {
                 SplashScreen()
             } else if (fetchStatus == Status.SUCCESS && hasDownloadedAnyPoets != null) {
+                if (isAnalyticsConsentPending) {
+                    AnalyticsConsentDialog(
+                        onAllow = { appNavHostViewModel.analytics.setConsent(true) },
+                        onDeny = { appNavHostViewModel.analytics.setConsent(false) },
+                    )
+                }
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()

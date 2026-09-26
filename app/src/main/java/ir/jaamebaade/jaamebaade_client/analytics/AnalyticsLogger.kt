@@ -4,14 +4,31 @@ import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.qualifiers.ApplicationContext
+import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AnalyticsLogger @Inject constructor(
     @param:ApplicationContext context: Context,
+    private val sharedPrefManager: SharedPrefManager,
 ) {
     private val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+
+    private val _isConsentPending = MutableStateFlow(sharedPrefManager.getAnalyticsConsent() == null)
+    val isConsentPending: StateFlow<Boolean> = _isConsentPending
+
+    init {
+        firebaseAnalytics.setAnalyticsCollectionEnabled(sharedPrefManager.getAnalyticsConsent() == true)
+    }
+
+    fun setConsent(granted: Boolean) {
+        sharedPrefManager.setAnalyticsConsent(granted)
+        firebaseAnalytics.setAnalyticsCollectionEnabled(granted)
+        _isConsentPending.value = false
+    }
 
     fun logScreenView(screenName: String) {
         log(FirebaseAnalytics.Event.SCREEN_VIEW) {
