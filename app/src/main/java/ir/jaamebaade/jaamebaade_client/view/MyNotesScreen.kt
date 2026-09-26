@@ -48,6 +48,7 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
 import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
 import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
 import ir.jaamebaade.jaamebaade_client.view.components.CollectionCardItem
+import ir.jaamebaade.jaamebaade_client.view.components.collectionCardBodyStyle
 import ir.jaamebaade.jaamebaade_client.view.components.bookmark.BottomSheetListItem
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyNoteViewModel
@@ -173,7 +174,7 @@ fun MyNoteCardItem(
     ) {
         Text(
             text = note.comment.text.trim(),
-            style = MaterialTheme.typography.headlineMedium,
+            style = collectionCardBodyStyle(),
             color = MaterialTheme.colorScheme.onBackground,
         )
         Row(verticalAlignment = Alignment.CenterVertically) {

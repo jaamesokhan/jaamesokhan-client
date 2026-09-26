@@ -20,11 +20,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 import ir.jaamebaade.jaamebaade_client.view.components.base.SquareImage
+
+/** Text style for the verse or note shown in a [CollectionCardItem]. */
+@Composable
+fun collectionCardBodyStyle(): TextStyle =
+    MaterialTheme.typography.headlineMedium.copy(fontSize = 17.sp, lineHeight = 32.sp)
 
 /**
  * Card used by the saved, highlights and notes lists: a compact one-line header
@@ -53,26 +60,26 @@ fun CollectionCardItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { onClick() }
-                .padding(start = Dimens.space16, end = Dimens.space4, top = Dimens.space12, bottom = Dimens.space12),
-            verticalArrangement = Arrangement.spacedBy(Dimens.space8),
+                .padding(start = Dimens.space20, end = Dimens.space8, top = Dimens.space14, bottom = Dimens.space16),
+            verticalArrangement = Arrangement.spacedBy(Dimens.space12),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(Dimens.space8),
+                horizontalArrangement = Arrangement.spacedBy(Dimens.space10),
             ) {
                 SquareImage(
                     imageUrl = imageUrl,
                     contentDescription = null,
-                    size = 40,
+                    size = 44,
                     roundedCornerShapeSize = 20,
                 )
                 Text(
                     modifier = Modifier.weight(1f),
                     text = pathText,
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp, lineHeight = 20.sp),
                     color = MaterialTheme.colorScheme.outlineVariant,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
                 IconButton(modifier = Modifier.size(40.dp), onClick = onMoreClick) {
@@ -87,7 +94,7 @@ fun CollectionCardItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = Dimens.space12),
-                verticalArrangement = Arrangement.spacedBy(Dimens.space8),
+                verticalArrangement = Arrangement.spacedBy(Dimens.space10),
                 content = content,
             )
         }

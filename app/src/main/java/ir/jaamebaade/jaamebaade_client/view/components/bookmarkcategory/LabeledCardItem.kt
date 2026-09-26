@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.R
 import ir.jaamebaade.jaamebaade_client.model.Label
 import ir.jaamebaade.jaamebaade_client.view.components.CollectionCardItem
+import ir.jaamebaade.jaamebaade_client.view.components.collectionCardBodyStyle
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -38,7 +39,7 @@ fun LabeledCardItem(
     ) {
         Text(
             text = bodyText,
-            style = MaterialTheme.typography.headlineMedium,
+            style = collectionCardBodyStyle(),
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = bodyMaxLines,
             overflow = TextOverflow.Ellipsis,
