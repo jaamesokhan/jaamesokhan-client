@@ -7,18 +7,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Single entry point for every Firebase Analytics event and user property the app emits.
- * Keeping the names here makes the event catalog easy to audit and keeps them consistent
- * with what shows up in the Firebase console.
- */
 @Singleton
 class AnalyticsLogger @Inject constructor(
     @param:ApplicationContext context: Context,
 ) {
     private val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
-
-    // region Navigation
 
     fun logScreenView(screenName: String) {
         log(FirebaseAnalytics.Event.SCREEN_VIEW) {
@@ -30,10 +23,6 @@ class AnalyticsLogger @Inject constructor(
     fun logNotificationOpened(destination: String) {
         log(Events.NOTIFICATION_OPEN) { putText(Params.DESTINATION, destination) }
     }
-
-    // endregion
-
-    // region Reading
 
     fun logPoemView(poetId: Int, poetName: String?, poemId: Int, poemTitle: String?) {
         log(Events.POEM_VIEW) {
@@ -65,10 +54,6 @@ class AnalyticsLogger @Inject constructor(
         log(Events.DICTIONARY_LOOKUP) { putNumber(Params.POEM_ID, poemId) }
     }
 
-    // endregion
-
-    // region Search
-
     fun logSearch(query: String, resultCount: Int, poetFilterCount: Int) {
         log(FirebaseAnalytics.Event.SEARCH) {
             putText(FirebaseAnalytics.Param.SEARCH_TERM, query)
@@ -76,10 +61,6 @@ class AnalyticsLogger @Inject constructor(
             putNumber(Params.POET_FILTER_COUNT, poetFilterCount)
         }
     }
-
-    // endregion
-
-    // region Personal content
 
     fun logBookmark(poemId: Int, added: Boolean) {
         log(if (added) Events.BOOKMARK_ADD else Events.BOOKMARK_REMOVE) {
@@ -134,10 +115,6 @@ class AnalyticsLogger @Inject constructor(
 
     fun logHistoryItemDelete() = log(Events.HISTORY_ITEM_DELETE)
 
-    // endregion
-
-    // region Poets
-
     fun logPoetDownloadStart(poetId: String, poetName: String?) {
         log(Events.POET_DOWNLOAD_START) {
             poetId.toIntOrNull()?.let { putNumber(Params.POET_ID, it) }
@@ -162,10 +139,6 @@ class AnalyticsLogger @Inject constructor(
 
     fun setDownloadedPoetsCount(count: Int) =
         setUserProperty(UserProperties.DOWNLOADED_POETS_COUNT, count.toString())
-
-    // endregion
-
-    // region Recitations
 
     fun logRecitationsLoaded(poemId: Int, count: Int, success: Boolean) {
         log(Events.RECITATIONS_LOAD) {
@@ -201,10 +174,6 @@ class AnalyticsLogger @Inject constructor(
         log(Events.PLAYBACK_REPEAT_TOGGLE) { putText(Params.VALUE, enabled.toString()) }
     }
 
-    // endregion
-
-    // region Settings
-
     fun logSettingChanged(setting: String, value: String) {
         log(Events.SETTING_CHANGE) {
             putText(Params.SETTING, setting)
@@ -217,18 +186,14 @@ class AnalyticsLogger @Inject constructor(
         firebaseAnalytics.setUserProperty(name.take(MAX_USER_PROPERTY_NAME), value?.take(MAX_USER_PROPERTY_VALUE))
     }
 
-    // endregion
-
     private fun log(event: String, params: Bundle.() -> Unit = {}) {
         firebaseAnalytics.logEvent(event, Bundle().apply(params))
     }
 
-    // Firebase drops string params longer than 100 chars, so truncate instead of losing them.
     private fun Bundle.putText(key: String, value: String?) {
         if (value != null) putString(key, value.take(MAX_PARAM_VALUE))
     }
 
-    // Firebase only accepts String, long and double param values.
     private fun Bundle.putNumber(key: String, value: Int) = putLong(key, value.toLong())
 
     object Events {
