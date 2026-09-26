@@ -1,5 +1,6 @@
 package ir.jaamebaade.jaamebaade_client.view
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -7,10 +8,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,8 +20,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ir.jaamebaade.jaamebaade_client.R
@@ -32,11 +28,11 @@ import ir.jaamebaade.jaamebaade_client.model.Poet
 import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.ui.theme.RandomPoemLayoutType
 import ir.jaamebaade.jaamebaade_client.utility.toNavArgs
+import ir.jaamebaade.jaamebaade_client.view.components.AddPoetTile
 import ir.jaamebaade.jaamebaade_client.view.components.PoetIconButton
 import ir.jaamebaade.jaamebaade_client.view.components.PoetOptionsBottomSheet
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemBox
 import ir.jaamebaade.jaamebaade_client.view.components.RandomPoemLayoutIntroDialog
-import ir.jaamebaade.jaamebaade_client.view.components.base.SquareButton
 import ir.jaamebaade.jaamebaade_client.view.components.toast.ToastType
 import ir.jaamebaade.jaamebaade_client.viewmodel.MyPoetsViewModel
 import ir.jaamebaade.jaamebaade_client.viewmodel.ToastManager
@@ -108,7 +104,11 @@ fun MyPoetsScreen(
             .padding(horizontal = Dimens.space16),
     ) {
         if (fetchStatus == Status.SUCCESS) {
-            LazyVerticalGrid(columns = GridCells.Fixed(3)) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                horizontalArrangement = Arrangement.spacedBy(Dimens.space12),
+                verticalArrangement = Arrangement.spacedBy(Dimens.space12),
+            ) {
                 if (showRandomPoem && randomPoetPreviewFetchStatus == Status.SUCCESS) {
                     randomPoemPreview?.let {
                         item(span = { GridItemSpan(maxLineSpan) }) {
@@ -145,20 +145,7 @@ fun MyPoetsScreen(
                     }
                 }
                 item {
-                    SquareButton(
-                        modifier = if (poets.isEmpty()) {
-                            Modifier.padding(top = Dimens.space16)
-                        } else {
-                            Modifier
-                        },
-                        icon = Icons.Filled.Add,
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        backgroundColor = MaterialTheme.colorScheme.outlineVariant,
-                        contentDescription = stringResource(R.string.ADD_NEW_POET),
-                        textStyle = MaterialTheme.typography.headlineSmall,
-
-                        size = 65
-                    ) {
+                    AddPoetTile {
                         navController.navigate(AppRoutes.DOWNLOADABLE_POETS_SCREEN.toString()) {
                             popUpTo(AppRoutes.DOWNLOADED_POETS_SCREEN.toString()) {
                                 inclusive = true
