@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
@@ -35,7 +34,6 @@ import ir.jaamebaade.jaamebaade_client.constants.AppRoutes
 import ir.jaamebaade.jaamebaade_client.model.BookmarkCategoryItem
 import ir.jaamebaade.jaamebaade_client.model.MergedHighlight
 import ir.jaamebaade.jaamebaade_client.utility.toPersianNumber
-import ir.jaamebaade.jaamebaade_client.view.components.base.ListRowDivider
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.AddCategoryChip
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.CategoryFilterChip
 import ir.jaamebaade.jaamebaade_client.view.components.bookmarkcategory.CategoryPickerBottomSheet
@@ -72,109 +70,113 @@ fun BookmarkCategoriesScreen(
 
     val visibleItems = viewModel.visibleItems
 
-    Column(modifier = modifier.fillMaxSize()) {
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = Dimens.space14),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 20.dp),
-        ) {
-            item {
-                CategoryFilterChip(
-                    name = stringResource(R.string.ALL_CATEGORIES_CHIP),
-                    count = viewModel.items.size.toPersianNumber(),
-                    color = null,
-                    selected = viewModel.activeFilterLabelId == null,
-                    onClick = { viewModel.selectFilter(null) },
-                )
-            }
-            items(viewModel.labels) { labelWithCount ->
-                CategoryFilterChip(
-                    name = labelWithCount.label.name,
-                    count = labelWithCount.itemCount.toPersianNumber(),
-                    color = labelWithCount.label.color,
-                    selected = viewModel.activeFilterLabelId == labelWithCount.label.id,
-                    onClick = { viewModel.selectFilter(labelWithCount.label.id) },
-                )
-            }
-            item {
-                AddCategoryChip(
-                    text = stringResource(R.string.CATEGORIES),
-                    onClick = { viewModel.openManage() },
-                )
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(Dimens.space8),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = Dimens.space16),
+    ) {
+        item {
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = Dimens.space14),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 20.dp),
+            ) {
+                item {
+                    CategoryFilterChip(
+                        name = stringResource(R.string.ALL_CATEGORIES_CHIP),
+                        count = viewModel.items.size.toPersianNumber(),
+                        color = null,
+                        selected = viewModel.activeFilterLabelId == null,
+                        onClick = { viewModel.selectFilter(null) },
+                    )
+                }
+                items(viewModel.labels) { labelWithCount ->
+                    CategoryFilterChip(
+                        name = labelWithCount.label.name,
+                        count = labelWithCount.itemCount.toPersianNumber(),
+                        color = labelWithCount.label.color,
+                        selected = viewModel.activeFilterLabelId == labelWithCount.label.id,
+                        onClick = { viewModel.selectFilter(labelWithCount.label.id) },
+                    )
+                }
+                item {
+                    AddCategoryChip(
+                        text = stringResource(R.string.CATEGORIES),
+                        onClick = { viewModel.openManage() },
+                    )
+                }
             }
         }
 
         if (visibleItems.isEmpty()) {
-            Row(
-                modifier = Modifier
-                    .padding(Dimens.space10)
-                    .fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Info,
-                    tint = MaterialTheme.colorScheme.outlineVariant,
-                    contentDescription = "",
-                )
-                if (viewModel.activeFilterLabelId == null) {
-                    Spacer(modifier = Modifier.width(Dimens.space8))
-                    Text(
-                        text = stringResource(
-                            if (tab == BookmarkCategoryTab.SAVE) R.string.NO_BOOKMARK else R.string.NO_HIGHLIGHTS_FOUND
-                        ),
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.outlineVariant
+            item {
+                Row(
+                    modifier = Modifier
+                        .padding(Dimens.space10)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Info,
+                        tint = MaterialTheme.colorScheme.outlineVariant,
+                        contentDescription = "",
                     )
-                } else {
-                    Spacer(modifier = Modifier.width(Dimens.space8))
-                    Column {
+                    if (viewModel.activeFilterLabelId == null) {
+                        Spacer(modifier = Modifier.width(Dimens.space8))
                         Text(
-                            text = stringResource(R.string.EMPTY_CATEGORY_TITLE),
+                            text = stringResource(
+                                if (tab == BookmarkCategoryTab.SAVE) R.string.NO_BOOKMARK else R.string.NO_HIGHLIGHTS_FOUND
+                            ),
                             style = MaterialTheme.typography.headlineLarge,
                             color = MaterialTheme.colorScheme.outlineVariant
                         )
-                        Text(
-                            text = stringResource(R.string.EMPTY_CATEGORY_SUBTITLE),
-                            style = MaterialTheme.typography.headlineSmall,
-                            color = MaterialTheme.colorScheme.outlineVariant
-                        )
+                    } else {
+                        Spacer(modifier = Modifier.width(Dimens.space8))
+                        Column {
+                            Text(
+                                text = stringResource(R.string.EMPTY_CATEGORY_TITLE),
+                                style = MaterialTheme.typography.headlineLarge,
+                                color = MaterialTheme.colorScheme.outlineVariant
+                            )
+                            Text(
+                                text = stringResource(R.string.EMPTY_CATEGORY_SUBTITLE),
+                                style = MaterialTheme.typography.headlineSmall,
+                                color = MaterialTheme.colorScheme.outlineVariant
+                            )
+                        }
                     }
                 }
             }
         } else {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                itemsIndexed(items = visibleItems, key = { _, item -> item.id }) { index, item ->
-                    val headerText = if (tab == BookmarkCategoryTab.HIGHLIGHT && item.highlightSource != null) {
-                        createMergedHighlightItemHeader(item.highlightSource)
-                    } else {
-                        AnnotatedString(item.pathText)
-                    }
-                    val bodyText = if (tab == BookmarkCategoryTab.HIGHLIGHT) item.pathText else item.previewText
-
-                    LabeledCardItem(
-                        modifier = Modifier.animateItem(),
-                        headerText = headerText,
-                        bodyText = bodyText,
-                        imageUrl = item.imageUrl,
-                        labels = item.labels,
-                        onClick = {
-                            item.bookmarkSource?.let {
-                                navController.navigate("${AppRoutes.POEM}/${it.poet.id}/${it.poem.id}/-1")
-                            }
-                            item.highlightSource?.let {
-                                navController.navigate("${AppRoutes.POEM}/${it.poet.id}/${it.poem.id}/${it.highlights.first().verseId}")
-                            }
-                        },
-                        onMoreClick = { viewModel.openItemActions(item.id) },
-                        onAddToCategoryClick = { viewModel.openItemActions(item.id) },
-                    )
-                    if (index != visibleItems.size - 1) {
-                        ListRowDivider()
-                    }
+            items(items = visibleItems, key = { item -> item.id }) { item ->
+                val isHighlight = tab == BookmarkCategoryTab.HIGHLIGHT && item.highlightSource != null
+                val bodyText = if (isHighlight) {
+                    createMergedHighlightItemHeader(item.highlightSource!!)
+                } else {
+                    AnnotatedString(item.previewText)
                 }
+
+                LabeledCardItem(
+                    modifier = Modifier.animateItem(),
+                    pathText = item.pathText,
+                    bodyText = bodyText,
+                    bodyMaxLines = if (isHighlight) Int.MAX_VALUE else 1,
+                    imageUrl = item.imageUrl,
+                    labels = item.labels,
+                    onClick = {
+                        item.bookmarkSource?.let {
+                            navController.navigate("${AppRoutes.POEM}/${it.poet.id}/${it.poem.id}/-1")
+                        }
+                        item.highlightSource?.let {
+                            navController.navigate("${AppRoutes.POEM}/${it.poet.id}/${it.poem.id}/${it.highlights.first().verseId}")
+                        }
+                    },
+                    onMoreClick = { viewModel.openItemActions(item.id) },
+                    onAddToCategoryClick = { viewModel.openItemActions(item.id) },
+                )
             }
         }
     }
