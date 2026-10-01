@@ -2,6 +2,7 @@ package ir.jaamebaade.jaamebaade_client.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
@@ -44,8 +45,8 @@ import ir.jaamebaade.jaamebaade_client.ui.theme.SheetTopShape
 import ir.jaamebaade.jaamebaade_client.ui.theme.secondaryS50
 import ir.jaamebaade.jaamebaade_client.utility.convertToJalali
 import ir.jaamebaade.jaamebaade_client.utility.toLocalFormatWithHour
-import ir.jaamebaade.jaamebaade_client.view.components.ComposableCardItem
-import ir.jaamebaade.jaamebaade_client.view.components.base.ListRowDivider
+import ir.jaamebaade.jaamebaade_client.view.components.CollectionCardItem
+import ir.jaamebaade.jaamebaade_client.view.components.collectionCardBodyStyle
 import ir.jaamebaade.jaamebaade_client.viewmodel.HistoryViewModel
 import java.util.Date
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
@@ -142,14 +143,16 @@ fun HistoryScreen(
                 state = lazyListState,
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(end = Dimens.space12)
+                    .background(MaterialTheme.colorScheme.background),
+                verticalArrangement = Arrangement.spacedBy(Dimens.space8),
+                contentPadding = PaddingValues(top = Dimens.space4, bottom = Dimens.space16),
             ) {
-                itemsIndexed(
-                    items = poemHistory.value, key = { _, item ->
+                items(
+                    items = poemHistory.value, key = { item ->
                         item.id
-                    }) { index, historyRecord ->
+                    }) { historyRecord ->
                     MyHistoryCardItem(
+                        modifier = Modifier.animateItem(),
                         historyRecord = historyRecord,
                         onClick = {
                             navController.navigate("${AppRoutes.POEM}/${historyRecord.path.poet.id}/${historyRecord.path.poem.id}/-1")
@@ -157,9 +160,6 @@ fun HistoryScreen(
                         },
                         onDelete = { viewModel.deleteHistoryRecord(historyRecord.id) }
                     )
-
-                    if (index != poemHistory.value.size - 1)
-                        ListRowDivider()
                 }
             }
         }
@@ -177,53 +177,40 @@ fun MyHistoryCardItem(
     onClick: () -> Unit = {},
     onDelete: (() -> Unit)? = null,
 ) {
-    ComposableCardItem(
+    CollectionCardItem(
         modifier = modifier,
+        pathText = createPoemPath(historyRecord.path.categories, historyRecord.path.poem),
         imageUrl = historyRecord.path.poet.imageUrl,
-        header = {
-            Text(
-                text = createPoemPath(historyRecord.path.categories, historyRecord.path.poem),
-                style = MaterialTheme.typography.headlineMedium,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis,
+        onClick = onClick,
+        onMoreClick = onDelete,
+        moreIcon = Icons.Outlined.Close,
+        moreIconDescription = stringResource(R.string.DELETE),
+    ) {
+        Text(
+            text = historyRecord.firstVerse.text,
+            style = collectionCardBodyStyle(),
+            color = MaterialTheme.colorScheme.onBackground,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Default.Circle,
+                tint = MaterialTheme.colorScheme.secondaryS50,
+                contentDescription = null,
+                modifier = Modifier.size(8.dp),
             )
-        },
-        body = {
+            Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = historyRecord.firstVerse.text,
+                text = Date(historyRecord.timestamp).convertToJalali()
+                    .toLocalFormatWithHour(),
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.outlineVariant,
-                maxLines = 2,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-        },
-        footer =
-            {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.Circle,
-                        tint = MaterialTheme.colorScheme.secondaryS50,
-                        contentDescription = null,
-                        modifier = Modifier.size(8.dp),
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = Date(historyRecord.timestamp).convertToJalali()
-                            .toLocalFormatWithHour(),
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.outlineVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-
-            },
-        icon = onDelete?.let { Icons.Outlined.Close },
-        iconDescription = onDelete?.let { stringResource(R.string.DELETE) },
-        onClick = onClick,
-        onIconClick = onDelete ?: {},
-        containerColor = MaterialTheme.colorScheme.background
-    )
+        }
+    }
 }
 
 private fun createPoemPath(categories: List<Category>, poem: Poem) =

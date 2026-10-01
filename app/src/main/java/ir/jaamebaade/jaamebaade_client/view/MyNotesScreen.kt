@@ -100,8 +100,8 @@ fun MyNotesScreen(
     } else {
         LazyColumn(
             modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(Dimens.space12),
-            contentPadding = PaddingValues(top = Dimens.space14, bottom = Dimens.space16),
+            verticalArrangement = Arrangement.spacedBy(Dimens.space8),
+            contentPadding = PaddingValues(top = Dimens.space4, bottom = Dimens.space16),
         ) {
             items(
                 items = notes,
