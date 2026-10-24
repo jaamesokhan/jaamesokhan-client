@@ -23,7 +23,7 @@ fun RandomPoemBox(
         onCardClick = onCardClick,
         onRefreshClick = onRefreshClick,
         layout = layout,
-        modifier = Modifier.padding(vertical = Dimens.space34),
+        modifier = Modifier.padding(top = Dimens.space16, bottom = Dimens.space4),
     )
 }
 
