@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
 import ir.jaamebaade.jaamebaade_client.audio.AudioSessionManager
 import ir.jaamebaade.jaamebaade_client.model.PoemWithPoet
@@ -27,6 +28,7 @@ class AppNavHostViewModel @Inject constructor(
     private val poetRepository: PoetRepository,
     private val audioSessionManager: AudioSessionManager,
     private val poetImageSyncer: PoetImageSyncer,
+    val analytics: AnalyticsLogger,
 ) : ViewModel() {
 
 
@@ -146,6 +148,7 @@ class AppNavHostViewModel @Inject constructor(
     }
 
     fun onPlaybackPrepared() {
+        selectedAudioData?.let { analytics.logRecitationPlay(it.poemId, it.artistName) }
         changePlayStatus(Status.IN_PROGRESS)
         playbackDuration = mediaPlayer.duration.toLong()
         applyPlaybackSettings()
@@ -158,6 +161,7 @@ class AppNavHostViewModel @Inject constructor(
 
     fun toggleRepeat() {
         isRepeatEnabled = !isRepeatEnabled
+        analytics.logPlaybackRepeatToggle(isRepeatEnabled)
         if (playStatus != Status.NOT_STARTED) {
             mediaPlayer.isLooping = isRepeatEnabled
         }
@@ -165,6 +169,7 @@ class AppNavHostViewModel @Inject constructor(
 
     fun changePlaybackSpeed(speed: Float) {
         playbackSpeed = speed
+        analytics.logPlaybackSpeedChange(speed)
         if (playStatus == Status.NOT_STARTED) {
             return
         }
@@ -188,6 +193,7 @@ class AppNavHostViewModel @Inject constructor(
     }
 
     fun onPlaybackCompleted() {
+        analytics.logRecitationComplete(selectedAudioData?.poemId, selectedAudioData?.artistName)
         changePlayStatus(Status.FINISHED)
         cancelProgressUpdates()
         playbackPosition = playbackDuration
@@ -262,9 +268,11 @@ class AppNavHostViewModel @Inject constructor(
 
     private fun hasDownloadedAnyPoets() {
         viewModelScope.launch {
-            hasDownloadedAnyPoets = withContext(Dispatchers.IO) {
-                poetRepository.getAllPoetsCount() > 0
+            val poetsCount = withContext(Dispatchers.IO) {
+                poetRepository.getAllPoetsCount()
             }
+            analytics.setDownloadedPoetsCount(poetsCount)
+            hasDownloadedAnyPoets = poetsCount > 0
         }
     }
 }

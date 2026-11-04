@@ -2,6 +2,7 @@ package ir.jaamebaade.jaamebaade_client.repository
 
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.TextUnit
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFont
 import ir.jaamebaade.jaamebaade_client.ui.theme.CustomFonts
 import ir.jaamebaade.jaamebaade_client.ui.theme.PoemFontSize
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 class FontRepository @Inject constructor(
     private val sharedPrefManager: SharedPrefManager,
+    private val analytics: AnalyticsLogger,
 ) {
 
     private val _poemFontFamily = MutableStateFlow(CustomFonts.getDefaultFont())
@@ -22,6 +24,8 @@ class FontRepository @Inject constructor(
 
     init {
         _poemFontFamily.value = sharedPrefManager.getPoemFont()
+        analytics.setUserProperty(AnalyticsLogger.UserProperties.POEM_FONT, _poemFontFamily.value.name)
+        analytics.setUserProperty(AnalyticsLogger.UserProperties.POEM_FONT_SIZE, _poemFontSizePercent.value.toString())
     }
 
 
@@ -29,6 +33,7 @@ class FontRepository @Inject constructor(
         val coerced = PoemFontSize.coerce(percent)
         _poemFontSizePercent.value = coerced
         sharedPrefManager.savePoemFontSizePercent(coerced)
+        analytics.logSettingChanged(AnalyticsLogger.UserProperties.POEM_FONT_SIZE, coerced.toString())
     }
 
     fun getPoemFontSizeFromPercent(percent: Int, font: CustomFont = _poemFontFamily.value): TextUnit {
@@ -38,6 +43,7 @@ class FontRepository @Inject constructor(
     fun setPoemFontFamily(family: CustomFont) {
         _poemFontFamily.value = family
         sharedPrefManager.savePoemFont(family)
+        analytics.logSettingChanged(AnalyticsLogger.UserProperties.POEM_FONT, family.name)
     }
 
 

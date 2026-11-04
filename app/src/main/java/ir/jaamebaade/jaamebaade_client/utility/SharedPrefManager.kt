@@ -26,6 +26,7 @@ class SharedPrefManager(
         const val IS_SCHEDULED_NOTIFICATIONS_ENABLED_KEY = "IsScheduledNotificationsEnabled"
         const val IS_SCHEDULED_NOTIFICATIONS_SETUP_KEY = "IsScheduledNotificationsSetUp"
         const val SCHEDULED_NOTIFICATION_TIME_KEY = "ScheduledNotificationTime"
+        const val ANALYTICS_CONSENT_KEY = "AnalyticsConsent"
     }
 
     private val sharedPreferences: SharedPreferences =
@@ -101,6 +102,15 @@ class SharedPrefManager(
 
     fun getRandomPoemLayoutIntroSeen(): Boolean {
         return sharedPreferences.getBoolean(RANDOM_POEM_LAYOUT_INTRO_SEEN_KEY, false)
+    }
+
+    fun setAnalyticsConsent(granted: Boolean) {
+        sharedPreferences.edit { putBoolean(ANALYTICS_CONSENT_KEY, granted) }
+    }
+
+    fun getAnalyticsConsent(): Boolean? {
+        if (!sharedPreferences.contains(ANALYTICS_CONSENT_KEY)) return null
+        return sharedPreferences.getBoolean(ANALYTICS_CONSENT_KEY, false)
     }
 
     fun setNotificationPermissionPreference(preference: Boolean) {

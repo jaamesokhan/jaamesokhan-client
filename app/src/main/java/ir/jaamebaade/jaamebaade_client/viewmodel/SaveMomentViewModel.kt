@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.model.CATEGORY_COLOR_PALETTE
 import ir.jaamebaade.jaamebaade_client.model.Label
 import ir.jaamebaade.jaamebaade_client.model.LabelType
@@ -25,6 +26,7 @@ enum class SaveMomentSheet { NONE, NEW_CATEGORY }
 @HiltViewModel
 class SaveMomentViewModel @Inject constructor(
     private val labelRepository: LabelRepository,
+    private val analytics: AnalyticsLogger,
 ) : ViewModel() {
 
     private var labelType: LabelType = LabelType.BOOKMARK
@@ -81,6 +83,7 @@ class SaveMomentViewModel @Inject constructor(
             val created = withContext(Dispatchers.IO) {
                 labelRepository.createLabel(name, draftColor, labelType)
             }
+            analytics.logCategoryCreate(labelType.value)
             labels = labels + created
             selected = selected + created.id
             sheet = SaveMomentSheet.NONE
@@ -88,6 +91,7 @@ class SaveMomentViewModel @Inject constructor(
     }
 
     fun confirm(targetIds: List<Int>, onDone: () -> Unit) {
+        if (selected.isNotEmpty()) analytics.logCategoryAssign(labelType.value, selected.size)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 selected.forEach { labelId ->

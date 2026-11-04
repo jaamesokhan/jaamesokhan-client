@@ -12,6 +12,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.api.JaameSokhanApiClient
 import ir.jaamebaade.jaamebaade_client.api.SyncAudioClient
 import ir.jaamebaade.jaamebaade_client.api.response.AudioData
@@ -51,7 +52,8 @@ class PoemViewModel @AssistedInject constructor(
     private val syncAudioClient: SyncAudioClient,
     private val historyRepository: HistoryRepository,
     private val categoryRepository: CategoryRepository,
-    private val sharedPrefManager: SharedPrefManager
+    private val sharedPrefManager: SharedPrefManager,
+    private val analytics: AnalyticsLogger,
 ) : ViewModel() {
 
     private val _verses = MutableStateFlow<List<VerseWithHighlights>>(emptyList())
@@ -94,6 +96,15 @@ class PoemViewModel @AssistedInject constructor(
 
         val shareIntent = Intent.createChooser(sendIntent, null)
         context.startActivity(shareIntent)
+        analytics.logShare(contentType = "verses", itemId = verses.firstOrNull()?.verse?.poemId)
+    }
+
+    fun onVersesCopied(verseCount: Int, source: String) {
+        analytics.logVersesCopied(poemId, verseCount, source)
+    }
+
+    fun onDictionaryLookup() {
+        analytics.logDictionaryLookup(poemId)
     }
 
     @AssistedFactory
@@ -116,11 +127,16 @@ class PoemViewModel @AssistedInject constructor(
     }
     fun fetchRecitationsForPoem(onSuccess: () -> Unit, onFailure: () -> Unit) {
         viewModelScope.launch {
+            var succeeded = false
             _urls.value = jaameSokhanApiClient.getAllRecitations(
                 poemId = poemId,
-                onSuccess = onSuccess,
+                onSuccess = {
+                    succeeded = true
+                    onSuccess()
+                },
                 onFailure = onFailure
             )
+            analytics.logRecitationsLoaded(poemId, count = _urls.value.size, success = succeeded)
         }
     }
 
@@ -154,6 +170,7 @@ class PoemViewModel @AssistedInject constructor(
         if (selection.isEmpty()) return
         viewModelScope.launch {
             val inserted = addHighlightsToRepository(selection, color)
+            analytics.logHighlightAdd(poemId, verseCount = inserted.size)
             _verses.value = _verses.value.map { verseWithHighlights ->
                 val newHighlight = inserted[verseWithHighlights.verse.id]
                 if (newHighlight != null) {
@@ -171,6 +188,7 @@ class PoemViewModel @AssistedInject constructor(
         if (highlights.isEmpty()) return
         viewModelScope.launch {
             val recolored = highlights.map { it.copy(color = color) }
+            analytics.logHighlightColorChange(poemId)
             withContext(Dispatchers.IO) {
                 highlightRepository.updateHighlights(recolored)
             }
@@ -191,6 +209,7 @@ class PoemViewModel @AssistedInject constructor(
             withContext(Dispatchers.IO) {
                 highlightRepository.deleteHighlights(highlights)
             }
+            analytics.logHighlightRemove(poemId)
             val removedIds = highlights.map { it.id }.toSet()
             _verses.value = _verses.value.map { verseWithHighlights ->
                 verseWithHighlights.copy(
@@ -224,10 +243,12 @@ class PoemViewModel @AssistedInject constructor(
             if (_isBookmarked.value) {
                 removeBookmark()
                 _isBookmarked.value = false
+                analytics.logBookmark(poemId, added = false)
             } else {
                 val bookmarkId = addBookmark()
                 _isBookmarked.value = true
                 _pendingSaveMomentBookmarkId.value = bookmarkId
+                analytics.logBookmark(poemId, added = true)
             }
         }
     }
@@ -291,6 +312,13 @@ class PoemViewModel @AssistedInject constructor(
                 )
                 historyRepository.insertHistoryItem(historyRecord)
                 lastVisitedPoemId = poemId
+                val poemWithPoet = fetchPoemWithPoet(poemId)
+                analytics.logPoemView(
+                    poetId = poemWithPoet?.poet?.id ?: poetId,
+                    poetName = poemWithPoet?.poet?.name,
+                    poemId = poemId,
+                    poemTitle = poemWithPoet?.poem?.title,
+                )
             }
         }
     }

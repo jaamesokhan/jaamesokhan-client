@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import ir.jaamebaade.jaamebaade_client.R
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.api.JaameSokhanApiClient
 import ir.jaamebaade.jaamebaade_client.datamanager.PoetDataManager
 import ir.jaamebaade.jaamebaade_client.model.Poet
@@ -42,6 +43,7 @@ class PoetViewModel @Inject constructor(
     private val poetRepository: PoetRepository,
     private val poemRepository: PoemRepository,
     private val verseRepository: VerseRepository,
+    private val analytics: AnalyticsLogger,
 ) : ViewModel() {
     var poets by mutableStateOf<List<Poet>>(emptyList())
         private set
@@ -121,6 +123,9 @@ class PoetViewModel @Inject constructor(
             ).show()
             return
         }
+        val poetName = poets.find { it.id.toString() == id }?.name
+        val startedAt = System.currentTimeMillis()
+        analytics.logPoetDownloadStart(id, poetName)
         withContext(Dispatchers.IO) {
             downloadAndExtractPoet(id, targetDir, {
                 val poet = poets.find { it.id.toString() == id }!!
@@ -145,6 +150,16 @@ class PoetViewModel @Inject constructor(
                 }
                 poetDataManager.saveDownloadStatus(id, downloadStatus[id]!!)
             }, {})
+        }
+
+        analytics.logPoetDownloadResult(
+            poetId = id,
+            poetName = poetName,
+            success = downloadStatus[id] == DownloadStatus.Downloaded,
+            durationMs = System.currentTimeMillis() - startedAt,
+        )
+        if (downloadStatus[id] == DownloadStatus.Downloaded) {
+            analytics.setDownloadedPoetsCount(withContext(Dispatchers.IO) { poetRepository.getAllPoetsCount() })
         }
 
         // FIXME this toast will only be shown if the user stays in the download-screen

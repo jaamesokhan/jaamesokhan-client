@@ -3,6 +3,7 @@ package ir.jaamebaade.jaamebaade_client.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.model.Category
 import ir.jaamebaade.jaamebaade_client.model.HistoryRecordPathFirstVerse
 import ir.jaamebaade.jaamebaade_client.model.Poem
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class HistoryViewModel @Inject constructor(
     private val poemRepository: PoemRepository,
     private val categoryRepository: CategoryRepository,
-    private val historyRepository: HistoryRepository
+    private val historyRepository: HistoryRepository,
+    private val analytics: AnalyticsLogger,
 ) : ViewModel() {
 
     private val _poemHistory = MutableStateFlow<List<HistoryRecordPathFirstVerse>>(emptyList())
@@ -81,6 +83,7 @@ class HistoryViewModel @Inject constructor(
     fun deleteHistoryRecord(id: Int) {
         viewModelScope.launch {
             deleteHistoryRecordFromRepository(id)
+            analytics.logHistoryItemDelete()
             _poemHistory.value = _poemHistory.value.toMutableList().filterNot { it.id == id }
         }
     }
@@ -96,6 +99,7 @@ class HistoryViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 historyRepository.clearHistory()
             }
+            analytics.logHistoryClear()
             _poemHistory.value = emptyList()
         }
     }

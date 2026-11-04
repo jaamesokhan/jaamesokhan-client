@@ -1,6 +1,7 @@
 package ir.jaamebaade.jaamebaade_client.repository
 
 import android.os.Build
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.ui.theme.AppThemeType
 import ir.jaamebaade.jaamebaade_client.utility.SharedPrefManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,6 +10,7 @@ import javax.inject.Inject
 
 class ThemeRepository @Inject constructor(
     private val sharedPrefManager: SharedPrefManager,
+    private val analytics: AnalyticsLogger,
 ) {
     private val _appTheme = MutableStateFlow(AppThemeType.SYSTEM_AUTO)
     val appTheme: StateFlow<AppThemeType> = _appTheme
@@ -25,10 +27,12 @@ class ThemeRepository @Inject constructor(
         } else {
             _appTheme.value = currentAppTheme
         }
+        analytics.setUserProperty(AnalyticsLogger.UserProperties.APP_THEME, _appTheme.value.name)
     }
 
     fun setAppThemePreference(appThemeType: AppThemeType) {
         sharedPrefManager.setThemePreference(appThemeType)
         _appTheme.value = appThemeType
+        analytics.logSettingChanged(AnalyticsLogger.UserProperties.APP_THEME, appThemeType.name)
     }
 }

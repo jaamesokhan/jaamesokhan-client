@@ -11,6 +11,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.jaamebaade.jaamebaade_client.analytics.AnalyticsLogger
 import ir.jaamebaade.jaamebaade_client.model.BookmarkCategoryItem
 import ir.jaamebaade.jaamebaade_client.model.BookmarkPoemCategoriesPoetFirstVerse
 import ir.jaamebaade.jaamebaade_client.model.CATEGORY_COLOR_PALETTE
@@ -53,6 +54,7 @@ class BookmarkCategoriesViewModel @AssistedInject constructor(
     private val categoryRepository: CategoryRepository,
     private val poemRepository: PoemRepository,
     private val verseRepository: VerseRepository,
+    private val analytics: AnalyticsLogger,
 ) : ViewModel() {
 
     @AssistedFactory
@@ -222,6 +224,7 @@ class BookmarkCategoriesViewModel @AssistedInject constructor(
                 toAdd.forEach { assignLabelToItem(item, it) }
                 toRemove.forEach { unassignLabelFromItem(item, it) }
             }
+            if (toAdd.isNotEmpty()) analytics.logCategoryAssign(labelType.value, toAdd.size)
             closeSheet()
             refresh()
         }
@@ -276,6 +279,7 @@ class BookmarkCategoriesViewModel @AssistedInject constructor(
                     labelRepository.updateLabel(editing.copy(name = name, color = draftColor))
                 } else {
                     val created = labelRepository.createLabel(name, draftColor, labelType)
+                    analytics.logCategoryCreate(labelType.value)
                     if (activeItemId != null) {
                         stagedPickerSelection = stagedPickerSelection + created.id
                     }
@@ -292,6 +296,7 @@ class BookmarkCategoriesViewModel @AssistedInject constructor(
     fun deleteLabel(label: Label) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) { labelRepository.deleteLabel(label) }
+            analytics.logCategoryDelete()
             if (activeFilterLabelId == label.id) activeFilterLabelId = null
             refresh()
         }
@@ -304,6 +309,7 @@ class BookmarkCategoriesViewModel @AssistedInject constructor(
                 item.bookmarkSource?.let { bookmarkRepository.removeBookmark(it.poem.id) }
                 item.highlightSource?.highlights?.forEach { highlightRepository.deleteHighlight(it) }
             }
+            analytics.logSavedItemRemove(labelType.value)
             closeSheet()
             loadItems()
         }
@@ -333,6 +339,10 @@ class BookmarkCategoriesViewModel @AssistedInject constructor(
                 type = "text/plain"
             }
             context.startActivity(Intent.createChooser(sendIntent, null))
+            analytics.logShare(
+                contentType = "saved_${labelType.value}",
+                itemId = item.bookmarkSource?.poem?.id ?: item.highlightSource?.poem?.id,
+            )
             closeSheet()
         }
     }

@@ -214,4 +214,8 @@ https://myket.ir/app/ir.jaamebaade.jaamebaade_client
     <string name="SAVED_TO_CATEGORY_SUCCESS">ذخیره شد.</string>
     <string name="SAVE_MOMENT_TITLE">در کدام دسته ذخیره شود؟</string>
     <string name="NEW_CATEGORY_CHIP">دسته جدید</string>
+    <string name="ANALYTICS_CONSENT_TITLE">کمک به بهتر شدن جام سخن</string>
+    <string name="ANALYTICS_CONSENT_BODY">اجازه می‌دهید اطلاعات ناشناس درباره‌ی نحوه‌ی استفاده از برنامه جمع‌آوری شود؟ این اطلاعات به هویت شما مرتبط نمی‌شود و فقط برای بهبود برنامه به کار می‌رود.</string>
+    <string name="ANALYTICS_CONSENT_ALLOW">موافقم</string>
+    <string name="ANALYTICS_CONSENT_DENY">نه، ممنون</string>
 </resources>

@@ -37,6 +37,7 @@ fun PoemScreenBottomToolBar(
     selectMode: Boolean,
     modifier: Modifier,
     selectedVerses: SnapshotStateList<VerseWithHighlights>,
+    onVersesCopied: (Int) -> Unit = {},
     onSelectModeOffToggled: () -> Unit,
 ) {
 
@@ -93,6 +94,7 @@ fun PoemScreenBottomToolBar(
                             ClipEntry(ClipData.newPlainText(null, textToCopy))
                         )
                     }
+                    onVersesCopied(selectedVerses.size)
                     selectedVerses.clear()
                     onSelectModeOffToggled()
                 }
