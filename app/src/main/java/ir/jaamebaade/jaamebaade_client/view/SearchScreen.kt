@@ -1,13 +1,15 @@
 package ir.jaamebaade.jaamebaade_client.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -29,9 +31,9 @@ import ir.jaamebaade.jaamebaade_client.model.Status
 import ir.jaamebaade.jaamebaade_client.model.VersePoemCategoriesPoet
 import ir.jaamebaade.jaamebaade_client.model.toPathHeaderText
 import ir.jaamebaade.jaamebaade_client.view.components.LoadingIndicator
-import ir.jaamebaade.jaamebaade_client.view.components.CardItem
+import ir.jaamebaade.jaamebaade_client.view.components.CollectionCardItem
+import ir.jaamebaade.jaamebaade_client.view.components.collectionCardBodyStyle
 import ir.jaamebaade.jaamebaade_client.view.components.SearchBar
-import ir.jaamebaade.jaamebaade_client.view.components.base.ListRowDivider
 import ir.jaamebaade.jaamebaade_client.view.components.base.NotFoundBox
 import ir.jaamebaade.jaamebaade_client.viewmodel.SearchViewModel
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
@@ -122,23 +124,30 @@ fun SearchResults(
     } else if (searchStatus == Status.LOADING) {
         LoadingIndicator()
     } else {
-        LazyColumn(modifier = Modifier.padding(horizontal = Dimens.space16)) {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(Dimens.space8),
+            contentPadding = PaddingValues(top = Dimens.space4, bottom = Dimens.space16),
+        ) {
             items(results) { result ->
                 val content = createSearchResultBody(
                     item = result,
                     searchQuery = searchQuery,
                     focusColor = MaterialTheme.colorScheme.tertiary,
                 )
-                CardItem(
-                    headerText = content,
-                    bodyText = result.toPathHeaderText(),
+                CollectionCardItem(
+                    pathText = result.toPathHeaderText(),
                     imageUrl = result.poet.imageUrl,
                     onClick = {
                         navController.navigate("${AppRoutes.POEM}/${result.poet.id}/${result.verse!!.poemId}/${result.verse.id}")
                     },
-                )
-                if (result != results.last()) {
-                    ListRowDivider()
+                ) {
+                    Text(
+                        text = content,
+                        style = collectionCardBodyStyle(),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
             }
         }
