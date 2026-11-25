@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -56,6 +57,7 @@ fun JadvalLeafRandomPoemCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .heightIn(max = RandomPoemCardMaxHeight)
             .background(paper)
             .clickable(onClick = onCardClick)
             .padding(Dimens.space6)
@@ -71,7 +73,10 @@ fun JadvalLeafRandomPoemCard(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(Dimens.space12),
     ) {
-        AnimatedContent(targetState = randomPoemPreview) { preview ->
+        AnimatedContent(
+            targetState = randomPoemPreview,
+            modifier = Modifier.weight(1f, fill = false),
+        ) { preview ->
             Text(
                 text = preview.verses.take(VERSE_LINES).joinToString(separator = "\n") { it.text },
                 style = MaterialTheme.typography.bodyLarge.copy(
@@ -81,6 +86,8 @@ fun JadvalLeafRandomPoemCard(
                 ),
                 color = ink,
                 textAlign = TextAlign.Center,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
