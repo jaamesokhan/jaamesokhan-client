@@ -55,7 +55,9 @@ fun PaperLeafRandomPoemCard(
     val hairline = MaterialTheme.colorScheme.outline
     Card(
         onClick = onCardClick,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(max = RandomPoemCardMaxHeight),
         shape = MaterialTheme.shapes.extraLarge,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
@@ -63,12 +65,14 @@ fun PaperLeafRandomPoemCard(
         border = BorderStroke(1.dp, hairline),
     ) {
         Column(
-            modifier = Modifier.padding(
-                start = Dimens.space20,
-                end = Dimens.space20,
-                top = Dimens.space16,
-                bottom = Dimens.space4,
-            ),
+            modifier = Modifier
+                .weight(1f, fill = false)
+                .padding(
+                    start = Dimens.space20,
+                    end = Dimens.space20,
+                    top = Dimens.space16,
+                    bottom = Dimens.space4,
+                ),
             verticalArrangement = Arrangement.spacedBy(Dimens.space12),
         ) {
             Row(
@@ -112,12 +116,17 @@ fun PaperLeafRandomPoemCard(
                 )
             }
 
-            AnimatedContent(targetState = randomPoemPreview) { preview ->
+            AnimatedContent(
+                targetState = randomPoemPreview,
+                modifier = Modifier.weight(1f, fill = false),
+            ) { preview ->
                 Text(
                     text = preview.verses.take(VERSE_LINES).joinToString(separator = "\n") { it.text },
                     style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 32.sp),
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }

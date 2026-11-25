@@ -7,9 +7,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import ir.jaamebaade.jaamebaade_client.model.RandomPoemPreview
 import ir.jaamebaade.jaamebaade_client.ui.theme.Dimens
 import ir.jaamebaade.jaamebaade_client.ui.theme.RandomPoemLayoutType
+
+internal val RandomPoemCardMaxHeight = 264.dp
 
 @Composable
 fun RandomPoemBox(
